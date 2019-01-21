@@ -1,4 +1,4 @@
-# PizzaMakingFinalProject
+# 셀프 피자 제작소
 
 ## 1. 개발환경
 java version "1.8.0_201"  
