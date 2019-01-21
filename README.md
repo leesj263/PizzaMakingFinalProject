@@ -1,5 +1,5 @@
 # 셀프 피자 제작소
-
+특별한 토핑을 넣어 세상에서 하나뿐인 내 피자를 완성하세요!
 ## 1. 개발환경
 java version "1.8.0_201"  
 Eclipse Oxygen (4.7) - Eclipse IDE for Java EE Developers  
