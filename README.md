@@ -1,7 +1,24 @@
 # 셀프 피자 제작소
 특별한 토핑을 넣어 세상에서 하나뿐인 내 피자를 완성하세요!
 ## 개발환경
-1. java version "1.8.0_201"  
-2. Eclipse Oxygen (4.7) - Eclipse IDE for Java EE Developers  
-3. Oracle Database 11g Release 2 Express Edition for Windows 64  
+1. java version "1.8.0_201"
+2. Eclipse Oxygen (4.7) - Eclipse IDE for Java EE Developers
+3. Oracle Database 11g Release 2 Express Edition for Windows 64
 4. Apache Tomcat 8.5.35
+
+## 개발일정
+- 2019년 1월 14일(월) ~ 2019년 1월 17일(목) : 기획
+- 2019년 1월 18일(금) : 기획발표
+- 2019년 1월 21일(월) ~ 2019년 1월 23일(수) : UI 설계
+  - 스토리보드
+- 2019년 1월 24일(목) ~ 2019년 1월 29일(화) : DB 설계
+  - DB 논리, 물리 모델링
+  - 테이블 정의서
+  - 요구사항 정의서
+  - 유스케이스 다이어그램
+- 2019년 1월 30일(수) ~ 2019년 2월 1일(금) : 클래스 설계
+  - 클래스 다이어그램
+  - 패키지 다이어그램
+  - 시퀀스 다이어그램
+- 2019년 2월 7일(목) ~ 2019년 3월 5일(화) : 구현
+- 2019년 3월 6일(수) : 최종발표
