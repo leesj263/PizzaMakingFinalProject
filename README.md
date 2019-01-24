@@ -18,7 +18,7 @@
 1. java version "1.8.0_191"
 2. Eclipse Oxygen (4.7) - Eclipse IDE for Java EE Developers
 3. Oracle Database 11g Release 2 Express Edition for Windows 64
-4. Apache Tomcat 8.5.35
+4. Apache Tomcat 8.5.34
 5. MyBatis 3.4.1
 6. Spring 5.0.8.RELEASE
 7. Apache Maven 3.6.0
