@@ -19,6 +19,10 @@
 	#calendar td:hover{
 		background : lightgray !important; 
 	}
+	
+	.adminMessageTr:hover{
+		background : lightgray !important; 
+	}
 </style>
 </head>
 
@@ -72,28 +76,28 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
+                                        <tr class = "adminMessageTr" onclick = "location.href = 'movePage.com?movePage=DetailAdminMessage'" style = "cursor : pointer;">
                                             <td>1</td>
                                             <td>공지</td>
                                             <td>업체페이지 구조조정안내</td>
                                             <td style = "overflow:hidden; text-overflow: ellipsis;">11월부터 업체 페이지의 전체적인 구조 수정이 있습니다</td>
                                             <td>2019.01.21</td>
                                         </tr>
-                                        <tr>
+                                        <tr class = "adminMessageTr" onclick = "location.href = 'movePage.com?movePage=DetailAdminMessage'" style = "cursor : pointer">
                                         	<td>2</td>
                                             <td>경고</td>
                                             <td>사당지점 경고안내</td>
                                             <td style = "overflow:hidden; text-overflow: ellipsis;">배달원의 태도문제로 인한 지속적인 불만접수가 있습니다. 직원에 대한 교육 부탁드립니다.</td>
                                             <td>2019.01.23</td>
                                         </tr>
-                                      	<tr>
+                                      	<tr class = "adminMessageTr" onclick = "location.href = 'movePage.com?movePage=DetailAdminMessage'" style = "cursor : pointer">
                                       		<td>3</td>
                                             <td>이벤트</td>
                                             <td>룰렛이벤트 안내</td>
                                             <td style = "overflow:hidden; text-overflow: ellipsis;">1월부터 룰렛이벤트를 실시합니다. 이벤트 기간은 2월 1일부터 2월 15일까지입니다. 각 지점 점주분들께서는 이점 유의해주시기 바랍니다,</td>
                                             <td>2019.01.25</td>
                                       	</tr>
-                                      	<tr>
+                                      	<tr class = "adminMessageTr" onclick = "location.href = 'movePage.com?movePage=DetailAdminMessage'" style = "cursor : pointer">
                                       		<td>4</td>
                                             <td>이벤트</td>
                                             <td>기프티콘 쿠폰 이벤트 안내</td>
