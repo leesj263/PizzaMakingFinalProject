@@ -2,15 +2,11 @@
     pageEncoding="UTF-8"%>
 <jsp:include page="common/header.jsp"/>
 <style>
-	#main{
-		padding:50px;
-	}
+	
 </style>
 <section>
 	<div id="main">
-	
 		<p>adminMain.jsp</p>
-		<h1 align="center">???</h1>
 	</div>
 </section>
 <jsp:include page="common/footer.jsp"/>
