@@ -13,6 +13,8 @@
 	<a href="adminMain.t">관리자 페이지</a>
 	<a href="order.t">주문 페이지</a>
 	
+	<a href="main.t">메인 페이지</a>
+	
 	<div style="text-align: center;">
 		<h2>피자!</h2>
 		<p>먹을꺼야? -`д´-</p>
