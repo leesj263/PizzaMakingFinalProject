@@ -28,11 +28,11 @@
 
 		<div id="main-menu" class="main-menu collapse navbar-collapse">
 			<ul class="nav navbar-nav">
-				<!-- 
+				 
 				<li class="active">
-					<a href="#"><i class="menu-icon fa fa-dashboard"></i>Dashboard</a>
+					<a href="admin.ad?admin=adminMain"><i class="menu-icon fa fa-dashboard"></i>Dashboard</a>
 				</li>
-				 -->
+
 				<h3 class="menu-title">Member</h3>
 				<!-- /.menu-title -->
 				<li class="menu-item-has-children dropdown">
@@ -40,8 +40,8 @@
 						<i class="menu-icon ti-user"></i>User
 					</a>
 					<ul class="sub-menu children dropdown-menu">
-						<li><i class="fa fa fa-bars"></i><a href="#">List</a></li>
-						<li><i class="fa fa-id-badge"></i><a href="#">Details</a></li>
+						<li><i class="fa fa fa-bars"></i><a href="admin.ad?admin=user/userList">List</a></li>
+						<li><i class="fa fa-id-badge"></i><a href="admin.ad?admin=user/userDetail">Details</a></li>
 					<!-- 			
 						<li><i class="fa fa-bars"></i><a href="#">Tabs</a></li>
 						<li><i class="fa fa-share-square-o"></i><a href="#">Social Buttons</a></li>
@@ -60,9 +60,9 @@
 						<i class="menu-icon ti-flag-alt-2"></i>Seller
 					</a>
 					<ul class="sub-menu children dropdown-menu">
-						<li><i class="fa fa-table"></i><a href="#">Seller List</a></li>
-						<li><i class="fa fa-spinner"></i><a href="#">Wait Seller List</a></li>
-						<li><i class="ti-shopping-cart"></i><a href="#">Seller Order</a></li>
+						<li><i class="fa fa-table"></i><a href="admin.ad?admin=seller/sellerList">Seller List</a></li>
+						<li><i class="fa fa-spinner"></i><a href="admin.ad?admin=seller/waitSeller">Wait Seller List</a></li>
+						<li><i class="ti-shopping-cart"></i><a href="admin.ad?admin=seller/sellerOrder">Seller Order</a></li>
 						<!-- 
 						<li><i class="fa fa-spinner"></i><a href="#">Wait Seller List</a></li> 
 						-->
@@ -80,36 +80,48 @@
 				<!-- /.menu-title -->
 
 				<li class="menu-item-has-children dropdown">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"aria-expanded="false"> 
-						<i class="menu-icon fa fa-tasks"></i>Icons
+					<a href="admin.ad?admin=sales/salesMain" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"aria-expanded="false"> 
+						<i class="menu-icon fa fa-tasks"></i>Sales
 					</a>
-					<ul class="sub-menu children dropdown-menu">
-						<li><i class="menu-icon fa fa-fort-awesome"></i>
-						<a href="#">Font Awesome</a></li>
-					</ul>
 				</li>
-				<li><a href="#"> <i class="menu-icon fa fa-envelope"></i>Widgets</a></li>
+				
 				<li class="menu-item-has-children dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> 
 					<i class="menu-icon fa fa-bar-chart"></i>Statistics </a>
 					<ul class="sub-menu children dropdown-menu">
-						<li><i class="menu-icon fa fa-line-chart"></i>
-							<a href="#">ChartJS</a></li>
-						<li><i class="menu-icon fa fa-area-chart"></i>
-							<a href="#">Flot Chart</a></li>
-						<li><i class="menu-icon fa fa-pie-chart"></i>
-							<a href="#">Peity Chart</a></li>
+						<li><i class="menu-icon fa fa-line-chart"></i><a href="admin.ad?admin=sales/statistics/orderList.jsp">Order List</a></li>
+						<li><i class="menu-icon fa fa-area-chart"></i><a href="admin.ad?admin=sales/statistics/statistics.jsp">Sales Statistics</a></li>
+						<!-- 
+						<li><i class="menu-icon fa fa-pie-chart"></i><a href="#">Peity Chart</a></li>
+						 -->
 					</ul>
 				</li>
 				
 				<li class="menu-item-has-children dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> 
-					<i class="menu-icon fa fa-area-chart"></i>Maps</a>
+					<i class="menu-icon fa fa-area-chart"></i>Menu</a>
 					<ul class="sub-menu children dropdown-menu">
-						<li><i class="menu-icon fa fa-map-o"></i><a href="#">Google Maps</a></li>
-						<li><i class="menu-icon fa fa-street-view"></i><a href="#">Vector Maps</a></li>
+						<li><i class="menu-icon fa fa-map-o"></i><a href="admin.ad?admin=sales/menu/toppingList.jsp">Topping List</a></li>
+						<li><i class="menu-icon fa fa-street-view"></i><a href="admin.ad?admin=sales/menu/addTopping.jsp">Add Topping</a></li>
 					</ul>
 				</li>
+				
+				<!--  쿠폰 넣을 위치 -->
+				
+				<li class="menu-item-has-children dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> 
+					<i class="menu-icon fa fa-area-chart"></i>Coupon</a>
+					<ul class="sub-menu children dropdown-menu">
+						<li><i class="menu-icon fa fa-map-o"></i><a href="#">생성 쿠폰 목록</a></li>
+						<li><i class="menu-icon fa fa-street-view"></i><a href="#">쿠폰 생성</a></li>
+						<li><i class="menu-icon fa fa-map-o"></i><a href="#">쿠폰 발급</a></li>
+						<li><i class="menu-icon fa fa-street-view"></i><a href="#">발급된 쿠폰 목록</a></li>
+					</ul>
+				</li>
+				
+				
+				
+				
 				
 				<h3 class="menu-title">Board</h3>
 				<!-- /.menu-title -->
@@ -117,17 +129,19 @@
 				<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> 
 					<i class="menu-icon fa fa-glass"></i>Notice</a>
 					<ul class="sub-menu children dropdown-menu">
-						<li><i class="menu-icon fa fa-sign-in"></i><a href="#">Notice List</a></li>
-						<li><i class="menu-icon fa fa-sign-in"></i><a href="#">Write</a></li>
+						<li><i class="menu-icon fa fa-sign-in"></i><a href="admin.ad?admin=board/noticeList">Notice List</a></li>
+						<li><i class="menu-icon fa fa-sign-in"></i><a href="admin.ad?admin=board/noticeWrite">Write</a></li>
+						<!-- 
 						<li><i class="menu-icon fa fa-paper-plane"></i><a href="#">Forget	Pass</a></li>
+						 -->
 					</ul>
 				</li>
 				<li class="menu-item-has-children dropdown">
 				<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> 
 					<i class="menu-icon ti-headphone-alt"></i>Customer Satisfaction</a>
 					<ul class="sub-menu children dropdown-menu">
-						<li><i class="menu-icon ti-info-alt"></i><a href="#">FAQ</a></li>
-						<li><i class="menu-icon ti-help-alt"></i><a href="#">Q&A</a></li>
+						<li><i class="menu-icon ti-info-alt"></i><a href="admin.ad?admin=board/faqList">FAQ</a></li>
+						<li><i class="menu-icon ti-help-alt"></i><a href="admin.ad?admin=board/qnaList">Q&A</a></li>
 					</ul>
 				</li>
 				

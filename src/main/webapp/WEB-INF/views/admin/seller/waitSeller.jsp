@@ -2,55 +2,54 @@
     pageEncoding="UTF-8"%>
 <jsp:include page="../common/header.jsp"/>
 <style>
-	.card-header{
-		border:0;
-	}
-	#noticeList{
-		text-align:center;
+	div.card-header{
+		border:0px;
 	}
 </style>
 <section>
 	<div class="right-panel">
 	
-		<p>noticeList.jsp</p>
-			<div class="card">
+		<p>waitSeller.jsp</p>
+		<div class="card">
 			<div class="card-header col-md-12">
-				<h3 class="menu-title">공지사항</h3>
+				<h3 class="menu-title">승인 대기 업체</h3>
 			</div>
 			<div class="card-body">
+			
+			<!-- 업체 목록 영역 -->
 			<div class="row">
 				<div class="col-md-2"></div>
-				<table class="table table-striped col-md-8" id="noticeList">
+				<table class="table table-striped col-md-8" id="userList">
 					<thead>
 						<tr>
-							<th scope="col">글번호</th>
-							<th scope="col">분류</th>
-							<th scope="col">제목</th>
-							<th scope="col">작성일</th>
-							<th scope="col">조회수</th>
+							<th scope="col">업체 번호</th>
+							<th scope="col">ID</th>
+							<th scope="col">지점명</th>
+							<th scope="col">개점일자</th>
+							<th scope="col">계정상태</th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr>
-							<th scope="row">3</th>
-							<td>[공지]</td>
-							<td>점주님들 새해 복 많이 받으세요</td>
-							<td>2019-01-02</td>
-							<td>117</td>
+							<th scope="row">1</th>
+							<td>Mark</td>
+							<td>인천송도점</td>
+							<td>2019-2월 중</td>
+							<td><button class="btn btn-outline-warning btn-sm">승인</button></td>
 						</tr>
 						<tr>
 							<th scope="row">2</th>
-							<td>[이벤트]</td>
-							<td>2019년 1월 룰렛 이벤트 안내</td>
-							<td>2019-01-02</td>
-							<td>305</td>
+							<td>Jacob</td>
+							<td>고덕점</td>
+							<td>2019-2월 중</td>
+							<td><button class="btn btn-outline-warning btn-sm">승인</button></td>
 						</tr>
 						<tr>
-							<th scope="row">1</th>
-							<td>[공지]</td>
-							<td>셀프 피자 제작소 공지사항입니다.</td>
-							<td>2019-01-20</td>
-							<td>15</td>
+							<th scope="row">3</th>
+							<td>Larry</td>
+							<td>왕십리점</td>
+							<td>2019-3월 중</td>
+							<td><button class="btn btn-outline-warning btn-sm">승인</button></td>
 						</tr>
 					</tbody>
 				</table>
@@ -59,18 +58,18 @@
 		</div>
 	</div>
 	</div>
-	<div class="col-md-2"></div>
+<div class="col-md-2"></div>
 	<!-- 검색 영역 -->
 	<div class="form-inline col-md-5">
 		<form class="search-form">
-			<select class="form-control" name="searchNotice">
-				<option value="name">제목</option>
-				<option value="userId">내용</option>
-				<option value="order">분류</option>
+			<select class="form-control" name="searchUser">
+				<option value="name">이름</option>
+				<option value="userId">아이디</option>
+				<option value="order">주문</option>
 			</select> <input class="form-control mr-sm-2" type="text"
-				name="searchNoticeValue" placeholder="Search ..." aria-label="Search">
+				name="searchUserValue" placeholder="Search ..." aria-label="Search">
 		</form>
-		<button class="search-trigger" onclick="searchNotice();">
+		<button class="search-trigger" onclick="searchUser();">
 			<i class="fa fa-search"></i>
 		</button>
 	</div>
@@ -88,13 +87,13 @@
 	</div>
 	<div class="col-md-1"></div>
 	<script>
-		function searchNotice() {
-			var searchNotice = $("select[name='searchNotice']").val();
-			var searchNoticeValue = $("input[name='searchNoticeValue']").val();
-			console.log(searchNotice + " / " + searchNoticeValue);
+		function searchUser() {
+			var searchUser = $("select[name='searchUser']").val();
+			var searchUserValue = $("input[name='searchUserValue']").val();
+			console.log(searchUser + " / " + searchUserValue);
 		}
 		$(function(){
-			$("#noticeList").find("td").mouseenter(function(){
+			$("#userList").find("td").mouseenter(function(){
 				$(this).parent().css({"color":"#9d9d9d","cursor":"pointer"});
 			}).mouseout(function(){
 				$(this).parent().css({"color":"#212529"});

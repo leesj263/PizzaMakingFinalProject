@@ -2,11 +2,7 @@
     pageEncoding="UTF-8"%>
 <jsp:include page="../common/header.jsp"/>
 <style>
-	div.card{
-		border:0px;
-	}
 	div.card-header{
-		background:#ffffff;
 		border:0px;
 	}
 </style>
@@ -60,7 +56,8 @@
 	</div>
 	</div>
 	<div class="col-md-2"></div>
-	<div class="form-inline col-md-8">
+	<!-- 검색 영역 -->
+	<div class="form-inline col-md-5">
 		<form class="search-form">
 			<select class="form-control" name="searchUser">
 				<option value="name">이름</option>
@@ -73,6 +70,19 @@
 			<i class="fa fa-search"></i>
 		</button>
 	</div>
+	<!-- 페이징 영역 -->
+	<div class="dataTables_paginate paging_simple_numbers col-md-4" id="bootstrap-data-table_paginate">
+		<ul class="pagination">
+			<li class="paginate_button page-item previous disabled" id="bootstrap-data-table_previous"><a href="#" aria-controls="bootstrap-data-table" data-dt-idx="0" tabindex="0" class="page-link"><i class="ti-angle-left"></i></a></li>
+			<li class="paginate_button page-item active"><a href="#" aria-controls="bootstrap-data-table" data-dt-idx="1" tabindex="0" class="page-link">1</a></li>
+			<li class="paginate_button page-item "><a href="#" aria-controls="bootstrap-data-table" data-dt-idx="2" tabindex="0" class="page-link">2</a></li>
+			<li class="paginate_button page-item "><a href="#" aria-controls="bootstrap-data-table" data-dt-idx="3" tabindex="0" class="page-link">3</a></li>
+			<li class="paginate_button page-item "><a href="#" aria-controls="bootstrap-data-table" data-dt-idx="4" tabindex="0" class="page-link">4</a></li>
+			<li class="paginate_button page-item "><a href="#" aria-controls="bootstrap-data-table" data-dt-idx="5" tabindex="0" class="page-link">5</a></li>
+			<li class="paginate_button page-item next" id="bootstrap-data-table_next"><a href="#" aria-controls="bootstrap-data-table" data-dt-idx="7" tabindex="0" class="page-link"><i class="ti-angle-right"></i></a></li>
+		</ul>
+	</div>
+	<div class="col-md-1"></div>
 	<script>
 		function searchUser() {
 			var searchUser = $("select[name='searchUser']").val();
