@@ -5,7 +5,7 @@
 <section>
 	<div class="right-panel">
 	
-		<p>staticsMain.jsp</p>
+		<p>faqList.jsp</p>
 	
 	</div>
 </section>
