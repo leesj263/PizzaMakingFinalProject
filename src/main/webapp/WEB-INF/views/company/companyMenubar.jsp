@@ -57,9 +57,9 @@
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-menu" aria-controls="main-menu" aria-expanded="false" aria-label="Toggle navigation">
                     <i class="fa fa-bars"></i>
                 </button>
-                <a class="navbar-brand" href="./"><img style = "width : 20%" src="${contextPath }/resources/companyCss/images/pizzaLogo.png" alt="Logo">셀프 피자 제작소</a>
+                <a class="navbar-brand" href="movePage.com?movePage=companyMain"><img style = "width : 20%" src="${contextPath }/resources/companyCss/images/pizzaLogo.png" alt="Logo">셀프 피자 제작소</a>
                 
-                <a class="navbar-brand hidden" href="./"><img src="${contextPath }/resources/companyCss/images/pizzaLogo.png" alt="Logo"></a>
+                <a class="navbar-brand hidden" href="movePage.com?movePage=companyMain"><img src="${contextPath }/resources/companyCss/images/pizzaLogo.png" alt="Logo"></a>
                 
             </div>
 
@@ -135,6 +135,7 @@
                             <li><i class="menu-icon fa fa-sign-in"></i><a href="movePage.com?movePage=page-login">Login</a></li>
                             <li><i class="menu-icon fa fa-sign-in"></i><a href="movePage.com?movePage=page-register">Register</a></li>
                             <li><i class="menu-icon fa fa-paper-plane"></i><a href="movePage.com?movePage=pages-forget">Forget Pass</a></li>
+                            <li><i class="menu-icon fa fa-paper-plane"></i><a href="movePage.com?movePage=DetailAdminMessage">본사메세지 상세보기</a></li>
                         </ul>
                     </li>
                 </ul>
