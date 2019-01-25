@@ -16,5 +16,17 @@ public class TestController {
 		return "admin/adminMain";
 	}
 	
+	@RequestMapping(value="/main.t")
+	public String userMain() {
+		return "main/main";
+	}
+	
+	@RequestMapping(value="/qna.t")
+	public String qna() {
+		return "main/qna";
+	}
+	
+	
+	
 	
 }
