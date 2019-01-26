@@ -100,6 +100,7 @@
 			}).click(function(){
 				var num=$(this).parent().children().eq(0).text();
 				console.log(num);
+				location.href="admin.ad?admin=seller/sellerDetail";
 			});
 		})
 	</script>
