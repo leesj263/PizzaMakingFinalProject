@@ -8,7 +8,6 @@
 </style>
 <section>
 	<div class="right-panel">
-	
 		<p>waitSeller.jsp</p>
 		<div class="card">
 			<div class="card-header col-md-12">
@@ -57,11 +56,9 @@
 			</div>
 		</div>
 	</div>
-	</div>
-<div class="col-md-2"></div>
 	<!-- 검색 영역 -->
-	<div class="form-inline col-md-5">
-		<form class="search-form">
+	<div class="form-inline col-md-4">
+		<!-- <form class="search-form">
 			<select class="form-control" name="searchUser">
 				<option value="name">이름</option>
 				<option value="userId">아이디</option>
@@ -71,7 +68,7 @@
 		</form>
 		<button class="search-trigger" onclick="searchUser();">
 			<i class="fa fa-search"></i>
-		</button>
+		</button> -->
 	</div>
 	<!-- 페이징 영역 -->
 	<div class="dataTables_paginate paging_simple_numbers col-md-4" id="bootstrap-data-table_paginate">
@@ -85,7 +82,7 @@
 			<li class="paginate_button page-item next" id="bootstrap-data-table_next"><a href="#" aria-controls="bootstrap-data-table" data-dt-idx="7" tabindex="0" class="page-link"><i class="ti-angle-right"></i></a></li>
 		</ul>
 	</div>
-	<div class="col-md-1"></div>
+	<div class="col-md-4"></div>
 	<script>
 		function searchUser() {
 			var searchUser = $("select[name='searchUser']").val();

@@ -89,8 +89,8 @@
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> 
 					<i class="menu-icon fa fa-bar-chart"></i>Statistics </a>
 					<ul class="sub-menu children dropdown-menu">
-						<li><i class="menu-icon fa fa-line-chart"></i><a href="admin.ad?admin=sales/statistics/orderList.jsp">Order List</a></li>
-						<li><i class="menu-icon fa fa-area-chart"></i><a href="admin.ad?admin=sales/statistics/statistics.jsp">Sales Statistics</a></li>
+						<li><i class="menu-icon fa fa-line-chart"></i><a href="admin.ad?admin=sales/statistics/orderList">Order List</a></li>
+						<li><i class="menu-icon fa fa-area-chart"></i><a href="admin.ad?admin=sales/statistics/statistics">Sales Statistics</a></li>
 						<!-- 
 						<li><i class="menu-icon fa fa-pie-chart"></i><a href="#">Peity Chart</a></li>
 						 -->
@@ -101,8 +101,8 @@
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> 
 					<i class="menu-icon fa fa-area-chart"></i>Menu</a>
 					<ul class="sub-menu children dropdown-menu">
-						<li><i class="menu-icon fa fa-map-o"></i><a href="admin.ad?admin=sales/menu/toppingList.jsp">Topping List</a></li>
-						<li><i class="menu-icon fa fa-street-view"></i><a href="admin.ad?admin=sales/menu/addTopping.jsp">Add Topping</a></li>
+						<li><i class="menu-icon fa fa-map-o"></i><a href="admin.ad?admin=sales/menu/toppingList">Topping List</a></li>
+						<li><i class="menu-icon fa fa-street-view"></i><a href="admin.ad?admin=sales/menu/addTopping">Add Topping</a></li>
 					</ul>
 				</li>
 				

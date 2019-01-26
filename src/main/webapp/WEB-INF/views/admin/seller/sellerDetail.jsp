@@ -74,6 +74,7 @@
 							</tr>
 						</tbody>
 					</table>
+					
 					<!-- <div class="col-sm-1"></div>	 -->				
 					<!-- 업체 주문 영역  -->
 					<table class="table table-striped col-md-4" id="sellerOrderList">
@@ -108,21 +109,31 @@
 					</table>
 					<div class="col-md-2"></div>
 				</div>
-				<!-- 주문 내역 선택 함수 -->
+				<!-- 매출 선택 함수 -->
 				<script>
 					$(function() {
-						$("#userOrderList").find("td").mouseenter(function() {
-							$(this).parent().css({
-								"color" : "#9d9d9d",
-								"cursor" : "pointer"
-							});
+						$("#sellerSalesList").find("td").mouseenter(function() {
+							$(this).parent().css({"color" : "#9d9d9d","cursor" : "pointer"});
 						}).mouseout(function() {
-							$(this).parent().css({
-								"color" : "#212529"
-							});
+							$(this).parent().css({"color" : "#212529"});
 						}).click(function() {
 							var num = $(this).parent().children().eq(0).text();
 							console.log(num);
+							location.href="admin.ad?admin=sales/statistics/statisticsDetail";
+						});
+					})
+				</script>
+				<!-- 주문 내역 선택 함수 -->
+				<script>
+					$(function() {
+						$("#sellerOrderList").find("td").mouseenter(function() {
+							$(this).parent().css({"color" : "#9d9d9d","cursor" : "pointer"});
+						}).mouseout(function() {
+							$(this).parent().css({"color" : "#212529"});
+						}).click(function() {
+							var num = $(this).parent().children().eq(0).text();
+							console.log(num);
+							location.href="admin.ad?admin=sales/statistics/orderDetail";
 						});
 					})
 				</script>
