@@ -136,6 +136,8 @@
                             <li><i class="menu-icon fa fa-sign-in"></i><a href="movePage.com?movePage=page-register">Register</a></li>
                             <li><i class="menu-icon fa fa-paper-plane"></i><a href="movePage.com?movePage=pages-forget">Forget Pass</a></li>
                             <li><i class="menu-icon fa fa-paper-plane"></i><a href="movePage.com?movePage=DetailAdminMessage">본사메세지 상세보기</a></li>
+                            <li><i class="menu-icon fa fa-paper-plane"></i><a href="movePage.com?movePage=orderListWaitting">주문신청 내역</a></li>
+                            <li><i class="menu-icon fa fa-paper-plane"></i><a href="movePage.com?movePage=CompanyEmployeeList">업체 직원 관리</a></li>
                         </ul>
                     </li>
                 </ul>
