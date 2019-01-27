@@ -5,6 +5,9 @@
 	div.card-header{
 		border:0px;
 	}
+	#sellerList{
+		text-align:center;
+	}
 </style>
 <section>
 	<div class="right-panel">
@@ -19,7 +22,7 @@
 			<!-- 업체 목록 영역 -->
 			<div class="row">
 				<div class="col-md-2"></div>
-				<table class="table table-striped col-md-8" id="userList">
+				<table class="table table-striped col-md-8" id="sellerList">
 					<thead>
 						<tr>
 							<th scope="col">업체 번호</th>
@@ -63,7 +66,7 @@
 	<div class="form-inline col-md-5">
 		<form class="search-form">
 			<select class="form-control" name="searchUser">
-				<option value="name">이름</option>
+				<option value="name">업체명</option>
 				<option value="userId">아이디</option>
 				<option value="order">주문</option>
 			</select> <input class="form-control mr-sm-2" type="text"
@@ -88,12 +91,12 @@
 	<div class="col-md-1"></div>
 	<script>
 		function searchUser() {
-			var searchUser = $("select[name='searchUser']").val();
-			var searchUserValue = $("input[name='searchUserValue']").val();
-			console.log(searchUser + " / " + searchUserValue);
+			var searchSeller = $("select[name='searchSeller']").val();
+			var searchSellerValue = $("input[name='searchSellerValue']").val();
+			console.log(searchSeller + " / " + searchSellerValue);
 		}
 		$(function(){
-			$("#userList").find("td").mouseenter(function(){
+			$("#sellerList").find("td").mouseenter(function(){
 				$(this).parent().css({"color":"#9d9d9d","cursor":"pointer"});
 			}).mouseout(function(){
 				$(this).parent().css({"color":"#212529"});

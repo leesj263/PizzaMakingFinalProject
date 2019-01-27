@@ -21,7 +21,7 @@
 				<h3 class="menu-title">공지사항 작성</h3>
 			</div>
 			<div class="card-body">
-				<form id="noticeWrite" action="uploadNotice" method="post" enctype="multipart/form-data">
+				<form id="noticeWrite" action="uploadNotice" method="post">
 					<div class="row">
 						<div class="col-md-2"></div>
 						<div class="col-md-8">
@@ -45,7 +45,7 @@
 										<option value="event2">이벤트</option>
 									</select> -->
 									</p></li>
-								<li class="member-li"><span>첨부파일</span><p><input type="file" class="form-control" id="nFile" name="nFile"></p></li>
+								<!-- <li class="member-li"><span>첨부파일</span><p><input type="file" class="form-control" id="nFile" name="nFile"></p></li> -->
 							</ul>
 						</div>
 						<div class="col-md-2"></div>
@@ -114,8 +114,8 @@
 			var nContents=$("#nContents").val();
 			var nCategory1=$("select[name='noticeType']").val();
 			var nCategory2=$("select[name='category']").val();
-			var nFile=$("#nFile").val();
-			console.log(nTitle+nCategory1+nCategory2+nFile+nContents);
+			//var nFile=$("#nFile").val();
+			console.log(nTitle+nCategory1+nCategory2+nContents);
 		}
 	</script>
 </section>

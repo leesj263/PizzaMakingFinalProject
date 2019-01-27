@@ -2,7 +2,9 @@
     pageEncoding="UTF-8"%>
 <jsp:include page="../common/header.jsp"/>
 <style>
-	
+	table{
+		text-align:center;
+	}
 </style>
 <section>
 	<div class="right-panel">
@@ -40,10 +42,10 @@
 			</div>
 		</div>
 	</div>
-	<div class="col-md-2"></div>
+	<div class="col-md-4"></div>
 	<!-- <div class="col-md-1"><button class="btn btn-outline-warning">작성</button></div> -->
 	<!-- 검색 영역 -->
-	<div class="form-inline col-md-5">
+<!-- 	<div class="form-inline col-md-5">
 		<form class="search-form">
 			<select class="form-control" name="searchFaq" onChange="selectSearch(this.options[this.selectedIndex].value)">
 				<option value="title">제목</option>
@@ -56,7 +58,7 @@
 		<button class="search-trigger" onclick="searchFaq();">
 			<i class="fa fa-search"></i>
 		</button>
-	</div>
+	</div> -->
 	<!-- 페이징 영역 -->
 	<div class="dataTables_paginate paging_simple_numbers col-md-4" id="bootstrap-data-table_paginate">
 		<ul class="pagination">
@@ -69,7 +71,7 @@
 			<li class="paginate_button page-item next" id="bootstrap-data-table_next"><a href="#" aria-controls="bootstrap-data-table" data-dt-idx="7" tabindex="0" class="page-link"><i class="ti-angle-right"></i></a></li>
 		</ul>
 	</div>
-	<div class="col-md-1"></div>
+	<div class="col-md-4"></div>
 	<script>
 		function selectSearch(obj){
 			var category=["주문","결제","이벤트","쿠폰"];
@@ -104,6 +106,7 @@
 			}).click(function(){
 				var num=$(this).parent().children().eq(0).text();
 				console.log(num);
+				location.href="admin.ad?admin=board/faqDetail";
 			});
 		})
 	</script>

@@ -1,7 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <jsp:include page="../common/header.jsp"/>
-
+<style>
+	#userOrderList{
+		text-align:center;
+	}
+</style>
 <section class="container">
 	<div class="right-panel">
 		<p>userDetail.jsp</p>
@@ -71,25 +75,6 @@
 					</table>
 					<div class="col-md-2"></div>
 				</div>
-				<!-- 주문 내역 선택 함수 -->
-				<script>
-					$(function() {
-						$("#userOrderList").find("td").mouseenter(function() {
-							$(this).parent().css({
-								"color" : "#9d9d9d",
-								"cursor" : "pointer"
-							});
-						}).mouseout(function() {
-							$(this).parent().css({
-								"color" : "#212529"
-							});
-						}).click(function() {
-							var num = $(this).parent().children().eq(0).text();
-							console.log(num);
-						});
-					})
-				</script>
-				<!-- 주문 내역 선택 끝 -->
 				<!-- 페이징 처리 div -->
 				<div class="row">
 					<div class="col-md-7"></div>
@@ -110,5 +95,20 @@
 			</div>
 		</div>
 	</div>
-</section>
+	
+	<script>
+		$(function() {
+			$("#userOrderList").find("td").mouseenter(function() {
+				$(this).parent().css({"color" : "#9d9d9d","cursor" : "pointer"});
+			}).mouseout(function() {
+				$(this).parent().css({"color" : "#212529"});
+			}).click(function() {
+				var num = $(this).parent().children().eq(0).text();
+				console.log(num);
+				location.href="admin.ad?admin=sales/orderDetail";
+			});
+		});
+		
+	</script>
+	</section>
 <jsp:include page="../common/footer.jsp"/>

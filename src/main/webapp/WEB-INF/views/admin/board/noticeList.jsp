@@ -33,21 +33,21 @@
 					<tbody>
 						<tr>
 							<th scope="row">3</th>
-							<td>[공지]</td>
+							<td>[업체][공지]</td>
 							<td>점주님들 새해 복 많이 받으세요</td>
 							<td>2019-01-02</td>
 							<td>117</td>
 						</tr>
 						<tr>
 							<th scope="row">2</th>
-							<td>[이벤트]</td>
+							<td>[고객][이벤트]</td>
 							<td>2019년 1월 룰렛 이벤트 안내</td>
 							<td>2019-01-02</td>
 							<td>305</td>
 						</tr>
 						<tr>
 							<th scope="row">1</th>
-							<td>[공지]</td>
+							<td>[업체][공지]</td>
 							<td>셀프 피자 제작소 공지사항입니다.</td>
 							<td>2019-01-20</td>
 							<td>15</td>
