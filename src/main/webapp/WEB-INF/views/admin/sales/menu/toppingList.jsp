@@ -21,7 +21,7 @@
 			<!-- 업체 목록 영역 -->
 			<div class="row">
 				<div class="col-md-2"></div>
-				<table class="table table-striped col-md-8" id="userList">
+				<table class="table table-striped col-md-8" id="toppingList">
 					<thead>
 						<tr>
 							<th scope="col">토핑 번호</th>
@@ -41,7 +41,9 @@
 							<td>000</td>
 							<td>000</td>
 							<td>판매중</td>
-							<td><button class="btn btn-sm btn-outline-warning" data-toggle="modal" data-target="#mediumModal">수정</button></td>
+							<th>
+								<button class="btn btn-sm btn-outline-warning" onclick="modTopping'">수정</button>
+							</th>
 						</tr>
 						<tr>
 							<th scope="row">2</th>
@@ -50,7 +52,9 @@
 							<td>000</td>
 							<td>000</td>
 							<td>판매중</td>
-							<td><button class="btn btn-sm btn-outline-warning" data-toggle="modal" data-target="#mediumModal">수정</button></td>
+							<th>
+								<button class="btn btn-sm btn-outline-warning" onclick="modTopping()">수정</button>
+							</th>						
 						</tr>
 						<tr>
 							<th scope="row">1</th>
@@ -59,7 +63,10 @@
 							<td>000</td>
 							<td>000</td>
 							<td>판매중</td>
-							<td><button class="btn btn-sm btn-outline-warning" data-toggle="modal" data-target="#mediumModal">수정</button></td>
+							<th>
+								<button class="btn btn-sm btn-outline-warning" onclick="modTopping()">수정</button>
+								
+							</th>						
 						</tr>
 					</tbody>
 				</table>
@@ -81,7 +88,20 @@
 		</ul>
 	</div>
 	<div class="col-md-4">
-		<button class="btn btn-outline-warning">토핑 추가</button>
+		<button class="btn btn-outline-warning" onclick="location.href='admin.ad?admin=sales/menu/addTopping'">토핑 추가</button>
+	</div>
+	<div class="modal fade" id="staticModal" tabindex="-1" role="dialog" aria-labelledby="staticModalLabel" aria-hidden="true"data-backdrop="static">
+		<div class="modal-dialog modal-sm" role="document">
+			<div class="modal-content">
+				<div class="modal-body">
+					<p>[     ] 토핑을 정말 삭제하시겠습니까?</p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
+					<button type="button" class="btn btn-outline-primary" onclick="deleteTopping()">Confirm</button>
+				</div>
+			</div>
+		</div>
 	</div>
 		<div class="modal fade" id="mediumModal" tabindex="-1" role="dialog"
 			aria-labelledby="mediumModalLabel" aria-hidden="true">
@@ -105,6 +125,22 @@
 			</div>
 		</div>
 		<script>
+		$(function(){
+			$("#toppingList").find("td").mouseenter(function(){
+				$(this).parent().css({"color":"#9d9d9d","cursor":"pointer"});
+			}).mouseout(function(){
+				$(this).parent().css({"color":"#212529"});
+			}).click(function(){
+				var num=$(this).parent().children().eq(0).text();
+				console.log(num);
+				location.href="admin.ad?admin=sales/menu/toppingDetail";
+			});
+		});
+		function modTopping(){
+			var num=$("input[name='tno']").val();
+			console.log(num);
+			location.href="admin.ad?admin=sales/menu/modTopping";
+		}
 		
 	</script>
 	</div>

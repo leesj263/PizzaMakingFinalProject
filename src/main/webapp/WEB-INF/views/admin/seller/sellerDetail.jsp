@@ -133,7 +133,7 @@
 						}).click(function() {
 							var num = $(this).parent().children().eq(0).text();
 							console.log(num);
-							location.href="admin.ad?admin=sales/statistics/orderDetail";
+							location.href="admin.ad?admin=seller/sellerOrderDetail";
 						});
 					})
 				</script>
@@ -167,8 +167,33 @@
 					<div class="col-md-2"></div>
 				</div>
 				<!-- 페이징 처리 끝 -->
-				<!-- 승인 대기중일 때 불러오는 것 -->
 				
+				
+				<!-- 승인 대기중일 때 불러오는 것 -->
+				<div class="col-md-2"></div>
+				<div class="col-md-4">
+						<ul class="member-ul">
+							<li class="member-li"><span>계약일자</span><p>2019-01-15</p></li>
+							<li class="member-li"><span>계약자</span><p>홍길동</p></li>
+							<li class="member-li"><span></span><p>영업중</p></li>
+							<li class="member-li"><span></span></li>
+						</ul> 
+					</div>
+					<div class="col-md-4">
+						<ul class="member-ul">
+							<li class="member-li"><span>계약번호</span><p>asdfasdfa</p></li>
+							<li class="member-li"><span>계약금</span><p>5,000,000</p></li>
+							<li class="member-li"><span>?????</span><p>2018-12-12</p></li>
+							<li class="member-li"><span></span></li>
+						</ul>
+					</div>
+				<div class="col-sm-1"></div>
+				<!-- 끝 -->
+				<div class="col-md-2"></div>
+				<div class="col-md-6"></div>	
+				<div class="col-md-4">
+					<button class="btn btn-outline-secondary" onclick="location.href='admin.ad?admin=seller/sellerOrder'">목록으로</button>
+				</div>
 			</div>
 		</div>
 	</div>

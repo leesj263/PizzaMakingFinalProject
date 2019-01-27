@@ -5,6 +5,9 @@
 	div.card-header{
 		border:0px;
 	}
+	#userList{
+		text-align:center;
+	}
 </style>
 <section class="container">
 	<div class="right-panel">
