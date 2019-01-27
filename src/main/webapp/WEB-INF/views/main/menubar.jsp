@@ -22,6 +22,37 @@
   crossorigin="anonymous"></script>
 <script src="/pmfp/resources/main/assets/js/semantic/semantic.min.js"></script>
 
+<style>
+
+    /* 회원가입 창 */
+    .joindiv{
+        position: absolute;
+        top:150px;
+        left: 500px;
+        color: black;
+        background-color: white;
+        border: 1px solid white;
+        width: 500px;
+        height: 550px;
+        opacity: 1;
+         visibility: hidden; 
+         border-radius: 5px; /*둥글겡*/
+         z-index:500;
+    }
+    h1{
+        text-align: center;
+    }
+   
+    /* 입력양식 모두! */
+    .mar{
+        margin: 30px 50px 10px;
+    }
+    .mar2{
+        margin: 30px 50px 10px;
+       
+    }
+
+</style>
 
 </head>
 
@@ -58,7 +89,7 @@
 		<br><br>
 		&nbsp;&nbsp;
 		<button class="ui yellow basic button">로그인</button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		<button class="ui yellow basic button">회원가입</button>
+		<button class="ui yellow basic button" onclick="join();">회원가입</button>
 		
 	</nav>
 	

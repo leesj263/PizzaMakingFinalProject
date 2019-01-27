@@ -115,10 +115,10 @@
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> 
 					<i class="menu-icon fa fa-area-chart"></i>Coupon</a>
 					<ul class="sub-menu children dropdown-menu">
-						<li><i class="menu-icon fa fa-map-o"></i><a href="#">생성 쿠폰 목록</a></li>
-						<li><i class="menu-icon fa fa-street-view"></i><a href="#">쿠폰 생성</a></li>
-						<li><i class="menu-icon fa fa-map-o"></i><a href="#">쿠폰 발급</a></li>
-						<li><i class="menu-icon fa fa-street-view"></i><a href="#">발급된 쿠폰 목록</a></li>
+						<li><i class="menu-icon fa fa-map-o"></i><a href="admin.ad?admin=coupon/searchCoupon">생성 쿠폰 목록</a></li>
+						<li><i class="menu-icon fa fa-street-view"></i><a href="admin.ad?admin=coupon/newCouponCreate">쿠폰 생성</a></li>
+						<li><i class="menu-icon fa fa-map-o"></i><a href="admin.ad?admin=coupon/lssuingCoupon">쿠폰 발급</a></li>
+						<li><i class="menu-icon fa fa-street-view"></i><a href="admin.ad?admin=coupon/lssuingCouponManageMent">발급된 쿠폰 목록</a></li>
 					</ul>
 				</li>
 				
