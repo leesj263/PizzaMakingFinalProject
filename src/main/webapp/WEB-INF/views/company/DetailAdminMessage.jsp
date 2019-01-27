@@ -64,7 +64,7 @@
                 
                
             </div>
-            <button id = "backBtn" type="button" class="btn btn-primary" onclick = "location.href = 'movePage.com?movePage=companyMain'"><i class="fa fa-mail-forward"></i>&nbsp; 사용자 메뉴로 이동</button>
+            <button id = "backBtn" type="button" class="btn btn-primary" onclick = "location.href = 'movePage.com?movePage=companyMain'"><i class="fa fa-mail-forward"></i>&nbsp; 돌아가기</button>
         </div>
         
         
