@@ -67,8 +67,8 @@
 	@-webkit-keyframes scale-up-center {
 	  0% {
 	  	opacity: 0;
-	    -webkit-transform: scale(0.5) translateY(-30px);
-	            transform: scale(0.5) translateY(-30px);
+	    -webkit-transform: scale(0.5);
+	            transform: scale(0.5);
 	  }
 	  100% {
 	  	opacity: 1;
@@ -79,8 +79,8 @@
 	@keyframes scale-up-center {
 	  0% {
 	  	opacity: 0;
-	    -webkit-transform: scale(0.5) translateY(-30px);
-	            transform: scale(0.5) translateY(-30px);
+	    -webkit-transform: scale(0.5);
+	            transform: scale(0.5);
 	  }
 	  100% {
 	  	opacity: 1;
@@ -94,6 +94,7 @@
 		position: relative;
 		width: 600px;
 		height: 520px;
+		display: table-cell;
 	}
 	.placeImg{
 		position: absolute;
@@ -109,34 +110,366 @@
 		outline: 1px solid black;
 		z-index: 1;
 	}
+	.controllerPlace{
+		border: 1px solid rgba(0, 0, 0, 0.1);
+		/* background-color: rgba(0, 0, 0, 0.035); */
+		width: 600px;
+		height: 520px;
+		padding: 10px;
+		display: table-cell;
+	}
+	.content-box{
+		width: 1200px;
+		margin-top: 50px;
+		margin-left: auto;
+		margin-right: auto;
+		margin-bottom: 50px;
+	}
+	.topping-table{
+		width: 400px;
+	}
+	.topping-table td{
+		height: 41px;
+	}
+	.tableCell{
+		display: table-cell;
+	}
+	.mini-button{
+		width: 20px;
+		height: 20px;
+		padding: auto;
+		background-color: grey;
+		border-radius: 3px;
+		color: white;
+		font-weight: bold;
+		text-align: center;
+		display: inline-block;
+	}
+	.mini-button:hover{
+		background-color: darkgrey;
+		cursor: pointer;
+	}
+	.amount{
+		margin-right: 10px;
+	}
+	.text-label{
+		font-weight: bold;
+	}
+	.dropdown.action{
+		margin-bottom: 10px;
+	}
+	.text-price{
+		font-size: 16px;
+		color: orangered;
+	}
 </style>
 </head>
 <body>
-	<br><br><br>
+	<%@ include file="/WEB-INF/views/main/menubar.jsp" %>
 	
+	<div class="content-box">
+		<div class="two brown ui attached buttons" style="margin-bottom: 20px;">
+			<button class="ui button active">피자 만들기</button>
+			<button class="ui button">사이드 메뉴</button>
+		</div>
 	
-	<table>
-		<tbody>
-			<tr>
-				<td>
-					<div class="canvasPlace">
-						<img class="placeImg" src="resources/customer/images/order/pizza_place.png">
-						<div id="toppings" class="toppings"></div>
+		<div class="canvasPlace">
+			<img class="placeImg" src="resources/customer/images/order/pizza_place.png">
+			<div id="toppings" class="toppings"></div>
+		</div>
+		
+		<div class="controllerPlace">
+			<div class="tableCell">
+			
+				<div class="ui icon floating labeled dropdown green button no-action">
+					<i class="dropdown icon"></i>
+					<span class="text">기본메뉴</span>
+					<div class="menu">
+						<div class="item">콤비네이션</div>
+						<div class="item">불고기피자</div>
+						<div class="item">맛있는피자</div>
+				    </div>
+				</div>
+				
+				<div class="ui icon floating labeled dropdown green button no-action" style="margin-left: 20px;">
+					<i class="dropdown icon"></i>
+					<span class="text">내 레시피</span>
+					<div class="menu">
+						<div class="item">겁나 맛있음</div>
+						<div class="item">끝내주게 맛있음</div>
+				    </div>
+				</div>
+				
+				<button class="ui icon grey button" style="height: 40px; vertical-align: bottom;">
+					<i class="edit icon"></i>
+				</button>
+				
+				<button class="ui blue button" style="height: 40px; vertical-align: bottom; margin-left: 20px;">
+					레시피 저장
+				</button>
+				<button class="ui black button" style="height: 40px; vertical-align: bottom;" onclick="toppingReset();">
+					초기화
+				</button>
+			</div>
+			
+			<br>
+			
+			<div class="tableCell">
+			
+				<div class="tableCell" style="width: 400px;">
+				
+				<table class="ui single line table topping-table">
+					<thead>
+						<tr>
+							<th style="width: 200px;">토핑</th>
+							<th style="width: 80px;">수량</th>
+							<th style="width: 80px;">가격</th>
+							<th style="width: 20px;"></th>
+						</tr>
+						</thead>
+					<tbody>
+						<tr>
+							<td>새우(100g)</td>
+							<td>
+								<span class="amount">2</span>
+								<div class="mini-button">＋</div>
+								<div class="mini-button">－</div>
+							</td>
+							<td>3,500</td>
+							<td>
+								<div class="mini-button">×</div>
+							</td>
+						</tr>
+						<tr>
+							<td>치즈(150g)</td>
+							<td>
+								<span class="amount">2</span>
+								<div class="mini-button">＋</div>
+								<div class="mini-button">－</div>
+							</td>
+							<td>3,500</td>
+							<td>
+								<div class="mini-button">×</div>
+							</td>
+						</tr>
+						<tr>
+							<td>타이어(50g)</td>
+							<td>
+								<span class="amount">2</span>
+								<div class="mini-button">＋</div>
+								<div class="mini-button">－</div>
+							</td>
+							<td>3,000</td>
+							<td>
+								<div class="mini-button">×</div>
+							</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+					</tbody>
+				</table>
+				
+				</div>
+				
+				
+				<div class="tableCell" style="width: 180px; padding-left: 10px;">
+					<span class="text-label">도우</span>
+					<div class="ui fluid selection dropdown action">
+						<input type="hidden" name="dough" id="dough" value="">
+						<i class="dropdown icon"></i>
+						<div class="default text">도우</div>
+						<div class="menu">
+							<div class="item">오리지널</div>
+							<div class="item">씬</div>
+					    </div>
 					</div>
-				</td>
-				<td>
-					<div style="border: 1px solid black; width: 400px; height: 520px;"></div>
-				</td>
-			</tr>
-		</tbody>
-	</table>
+					<span class="text-label">사이즈</span>
+					<div class="ui fluid selection dropdown action">
+						<input type="hidden" name="doughSize" id="doughSize" value="">
+						<i class="dropdown icon"></i>
+						<div class="default text">사이즈</div>
+						<div class="menu">
+							<div class="item">R</div>
+							<div class="item">L</div>
+					    </div>
+					</div>
+					<span class="text-label">엣지</span>
+					<div class="ui fluid selection dropdown action">
+						<input type="hidden" name="doughEdge" id="doughEdge">
+						<i class="dropdown icon"></i>
+						<div class="default text">엣지</div>
+						<div class="menu">
+							<div class="item">일반</div>
+							<div class="item">치즈크러스트</div>
+					    </div>
+					</div>
+					<span class="text-label">소스</span>
+					<div class="ui fluid selection dropdown action">
+						<input type="hidden" name="doughSauce" id="doughSauce">
+						<i class="dropdown icon"></i>
+						<div class="default text">소스</div>
+						<div class="menu">
+							<div class="item">토마토소스</div>
+							<div class="item">불고기소스</div>
+					    </div>
+					</div>
+					
+					<button id="addToppingBtn" class="ui fluid green button" style="height: 40px; margin-top: 19px;">
+						토핑 추가
+					</button>
+				</div>
+			</div>
+			
+			<br>
+			
+			<div class="tableCell">
+				<div style="border-bottom: 1px solid lightgrey;">
+					<div style="width: 300px; display: inline-block;">
+						<span class="text-label text-price">토핑금액 : </span>
+						<span class="text-label text-price">10,000 원</span>
+					</div>
+					<div style="width: 272px; display: inline-block; text-align: right;">
+						<span class="text-label text-price">기본금액 : </span>
+						<span class="text-label text-price">10,000 원</span>
+					</div>
+				</div>
+				
+				<div>
+					<div style="width: 150px; display: inline-block; margin-top: 30px; border-bottom: 1px solid lightgrey;">
+						<span class="text-label text-price">총 금액 : </span>
+						<span class="text-label text-price">20,000 원</span>
+					</div>
+					
+					<div style="width: 422px; display: inline-block; text-align: right;">
+						<button class="ui orange button" style="height: 40px; width: 150px;">
+							장바구니에 담기
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<h3>장바구니</h3>
+		<table class="ui celled table">
+			<thead>
+				<tr>
+					<th></th>
+					<th>주문제품</th>
+					<th>수량</th>
+					<th>가격</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>
+						<div class="mini-button">×</div>
+					</td>
+					<td>
+						토핑 설정 이름(default: 내맘대로 피자1), 사이즈: L, 도우: 나폴리, 엣지: 치즈 크러스트, 소스: 토마토 소스<br>
+						 - 올리브(60g) 5개, 페퍼로니(8piece) 5개, 치즈(150g) 5개
+					</td>
+					<td>1</td>
+					<td>20,000</td>
+				</tr>
+			</tbody>
+		</table>
+		
+		<div class="ui container center aligned">
+			<button class="ui blue button" style="height: 40px; width: 150px;">
+				주문하기
+			</button>
+		</div>
+	</div>
 	
-	
-	<button onclick="dough();">도우</button>
-	<button onclick="sauce();">소스</button>
+	<script src="/pmfp/resources/main/assets/js/semantic/semantic.min.js"></script>
 	<script>
+		$('.ui.dropdown.no-action').dropdown({action: 'hide'});
+		$('.ui.dropdown.action').dropdown();
+		
+		function toppingReset(){
+			$("#toppings").empty();
+			$('.ui.dropdown').dropdown('restore defaults');
+		}
+		
+		$('#dough').change(function(){
+			if($('#dough').val() != "" && $('#doughSize').val() != "" && $('#doughImg').length == 0){
+				dough();
+				if($('#doughSauce').val() != ""){
+					setTimeout(function(){sauce();}, 700);
+				}
+			}
+		});
+		$('#doughSize').change(function(){
+			if($('#dough').val() != "" && $('#doughSize').val() != "" && $('#doughImg').length == 0){
+				dough();
+				if($('#doughSauce').val() != ""){
+					setTimeout(function(){sauce();}, 700);
+				}
+			}
+		});
+		$('#doughSauce').change(function(){
+			if($('#doughSauce').val() != "" && $('#doughImg').length > 0 && $('#doughSauceImg').length == 0){
+				sauce();
+			}
+		});
+		
+		$("#addToppingBtn").click(function (){
+			if($('#dough').val() == ""){
+				$('#addToppingBtn').popup({	//팝업 요소 생성
+					html : '<span style="color: red;">도우를 선택해주세요!</span>',
+					on: 'click',	//클릭할때 보여짐
+					position: 'bottom left',
+					onHidden: function() {	//팝업창 히든시 팝업 요소 제거
+						$('#addToppingBtn').popup('destroy');
+				    }
+				}).popup('show');	//팝업 보이기
+			} else if($('#doughSize').val() == ""){
+				$('#addToppingBtn').popup({	//팝업 요소 생성
+					html : '<span style="color: red;">사이즈를 선택해주세요!</span>',
+					on: 'click',	//클릭할때 보여짐
+					position: 'bottom left',
+					onHidden: function() {	//팝업창 히든시 팝업 요소 제거
+						$('#addToppingBtn').popup('destroy');
+				    }
+				}).popup('show');	//팝업 보이기
+			} else if($('#doughSauce').val() == ""){
+				$('#addToppingBtn').popup({	//팝업 요소 생성
+					html : '<span style="color: red;">소스를 선택해주세요!</span>',
+					on: 'click',	//클릭할때 보여짐
+					position: 'bottom left',
+					onHidden: function() {	//팝업창 히든시 팝업 요소 제거
+						$('#addToppingBtn').popup('destroy');
+				    }
+				}).popup('show');	//팝업 보이기
+			} else {
+				
+			}
+		});
+		
 		function dough(){
-			var $dough = $("<img>");
+			var $dough = $("<img id='doughImg'>");
 			$dough.attr("src", "resources/customer/images/order/dough.png");
 			$dough.addClass("scale-down-center");
 			$dough.css({"position":"absolute", "z-index":"2", "width":"420px", "height":"420px"});
@@ -144,7 +477,7 @@
 			$("#toppings").append($dough);
 		}
 		function sauce(){
-			var $sauce = $("<img>");
+			var $sauce = $("<img id='doughSauceImg'>");
 			$sauce.attr("src", "resources/customer/images/order/tomato_sauce.png");
 			$sauce.addClass("scale-up-center");
 			$sauce.css({"position":"absolute", "z-index":"3", "width":"420px", "height":"420px"});
