@@ -29,4 +29,37 @@ public class TestController {
 	
 	
 	
+	
+	
+	
+	@RequestMapping(value="/mypage.t")
+	public String mypage1() {
+		return "mypage/orderList";
+	}
+	
+	@RequestMapping(value="/myPageMyMenu.t")
+	public String mypage2() {
+		return "mypage/myMenu";
+	}
+	
+	@RequestMapping(value="/myPageDelAddr.t")
+	public String mypage3() {
+		return "mypage/delAddr";
+	}
+	
+	@RequestMapping(value="/myPageCoupon.t")
+	public String mypage4() {
+		return "mypage/coupon";
+	}
+	
+	@RequestMapping(value="/myPageCouponTimeOut.t")
+	public String mypage5() {
+		return "mypage/coupon2";
+	}
+	
+	@RequestMapping(value="/myPageQna.t")
+	public String mypage6() {
+		return "mypage/qnaList";
+	}
+	
 }

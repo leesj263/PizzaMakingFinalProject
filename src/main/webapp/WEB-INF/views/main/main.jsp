@@ -5,12 +5,8 @@
 <head>
 <meta charset="UTF-8">
 <title>셀프 피자 제작소</title>
-
-
 </head>
-
-
-<body>
+<body >
 
 
 	<%--  <jsp:include page="${contextPath}/WEB-INF/views/main/menubar.jsp"/> --%>
