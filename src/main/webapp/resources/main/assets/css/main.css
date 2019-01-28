@@ -10,7 +10,7 @@
 
 /* Reset */
 
-	html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+	/* html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
 		margin: 0;
 		padding: 0;
 		border: 0;
@@ -47,19 +47,19 @@
 
 	body {
 		-webkit-text-size-adjust: none;
-	}
+	} */
 
 /* Box Model */
-
+/* 
 	*, *:before, *:after {
 		-moz-box-sizing: border-box;
 		-webkit-box-sizing: border-box;
 		box-sizing: border-box;
-	}
+	} */
 
 /* Containers */
 
-	.container {
+	/* .container {
 		margin-left: auto;
 		margin-right: auto;
 	}
@@ -214,11 +214,11 @@
 			width: 90% !important;
 		}
 
-	}
+	} */
 
 /* Grid */
 
-	.row {
+	/* .row {
 		border-bottom: solid 1px transparent;
 		-moz-box-sizing: border-box;
 		-webkit-box-sizing: border-box;
@@ -1432,9 +1432,9 @@
 			width: 83.3333333333%;
 			clear: none;
 			margin-left: 0;
-		}
+		} */
 
-		.\39 u\28xsmall\29, .\39 u\24\28xsmall\29 {
+		/* .\39 u\28xsmall\29, .\39 u\24\28xsmall\29 {
 			width: 75%;
 			clear: none;
 			margin-left: 0;
@@ -1547,11 +1547,11 @@
 			margin-left: 8.33333%;
 		}
 
-	}
+	} */
 
 /* Basic */
 
-	@-ms-viewport {
+	/* @-ms-viewport {
 		width: device-width;
 	}
 
@@ -1566,7 +1566,10 @@
 		}
 
 	}
-
+*/
+	
+	
+	/* 메인페이지 효과 */
 	body {
 		background: #fff;
 	}
@@ -1580,11 +1583,11 @@
 			-webkit-transition: none !important;
 			-ms-transition: none !important;
 			transition: none !important;
-		}
+		} 
 
 /* Type */
 
-	body {
+	/* body {
 		background-color: #fff;
 		color: #999999;
 	}
@@ -1831,11 +1834,11 @@
 
 	hr {
 		border-bottom-color: rgba(0, 0, 0, 0.1);
-	}
+	} */
 
 /* Box */
 
-	.box {
+	/* .box {
 		border-radius: 4px;
 		border: solid 1px;
 		margin-bottom: 2em;
@@ -1857,10 +1860,10 @@
 	.box {
 		border-color: rgba(0, 0, 0, 0.1);
 	}
-
+ */
 /* Button */
 
-	input[type="submit"],
+	/* input[type="submit"],
 	input[type="reset"],
 	input[type="button"],
 	button,
@@ -2039,7 +2042,7 @@
 			button.special:active,
 			.button.special:active {
 				background-color: #ededed;
-			}
+			} */
 
 /* Flex */
 
@@ -2197,7 +2200,7 @@
 
 /* Form */
 
-	form {
+	/* form {
 		margin: 0 0 2em 0;
 	}
 
@@ -2431,11 +2434,11 @@
 
 	.formerize-placeholder {
 		color: #bfbfbf !important;
-	}
+	} */
 
 /* Icon */
 
-	.icon {
+	/* .icon {
 		text-decoration: none;
 		border-bottom: none;
 		position: relative;
@@ -2453,10 +2456,10 @@
 		.icon > .label {
 			display: none;
 		}
-
+ */
 /* Image */
 
-	.image {
+	/* .image {
 		border: 0;
 		display: inline-block;
 		position: relative;
@@ -2518,7 +2521,7 @@
 	.video-wrapper {
 		position: relative;
 		padding-bottom: 56.25%;
-	/* 16:9 */
+	16:9
 
 		padding-top: 25px;
 		height: 0;
@@ -2530,11 +2533,11 @@
 			left: 0;
 			width: 100%;
 			height: 100%;
-		}
+		} */
 
 /* List */
 
-	ol {
+	/* ol {
 		list-style: decimal;
 		margin: 0 0 2em 0;
 		padding-left: 1.25em;
@@ -2708,10 +2711,10 @@
 	ul.alt li {
 		border-top-color: rgba(0, 0, 0, 0.1);
 	}
-
+ */
 /* Section/Article */
 
-	section.special, article.special {
+	/* section.special, article.special {
 		text-align: center;
 	}
 
@@ -2740,10 +2743,10 @@
 	header p {
 		color: #bfbfbf;
 	}
-
+ */
 /* Tab */
 
-	ul.tab-list {
+	/* ul.tab-list {
 		list-style: none;
 		margin: 0 0 1em 0;
 		padding: 0;
@@ -2779,11 +2782,11 @@
 			display: -webkit-flex;
 			display: -ms-flex;
 			display: flex;
-		}
+		} */
 
 /* Table */
 
-	.table-wrapper {
+	/* .table-wrapper {
 		-webkit-overflow-scrolling: touch;
 		overflow-x: auto;
 	}
@@ -2866,7 +2869,7 @@
 
 	table.alt tbody tr td {
 		border-color: rgba(0, 0, 0, 0.1);
-	}
+	} */
 
 /* Wrapper */
 

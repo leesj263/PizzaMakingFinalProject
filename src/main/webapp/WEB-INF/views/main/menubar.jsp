@@ -60,6 +60,8 @@
 <body>
 	<header id="header">
 		<div class="logo"><a href="main.t"><span>Self Pizza Shop</span></a></div>
+		<button class="mini ui yellow basic button">로그아웃</button>
+		<button class="mini ui yellow basic button" onclick="mypage();">마이페이지</button>
 		<a href="#menu">메뉴</a>
 	</header>
 
@@ -111,6 +113,13 @@
 				$("#down2").hide();
 			}
 		});
+		
+		
+		function mypage(){
+			location.href="mypage.t";
+			
+		}
+		
 	</script>
 	
 	
@@ -123,6 +132,8 @@
 		<script src="/pmfp/resources/main/assets/js/skel.min.js"></script>
 		<script src="/pmfp/resources/main/assets/js/util.js"></script>
 		<script src="/pmfp/resources/main/assets/js/main.js"></script>
+		
+		
 	
 	
 	</body>
