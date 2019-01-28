@@ -170,7 +170,7 @@
 	<div class="content-box">
 		<div class="two brown ui attached buttons" style="margin-bottom: 20px;">
 			<button class="ui button active">피자 만들기</button>
-			<button class="ui button">사이드 메뉴</button>
+			<button class="ui button" onclick="location.href='sideMenu.cor'">사이드 메뉴</button>
 		</div>
 	
 		<div class="canvasPlace">
@@ -397,22 +397,101 @@
 		</table>
 		
 		<div class="ui container center aligned">
-			<button class="ui blue button" style="height: 40px; width: 150px;">
+			<button class="ui blue button" style="height: 40px; width: 150px;" onclick="location.href='order.cor'">
 				주문하기
 			</button>
 		</div>
 	</div>
+	<button onclick="cheese();">치즈 추가</button>
+	
+	
+	<!-- 토핑 추가 모달 -->
+	<div class="ui longer modal">
+		<div class="header">토핑 추가</div>
+		<div class="content">
+			<div class="ui grid">
+				<div class="eight wide column">
+					<h4>토핑 목록</h4>
+					<table class="ui single line table">
+						<thead>
+							<tr>
+								<th>토핑</th>
+								<th>사이즈</th>
+								<th>중량(g)</th>
+								<th>가격(원)</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+						</tbody>
+					</table>
+				
+				</div>
+				
+				
+				<div class="eight wide column">
+					<h4>토핑 추가</h4>
+					<table class="ui single line table">
+						<thead>
+							<tr>
+								<th>토핑</th>
+								<th>사이즈</th>
+								<th>중량(g)</th>
+								<th>가격(원)</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+						</tbody>
+					</table>
+				
+				</div>
+			</div>
+			
+		</div>
+		
+		<div class="actions">
+			<div class="ui approve button">추가</div>
+			<div class="ui cancel button">취소</div>
+		</div>
+	</div>
+	
+	
 	
 	<script src="/pmfp/resources/main/assets/js/semantic/semantic.min.js"></script>
 	<script>
 		$('.ui.dropdown.no-action').dropdown({action: 'hide'});
 		$('.ui.dropdown.action').dropdown();
 		
+		//옵션 & 토핑 세팅 초기화
 		function toppingReset(){
 			$("#toppings").empty();
 			$('.ui.dropdown').dropdown('restore defaults');
 		}
 		
+		//도우, 사이즈, 소스 선택시 이미지 추가
 		$('#dough').change(function(){
 			if($('#dough').val() != "" && $('#doughSize').val() != "" && $('#doughImg').length == 0){
 				dough();
@@ -435,6 +514,7 @@
 			}
 		});
 		
+		//토핑 추가 버튼
 		$("#addToppingBtn").click(function (){
 			if($('#dough').val() == ""){
 				$('#addToppingBtn').popup({	//팝업 요소 생성
@@ -464,9 +544,10 @@
 				    }
 				}).popup('show');	//팝업 보이기
 			} else {
-				
+				$('.ui.modal').modal('show');
 			}
 		});
+		
 		
 		function dough(){
 			var $dough = $("<img id='doughImg'>");
@@ -483,6 +564,14 @@
 			$sauce.css({"position":"absolute", "z-index":"3", "width":"420px", "height":"420px"});
 			
 			$("#toppings").append($sauce);
+		}
+		function cheese(){
+			var $cheese = $("<img id='doughCheeseImg'>");
+			$cheese.attr("src", "resources/customer/images/order/cheese.png");
+			$cheese.addClass("scale-up-center");
+			$cheese.css({"position":"absolute", "z-index":"4", "width":"420px", "height":"420px"});
+			
+			$("#toppings").append($cheese);
 		}
 	</script>
 </body>
