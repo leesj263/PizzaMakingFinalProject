@@ -156,7 +156,7 @@
 		font-weight: bold;
 	}
 	.dropdown.action{
-		margin-bottom: 10px;
+		margin-bottom: 15px;
 	}
 	.text-price{
 		font-size: 16px;
@@ -165,7 +165,7 @@
 </style>
 </head>
 <body>
-	<%@ include file="/WEB-INF/views/main/menubar.jsp" %>
+	<jsp:include page="/WEB-INF/views/main/menubar.jsp"/>
 	
 	<div class="content-box">
 		<div class="two brown ui attached buttons" style="margin-bottom: 20px;">
@@ -200,14 +200,14 @@
 				    </div>
 				</div>
 				
-				<button class="ui icon grey button" style="height: 40px; vertical-align: bottom;">
+				<button class="ui icon grey button">
 					<i class="edit icon"></i>
 				</button>
 				
-				<button class="ui blue button" style="height: 40px; vertical-align: bottom; margin-left: 20px;">
+				<button class="ui blue button" style="margin-left: 20px;">
 					레시피 저장
 				</button>
-				<button class="ui black button" style="height: 40px; vertical-align: bottom;" onclick="toppingReset();">
+				<button class="ui black button" onclick="toppingReset();">
 					초기화
 				</button>
 			</div>
@@ -294,7 +294,7 @@
 				</div>
 				
 				
-				<div class="tableCell" style="width: 180px; padding-left: 10px;">
+				<div class="tableCell" style="width: 180px; padding-left: 10px; vertical-align: top;">
 					<span class="text-label">도우</span>
 					<div class="ui fluid selection dropdown action">
 						<input type="hidden" name="dough" id="dough" value="">
@@ -336,7 +336,7 @@
 					    </div>
 					</div>
 					
-					<button id="addToppingBtn" class="ui fluid green button" style="height: 40px; margin-top: 19px;">
+					<button id="addToppingBtn" class="ui fluid green button" style="margin-top: 30px;">
 						토핑 추가
 					</button>
 				</div>
@@ -363,7 +363,7 @@
 					</div>
 					
 					<div style="width: 422px; display: inline-block; text-align: right;">
-						<button class="ui orange button" style="height: 40px; width: 150px;">
+						<button class="ui orange button" style="width: 150px;">
 							장바구니에 담기
 						</button>
 					</div>
@@ -397,7 +397,7 @@
 		</table>
 		
 		<div class="ui container center aligned">
-			<button class="ui blue button" style="height: 40px; width: 150px;" onclick="location.href='order.cor'">
+			<button class="ui blue button" style="width: 150px;" onclick="location.href='order.cor'">
 				주문하기
 			</button>
 		</div>
