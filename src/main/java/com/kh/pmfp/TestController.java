@@ -26,10 +26,16 @@ public class TestController {
 	
 	
 	
-	
+	//주문내역 & 마이페이지 메인
 	@RequestMapping(value="/mypage.t")
 	public String mypage1() {
 		return "mypage/orderList";
+	}
+	
+	//주문내역 상세페이지
+	@RequestMapping(value="/myPageOrderDetail.t")
+	public String mypage1Detail() {
+		return "mypage/orderDetail";
 	}
 	
 	@RequestMapping(value="/myPageMyMenu.t")

@@ -50,7 +50,7 @@
 			    <th>주문금액</th>
 		 	</tr></thead>
 		  <tbody>
-		    <tr>
+		    <tr onclick="location.href='myPageOrderDetail.t'">
 		     <td>20190117</td>
 		     <td>도우-씬 /사이즈-L 
 				엣지-크러스트 / 소스-토마토소스
