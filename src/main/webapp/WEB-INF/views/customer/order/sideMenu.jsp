@@ -28,7 +28,7 @@
 			<button class="ui button active">사이드 메뉴</button>
 		</div>
 		
-		<div class="ui four column centered grid" style="border: 1px solid black;">
+		<div class="ui four column centered grid">
 			<div class="row">
 				<div class="four column">
 					<div style="width: 100%; height: 200px; border: 1px solid black;"></div>

@@ -16,10 +16,7 @@
 
 <!-- 시멘틱 UI -->
 <link rel="stylesheet" type="text/css" href="/pmfp/resources/main/assets/js/semantic/semantic.min.css">
-<script
-  src="https://code.jquery.com/jquery-3.1.1.min.js"
-  integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
-  crossorigin="anonymous"></script>
+
 <script src="/pmfp/resources/main/assets/js/semantic/semantic.min.js"></script>
 
 <style>
@@ -69,7 +66,7 @@
 	<nav id="menu">
 		<ul class="links">
 			<li><a href="main.t">홈</a></li>
-			<li><a href="#">주문하기</a></li>
+			<li><a href="pizzaMaking.cor">주문하기</a></li>
 			<li><a href="#">이벤트</a></li>
 			
 			<li id="menuList1"><a>게시판</a>
