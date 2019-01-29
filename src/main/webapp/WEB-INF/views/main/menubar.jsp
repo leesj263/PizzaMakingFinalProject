@@ -27,15 +27,29 @@
     /* 회원가입 창 */
     .joindiv{
         position: absolute;
-        top:150px;
-        left: 500px;
+        top:20%;
+        left: 35%;
         color: black;
         background-color: white;
         border: 1px solid white;
-        width: 500px;
-        height: 550px;
+        width: 450px;
+        height: 500px;
         opacity: 1;
-         visibility: hidden; 
+        visibility: hidden; 
+         border-radius: 5px; /*둥글겡*/
+         z-index:500;
+    }
+     .loginDiv{
+        position: absolute;
+        top:20%;
+        left: 35%;
+        color: black;
+        background-color: white;
+        border: 1px solid white;
+        width: 450px;
+        height: 500px;
+        opacity: 1;
+        visibility: hidden; 
          border-radius: 5px; /*둥글겡*/
          z-index:500;
     }
@@ -90,7 +104,7 @@
 		</ul>
 		<br><br>
 		&nbsp;&nbsp;
-		<button class="ui yellow basic button">로그인</button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<button class="ui yellow basic button" onclick="login();">로그인</button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		<button class="ui yellow basic button" onclick="join();">회원가입</button>
 		
 	</nav>
