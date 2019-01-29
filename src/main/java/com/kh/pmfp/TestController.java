@@ -45,7 +45,7 @@ public class TestController {
 	
 	@RequestMapping(value="/myPageDelAddr.t")
 	public String mypage3() {
-		return "mypage/delAddr";
+		return "mypage/deliList";
 	}
 	
 	@RequestMapping(value="/myPageCoupon.t")
