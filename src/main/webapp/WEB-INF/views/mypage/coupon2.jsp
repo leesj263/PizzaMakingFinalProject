@@ -48,27 +48,31 @@
 
 		</div>
 		<div class="ui bottom attached active tab segment" data-tab="first">
-		  <table class="ui celled table">
+		 <table class="ui celled table">
 			  <thead>
-			    <tr><th>Name</th>
-			    <th>Age</th>
-			    <th>Job</th>
+			    <tr><th>쿠폰번호</th>
+			    <th>쿠폰명</th>
+			    <th>사용여부</th>
+			    <th>유효기간</th>
 			  </tr></thead>
 			  <tbody>
 			    <tr>
-			      <td data-label="Name">James</td>
-			      <td data-label="Age">24</td>
-			      <td data-label="Job">Engineer</td>
+			      <td>7845623</td>
+			      <td>이벤트 당첨 5,000원 할인권</td>
+			      <td>사용</td>
+			      <td>2019-12-12~2019-12-15</td>
 			    </tr>
 			    <tr>
-			      <td data-label="Name">Jill</td>
-			      <td data-label="Age">26</td>
-			      <td data-label="Job">Engineer</td>
+			      <td>7845623</td>
+			      <td>이벤트 당첨 5,000원 할인권</td>
+			      <td>사용</td>
+			      <td>2019-12-12~2019-12-15</td>
 			    </tr>
 			    <tr>
-			      <td data-label="Name">Elyse</td>
-			      <td data-label="Age">24</td>
-			      <td data-label="Job">Designer</td>
+			      <td>7845623</td>
+			      <td>이벤트 당첨 5,000원 할인권</td>
+			      <td>사용</td>
+			      <td>2019-12-12~2019-12-15</td>
 			    </tr>
 			  </tbody>
 			</table>

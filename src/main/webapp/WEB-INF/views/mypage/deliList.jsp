@@ -38,31 +38,31 @@
 	
 	
 	
-	<div style="float: left; width:80%; padding:20px; margin-top: 50px;">
+	<div style="float: left; width:70%; padding:20px; margin-top: 50px;">
 		
 		<table class="ui celled table">
 		  <thead>
 		    <tr>
-			    <th>체크박스</th>
+			    <th><input type="checkbox"></th>
 			    <th>배달지 이름</th>
 			    <th>주소</th>
 			    <th>배달매장</th>
 		 	</tr></thead>
 		  <tbody>
 		    <tr>
-		     <td>20190117</td>
+		     <td><input type="checkbox"></td>
 		     <td>집</td>
 		     <td>서울시 강동구</td>
 		     <td>천호점(02-4425-1659)</td>
 		    </tr>
 		    <tr>
-		     <td>20190118</td>
+		     <td><input type="checkbox"></td>
 		     <td>회사</td>
 		     <td>서울시 동대문구</td>
 		     <td>동대문점(01-5329-4659)</td>
 		    </tr>
 		    <tr>
-		    <td>20190120</td>
+		    <td><input type="checkbox"></td>
 		     <td>회사2</td>
 		     <td>서울시 광진구</td>
 		     <td>자양점(02-110-1326)</td>
@@ -74,6 +74,14 @@
 		
 		
 		
+	</div>
+	
+	
+	
+	
+	<div style="float: left; width:20%; padding:20px; margin-top: 50px;">
+		<button class="ui yellow button">추가</button>
+		<button class="ui yellow button">삭제</button>
 	</div>
 	
 	

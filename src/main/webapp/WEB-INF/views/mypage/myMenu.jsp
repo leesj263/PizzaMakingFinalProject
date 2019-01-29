@@ -40,7 +40,102 @@
 	
 	<div style="float: left; width:80%; padding:20px; margin-top: 50px;">
 		
-		나만의 메뉴............
+		<table border="1">
+			  <tbody>
+			    <tr>
+			      <td>
+			      	<table border="1">
+			      		<tr>
+			      			<td rowspan="2">이미지</td>
+			      			<td>이름<br>맛있는 조합</td>
+			      		</tr>
+			      		<tr>
+			      			<td>35,000원</td>
+			      		</tr>
+			      		<tr>
+			      			<td>상세보기</td>
+			      			<td>개수</td>
+			      		</tr>
+			      	</table>
+			      	
+			      	<td>
+			      	<table border="1">
+			      		<tr>
+			      			<td rowspan="2">이미지</td>
+			      			<td>이름<br>맛있는 조합</td>
+			      		</tr>
+			      		<tr>
+			      			<td>35,000원</td>
+			      		</tr>
+			      		<tr>
+			      			<td>상세보기</td>
+			      			<td>개수</td>
+			      		</tr>
+			      	</table>
+			      	
+			      	<td>
+			      	<table border="1">
+			      		<tr>
+			      			<td rowspan="2">이미지</td>
+			      			<td>이름<br>맛있는 조합</td>
+			      		</tr>
+			      		<tr>
+			      			<td>35,000원</td>
+			      		</tr>
+			      		<tr>
+			      			<td>상세보기</td>
+			      			<td>개수</td>
+			      		</tr>
+			      	</table>
+			    </tr>
+			    <tr>
+			      <td>
+			      	<table border="1">
+			      		<tr>
+			      			<td rowspan="2">이미지</td>
+			      			<td>이름<br>맛있는 조합</td>
+			      		</tr>
+			      		<tr>
+			      			<td>35,000원</td>
+			      		</tr>
+			      		<tr>
+			      			<td>상세보기</td>
+			      			<td>개수</td>
+			      		</tr>
+			      	</table>
+			      	
+			      	<td>
+			      	<table border="1">
+			      		<tr>
+			      			<td rowspan="2">이미지</td>
+			      			<td>이름<br>맛있는 조합</td>
+			      		</tr>
+			      		<tr>
+			      			<td>35,000원</td>
+			      		</tr>
+			      		<tr>
+			      			<td>상세보기</td>
+			      			<td>개수</td>
+			      		</tr>
+			      	</table>
+			      	
+			      	<td>
+			      	<table border="1">
+			      		<tr>
+			      			<td rowspan="2">이미지</td>
+			      			<td>이름<br>맛있는 조합</td>
+			      		</tr>
+			      		<tr>
+			      			<td>35,000원</td>
+			      		</tr>
+			      		<tr>
+			      			<td>상세보기</td>
+			      			<td>개수</td>
+			      		</tr>
+			      	</table>
+			    </tr>
+			  </tbody>
+		</table>
 		
 		
 		

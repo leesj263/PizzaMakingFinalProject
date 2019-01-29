@@ -7,9 +7,13 @@
 <title>Insert title here</title>
 
 <style>
-	.tableHead{
+	.tableHead{/*  */
 		background-color: #D8D8D8;
 		font-weight: bold;
+	}
+	
+	.totalArea{
+		background-color: #F7D358; /*결제 금액 강조(노랑) */
 	}
 	
 	
@@ -51,7 +55,7 @@
 	
 	<div style="float: left; width:80%; padding:20px; margin-top: 50px;">
 		
-		<a class="ui tag label">주문자 정보</a>
+		<a class="ui grey tag label">주문자 정보</a>
 		<table class="ui celled table" style="width:500px;">
 		<thead>
 		</thead>
@@ -75,7 +79,7 @@
 		
 		
 		<br><br>
-		<a class="ui tag label">주문 메뉴</a>
+		<a class="ui grey tag label">주문 메뉴</a>
 		<table class="ui celled table" style="width:500px;">
 		<thead>
 		</thead>
@@ -92,32 +96,33 @@
 		      <td>1</td>
 		      <td>35,000원</td>
 		    </tr>
+		    
+		    
+		    
+		    <tr>
+				<td rowspan="3">회원가입 5% 쿠폰</td>
+				<td class="totalArea">총 금액</td>
+				<td class="totalArea">35,000원</td>
+			</tr>
+			<tr>
+				<td class="totalArea">할인 금액</td>
+				<td class="totalArea">5,000원</td>
+			</tr>
+			<tr>
+				<td class="totalArea">최종 결제 금액</td>
+				<td class="totalArea" style="color:red;">30,000원</td>
+			</tr>
+			
+			
 		  </tbody>
 		</table>
 		
-		<table class="ui celled table" style="width:500px;">
-			<tr>
-				<td></td>
-				<td>총 금액</td>
-				<td>35,000원</td>
-			</tr>
-			<tr>
-				<td>회원가입 5% 쿠폰</td>
-				<td>할인 금액</td>
-				<td>5,000원</td>
-			</tr>
-			<tr>
-				<td></td>
-				<td>최종 결제 금액</td>
-				<td>30,000원</td>
-			</tr>
-		</table>
 		
 		
 		
 		
 		<br><br>
-		<a class="ui tag label">결제 정보</a>
+		<a class="ui grey tag label">결제 정보</a>
 		<table class="ui celled table" style="width:500px;">
 		<thead>
 		</thead>
@@ -141,7 +146,7 @@
 		
 		
 		<br><br>
-		<a class="ui tag label">배송지 정보</a>
+		<a class="ui grey tag label">배송지 정보</a>
 		<table class="ui celled table" style="width:500px;">
 		<thead>
 		</thead>
