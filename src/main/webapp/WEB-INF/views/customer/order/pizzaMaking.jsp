@@ -120,7 +120,7 @@
 	}
 	.content-box{
 		width: 1200px;
-		margin-top: 50px;
+		margin-top: 80px;
 		margin-left: auto;
 		margin-right: auto;
 		margin-bottom: 50px;
@@ -168,9 +168,9 @@
 	<jsp:include page="/WEB-INF/views/main/menubar.jsp"/>
 	
 	<div class="content-box">
-		<div class="two brown ui attached buttons" style="margin-bottom: 20px;">
-			<button class="ui button active">피자 만들기</button>
-			<button class="ui button" onclick="location.href='sideMenu.cor'">사이드 메뉴</button>
+		<div class="two brown ui attached buttons" style="height: 50px; margin-bottom: 50px;">
+			<button class="ui button active" style="font-size: 20px;">피자 만들기</button>
+			<button class="ui button" style="font-size: 20px;" onclick="location.href='sideMenu.cor'">사이드 메뉴</button>
 		</div>
 	
 		<div class="canvasPlace">
@@ -473,8 +473,8 @@
 		</div>
 		
 		<div class="actions">
-			<div class="ui approve button">추가</div>
-			<div class="ui cancel button">취소</div>
+			<div class="ui positive approve button">추가</div>
+			<div class="ui negative cancel button">취소</div>
 		</div>
 	</div>
 	
