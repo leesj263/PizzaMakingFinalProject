@@ -106,6 +106,173 @@
 		
 	</nav>
 	
+		<!-- ---------------회궝가입=------------------ -->
+
+		<div id="joindiv" class="joindiv"><br>
+			<h1>Create account</h1>
+
+			<div class="mar">
+				<table class="table">
+					<tr>
+						<td colspan="2"><div class="ui input" style="width: 100%">
+								<input type="text" placeholder="이름">
+							</div></td>
+					</tr>
+					<tr>
+						<td><div class="ui input">
+								<input type="text" placeholder="아이디">
+							</div></td>
+						<td align="center">
+							<button class="ui yellow basic button" style="width: 100%">아이디
+								중복확인</button>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2"><div class="ui input" style="width: 100%">
+								<input type="text" placeholder="비밀번호">
+							</div></td>
+					</tr>
+					<tr>
+						<td colspan="2"><div class="ui input" style="width: 100%">
+								<input type="text" placeholder="비밀번호 확인">
+							</div></td>
+					</tr>
+					<tr>
+						<td><div class="ui input" style="width: 100%">
+								<input type="text" placeholder="이메일">
+							</div></td>
+						<td align="center">
+							<button class="ui yellow basic button" style="width: 100%">인증번호
+								발송</button>
+						</td>
+					</tr>
+					<tr>
+						<td><div class="ui input" style="width: 100%">
+								<input type="text" placeholder="인증번호를 확인해주세요">
+							</div></td>
+						<td align="center">
+							<button class="ui yellow basic button" style="width: 100%" id="Certification">인증
+								확인</button>
+						</td>
+					</tr>
+					<!-- 이메일 전화번호 -->
+					<tr> 
+					<TD align="center">
+					<button class="ui yellow button" onclick="login();" style="width: 100%">계정만들기</button>
+					
+					
+						</TD>
+					<TD align="center">
+					<button class="ui yellow button" onclick="closeBtn();" style="width: 100%">닫기</button>
+			
+						</TD>
+					</tr>
+				</table>
+			</div>
+		</div>
+
+
+	<!-- ---------------로그인=------------------ -->
+	
+		<div id="loginDiv" class="loginDiv"><br>
+			<h1>login</h1>
+
+			<div class="mar">
+				<table class="table">
+					<tr>
+						<td><div class="ui left icon input">
+								<input type="text" placeholder="아이디" id="memberId"> 
+								<i class="user outline icon"></i>
+							</div></td>
+						<td rowspan="2">
+							<button class="ui yellow basic button" style="width: 100%; height:78px">로그인</button>
+							
+						</td>
+					</tr>
+					<tr>
+						<td><div class="ui left icon input">
+								<input type="text" placeholder="비밀번호"> 
+								<i class="heart outline icon"></i>
+							</div></td>
+					</tr>
+					<tr	style="width:50px">
+						<td>&nbsp;</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<button class="ui yellow button" style="width: 100%">카카오 로그인</button>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<button class="ui green  button" style="width: 100%">네이버 로그인</button>
+						</td>
+					</tr>
+					<tr	style="width:50px">
+						<td>&nbsp;</td>
+					</tr>
+					<tr>
+						<td><small>*아직 피자학원 회원이 아니세요?ㅠㅠ </small></td>
+						<td>
+							<button class="ui yellow basic button" style="width: 100%" onclick="join();">회원가입하기</button>
+						</td>
+					</tr>
+					<tr>
+						<td><small>*아이디와 비밀번호를 잊으셨난용 </small></td>
+						<td>
+							<button class="ui yellow basic button" style="width: 100%"><samll>아이디/비밀번호찾기</samll></button>
+						</td>
+					</tr>
+					
+					
+				</table>
+			</div>
+		</div>
+		
+		<!-----------------모달창--------------------------->
+	<div class="ui basic modal">
+		<div class="ui icon header">
+			<i class="archive icon"></i> 확인
+		</div>
+		<div class="content">
+			<p>인증번호가 발송되었습니다!</p>
+		</div>
+		<div class="actions">
+			<div class="ui green ok inverted button">
+				<i class="checkmark icon"></i> Yes
+			</div>
+		</div>
+	</div>
+
+
+	<script>
+		var joindiv = document.all.joindiv;
+		var loginDiv = document.all.loginDiv;
+
+		function join() {
+			joindiv.style.visibility = "visible";
+			loginDiv.style = "hide";
+			$('#menu').removeClass('visible'); //메뉴바들어가기
+			console.log("회원가입");
+		}
+
+		function login() {
+			loginDiv.style.visibility = "visible";
+			joindiv.style = "hide";
+			$('#memberId').focus();
+			$('#menu').removeClass('visible');
+			console.log("로그인");
+		}
+
+		function closeBtn() {
+			loginDiv.style = "hide";
+			joindiv.style = "hide";
+			$('#menu').removeClass('visible'); //메뉴바들어가기
+		}
+		
+		
+	</script>
+	
 	
 	<script>
 		//메뉴 드롭다운
