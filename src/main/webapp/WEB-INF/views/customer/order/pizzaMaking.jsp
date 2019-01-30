@@ -406,7 +406,7 @@
 	
 	
 	<!-- 토핑 추가 모달 -->
-	<div class="ui longer modal">
+	<div class="ui longer modal" id="toppingModal">
 		<div class="header">토핑 추가</div>
 		<div class="content">
 			<div class="ui grid">
@@ -544,7 +544,7 @@
 				    }
 				}).popup('show');	//팝업 보이기
 			} else {
-				$('.ui.modal').modal('show');
+				$('#toppingModal').modal('show');
 			}
 		});
 		
