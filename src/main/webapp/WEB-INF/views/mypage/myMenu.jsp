@@ -5,6 +5,17 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+
+<style>
+	.mymenu{
+		margin:10px;
+	}
+	td{
+		padding:10px;
+	}
+	
+</style>
+
 </head>
 <body>
 	
@@ -44,7 +55,7 @@
 			  <tbody>
 			    <tr>
 			      <td>
-			      	<table border="1">
+			      	<table class="mymenu">
 			      		<tr>
 			      			<td rowspan="2">이미지</td>
 			      			<td>이름<br>맛있는 조합</td>
@@ -57,9 +68,10 @@
 			      			<td>개수</td>
 			      		</tr>
 			      	</table>
+			      	</td>
 			      	
 			      	<td>
-			      	<table border="1">
+			      	<table class="mymenu">
 			      		<tr>
 			      			<td rowspan="2">이미지</td>
 			      			<td>이름<br>맛있는 조합</td>
@@ -72,9 +84,10 @@
 			      			<td>개수</td>
 			      		</tr>
 			      	</table>
+			      	</td>
 			      	
 			      	<td>
-			      	<table border="1">
+			      	<table class="mymenu">
 			      		<tr>
 			      			<td rowspan="2">이미지</td>
 			      			<td>이름<br>맛있는 조합</td>
@@ -87,10 +100,12 @@
 			      			<td>개수</td>
 			      		</tr>
 			      	</table>
+			      	</td>
 			    </tr>
+			    
 			    <tr>
 			      <td>
-			      	<table border="1">
+			      	<table class="mymenu">
 			      		<tr>
 			      			<td rowspan="2">이미지</td>
 			      			<td>이름<br>맛있는 조합</td>
@@ -103,9 +118,10 @@
 			      			<td>개수</td>
 			      		</tr>
 			      	</table>
+			    	</td>
 			      	
 			      	<td>
-			      	<table border="1">
+			      	<table class="mymenu">
 			      		<tr>
 			      			<td rowspan="2">이미지</td>
 			      			<td>이름<br>맛있는 조합</td>
@@ -118,9 +134,10 @@
 			      			<td>개수</td>
 			      		</tr>
 			      	</table>
+			      	</td>
 			      	
 			      	<td>
-			      	<table border="1">
+			      	<table class="mymenu">
 			      		<tr>
 			      			<td rowspan="2">이미지</td>
 			      			<td>이름<br>맛있는 조합</td>
@@ -133,6 +150,7 @@
 			      			<td>개수</td>
 			      		</tr>
 			      	</table>
+			      	</td>
 			    </tr>
 			  </tbody>
 		</table>
