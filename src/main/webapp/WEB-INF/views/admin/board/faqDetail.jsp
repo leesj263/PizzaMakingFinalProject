@@ -69,6 +69,7 @@
 				function fModify(){
 					var num=$("input[name='qno']").val();
 					console.log(num);
+					location.href="admin.ad?admin=board/faqModify";
 				}
 				function fDelete(){
 					var num=$("input[name='qno']").val();
