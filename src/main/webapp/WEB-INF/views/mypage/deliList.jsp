@@ -26,10 +26,10 @@
 		  <a class="item" href="myPageQna.t">
 		    문의내역
 		  </a>
-		  <a class="item">
+		  <a class="item" href="myPageMemModify.t">
 		   회원정보 수정
 		  </a>
-		  <a class="item">
+		  <a class="item" href="myPageMemLeave.t">
 		    회원탈퇴
 		 </a>
  
@@ -38,7 +38,7 @@
 	
 	
 	
-	<div style="float: left; width:70%; padding:20px; margin-top: 50px;">
+	<div style="float: left; width:80%; padding:20px; margin-top: 50px;" align="center">
 		
 		<table class="ui celled table">
 		  <thead>
@@ -70,19 +70,16 @@
 		  </tbody>
 		</table>
 		
-		
-		
-		
-		
-	</div>
-	
-	
-	
-	
-	<div style="float: left; width:20%; padding:20px; margin-top: 50px;">
 		<button class="ui yellow button">추가</button>
 		<button class="ui yellow button">삭제</button>
+		
+		
+		
 	</div>
+	
+	
+	
+
 	
 	
 
