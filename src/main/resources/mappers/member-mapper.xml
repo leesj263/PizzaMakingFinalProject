@@ -4,6 +4,47 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
 <mapper namespace="Member">
+	<resultMap type="com.kh.pmfp.common.model.vo.Member" id="memberResultSet">
+		<id property="memberNo" column="MEMBER_NO"/>
+		<id property="memberCateg" column="MEMBER_CATEG"/>
+		<id property="memberId" column="MEMBER_ID"/>
+		<id property="memberPwd" column="MEMBER_PWD"/>
+		<id property="memberName" column="MEMBER_NAME"/>
+		<id property="memberNickName" column="MEMBER_NICKNAME"/>
+		<id property="memberEmail" column="MEMBER_EMAIL"/>
+		<id property="memberEnroll" column="MEMBER_ENROLL"/>
+		<id property="memberStatus" column="MEMBER_STATUS"/>
+		<id property="comNo" column="COM_NO"/>
+	</resultMap>
+	
+	<select id="loginCheck" resultMap="memberResultSet" parameterType="Member">
+		SELECT *
+		FROM MEMBER
+		WHERE MEMBER_ID=#{memberId}
+		AND MEMBER_PWD=#{memberPwd}
+		AND MEMBER_STATUS ='Y'
+	</select>
+	
 	
 	
 </mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

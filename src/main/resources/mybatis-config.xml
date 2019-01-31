@@ -6,7 +6,7 @@
   
 <configuration>
 	<typeAliases>
-		
+		<typeAlias type="com.kh.pmfp.common.model.vo.Member" alias="Member"/>
 	</typeAliases>
 	
 	<mappers>
