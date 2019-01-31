@@ -39,7 +39,7 @@
 	<%-- <% if(loginUser != null){%> --%>
 	<div class="outer">
 		<br>
-		<h1 align="center">QnA 작성</h1>
+		<h1 align="center">피자제작소 후기작성</h1>
 		<br> <br>
 		<div class="tableArea">
 			<form action="<%-- <%= request.getContextPath() %>/insert.bo --%>"

@@ -16,10 +16,9 @@
 <br>
 <br>
 <br>
-	<%-- <% if(loginUser != null){%> --%>
 	<div class="outer">
 		<br>
-		<h1 align="center">QnA 작성</h1>
+		<h1 align="center">QnA 수정</h1>
 		<br>
 		<br>
 		<div class="tableArea">
@@ -62,7 +61,7 @@
 				<br>
 				<div align="center">
 					
-					<button class="ui yellow button">등록하기</button>
+					<button class="ui yellow button">수정하기</button>
 					<button class="ui grey button">취소하기</button>
 				</div>
 			</form>
