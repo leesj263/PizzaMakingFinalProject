@@ -12,12 +12,18 @@
 <title>Insert title here</title>
 </head>
 <body>
+<%@ include file="/WEB-INF/views/main/menubar.jsp"%>
 <section class="bg-light" id="portfolio">
-
-	<h2 style="margin:-10px -20px -10px 70px; padding-left:5%">게시판</h2>	
+<br>
+<br>
+<br>
+<br>
+<br>
+	<h2 style="margin:-10px -20px -10px 70px; padding-left:5%">Q&A</h2>	
+	<br>
 
 		<div class="container">
-		 		<div style="margin:10px 10px 10px 1050px"><a class="btn btn-primary pull-right " href="boardWrite.jsp">글쓰기</a></div>
+		 		
 		 <div class="row" style="postion:static;">
 		 	<table class="table table-striped"  border:1px; solid #dddddd">
 		 		<thead>
@@ -28,7 +34,7 @@
 						<th style="width: 3% background-color:#eeeeee; text-align: center;">조회수</th>
 					</tr>		 		
 		 		</thead>
-		 		<tbody>
+		 		<tbody align="center">
 		 				<tr>
                             <td>13</td>
                             <td onclick="location.href='boardPosts.jsp'">바람서리 불변함은 우리 기상일세</td>
@@ -140,7 +146,7 @@
 	      </a>
 	    </li>
 	        	    	
- <div class="input-group-prepend" id="searchText" style="margin:0px 0px 0px 240px">
+ <div class="input-group-prepend" id="searchText" style="margin:0px 0px 0px 220px">
     <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">제목</button>
     <input type ="text"  placeholder="검색어 입력">
     <button>검색</button>
@@ -149,6 +155,9 @@
       <a class="dropdown-item" href="#">작성자</a>
       <a class="dropdown-item" href="#">제목+내용</a>    
     </div>
+    &nbsp;
+    <button class="ui yellow button">글쓰기</button>
+    
   </div>
   
 </div>
@@ -163,6 +172,9 @@
 		
 	</div>
  </section>
+
+</body>
+</html>
 
 </body>
 </html>

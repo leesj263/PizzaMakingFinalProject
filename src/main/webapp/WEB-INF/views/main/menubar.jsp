@@ -85,15 +85,15 @@
 			
 			<li id="menuList1"><a>게시판</a>
 				<ul id="down1" style="display:none">
-					<li><a href="#" >토핑공유</a></li><br>
-					<li><a href="#">후기</a></li>
+					<li><a href="shareList.t" >토핑공유</a></li><br>
+					<li><a href="reviewList.t">후기</a></li>
 				</ul>
 			</li>
 			
 			<li><a id="menuList2">고객센터</a>
 				<ul id="down2" style="display:none">
-					<li><a href="qna.t">공지사항</a></li><br>  <!-- 이건 그냥 테스트용으로 만든거! 지워도됨  : 솔 -->
-					<li><a href="#">Q&A</a></li>
+					<li><a href="qnaList.t">Q&A</a></li><br>  <!-- 이건 그냥 테스트용으로 만든거! 지워도됨  : 솔 -->
+					<li><a href="faqDetail.t">FAQ</a></li>
 				</ul>
 			</li>
 			

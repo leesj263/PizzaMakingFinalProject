@@ -19,23 +19,13 @@
 	<%-- <% if(loginUser != null){%> --%>
 	<div class="outer">
 		<br>
-		<h1 align="center">QnA 작성</h1>
+		<h1 align="center">피자학교 후기작성</h1>
 		<br>
 		<br>
 		<div class="tableArea">
 			<form action="<%-- <%= request.getContextPath() %>/insert.bo --%>" method="post">
 				<table align="center">
-					<tr>
-						<td><b>분야</b></td>
-						<td>
-							<select name="category">
-								<option value="10">결제 및 주문</option>
-								<option value="20">회원가입</option>
-								<option value="30">e-쿠폰</option>
-								<option value="70">기타</option>
-							</select>
-						</td>
-					</tr>
+					
 					<tr></tr>
 					<tr></tr>
 					<tr>
