@@ -5,9 +5,17 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+
+<style>
+	.tableHead{/*  */
+		background-color: #D8D8D8;
+		font-weight: bold;
+		width:200px;
+	}
+</style>
+
 </head>
 <body>
-	
 	<%@ include file="/WEB-INF/views/main/menubar.jsp"%>
 
 	<div class="ui small vertical menu" style="float: left; width:20%; margin-top: 70px; width:150px;">
@@ -23,55 +31,44 @@
 		  <a class="item" href="myPageCoupon.t">
 		    쿠폰함
 		  </a>
-		  <a class="item active" href="myPageQna.t">
+		  <a class="item" href="myPageQna.t">
 		    문의내역
 		  </a>
 		  <a class="item" href="myPageMemModify.t">
 		   회원정보 수정
 		  </a>
-		  <a class="item" href="myPageMemLeave.t">
+		  <a class="item active" href="myPageMemLeave.t">
 		    회원탈퇴
 		 </a>
  
 	</div>
 	
-	
-	
-	
-	<div style="float: left; width:80%; padding:20px; margin-top: 50px;">
+	<div style="float: left; width:80%; padding:20px; margin-top: 50px;" align="center">
 		
-		<table class="ui celled table">
-		  <thead>
-		    <tr>
-			    <th>문의번호</th>
-			    <th>문의제목</th>
-			    <th>배달방식</th>
-			    <th>주문매장</th>
-		 	</tr></thead>
+		<table class="ui celled table" style="width:500px;" >
 		  <tbody>
 		    <tr>
-		     <td>20190117</td>
-		     <td>주문관련 문의드립니다</td>
-		     <td>답변</td>
-		     <td>2019-01-01</td>
+		      <td class="tableHead">탈퇴사유</td>
+		      <td>
+		      	<input type="radio">타사이트 유사서비스 이용<br><br>
+		      	<input type="radio">자주 이용하지 않음<br><br>
+		      	<input type="radio">전반적인 서비스 불만족<br><br>
+		      	<input type="radio">기타
+		      </td>
 		    </tr>
 		    <tr>
-		     <td>20190118</td>
-		     <td>쿠폰 이용기간 지났는데...	</td>
-		     <td>미답변</td>
-		     <td>2019-01-03</td>
+		      <td class="tableHead">남기는말</td>
+		      <td>
+		      	<textarea rows="10" cols="50" style="border: 0"></textarea>
+		      </td>
 		    </tr>
-		    
 		  </tbody>
 		</table>
 		
-		
-		
-		
-		
+		<button class="ui grey button">탈퇴하기</button>
 	</div>
 	
 	
-
+	
 </body>
 </html>

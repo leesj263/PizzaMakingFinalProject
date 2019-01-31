@@ -26,10 +26,10 @@
 		  <a class="item" href="myPageQna.t">
 		    문의내역
 		  </a>
-		  <a class="item">
+		 <a class="item" href="myPageMemModify.t">
 		   회원정보 수정
 		  </a>
-		  <a class="item">
+		  <a class="item" href="myPageMemLeave.t">
 		    회원탈퇴
 		 </a>
  
