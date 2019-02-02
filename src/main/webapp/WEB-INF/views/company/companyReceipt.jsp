@@ -28,46 +28,77 @@
         <div class="col-lg-12">
 			<div class="card">
 				<div class="card-header">
-					<strong class="card-title">결제 대기</strong>
+					<strong class="card-title">요금 명세서</strong>
 				</div>
 				<div class="card-body">
 					<table class="table">
 						<thead class="thead-dark">
 							<tr>
-								<th scope="col">#</th>
 								<th scope="col">토핑</th>
 								<th scope="col">중량</th>
-								<th scope="col">가격</th>
+								<th scope="col">신청자</th>
 								<th scope="col">신청날짜</th>
+								<th scope="col">가격</th>
 							</tr>
 						</thead>
 						<tbody>
 							<tr>
-								<th scope="row"><input type = "checkbox" name= "checkComMember" style = "width : 20px; height : 20px"></th>
 								<td>불고기</td>
 								<td>30kg</td>
-								<td>150,000</td>
+								<td>황민규</td>
+								<td>2019.01.28</td>
 								<td>
-									2019.01.28
+									150,000
 								</td>
 							</tr>
 							<tr>
-								<th scope="row"><input type = "checkbox" name= "checkComMember" style = "width : 20px; height : 20px"></th>
 								<td>치즈</td>
 								<td>60kg</td>
-								<td>80,000</td>
+								<td>황민규</td>
+								<td>2019.01.28</td>
 								<td>
-									2019.01.28
+									80,000
 								</td>
 							</tr>
 							<tr>
-								<th scope="row"><input type = "checkbox" name= "checkComMember" style = "width : 20px; height : 20px"></th>
 								<td>페페로니</td>
 								<td>30kg</td>
-								<td>50,000</td>
+								<td>황민규</td>
+								<td>2019.01.28</td>
 								<td>
-									2019.01.28
+									50,000
 								</td>
+							</tr>
+							<tr>
+								<td>토마토소스</td>
+								<td>10kg</td>
+								<td>황민규</td>
+								<td>2019.02.01</td>
+								<td>
+									100,000
+								</td>
+							</tr>
+							<tr>
+								<td>도우</td>
+								<td>60kg</td>
+								<td>황민규</td>
+								<td>2019.02.01</td>
+								<td>
+									80,000
+								</td>
+							</tr>
+							<tr>
+								<td>새우</td>
+								<td>30kg</td>
+								<td>황민규</td>
+								<td>2019.02.01</td>
+								<td>
+									170,000
+								</td>
+							</tr>
+							<tr>
+								<td colspan = "4" style = "text-align :  right; font-size : 1.3em"><b>결제 예정 금액</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+								<td style = "color :red"><b style = "font-size : 1.3em">630,000</b>원</td>
 							</tr>
 						</tbody>
 					</table>
@@ -81,14 +112,14 @@
 		
 		<div class="content mt-3">
 
-				<div class="col-lg-8" style = "background : white;">
-					<img src = "${contextPath }/resources/companyCss/images/shoppingCart.png" style = "width : 50px; height : 50px">
+				<div class="col-lg-8" style = "background : lightgray;">
+					<img src = "${contextPath }/resources/companyCss/images/Smartphone-Message-icon.png" style = "width : 50px; height : 50px">
 					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					신청목록에서 수령확인시 지점 재고량에 자동 반영됩니다!
+					명세서 확인 클릭시 명세서가 스마트폰으로 전송됩니다!
 				</div>
 				<div class="col-lg-4">
 					<div align = "right">
-					<button onclick = "location.href = 'movePage.com?movePage=companyStock'" type="button" class="btn btn-primary" style = "width : 150px">결제하기</button>
+					<button onclick = "location.href = 'movePage.com?movePage=companyStock'" type="button" class="btn btn-primary" style = "width : 150px">명세서 확인</button>
 					<button onclick = "location.href = 'movePage.com?movePage=companyStock'" type="button" class="btn btn-secondary" style = "width : 150px">취소</button>
 					</div>
 				</div>

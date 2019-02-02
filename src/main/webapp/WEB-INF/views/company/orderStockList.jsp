@@ -39,6 +39,7 @@
 								<th scope="col">중량</th>
 								<th scope="col">가격</th>
 								<th scope="col">신청날짜</th>
+								<th scope="col">수령상태</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -50,6 +51,7 @@
 								<td>
 									2019.01.28
 								</td>
+								<td>X</td>
 							</tr>
 							<tr>
 								<th scope="row"><input type = "checkbox" name= "checkComMember" style = "width : 20px; height : 20px"></th>
@@ -59,6 +61,7 @@
 								<td>
 									2019.01.28
 								</td>
+								<td>X</td>
 							</tr>
 							<tr>
 								<th scope="row"><input type = "checkbox" name= "checkComMember" style = "width : 20px; height : 20px"></th>
@@ -68,6 +71,7 @@
 								<td>
 									2019.01.28
 								</td>
+								<td>X</td>
 							</tr>
 						</tbody>
 					</table>
