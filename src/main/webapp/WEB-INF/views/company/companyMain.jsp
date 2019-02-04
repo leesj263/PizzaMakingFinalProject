@@ -1,7 +1,14 @@
 <!doctype html>
+<%@page import="com.kh.pmfp.company.model.vo.CompanyBoard"%>
+<%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
+<%@   taglib prefix = "fn" uri = "http://java.sun.com/jsp/jstl/functions" %>
+
+
+
+
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
@@ -68,7 +75,7 @@
                                 <table id="bootstrap-data-table-export" class="table table-striped table-bordered" style = "table-layout : fixed; word-wrap : break-word;">
                                     <thead>
                                         <tr>
-                                            <th style = "width : 10%">번호</th>
+                                            <th style = "width : 10%">게시글<br>번호</th>
                                             <th style = "width : 10%">분류</th>
                                             <th style = "width : 20%">제목</th>
                                             <th style = "width : 45%">내용</th>
@@ -76,34 +83,29 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr class = "adminMessageTr" onclick = "location.href = 'movePage.com?movePage=DetailAdminMessage'" style = "cursor : pointer;">
-                                            <td>1</td>
-                                            <td>공지</td>
-                                            <td>업체페이지 구조조정안내</td>
-                                            <td style = "overflow:hidden; text-overflow: ellipsis;">11월부터 업체 페이지의 전체적인 구조 수정이 있습니다</td>
-                                            <td>2019.01.21</td>
+
+                                    <%-- <c:out value="${adminMessage[1]}"></c:out> --%>
+                                    <c:forEach items = "${adminMessage}" var = "value">
+                                    	<tr class = "adminMessageTr" onclick = "location.href = 'detailAdminMessage.com?boardNo=${value.boardNo}'" style = "cursor : pointer;">
+                                            <td>${value.boardNo}</td>
+                                            <c:if test="${value.boardCateG == 1 }">
+                                            	<td>안내</td>
+                                            </c:if>
+                                            <c:if test="${value.boardCateG == 2 }">
+                                           	 	<td>공지</td>
+                                            </c:if>
+                                            <c:if test="${value.boardCateG == 3 }">
+                                            	<td>경고</td>
+                                            </c:if>
+                                            <c:if test="${value.boardCateG == 4 }">
+                                            	<td>이벤트</td>
+                                            </c:if>
+                                            <%-- <td>${value.boardCateG}</td> --%>
+                                            <td>${value.boardTitle}</td>
+                                            <td style = "overflow:hidden; text-overflow: ellipsis;">${value.boardContent}</td>
+                                            <td>${value.boardDate}</td>
                                         </tr>
-                                        <tr class = "adminMessageTr" onclick = "location.href = 'movePage.com?movePage=DetailAdminMessage'" style = "cursor : pointer">
-                                        	<td>2</td>
-                                            <td>경고</td>
-                                            <td>사당지점 경고안내</td>
-                                            <td style = "overflow:hidden; text-overflow: ellipsis;">배달원의 태도문제로 인한 지속적인 불만접수가 있습니다. 직원에 대한 교육 부탁드립니다.</td>
-                                            <td>2019.01.23</td>
-                                        </tr>
-                                      	<tr class = "adminMessageTr" onclick = "location.href = 'movePage.com?movePage=DetailAdminMessage'" style = "cursor : pointer">
-                                      		<td>3</td>
-                                            <td>이벤트</td>
-                                            <td>룰렛이벤트 안내</td>
-                                            <td style = "overflow:hidden; text-overflow: ellipsis;">1월부터 룰렛이벤트를 실시합니다. 이벤트 기간은 2월 1일부터 2월 15일까지입니다. 각 지점 점주분들께서는 이점 유의해주시기 바랍니다,</td>
-                                            <td>2019.01.25</td>
-                                      	</tr>
-                                      	<tr class = "adminMessageTr" onclick = "location.href = 'movePage.com?movePage=DetailAdminMessage'" style = "cursor : pointer">
-                                      		<td>4</td>
-                                            <td>이벤트</td>
-                                            <td>기프티콘 쿠폰 이벤트 안내</td>
-                                            <td style = "overflow:hidden; text-overflow: ellipsis;">2019년 베스트판매자로 선정시 10,000원 기프티콘 지급 이벤트를 진행중입니다. 이에 대한 자세한 문의는 본사전화문의를 통해 숙지바랍니다.</td>
-                                            <td>2019.01.26</td>
-                                      	</tr>
+                                    	</c:forEach>
                                     </tbody>
                                 </table>
                             </div>
@@ -308,8 +310,14 @@
     <script language="javascript" type="text/javascript">
     buildCalendar();//
 	</script>
-
-
+	
+<!-- 	<script>
+		window.onload = function () {
+		 	console.log("${adminMessage}");
+		};
+	</script> -->
+	
+	
  	<script src="${contextPath }/resources/companyCss/vendors/datatables.net/js/jquery.dataTables.min.js"></script>
     <script src="${contextPath }/resources/companyCss/vendors/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
     <script src="${contextPath }/resources/companyCss/vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
