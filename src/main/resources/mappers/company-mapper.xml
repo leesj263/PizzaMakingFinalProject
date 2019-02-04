@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="Company">
+	<resultMap type="com.kh.pmfp.company.model.vo.CompanyBoard" id="companyBoardResultSet">
+		<id property="boardNo" column="BOARD_NO"/>
+		<id property="boardType" column="BOARD_TYPE"/>
+		<id property="boardCateG" column="BOARD_CATEG"/>
+		<id property="boardTitle" column="BOARD_TITLE"/>
+		<id property="boardContent" column="BOARD_CONTENT"/>
+		<id property="boardCount" column="BOARD_COUNT"/>
+		<id property="memberNo" column="MEMBER_NO"/>
+		<id property="boardDate" column="BOARD_DATE"/>
+		<id property="boardLevel" column="BOARD_LEVEL"/>
+		<id property="comboardRefno" column="BOARD_REFNO"/>
+		<id property="boardStatus" column="BOARD_STATUS"/>
+	</resultMap>
+	
+	<select id = "selectAdminMessage"  resultMap = "companyBoardResultSet">
+		SELECT * 
+		FROM BOARD
+		WHERE BOARD_TYPE = 4 
+		AND BOARD_STATUS = 'Y'
+	</select>
+	
+	<select id = "detailAdminMessage"  resultMap = "companyBoardResultSet" parameterType="_int">
+		SELECT * 
+		FROM BOARD
+		WHERE BOARD_TYPE = 4 
+		AND BOARD_STATUS = 'Y'
+		AND BOARD_NO = #{boardNo}
+	</select>
+	
+	
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
