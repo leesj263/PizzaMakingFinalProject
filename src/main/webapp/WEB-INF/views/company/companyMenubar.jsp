@@ -57,16 +57,16 @@
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-menu" aria-controls="main-menu" aria-expanded="false" aria-label="Toggle navigation">
                     <i class="fa fa-bars"></i>
                 </button>
-                <a class="navbar-brand" href="movePage.com?movePage=companyMain"><img style = "width : 20%" src="${contextPath }/resources/companyCss/images/pizzaLogo.png" alt="Logo">셀프 피자 제작소</a>
+                <a class="navbar-brand" href="goMain.com"><img style = "width : 20%" src="${contextPath }/resources/companyCss/images/pizzaLogo.png" alt="Logo">셀프 피자 제작소</a>
                 
-                <a class="navbar-brand hidden" href="movePage.com?movePage=companyMain"><img src="${contextPath }/resources/companyCss/images/pizzaLogo.png" alt="Logo"></a>
+                <a class="navbar-brand hidden" href="goMain.com"><img src="${contextPath }/resources/companyCss/images/pizzaLogo.png" alt="Logo"></a>
                 
             </div>
 
             <div id="main-menu" class="main-menu collapse navbar-collapse">
                 <ul class="nav navbar-nav">
                     <li class="active">
-                        <a href="movePage.com?movePage=companyMain"> <i class="menu-icon fa fa-dashboard"></i>Dashboard </a>
+                        <a href="goMain.com"> <i class="menu-icon fa fa-dashboard"></i>Dashboard </a>
                     </li>
                     <h3 class="menu-title">UI elements</h3><!-- /.menu-title -->
                     <li class="menu-item-has-children dropdown">
@@ -135,8 +135,7 @@
                             <li><i class="menu-icon fa fa-sign-in"></i><a href="movePage.com?movePage=page-login">Login</a></li>
                             <li><i class="menu-icon fa fa-sign-in"></i><a href="movePage.com?movePage=page-register">Register</a></li>
                             <li><i class="menu-icon fa fa-paper-plane"></i><a href="movePage.com?movePage=pages-forget">Forget Pass</a></li>
-                            <li><i class="menu-icon fa fa-paper-plane"></i><a href="movePage.com?movePage=DetailAdminMessage">본사메세지 상세보기</a></li>
-                            <li><i class="menu-icon fa fa-paper-plane"></i><a href="movePage.com?movePage=orderListWaitting">주문신청 내역</a></li>
+                            <li><i class="menu-icon fa fa-paper-plane"></i><a href="orderWaiting.com">주문신청 내역</a></li>
                             <li><i class="menu-icon fa fa-paper-plane"></i><a href="movePage.com?movePage=CompanyEmployeeList">업체 직원 관리</a></li>
                             <li><i class="menu-icon fa fa-paper-plane"></i><a href="movePage.com?movePage=companyStock">업체 재고관리</a></li>
                             <li><i class="menu-icon fa fa-paper-plane"></i><a href="movePage.com?movePage=companySales">업체 매출관리</a></li>

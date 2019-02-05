@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.kh.pmfp.company.model.exception.FailSelectAdminMessage;
+import com.kh.pmfp.company.model.exception.FailSelectOrder;
 import com.kh.pmfp.company.model.exception.FaileDetailMessage;
 import com.kh.pmfp.company.model.service.CompanyService;
 import com.kh.pmfp.company.model.vo.CompanyBoard;
+import com.kh.pmfp.company.model.vo.CompanyOrder;
 
 @Controller
 public class CompanyController {
@@ -105,5 +107,69 @@ public class CompanyController {
 	public String goMain() {
 		return "company/companyMain";
 	}
+	
+	@RequestMapping("orderWaiting.com")
+	public String orderWaiting(HttpServletRequest request, HttpServletResponse response) {
+		ArrayList<CompanyOrder> list = new ArrayList<CompanyOrder>();
+		try {
+			list = cs.orderWaiting();
+			System.out.println("대기중 리스트 : " + list);
+			request.setAttribute("list", list);
+			return "company/orderListWaitting";
+			
+		} catch (FailSelectOrder e) {
+			request.setAttribute("msg", e.getMessage());
+			return "common/errorPage";
+		}
+		
+		
+	}
+	
+	@RequestMapping("orderMaking.com")
+	public String orderMaking(HttpServletRequest request, HttpServletResponse response) {
+		ArrayList<CompanyOrder> list = new ArrayList<CompanyOrder>();
+		try {
+			list = cs.orderMaking();
+			System.out.println("제조중 리스트 : " + list);
+			request.setAttribute("list", list);
+			return "company/orderListMaking";
+			
+		} catch (FailSelectOrder e) {
+			request.setAttribute("msg", e.getMessage());
+			return "common/errorPage";
+		}
+	}
+	
+	@RequestMapping("orderDelivering.com")
+	public String orderDelivering(HttpServletRequest request, HttpServletResponse response) {
+		ArrayList<CompanyOrder> list = new ArrayList<CompanyOrder>();
+		try {
+			list = cs.orderDelivering();
+			System.out.println("배달중 리스트 : " + list);
+			request.setAttribute("list", list);
+			return "company/orderListDelivering";
+			
+		} catch (FailSelectOrder e) {
+			request.setAttribute("msg", e.getMessage());
+			return "common/errorPage";
+		}
+	}
+	
+	@RequestMapping("orderComplete.com")
+	public String orderComplete(HttpServletRequest request, HttpServletResponse response) {
+		ArrayList<CompanyOrder> list = new ArrayList<CompanyOrder>();
+		try {
+			list = cs.orderComplete();
+			System.out.println("배달완료 리스트 : " + list);
+			request.setAttribute("list", list);
+			return "company/orderListComplete";
+			
+		} catch (FailSelectOrder e) {
+			request.setAttribute("msg", e.getMessage());
+			return "common/errorPage";
+		}
+	}
+	
+	
 
 }

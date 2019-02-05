@@ -77,7 +77,7 @@
 
 			</div>
 			<button id="backBtn" type="button" class="btn btn-primary"
-				onclick="location.href = 'movePage.com?movePage=companyMain'">
+				onclick="location.href = 'goMain.com'">
 				<i class="fa fa-mail-forward"></i>&nbsp; 돌아가기
 			</button>
 		</div>
