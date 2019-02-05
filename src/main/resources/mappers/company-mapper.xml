@@ -2,39 +2,165 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-  
+
 <mapper namespace="Company">
-	<resultMap type="com.kh.pmfp.company.model.vo.CompanyBoard" id="companyBoardResultSet">
-		<id property="boardNo" column="BOARD_NO"/>
-		<id property="boardType" column="BOARD_TYPE"/>
-		<id property="boardCateG" column="BOARD_CATEG"/>
-		<id property="boardTitle" column="BOARD_TITLE"/>
-		<id property="boardContent" column="BOARD_CONTENT"/>
-		<id property="boardCount" column="BOARD_COUNT"/>
-		<id property="memberNo" column="MEMBER_NO"/>
-		<id property="boardDate" column="BOARD_DATE"/>
-		<id property="boardLevel" column="BOARD_LEVEL"/>
-		<id property="comboardRefno" column="BOARD_REFNO"/>
-		<id property="boardStatus" column="BOARD_STATUS"/>
+	<resultMap type="com.kh.pmfp.company.model.vo.CompanyBoard"
+		id="companyBoardResultSet">
+		<id property="boardNo" column="BOARD_NO" />
+		<result property="boardType" column="BOARD_TYPE" />
+		<result property="boardCateG" column="BOARD_CATEG" />
+		<result property="boardTitle" column="BOARD_TITLE" />
+		<result property="boardContent" column="BOARD_CONTENT" />
+		<result property="boardCount" column="BOARD_COUNT" />
+		<result property="memberNo" column="MEMBER_NO" />
+		<result property="boardDate" column="BOARD_DATE" />
+		<result property="boardLevel" column="BOARD_LEVEL" />
+		<result property="comboardRefno" column="BOARD_REFNO" />
+		<result property="boardStatus" column="BOARD_STATUS" />
 	</resultMap>
-	
-	<select id = "selectAdminMessage"  resultMap = "companyBoardResultSet">
-		SELECT * 
+
+	<resultMap type="com.kh.pmfp.company.model.vo.CompanyOrder"
+		id="companyOrderResultSet">
+		<id property="orderNo" column="ORDER_NO" />
+		<result property="memberNo" column="MEMBER_NO" />
+		<result property="orderMethod" column="ORDER_METHOD" />
+		<result property="receiver" column="ORDER_RECEIVER" />
+		<result property="orderTel" column="ORDER_RTEL" />
+		<result property="orderDate" column="ORDER_DATE" />
+		<result property="orderReserveTime" column="ORDER_RESERVETIME" />
+		<result property="orderPayno" column="ORDER_PAYNO" />
+		<result property="orderPayPrice" column="ORDER_PAYPRICE" />
+		<result property="orderStatus" column="ORDER_STATUS" />
+		<result property="deliveryNo" column="DELIVERY_NO" />
+		<result property="empNo" column="EMP_NO" />
+		<result property="comNo" column="COM_NO" />
+		<result property="deliveryAddress" column="DELIVERY_ADDRESS" />
+		<result property="deliveryName" column="DELIVERY_NAME" />
+		<result property="addTopping" column="ADDTOPPING" />
+	</resultMap>
+
+	<select id="selectAdminMessage"
+		resultMap="companyBoardResultSet">
+		SELECT *
 		FROM BOARD
-		WHERE BOARD_TYPE = 4 
+		WHERE BOARD_TYPE = 4
 		AND BOARD_STATUS = 'Y'
 	</select>
-	
-	<select id = "detailAdminMessage"  resultMap = "companyBoardResultSet" parameterType="_int">
-		SELECT * 
+
+	<select id="detailAdminMessage"
+		resultMap="companyBoardResultSet" parameterType="_int">
+		SELECT *
 		FROM BOARD
-		WHERE BOARD_TYPE = 4 
+		WHERE BOARD_TYPE = 4
 		AND BOARD_STATUS = 'Y'
 		AND BOARD_NO = #{boardNo}
 	</select>
+
+	<select id="orderWaiting" resultMap="companyOrderResultSet">
+		SELECT OM.ORDER_NO,
+		OM.MEMBER_NO, OM.ORDER_METHOD, OM.ORDER_RECEIVER, OM.ORDER_RTEL,
+		OM.ORDER_DATE, OM.ORDER_RESERVETIME, OM.ORDER_PAYNO,
+		OM.ORDER_PAYPRICE,
+		OM.ORDER_STATUS, OM.DELIVERY_NO, OM.EMP_NO, OM.COM_NO, DE.DELIVERY_ADDRESS,
+		DE.DELIVERY_NAME, LISTAGG(CAST(M.MATERIAL_NAME || 'x' ||
+		M.MATERIAL_WEIGHT || 'g' AS VARCHAR(300)) , ', ') WITHIN GROUP(ORDER
+		BY M.MATERIAL_NAME) ADDTOPPING
+		FROM ORDER_MAIN OM
+		JOIN DELIVERY DE
+		ON(OM.MEMBER_NO = DE.MEMBER_NO)
+		JOIN ORDER_ITEM OI
+		ON(OI.ORDER_NO = OM.ORDER_NO)
+		JOIN ORDER_TOPPING OT
+		ON(OT.ORDER_INO = OI.ORDER_INO)
+		JOIN MATERIAL M
+		ON(M.MATERIAL_NO = OT.MATERIAL_NO)
+		WHERE ORDER_STATUS = 1
+		GROUP BY OM.ORDER_NO, OM.MEMBER_NO, OM.ORDER_METHOD, OM.ORDER_RECEIVER,
+		OM.ORDER_RTEL, OM.ORDER_DATE, OM.ORDER_RESERVETIME, OM.ORDER_PAYNO,
+		OM.ORDER_PAYPRICE,
+		OM.ORDER_STATUS, OM.DELIVERY_NO, OM.EMP_NO, OM.COM_NO, DE.DELIVERY_ADDRESS,
+		DE.DELIVERY_NAME
+	</select>
+
+<select id="orderMaking" resultMap="companyOrderResultSet">
+		SELECT OM.ORDER_NO,
+		OM.MEMBER_NO, OM.ORDER_METHOD, OM.ORDER_RECEIVER, OM.ORDER_RTEL,
+		OM.ORDER_DATE, OM.ORDER_RESERVETIME, OM.ORDER_PAYNO,
+		OM.ORDER_PAYPRICE,
+		OM.ORDER_STATUS, OM.DELIVERY_NO, OM.EMP_NO, OM.COM_NO, DE.DELIVERY_ADDRESS,
+		DE.DELIVERY_NAME, LISTAGG(CAST(M.MATERIAL_NAME || 'x' ||
+		M.MATERIAL_WEIGHT || 'g' AS VARCHAR(300)) , ', ') WITHIN GROUP(ORDER
+		BY M.MATERIAL_NAME) ADDTOPPING
+		FROM ORDER_MAIN OM
+		JOIN DELIVERY DE
+		ON(OM.MEMBER_NO = DE.MEMBER_NO)
+		JOIN ORDER_ITEM OI
+		ON(OI.ORDER_NO = OM.ORDER_NO)
+		JOIN ORDER_TOPPING OT
+		ON(OT.ORDER_INO = OI.ORDER_INO)
+		JOIN MATERIAL M
+		ON(M.MATERIAL_NO = OT.MATERIAL_NO)
+		WHERE ORDER_STATUS = 2
+		GROUP BY OM.ORDER_NO, OM.MEMBER_NO, OM.ORDER_METHOD, OM.ORDER_RECEIVER,
+		OM.ORDER_RTEL, OM.ORDER_DATE, OM.ORDER_RESERVETIME, OM.ORDER_PAYNO,
+		OM.ORDER_PAYPRICE,
+		OM.ORDER_STATUS, OM.DELIVERY_NO, OM.EMP_NO, OM.COM_NO, DE.DELIVERY_ADDRESS,
+		DE.DELIVERY_NAME
+	</select>
 	
+	<select id="orderDelivering" resultMap="companyOrderResultSet">
+		SELECT OM.ORDER_NO,
+		OM.MEMBER_NO, OM.ORDER_METHOD, OM.ORDER_RECEIVER, OM.ORDER_RTEL,
+		OM.ORDER_DATE, OM.ORDER_RESERVETIME, OM.ORDER_PAYNO,
+		OM.ORDER_PAYPRICE,
+		OM.ORDER_STATUS, OM.DELIVERY_NO, OM.EMP_NO, OM.COM_NO, DE.DELIVERY_ADDRESS,
+		DE.DELIVERY_NAME, LISTAGG(CAST(M.MATERIAL_NAME || 'x' ||
+		M.MATERIAL_WEIGHT || 'g' AS VARCHAR(300)) , ', ') WITHIN GROUP(ORDER
+		BY M.MATERIAL_NAME) ADDTOPPING
+		FROM ORDER_MAIN OM
+		JOIN DELIVERY DE
+		ON(OM.MEMBER_NO = DE.MEMBER_NO)
+		JOIN ORDER_ITEM OI
+		ON(OI.ORDER_NO = OM.ORDER_NO)
+		JOIN ORDER_TOPPING OT
+		ON(OT.ORDER_INO = OI.ORDER_INO)
+		JOIN MATERIAL M
+		ON(M.MATERIAL_NO = OT.MATERIAL_NO)
+		WHERE ORDER_STATUS = 3
+		GROUP BY OM.ORDER_NO, OM.MEMBER_NO, OM.ORDER_METHOD, OM.ORDER_RECEIVER,
+		OM.ORDER_RTEL, OM.ORDER_DATE, OM.ORDER_RESERVETIME, OM.ORDER_PAYNO,
+		OM.ORDER_PAYPRICE,
+		OM.ORDER_STATUS, OM.DELIVERY_NO, OM.EMP_NO, OM.COM_NO, DE.DELIVERY_ADDRESS,
+		DE.DELIVERY_NAME
+	</select>
 	
-	
+	<select id="orderComplete" resultMap="companyOrderResultSet">
+		SELECT OM.ORDER_NO,
+		OM.MEMBER_NO, OM.ORDER_METHOD, OM.ORDER_RECEIVER, OM.ORDER_RTEL,
+		OM.ORDER_DATE, OM.ORDER_RESERVETIME, OM.ORDER_PAYNO,
+		OM.ORDER_PAYPRICE,
+		OM.ORDER_STATUS, OM.DELIVERY_NO, OM.EMP_NO, OM.COM_NO, DE.DELIVERY_ADDRESS,
+		DE.DELIVERY_NAME, LISTAGG(CAST(M.MATERIAL_NAME || 'x' ||
+		M.MATERIAL_WEIGHT || 'g' AS VARCHAR(300)) , ', ') WITHIN GROUP(ORDER
+		BY M.MATERIAL_NAME) ADDTOPPING
+		FROM ORDER_MAIN OM
+		JOIN DELIVERY DE
+		ON(OM.MEMBER_NO = DE.MEMBER_NO)
+		JOIN ORDER_ITEM OI
+		ON(OI.ORDER_NO = OM.ORDER_NO)
+		JOIN ORDER_TOPPING OT
+		ON(OT.ORDER_INO = OI.ORDER_INO)
+		JOIN MATERIAL M
+		ON(M.MATERIAL_NO = OT.MATERIAL_NO)
+		WHERE ORDER_STATUS = 4
+		GROUP BY OM.ORDER_NO, OM.MEMBER_NO, OM.ORDER_METHOD, OM.ORDER_RECEIVER,
+		OM.ORDER_RTEL, OM.ORDER_DATE, OM.ORDER_RESERVETIME, OM.ORDER_PAYNO,
+		OM.ORDER_PAYPRICE,
+		OM.ORDER_STATUS, OM.DELIVERY_NO, OM.EMP_NO, OM.COM_NO, DE.DELIVERY_ADDRESS,
+		DE.DELIVERY_NAME
+	</select>
+
+
 </mapper>
 
 
