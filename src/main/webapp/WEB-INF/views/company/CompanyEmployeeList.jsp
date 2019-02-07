@@ -53,6 +53,7 @@
                             </div>
                             <div class="card-body">
                                 <table id="bootstrap-data-table-export" class="table table-striped table-bordered" style = "table-layout : fixed; word-wrap : break-word;">
+                                
                                     <thead>
                                         <tr>
                                         	<th style = "width : 7%"></th>
