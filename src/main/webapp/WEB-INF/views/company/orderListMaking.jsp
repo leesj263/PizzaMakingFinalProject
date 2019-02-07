@@ -1,7 +1,8 @@
 <!doctype html>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-		<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
@@ -15,12 +16,21 @@
 <title>Sufee Admin - HTML5 Admin Template</title>
 <meta name="description" content="Sufee Admin - HTML5 Admin Template">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script
+  src="https://code.jquery.com/jquery-3.3.1.js"
+  integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+  crossorigin="anonymous"></script>
 <style>
 td {
 	font-size: 0.9em;
 }
 </style>
+
+<script>
+	selectOrderNo = 0;
+</script>
 </head>
+
 <body>
 	<jsp:include page="companyMenubar.jsp"></jsp:include>
 
@@ -49,6 +59,8 @@ td {
 											href="orderDelivering.com">배달중</a></li>
 										<li class="nav-item"><a class="nav-link "
 											href="orderComplete.com">배달완료</a></li>
+										<li class="nav-item"><a class="nav-link "
+											href="orderRefuseList.com">거절목록</a></li>
 									</ul>
 								</div>
 							</div>
@@ -62,13 +74,13 @@ td {
 									style="table-layout: fixed; word-wrap: break-word;">
 									<thead>
 										<tr>
-											<th style = "width : 7%">번호</th>
-											<th style = "width : 9%">주문고객</th>
-											<th style = "width : 12%">고객번호</th>
-											<th style = "width : 15%">주소</th>
-											<th style = "width : 35%">추가토핑</th>
-											<th style = "width : 10%">주문시간</th>
-											<th style = "width : 12%">버튼</th>
+											<th style="width: 7%">번호</th>
+											<th style="width: 9%">주문고객</th>
+											<th style="width: 12%">고객번호</th>
+											<th style="width: 15%">주소</th>
+											<th style="width: 35%">추가토핑</th>
+											<th style="width: 10%">주문시간</th>
+											<th style="width: 12%">버튼</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -83,7 +95,7 @@ td {
 												<td>${ value.orderDate }</td>
 												<td>
 													<button type="button" class="btn btn-primary btn-sm"
-														data-toggle="modal" data-target="#smallmodal">배달원
+														data-toggle="modal" data-target="#smallmodal" id = "${ value.orderNo }" onclick = "modalBtn(this)">배달원
 														지정</button>
 												</td>
 											</tr>
@@ -124,8 +136,14 @@ td {
 							id="dropdownMenuButton" data-toggle="dropdown"
 							aria-haspopup="true" aria-expanded="false">남아있는 배달원</button>
 						<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-							<a class="dropdown-item" href="#">이석주</a> <a
-								class="dropdown-item" href="#">정은수</a>
+						<c:forEach items = "${DeliveryManList}" var = "value">
+							<c:if test="${value.empDeliveryStatus == 'N'}">
+								<a class="dropdown-item" onclick = "clickDeliveryMan(this)">${ value.employeeName }</a>
+							</c:if>
+							<c:if test="${value.empDeliveryStatus == 'Y'}">
+								<a class="dropdown-item" style = "background : gray">${ value.employeeName }</a>
+							</c:if>
+						</c:forEach>
 						</div>
 					</div>
 
@@ -133,12 +151,23 @@ td {
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary"
 						data-dismiss="modal">취소</button>
-					<button type="button" class="btn btn-primary">확정</button>
+					<!-- <button type="button" class="btn btn-primary">확정</button> -->
 				</div>
 			</div>
 		</div>
 	</div>
 
+<script>
+	function modalBtn(btn){
+		console.log($(btn).attr('id'));
+		selectOrderNo = $(btn).attr('id');
+		
+	}
+	
+	function clickDeliveryMan(btn){
+		location.href = "assignDeliveryMan.com?orderNo=" + selectOrderNo;
+	}
+</script>
 
 
 	<!--모달 상세 끝 -->

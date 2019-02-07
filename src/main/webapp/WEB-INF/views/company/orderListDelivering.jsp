@@ -1,7 +1,7 @@
 <!doctype html>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-		<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
@@ -49,6 +49,8 @@ td {
 										</li>
 										<li class="nav-item"><a class="nav-link "
 											href="orderComplete.com">배달완료</a></li>
+										<li class="nav-item"><a class="nav-link "
+											href="orderRefuseList.com">거절목록</a></li>
 									</ul>
 								</div>
 							</div>
@@ -62,13 +64,13 @@ td {
 									style="table-layout: fixed; word-wrap: break-word;">
 									<thead>
 										<tr>
-											<th style = "width : 7%">번호</th>
-											<th style = "width : 9%">주문고객</th>
-											<th style = "width : 12%">고객번호</th>
-											<th style = "width : 15%">주소</th>
-											<th style = "width : 35%">추가토핑</th>
-											<th style = "width : 10%">주문시간</th>
-											<th style = "width : 12%">버튼</th>
+											<th style="width: 7%">번호</th>
+											<th style="width: 9%">주문고객</th>
+											<th style="width: 12%">고객번호</th>
+											<th style="width: 15%">주소</th>
+											<th style="width: 35%">추가토핑</th>
+											<th style="width: 10%">주문시간</th>
+											<th style="width: 12%">버튼</th>
 										</tr>
 									</thead>
 									<tbody>
