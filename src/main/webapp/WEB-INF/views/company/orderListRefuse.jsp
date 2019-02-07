@@ -93,7 +93,7 @@
 												<td>${ value.addTopping }</td>
 												<td>${ value.orderDate }</td>
 												<td>
-													<button type="button" class="btn btn-danger btn-sm">삭제</button>
+													<button type="button" class="btn btn-danger btn-sm" onclick = "location.href = 'refuseListDelete.com?orderNo=${ value.orderNo }'">삭제</button>
 												</td>
 											</tr>
 										</c:forEach>

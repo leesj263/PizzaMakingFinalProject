@@ -4,7 +4,9 @@ import java.util.ArrayList;
 
 import com.kh.pmfp.company.model.exception.FailSelectAdminMessage;
 import com.kh.pmfp.company.model.exception.FailSelectDeliveryMan;
+import com.kh.pmfp.company.model.exception.FailSelectEmployeeList;
 import com.kh.pmfp.company.model.exception.FailSelectOrder;
+import com.kh.pmfp.company.model.exception.FailUpdateDelivery;
 import com.kh.pmfp.company.model.exception.FailUpdateOrderStatus;
 import com.kh.pmfp.company.model.exception.FaileDetailMessage;
 import com.kh.pmfp.company.model.vo.CompanyBoard;
@@ -32,5 +34,17 @@ public interface CompanyService {
 	ArrayList<CompanyOrder> orderRefuseList() throws FailSelectOrder;
 
 	ArrayList<CompanyEmployee> remainDeliveryMan(int comNo) throws FailSelectDeliveryMan;
+
+	int deliveryManUpdateM(int orderNoInt, int empNoInt) throws FailUpdateDelivery;
+
+	int orderUpdateM(int orderNoInt) throws FailUpdateOrderStatus;
+
+	int orderUpdateToComplete(int orderNoInt) throws FailUpdateOrderStatus;
+
+	int orderUpdateToDelete(int orderNoInt) throws FailUpdateOrderStatus;
+
+	int refuseListDelete(int orderNoInt) throws FailUpdateOrderStatus;
+
+	ArrayList<CompanyEmployee> selectEmployeeList(int comNo) throws FailSelectEmployeeList;
 
 }

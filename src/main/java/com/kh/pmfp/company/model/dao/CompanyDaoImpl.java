@@ -7,7 +7,9 @@ import org.springframework.stereotype.Repository;
 
 import com.kh.pmfp.company.model.exception.FailSelectAdminMessage;
 import com.kh.pmfp.company.model.exception.FailSelectDeliveryMan;
+import com.kh.pmfp.company.model.exception.FailSelectEmployeeList;
 import com.kh.pmfp.company.model.exception.FailSelectOrder;
+import com.kh.pmfp.company.model.exception.FailUpdateDelivery;
 import com.kh.pmfp.company.model.exception.FailUpdateOrderStatus;
 import com.kh.pmfp.company.model.exception.FaileDetailMessage;
 import com.kh.pmfp.company.model.vo.CompanyBoard;
@@ -138,6 +140,86 @@ public class CompanyDaoImpl implements CompanyDao{
 		
 		if(list == null) {
 			throw new  FailSelectDeliveryMan("배달원 조회 실패!");
+		}
+		
+		return list;
+	}
+
+	@Override
+	public int deliveryManUpdateM(SqlSessionTemplate sqlSession, int orderNoInt, int empNoInt) throws FailUpdateDelivery {
+		// TODO Auto-generated method stub
+		CompanyEmployee ce = new CompanyEmployee();
+		ce.setEmployeeNo(empNoInt);
+		ce.setEmpDeliveryONo(orderNoInt);
+		
+		int deliveryManUpdate = sqlSession.update("Company.deliveryManUpdate", ce);
+		
+		if(deliveryManUpdate <= 0) {
+			throw new FailUpdateDelivery("배달상태 변경 실패!");
+		}
+		
+		return deliveryManUpdate;
+	}
+
+	@Override
+	public int orderUpdateM(SqlSessionTemplate sqlSession, int orderNoInt) throws FailUpdateOrderStatus {
+		// TODO Auto-generated method stub
+		int orderUpdate = sqlSession.update("Company.orderUpdate", orderNoInt);
+		
+		if(orderUpdate <= 0) {
+			throw new FailUpdateOrderStatus("주문상태 변경 실패!");
+		}
+		
+		return orderUpdate;
+	}
+
+	@Override
+	public int orderUpdateToComplete(SqlSessionTemplate sqlSession, int orderNoInt) throws FailUpdateOrderStatus {
+		// TODO Auto-generated method stub
+		int resultA = sqlSession.update("Company.orderUpdateToComplete", orderNoInt);
+		int resultB = sqlSession.update("Company.returnDeliveryMan", orderNoInt);
+		
+		int result = resultA + resultB;
+		
+		if(result <=0) {
+			throw new FailUpdateOrderStatus("주문상태 변경 실패!");
+		}
+		
+		return result;
+	}
+
+	@Override
+	public int orderUpdateToDelete(SqlSessionTemplate sqlSession, int orderNoInt) throws FailUpdateOrderStatus {
+		// TODO Auto-generated method stub
+		int result = sqlSession.update("Company.orderUpdateToDelete", orderNoInt);
+		
+		if(result <=0) {
+			throw new FailUpdateOrderStatus("주문상태 변경 실패!");
+		}
+		
+		return result;
+	}
+
+	@Override
+	public int refuseListDelete(SqlSessionTemplate sqlSession, int orderNoInt) throws FailUpdateOrderStatus {
+		// TODO Auto-generated method stub
+		int result = sqlSession.update("Company.refuseListDelete", orderNoInt);
+		
+		if(result <=0) {
+			throw new FailUpdateOrderStatus("주문상태 변경 실패!");
+		}
+		
+		return result;
+	}
+
+	@Override
+	public ArrayList<CompanyEmployee> selectEmployeeList(SqlSessionTemplate sqlSession, int comNo) throws FailSelectEmployeeList {
+		// TODO Auto-generated method stub
+		ArrayList<CompanyEmployee> list = new ArrayList<CompanyEmployee>();
+		list = (ArrayList)sqlSession.selectList("Company.selectEmployeeList", comNo);
+		
+		if(list == null) {
+			throw new FailSelectEmployeeList("업체 회원조회 실패!");
 		}
 		
 		return list;

@@ -222,6 +222,48 @@
 		AND COM_NO = #{ comNo }
 	</select>
 
+	<update id="deliveryManUpdate" >
+		UPDATE EMPLOYEE 
+		SET EMP_DELIVERYSTATUS = 'N', EMP_DELIVERINGONO =  #{empDeliveryONo} 
+		WHERE EMP_NO =  #{employeeNo}
+	</update>
+	
+	<update id="orderUpdate">
+		UPDATE ORDER_MAIN 
+		SET ORDER_STATUS = 3 
+		WHERE ORDER_NO = #{orderNoInt}
+	</update>
+	
+	<update id="orderUpdateToComplete">
+		UPDATE ORDER_MAIN 
+		SET ORDER_STATUS = 4 
+		WHERE ORDER_NO = #{orderNoInt}
+	</update>
+	
+	<update id="returnDeliveryMan">
+		UPDATE EMPLOYEE 
+		SET EMP_DELIVERYSTATUS = 'Y', EMP_DELIVERINGONO = 0 
+		WHERE EMP_DELIVERINGONO = #{orderNoInt}
+	</update>
+
+	<update id="orderUpdateToDelete">
+		UPDATE ORDER_MAIN 
+		SET ORDER_STATUS = 5 
+		WHERE ORDER_NO = #{orderNoInt}
+	</update>
+	
+	<update id="refuseListDelete">
+		UPDATE ORDER_MAIN 
+		SET ORDER_STATUS = 6 
+		WHERE ORDER_NO = #{orderNoInt}
+	</update>
+
+	<select id="selectEmployeeList" resultMap="companyEmployeeResultSet">
+		SELECT *
+		FROM EMPLOYEE
+		WHERE COM_NO = #{ comNo }
+	</select>
+
 </mapper>
 
 
