@@ -58,6 +58,8 @@
 											href="orderDelivering.com">배달중</a></li>
 										<li class="nav-item"><a class="nav-link "
 											href="orderComplete.com">배달완료</a></li>
+										<li class="nav-item"><a class="nav-link "
+										href="orderRefuseList.com">거절목록</a></li>
 									</ul>
 								</div>
 							</div>
@@ -91,8 +93,8 @@
 												<td>${ value.addTopping }</td>
 												<td>${ value.orderDate }</td>
 												<td>
-													<button type="button" class="btn btn-primary btn-sm">수락</button>
-													<button type="button" class="btn btn-secondary btn-sm">거절</button>
+													<button type="button" class="btn btn-primary btn-sm" onclick = "location.href = 'acceptOrder.com?orderNo=${value.orderNo}'">수락</button>
+													<button type="button" class="btn btn-secondary btn-sm" onclick = "location.href = 'refuseOrder.com?orderNo=${value.orderNo}'">거절</button>
 												</td>
 											</tr>
 										</c:forEach>

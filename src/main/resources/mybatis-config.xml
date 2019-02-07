@@ -9,6 +9,7 @@
 		<typeAlias type="com.kh.pmfp.common.model.vo.Member" alias="Member"/>
 		<typeAlias type="com.kh.pmfp.company.model.vo.CompanyBoard" alias="CompanyBoard"/>
 		<typeAlias type="com.kh.pmfp.company.model.vo.CompanyOrder" alias="CompanyOrder"/>
+		<typeAlias type="com.kh.pmfp.company.model.vo.CompanyEmployee" alias="CompanyEmployee"/>
 	</typeAliases>
 	
 	<mappers>

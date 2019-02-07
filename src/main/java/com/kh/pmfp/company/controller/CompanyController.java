@@ -11,11 +11,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.kh.pmfp.company.model.exception.FailSelectAdminMessage;
+import com.kh.pmfp.company.model.exception.FailSelectDeliveryMan;
 import com.kh.pmfp.company.model.exception.FailSelectOrder;
+import com.kh.pmfp.company.model.exception.FailUpdateOrderStatus;
 import com.kh.pmfp.company.model.exception.FaileDetailMessage;
 import com.kh.pmfp.company.model.service.CompanyService;
 import com.kh.pmfp.company.model.vo.CompanyBoard;
+import com.kh.pmfp.company.model.vo.CompanyEmployee;
 import com.kh.pmfp.company.model.vo.CompanyOrder;
+
 
 @Controller
 public class CompanyController {
@@ -128,13 +132,19 @@ public class CompanyController {
 	@RequestMapping("orderMaking.com")
 	public String orderMaking(HttpServletRequest request, HttpServletResponse response) {
 		ArrayList<CompanyOrder> list = new ArrayList<CompanyOrder>();
+		ArrayList<CompanyEmployee> DeliveryManList = new ArrayList<CompanyEmployee>();
 		try {
 			list = cs.orderMaking();
 			System.out.println("제조중 리스트 : " + list);
 			request.setAttribute("list", list);
+			
+			//CompanyNo를 임시로 2로 부여
+			DeliveryManList = cs.remainDeliveryMan(2);
+			request.setAttribute("DeliveryManList", DeliveryManList);
+			System.out.println("배달원 리스트 : " + DeliveryManList);
 			return "company/orderListMaking";
 			
-		} catch (FailSelectOrder e) {
+		} catch (FailSelectOrder | FailSelectDeliveryMan e) {
 			request.setAttribute("msg", e.getMessage());
 			return "common/errorPage";
 		}
@@ -170,6 +180,91 @@ public class CompanyController {
 		}
 	}
 	
+	
+	@RequestMapping("orderRefuseList.com")
+	public String orderRefuseList( HttpServletRequest request, HttpServletResponse response) {
+		ArrayList<CompanyOrder> list = new ArrayList<CompanyOrder>();
+		try {
+			list = cs.orderRefuseList();
+			System.out.println("거절목록 리스트 : " + list);
+			request.setAttribute("list", list);
+			return "company/orderListRefuse";
+			
+		} catch (FailSelectOrder e) {
+			request.setAttribute("msg", e.getMessage());
+			return "common/errorPage";
+		}
+	}
+	
+	
+	
+	
+	
+	//주문을 수락
+	@RequestMapping("acceptOrder.com")
+	public String acceptOrder(String orderNo) {
+		int orderNoInt = Integer.parseInt(orderNo);
+		//System.out.println("orderNoInt : " + orderNoInt);
+		try {
+			int result = cs.acceptOrder(orderNoInt);
+			System.out.println("acceptresult : " + result);
+			
+			
+		} catch (FailUpdateOrderStatus e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		return "redirect:orderWaiting.com";
+	}
+	
+	//주문을 거절
+	@RequestMapping("refuseOrder.com")
+	public String refuseOrder(String orderNo) {
+		int orderNoInt = Integer.parseInt(orderNo);
+		//System.out.println("orderNoInt : " + orderNoInt);
+		try {
+			int result = cs.refuseOrder(orderNoInt);
+			System.out.println("refuseresult : " + result);
+			
+			
+		} catch (FailUpdateOrderStatus e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		return "redirect:orderWaiting.com";
+	}
+	
+	
+/*	@RequestMapping("remainDeliveryMan.com")
+	public String remainDeliveryMan(HttpServletRequest request, HttpServletResponse response) {
+		ArrayList<CompanyEmployee> DeliveryManList = new ArrayList<CompanyEmployee>();
+		try {
+			DeliveryManList = cs.remainDeliveryMan();
+			request.setAttribute("DeliveryManList", DeliveryManList);
+			System.out.println("배달원 목록 : " + DeliveryManList);
+			return "redirect:orderMaking.com";
+			//이 함수 내용들을 orderListMaking에 들어갈때 같이 정보들을 가져오도록 하기
+			
+		} catch (FailSelectDeliveryMan e) {
+			request.setAttribute("msg", e.getMessage());
+			return "common/errorPage";
+		}
+
+	}
+	*/
+	
+	
+	@RequestMapping("assignDeliveryMan.com")
+	public String assignDeliveryMan(String orderNo) {
+		//배달원 상태변경
+		//주문 상태변경 2가지를 수행해야됨
+		System.out.println("orderNo : " + orderNo);
+		return "";
+	}
 	
 
 }
