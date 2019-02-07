@@ -40,8 +40,8 @@
 						<i class="menu-icon ti-user"></i>User
 					</a>
 					<ul class="sub-menu children dropdown-menu">
-						<li><i class="fa fa fa-bars"></i><a href="admin.ad?admin=user/userList">List</a></li>
-						<li><i class="fa fa-id-badge"></i><a href="admin.ad?admin=user/userDetail">Details</a></li>
+						<li><i class="fa fa fa-bars"></i><a href="userList.ad">List</a></li>
+						<li><i class="fa fa-id-badge"></i><a href="userDetail.ad?num=7">Details</a></li>
 					<!-- 			
 						<li><i class="fa fa-bars"></i><a href="#">Tabs</a></li>
 						<li><i class="fa fa-share-square-o"></i><a href="#">Social Buttons</a></li>

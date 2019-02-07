@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Admin">
+	<resultMap type="com.kh.pmfp.common.model.vo.Member" id="adminMemberResultSet">
+		<id property="memberNo" column="MEMBER_NO"/>
+		<result property="memberCateg" column="MEMBER_CATEG"/>
+		<result property="memberId" column="MEMBER_ID"/>
+		<result property="memberPwd" column="MEMBER_PWD"/>
+		<result property="memberName" column="MEMBER_NAME"/>
+		<result property="memberNickName" column="MEMBER_NICKNAME"/>
+		<result property="memberEmail" column="MEMBER_EMAIL"/>
+		<result property="memberEnroll" column="MEMBER_ENROLL"/>
+		<result property="memberStatus" column="MEMBER_STATUS"/>
+		<result property="comNo" column="COM_NO"/>
+	</resultMap>
+	
+	<resultMap type="com.kh.pmfp.admin.model.vo.AdminMember" id="adminMemberResultSet1">
+		<id property="memberNo" column="MEMBER_NO"/>
+		<result property="memberCateg" column="MEMBER_CATEG"/>
+		<result property="memberId" column="MEMBER_ID"/>
+		<result property="memberPwd" column="MEMBER_PWD"/>
+		<result property="memberName" column="MEMBER_NAME"/>
+		<result property="memberNickName" column="MEMBER_NICKNAME"/>
+		<result property="memberEmail" column="MEMBER_EMAIL"/>
+		<result property="memberEnroll" column="MEMBER_ENROLL"/>
+		<result property="memberStatus" column="MEMBER_STATUS"/>
+		<result property="comNo" column="COM_NO"/>
+		<result property="orderCount" column="ORDERCOUNT"/>
+		<result property="orderDate" column="ORDERDATE"/>
+	</resultMap>
+	
+	<resultMap type="com.kh.pmfp.admin.model.vo.AdminOrder" id="adminOrderResultSet">
+		<id property="orderNo" column="ORDER_NO"/>
+		<result property="memberNo" column="MEMBER_NO"/>
+		<result property="orderMethod" column="ORDER_METHOD" />
+		<result property="receiver" column="ORDER_RECEIVER" />
+		<result property="orderTel" column="ORDER_RTEL" />
+		<result property="orderDate" column="ORDER_DATE" />
+		<result property="orderReserveTime" column="ORDER_RESERVETIME" />
+		<result property="orderPayno" column="ORDER_PAYNO" />
+		<result property="orderPayPrice" column="ORDER_PAYPRICE" />
+		<result property="orderStatus" column="ORDER_STATUS" />
+		<result property="deliveryNo" column="DELIVERY_NO" />
+		<result property="empNo" column="EMP_NO" />
+		<result property="comNo" column="COM_NO" />
+	</resultMap>
+
+	<select id="selectMemberList" resultMap="adminMemberResultSet1">
+		SELECT (SELECT COUNT(*)  
+					FROM ORDER_MAIN O 
+					WHERE O.MEMBER_NO=M.MEMBER_NO) AS ORDERCOUNT,
+					(SELECT ORDER_DATE 
+					FROM (SELECT * FROM ORDER_MAIN O 
+								JOIN MEMBER M ON (M.MEMBER_NO=O.MEMBER_NO)
+								WHERE O.MEMBER_NO=M.MEMBER_NO 
+								ORDER BY O.ORDER_DATE DESC) 
+					WHERE ROWNUM=1) AS ORDERDATE,
+					M.* 
+		FROM MEMBER M  
+		WHERE MEMBER_CATEG=0 AND MEMBER_STATUS='Y'
+	</select>
+	
+	<select id="selectMember" resultMap="adminMemberResultSet1" parameterType="_int">
+		SELECT (SELECT COUNT(*)  
+					FROM ORDER_MAIN O 
+					WHERE O.MEMBER_NO=M.MEMBER_NO) AS ORDERCOUNT,
+					(SELECT ORDER_DATE 
+					FROM (SELECT * FROM ORDER_MAIN O 
+								JOIN MEMBER M ON (M.MEMBER_NO=O.MEMBER_NO)
+								WHERE O.MEMBER_NO=M.MEMBER_NO 
+								ORDER BY O.ORDER_DATE DESC) 
+					WHERE ROWNUM=1) AS ORDERDATE,
+					M.* 
+		FROM MEMBER M  
+		WHERE M.MEMBER_CATEG=0 AND M.MEMBER_STATUS='Y' AND M.MEMBER_NO=#{num}
+	</select>
+	
+	<select id="selectUserOrderList" resultMap="adminOrderResultSet" parameterType="_int">
+		SELECT OM.* 
+		FROM ORDER_MAIN OM 
+		WHERE OM.MEMBER_NO=#{num}
+		
+	</select>
+</mapper>
