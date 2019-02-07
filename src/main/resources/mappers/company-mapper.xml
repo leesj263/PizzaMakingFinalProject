@@ -38,6 +38,20 @@
 		<result property="deliveryName" column="DELIVERY_NAME" />
 		<result property="addTopping" column="ADDTOPPING" />
 	</resultMap>
+	
+	
+	<resultMap type="com.kh.pmfp.company.model.vo.CompanyEmployee" id="companyEmployeeResultSet">
+		<id property="employeeNo" column="EMP_NO" />
+		<result property="companyNo" column="COM_NO" />
+		<result property="employeeName" column="EMP_NAME" />
+		<result property="employeePhone" column="EMP_TEL" />
+		<result property="employeeStatus" column="EMP_STATUS" />
+		<result property="employeeRank" column="EMP_RANK" />
+		<result property="employeeDate" column="EMP_DATE" />
+		<result property="employeeAddress" column="EMP_ADDRESS" />
+		<result property="empDeliveryStatus" column="EMP_DELIVERYSTATUS" />
+		<result property="empDeliveryONo" column="EMP_DELIVERINGONO" />
+	</resultMap>
 
 	<select id="selectAdminMessage"
 		resultMap="companyBoardResultSet">
@@ -160,6 +174,53 @@
 		DE.DELIVERY_NAME
 	</select>
 
+
+	<select id="orderRefuseList" resultMap="companyOrderResultSet">
+		SELECT OM.ORDER_NO,
+		OM.MEMBER_NO, OM.ORDER_METHOD, OM.ORDER_RECEIVER, OM.ORDER_RTEL,
+		OM.ORDER_DATE, OM.ORDER_RESERVETIME, OM.ORDER_PAYNO,
+		OM.ORDER_PAYPRICE,
+		OM.ORDER_STATUS, OM.DELIVERY_NO, OM.EMP_NO, OM.COM_NO, DE.DELIVERY_ADDRESS,
+		DE.DELIVERY_NAME, LISTAGG(CAST(M.MATERIAL_NAME || 'x' ||
+		M.MATERIAL_WEIGHT || 'g' AS VARCHAR(300)) , ', ') WITHIN GROUP(ORDER
+		BY M.MATERIAL_NAME) ADDTOPPING
+		FROM ORDER_MAIN OM
+		JOIN DELIVERY DE
+		ON(OM.MEMBER_NO = DE.MEMBER_NO)
+		JOIN ORDER_ITEM OI
+		ON(OI.ORDER_NO = OM.ORDER_NO)
+		JOIN ORDER_TOPPING OT
+		ON(OT.ORDER_INO = OI.ORDER_INO)
+		JOIN MATERIAL M
+		ON(M.MATERIAL_NO = OT.MATERIAL_NO)
+		WHERE ORDER_STATUS = 5
+		GROUP BY OM.ORDER_NO, OM.MEMBER_NO, OM.ORDER_METHOD, OM.ORDER_RECEIVER,
+		OM.ORDER_RTEL, OM.ORDER_DATE, OM.ORDER_RESERVETIME, OM.ORDER_PAYNO,
+		OM.ORDER_PAYPRICE,
+		OM.ORDER_STATUS, OM.DELIVERY_NO, OM.EMP_NO, OM.COM_NO, DE.DELIVERY_ADDRESS,
+		DE.DELIVERY_NAME
+	</select>
+
+
+
+	<update id="acceptOrder" parameterType="_int">
+		UPDATE ORDER_MAIN 
+		SET ORDER_STATUS = 2 
+		WHERE ORDER_NO = #{orderNoInt}
+	</update>
+	
+	<update id="refuseOrder" parameterType="_int">
+		UPDATE ORDER_MAIN 
+		SET ORDER_STATUS = 5 
+		WHERE ORDER_NO = #{orderNoInt}
+	</update>
+	
+	<select id="remainDeliveryMan" resultMap="companyEmployeeResultSet" parameterType="_int">
+		SELECT * 
+		FROM EMPLOYEE 
+		WHERE EMP_RANK = '배달원'
+		AND COM_NO = #{ comNo }
+	</select>
 
 </mapper>
 
