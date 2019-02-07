@@ -6,7 +6,9 @@ import org.mybatis.spring.SqlSessionTemplate;
 
 import com.kh.pmfp.company.model.exception.FailSelectAdminMessage;
 import com.kh.pmfp.company.model.exception.FailSelectDeliveryMan;
+import com.kh.pmfp.company.model.exception.FailSelectEmployeeList;
 import com.kh.pmfp.company.model.exception.FailSelectOrder;
+import com.kh.pmfp.company.model.exception.FailUpdateDelivery;
 import com.kh.pmfp.company.model.exception.FailUpdateOrderStatus;
 import com.kh.pmfp.company.model.exception.FaileDetailMessage;
 import com.kh.pmfp.company.model.vo.CompanyBoard;
@@ -35,5 +37,17 @@ public interface CompanyDao {
 	ArrayList<CompanyOrder> orderRefuseList(SqlSessionTemplate sqlSession) throws FailSelectOrder;
 
 	ArrayList<CompanyEmployee> remainDeliveryMan(SqlSessionTemplate sqlSession, int comNo) throws FailSelectDeliveryMan;
+
+	int deliveryManUpdateM(SqlSessionTemplate sqlSession, int orderNoInt, int empNoInt) throws FailUpdateDelivery;
+
+	int orderUpdateM(SqlSessionTemplate sqlSession, int orderNoInt) throws FailUpdateOrderStatus;
+
+	int orderUpdateToComplete(SqlSessionTemplate sqlSession, int orderNoInt) throws FailUpdateOrderStatus;
+
+	int orderUpdateToDelete(SqlSessionTemplate sqlSession, int orderNoInt) throws FailUpdateOrderStatus;
+
+	int refuseListDelete(SqlSessionTemplate sqlSession, int orderNoInt) throws FailUpdateOrderStatus;
+
+	ArrayList<CompanyEmployee> selectEmployeeList(SqlSessionTemplate sqlSession, int comNo) throws FailSelectEmployeeList;
 
 }

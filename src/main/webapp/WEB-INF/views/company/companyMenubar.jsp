@@ -136,7 +136,7 @@
                             <li><i class="menu-icon fa fa-sign-in"></i><a href="movePage.com?movePage=page-register">Register</a></li>
                             <li><i class="menu-icon fa fa-paper-plane"></i><a href="movePage.com?movePage=pages-forget">Forget Pass</a></li>
                             <li><i class="menu-icon fa fa-paper-plane"></i><a href="orderWaiting.com">주문신청 내역</a></li>
-                            <li><i class="menu-icon fa fa-paper-plane"></i><a href="movePage.com?movePage=CompanyEmployeeList">업체 직원 관리</a></li>
+                            <li><i class="menu-icon fa fa-paper-plane"></i><a href="selectEmployeeList.com">업체 직원 관리</a></li>
                             <li><i class="menu-icon fa fa-paper-plane"></i><a href="movePage.com?movePage=companyStock">업체 재고관리</a></li>
                             <li><i class="menu-icon fa fa-paper-plane"></i><a href="movePage.com?movePage=companySales">업체 매출관리</a></li>
                             <li><i class="menu-icon fa fa-paper-plane"></i><a href="movePage.com?movePage=companyAnswer">업체 후기 작성</a></li>

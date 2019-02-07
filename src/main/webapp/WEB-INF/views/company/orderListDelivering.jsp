@@ -84,7 +84,7 @@ td {
 												<td>${ value.addTopping }</td>
 												<td>${ value.orderDate }</td>
 												<td>
-													<button type="button" class="btn btn-primary btn-sm">배달완료</button>
+													<button type="button" class="btn btn-primary btn-sm" onclick = "location.href = 'deliveryComplete.com?orderNo=${ value.orderNo }'">배달완료</button>
 												</td>
 											</tr>
 										</c:forEach>

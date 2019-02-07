@@ -9,7 +9,9 @@ import org.springframework.stereotype.Component;
 import com.kh.pmfp.company.model.dao.CompanyDao;
 import com.kh.pmfp.company.model.exception.FailSelectAdminMessage;
 import com.kh.pmfp.company.model.exception.FailSelectDeliveryMan;
+import com.kh.pmfp.company.model.exception.FailSelectEmployeeList;
 import com.kh.pmfp.company.model.exception.FailSelectOrder;
+import com.kh.pmfp.company.model.exception.FailUpdateDelivery;
 import com.kh.pmfp.company.model.exception.FailUpdateOrderStatus;
 import com.kh.pmfp.company.model.exception.FaileDetailMessage;
 import com.kh.pmfp.company.model.vo.CompanyBoard;
@@ -116,6 +118,49 @@ public class CompanyServiceImpl implements CompanyService{
 		list = cd.remainDeliveryMan(sqlSession, comNo);
 		
 		
+		return list;
+	}
+
+	@Override
+	public int deliveryManUpdateM(int orderNoInt, int empNoInt) throws FailUpdateDelivery {
+		// TODO Auto-generated method stub
+		int deliveryManUpdate = cd.deliveryManUpdateM(sqlSession, orderNoInt, empNoInt);
+		return deliveryManUpdate;
+	}
+
+	@Override
+	public int orderUpdateM(int orderNoInt) throws FailUpdateOrderStatus {
+		// TODO Auto-generated method stub
+		int orderUpdate = cd.orderUpdateM(sqlSession, orderNoInt);
+		return orderUpdate;
+	}
+
+	@Override
+	public int orderUpdateToComplete(int orderNoInt) throws FailUpdateOrderStatus {
+		// TODO Auto-generated method stub
+		int result = cd.orderUpdateToComplete(sqlSession, orderNoInt);
+		return result;
+	}
+
+	@Override
+	public int orderUpdateToDelete(int orderNoInt) throws FailUpdateOrderStatus {
+		// TODO Auto-generated method stub
+		int result = cd.orderUpdateToDelete(sqlSession, orderNoInt);
+		return result;
+	}
+
+	@Override
+	public int refuseListDelete(int orderNoInt) throws FailUpdateOrderStatus {
+		// TODO Auto-generated method stub
+		int result = cd.refuseListDelete(sqlSession, orderNoInt);
+		return result;
+	}
+
+	@Override
+	public ArrayList<CompanyEmployee> selectEmployeeList(int comNo) throws FailSelectEmployeeList {
+		// TODO Auto-generated method stub
+		ArrayList<CompanyEmployee> list = new ArrayList<CompanyEmployee>();
+		list = cd.selectEmployeeList(sqlSession, comNo);
 		return list;
 	}
 

@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.kh.pmfp.company.model.exception.FailSelectAdminMessage;
 import com.kh.pmfp.company.model.exception.FailSelectDeliveryMan;
+import com.kh.pmfp.company.model.exception.FailSelectEmployeeList;
 import com.kh.pmfp.company.model.exception.FailSelectOrder;
+import com.kh.pmfp.company.model.exception.FailUpdateDelivery;
 import com.kh.pmfp.company.model.exception.FailUpdateOrderStatus;
 import com.kh.pmfp.company.model.exception.FaileDetailMessage;
 import com.kh.pmfp.company.model.service.CompanyService;
@@ -259,12 +261,90 @@ public class CompanyController {
 	
 	
 	@RequestMapping("assignDeliveryMan.com")
-	public String assignDeliveryMan(String orderNo) {
+	public String assignDeliveryMan(String orderNo, String empNo, HttpServletRequest request, HttpServletResponse response) {
 		//배달원 상태변경
 		//주문 상태변경 2가지를 수행해야됨
-		System.out.println("orderNo : " + orderNo);
-		return "";
+		//System.out.println("orderNo : " + orderNo);
+		System.out.println("배달원지정 메소드 들어옴");
+		int orderNoInt = Integer.parseInt(orderNo);
+		int empNoInt = Integer.parseInt(empNo);
+		
+		try {
+			int deliveryManUpdate = cs.deliveryManUpdateM(orderNoInt, empNoInt);		
+			int orderUpdate = cs.orderUpdateM(orderNoInt);
+			System.out.println("deliveryManUpdate : " + deliveryManUpdate);
+			System.out.println("orderUpdate : " + orderUpdate);
+			
+			return "redirect:orderMaking.com";
+		} catch (FailUpdateDelivery | FailUpdateOrderStatus e) {
+			request.setAttribute("msg", e.getMessage());
+			return "common/errorPage";
+		}
 	}
 	
+	@RequestMapping("deliveryComplete.com")
+	public String deliveryComplete(String orderNo ,HttpServletRequest request, HttpServletResponse response) {
+		int orderNoInt = Integer.parseInt(orderNo);
+		
+		try {
+			int result = cs.orderUpdateToComplete(orderNoInt);
+			return "redirect:orderDelivering.com";
+			
+		} catch (FailUpdateOrderStatus e) {
+			request.setAttribute("msg", e.getMessage());
+			return "common/errorPage";
+		}
+		
+		
+	}
+	
+	
+	@RequestMapping("orderUpdateToDelete.com")
+	public String orderUpdateToDelete(String orderNo ,HttpServletRequest request, HttpServletResponse response) {
+		
+		int orderNoInt = Integer.parseInt(orderNo);
+		
+		try {
+			int result = cs.orderUpdateToDelete(orderNoInt);
+			
+			return "redirect:orderComplete.com";
+			
+		} catch (FailUpdateOrderStatus e) {
+			request.setAttribute("msg", e.getMessage());
+			return "common/errorPage";
+		}
+	}
+	
+	@RequestMapping("refuseListDelete.com")
+	public String refuseListDelete(String orderNo ,HttpServletRequest request, HttpServletResponse response) {
+		
+		int orderNoInt = Integer.parseInt(orderNo);
+		
+		try {
+			int result = cs.refuseListDelete(orderNoInt);
+			
+			return "redirect:orderRefuseList.com";
+		} catch (FailUpdateOrderStatus e) {
+			request.setAttribute("msg", e.getMessage());
+			return "common/errorPage";
+		}
+	}
+	
+	@RequestMapping("selectEmployeeList.com")
+	public String selectEmployeeList(HttpServletRequest request, HttpServletResponse response) {
+		ArrayList<CompanyEmployee> list = new ArrayList<CompanyEmployee>();
+		try {
+			//업체번호를 임시로 2로 부여
+			list = cs.selectEmployeeList(2);
+			request.setAttribute("list", list);
+			return "company/CompanyEmployeeList";
+			
+		} catch (FailSelectEmployeeList e) {
+			request.setAttribute("msg", e.getMessage());
+			return "common/errorPage";
+		}
+		
+		
+	}
 
 }

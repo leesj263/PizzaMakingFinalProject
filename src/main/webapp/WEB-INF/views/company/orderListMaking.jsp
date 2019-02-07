@@ -137,10 +137,10 @@ td {
 							aria-haspopup="true" aria-expanded="false">남아있는 배달원</button>
 						<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 						<c:forEach items = "${DeliveryManList}" var = "value">
-							<c:if test="${value.empDeliveryStatus == 'N'}">
-								<a class="dropdown-item" onclick = "clickDeliveryMan(this)">${ value.employeeName }</a>
-							</c:if>
 							<c:if test="${value.empDeliveryStatus == 'Y'}">
+								<a class="dropdown-item" id = "${value.employeeNo}" onclick = "clickDeliveryMan(this)">${ value.employeeName }</a>
+							</c:if>
+							<c:if test="${value.empDeliveryStatus == 'N'}">
 								<a class="dropdown-item" style = "background : gray">${ value.employeeName }</a>
 							</c:if>
 						</c:forEach>
@@ -165,7 +165,8 @@ td {
 	}
 	
 	function clickDeliveryMan(btn){
-		location.href = "assignDeliveryMan.com?orderNo=" + selectOrderNo;
+		var empNo = $(btn).attr('id');
+		location.href = "assignDeliveryMan.com?orderNo=" + selectOrderNo +"&empNo="+empNo;
 	}
 </script>
 
