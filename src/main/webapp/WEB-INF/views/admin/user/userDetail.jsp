@@ -1,9 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <jsp:include page="../common/header.jsp"/>
 <style>
-	#userOrderList{
+	#bootstrap-data-table-export{
 		text-align:center;
+		width:700px;
 	}
 </style>
 <section class="container">
@@ -19,18 +22,22 @@
 					<div class="col-md-2"></div>
 					<div class="col-md-4">
 						<ul class="member-ul">
-							<li class="member-li"><span>이름</span><p>홍ㄹ동</p></li>
-							<li class="member-li"><span>이메일</span><p>asdflaksdf@asdfa.com</p></li>
-							<li class="member-li"><span>주문 횟수</span><p>3</p></li>
+							<li class="member-li"><span>이름</span><p>${member.memberName }</p></li>
+							<li class="member-li"><span>이메일</span><p>${member.memberEmail }</p></li>
+							<li class="member-li"><span>주문 횟수</span><p>${member.orderCount }</p></li>
 							<li class="member-li"><span></span></li>
 							<li class="member-li"><span>주문 내역</span></li>
 						</ul> 
 					</div>
 					<div class="col-md-4">
 						<ul class="member-ul">
-							<li class="member-li"><span>아이디</span><p>asdfasdfa</p></li>
-							<li class="member-li"><span>가입일</span><p>2018-11-01</p></li>
-							<li class="member-li"><span>최근 주문</span><p>2018-12-12</p></li>
+							<li class="member-li"><span>아이디</span><p>${member.memberId }</p></li>
+							<li class="member-li"><span>가입일</span><p>${member.memberEnroll }</p></li>
+							<li class="member-li"><span>최근 주문</span>
+								<p>
+									<c:if test="${member.orderCount>0}">${member.orderDate }</c:if>
+									<c:if test="${member.orderCount==0 }">　</c:if>
+								</p></li>
 						</ul>
 					</div>
 					<div class="col-md-2"></div>
@@ -39,18 +46,44 @@
 				<!-- 회원 주문 영역 -->
 				<div class="row">
 					<div class="col-md-2"></div>
-					<table class="table table-striped col-md-8" id="userOrderList">
+					<table class="table table-striped col-md-8" id="bootstrap-data-table-export">
+						<c:if test="${orderList.size() ne 0 }">
 						<thead>
 							<tr>
 								<th scope="col">주문번호</th>
 								<th scope="col">주문일자</th>
 								<th scope="col">주문지점</th>
-								<th scope="col">주문내용</th>
 								<th scope="col">결제금액</th>
+								<th scope="col">주문상태</th>
 							</tr>
 						</thead>
 						<tbody>
-							<tr>
+							<c:forEach items="${orderList}" var="o">
+								<tr>
+									<th scope="row">${o.orderNo }</th>
+									<td>${o.orderDate }</td>
+									<td>${o.comNo }</td>
+									<td>${o.orderPayPrice}</td>
+									<c:choose>
+										<c:when test="${o.orderStatus==1}">
+											<td>대기중</td>
+										</c:when>
+										<c:when test="${o.orderStatus==2}">
+											<td>제조중</td>
+										</c:when>
+										<c:when test="${o.orderStatus==3}">
+											<td>배달중</td>
+										</c:when>
+										<c:when test="${o.orderStatus==4}">
+											<td>배달완료</td>
+										</c:when>
+										<c:otherwise>
+											<td>주문거절</td>
+										</c:otherwise>
+									</c:choose>
+								</tr>
+							</c:forEach>
+							<!-- <tr>
 								<th scope="row">1</th>
 								<td>2018-12-12</td>
 								<td>Mark</td>
@@ -70,13 +103,21 @@
 								<td>Larry</td>
 								<td>the Bird</td>
 								<td>15</td>
-							</tr>
+							</tr> -->
 						</tbody>
+						</c:if>
+						<c:if test="${orderList.size()==0 }">
+						<thead>
+							<tr>
+								<td colspan="5">주문 내역이 없습니다</td>
+							</tr>
+						</thead>
+						</c:if>
 					</table>
 					<div class="col-md-2"></div>
 				</div>
 				<!-- 페이징 처리 div -->
-				<div class="row">
+				<!-- <div class="row">
 					<div class="col-md-7"></div>
 					<div class="dataTables_paginate paging_simple_numbers col-md-3" id="bootstrap-data-table_paginate">
 						<ul class="pagination">
@@ -90,7 +131,7 @@
 						</ul>
 					</div>
 					<div class="col-md-2"></div>
-				</div>
+				</div> -->
 				<!-- 페이징 처리 끝 -->
 			</div>
 		</div>
@@ -98,7 +139,7 @@
 	
 	<script>
 		$(function() {
-			$("#userOrderList").find("td").mouseenter(function() {
+			$("#bootstrap-data-table-export").find("td").mouseenter(function() {
 				$(this).parent().css({"color" : "#9d9d9d","cursor" : "pointer"});
 			}).mouseout(function() {
 				$(this).parent().css({"color" : "#212529"});
@@ -107,8 +148,24 @@
 				console.log(num);
 				location.href="admin.ad?admin=sales/orderDetail";
 			});
+			$("#bootstrap-data-table-export_length").empty();
+			$("#bootstrap-data-table-export_filter").empty();
+			$("#bootstrap-data-table-export_info").empty();
+			$("#bootstrap-data-table-export_paginate").css({"float":"right"});
 		});
 		
 	</script>
+	
+	<script src="${contextPath }/resources/admin/vendors/datatables.net/js/jquery.dataTables.min.js"></script>
+	<script src="${contextPath }/resources/admin/vendors/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+	<script src="${contextPath }/resources/admin/vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+	<script src="${contextPath }/resources/admin/vendors/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js"></script>
+	<script src="${contextPath }/resources/admin/vendors/jszip/dist/jszip.min.js"></script>
+	<script src="${contextPath }/resources/admin/vendors/pdfmake/build/pdfmake.min.js"></script>
+	<script src="${contextPath }/resources/admin/vendors/pdfmake/build/vfs_fonts.js"></script>
+	<script src="${contextPath }/resources/admin/vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
+	<script src="${contextPath }/resources/admin/vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
+	<script src="${contextPath }/resources/admin/vendors/datatables.net-buttons/js/buttons.colVis.min.js"></script>
+	<script src="${contextPath }/resources/admin/assets/js/init-scripts/data-table/datatables-init.js"></script>
 	</section>
 <jsp:include page="../common/footer.jsp"/>
