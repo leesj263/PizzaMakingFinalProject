@@ -1,11 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <jsp:include page="../common/header.jsp"/>
 <style>
 	div.card-header{
 		border:0px;
 	}
-	#sellerList{
+	#bootstrap-data-table-export{
 		text-align:center;
 	}
 </style>
@@ -22,7 +24,7 @@
 			<!-- 업체 목록 영역 -->
 			<div class="row">
 				<div class="col-md-2"></div>
-				<table class="table table-striped col-md-8" id="sellerList">
+				<table class="table table-striped col-md-8" id="bootstrap-data-table-export">
 					<thead>
 						<tr>
 							<th scope="col">업체 번호</th>
@@ -33,7 +35,29 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
+						<c:forEach items="${sellerList }" var="seller">
+							<tr onclick="location.href='sellerDetail.ad?num=${seller.comNo}'">
+								<th scope="row">${seller.rn }</th>
+								<td>${seller.memberId }</td>
+								<td>${seller.comName }</td>
+								<td>${seller.comDate }</td>
+								<c:choose>
+									<c:when test="${seller.comStatus.equals('Y') }">
+										<td>영업중</td>
+									</c:when>
+									<c:when test="${seller.comStatus.equals('W') }">
+										<td>개점 준비중</td>
+									</c:when>
+									<c:when test="${seller.comStatus.equals('S') }">
+										<td>영업 정지</td>
+									</c:when>
+									<c:otherwise>
+										<td>영업 종료</td>
+									</c:otherwise>
+								</c:choose>
+							</tr>
+						</c:forEach>
+						<!-- <tr>
 							<th scope="row">1</th>
 							<td>Mark</td>
 							<td>강남점</td>
@@ -53,7 +77,7 @@
 							<td>해운대점</td>
 							<td>2019-01-20</td>
 							<td>개점준비중</td>
-						</tr>
+						</tr> -->
 					</tbody>
 				</table>
 				<div class="col-md-2"></div>
@@ -61,8 +85,8 @@
 		</div>
 	</div>
 	</div>
-<div class="col-md-2"></div>
-	<!-- 검색 영역 -->
+<!-- <div class="col-md-2"></div>
+	검색 영역
 	<div class="form-inline col-md-5">
 		<form class="search-form">
 			<select class="form-control" name="searchUser">
@@ -76,7 +100,7 @@
 			<i class="fa fa-search"></i>
 		</button>
 	</div>
-	<!-- 페이징 영역 -->
+	페이징 영역
 	<div class="dataTables_paginate paging_simple_numbers col-md-4" id="bootstrap-data-table_paginate">
 		<ul class="pagination">
 			<li class="paginate_button page-item previous disabled" id="bootstrap-data-table_previous"><a href="#" aria-controls="bootstrap-data-table" data-dt-idx="0" tabindex="0" class="page-link"><i class="ti-angle-left"></i></a></li>
@@ -88,13 +112,13 @@
 			<li class="paginate_button page-item next" id="bootstrap-data-table_next"><a href="#" aria-controls="bootstrap-data-table" data-dt-idx="7" tabindex="0" class="page-link"><i class="ti-angle-right"></i></a></li>
 		</ul>
 	</div>
-	<div class="col-md-1"></div>
+	<div class="col-md-1"></div> -->
 	<script>
-		function searchUser() {
+		/* function searchUser() {
 			var searchSeller = $("select[name='searchSeller']").val();
 			var searchSellerValue = $("input[name='searchSellerValue']").val();
 			console.log(searchSeller + " / " + searchSellerValue);
-		}
+		} */
 		$(function(){
 			$("#sellerList").find("td").mouseenter(function(){
 				$(this).parent().css({"color":"#9d9d9d","cursor":"pointer"});
@@ -105,8 +129,8 @@
 				console.log(num);
 				location.href="admin.ad?admin=seller/sellerDetail";
 			});
+			$("#bootstrap-data-table-export_info").empty();
 		})
 	</script>
-	</div>
 </section>
 <jsp:include page="../common/footer.jsp"/>

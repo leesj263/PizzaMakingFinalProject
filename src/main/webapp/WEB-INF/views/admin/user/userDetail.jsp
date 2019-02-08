@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <jsp:include page="../common/header.jsp"/>
 <style>
@@ -47,7 +47,7 @@
 				<div class="row">
 					<div class="col-md-2"></div>
 					<table class="table table-striped col-md-8" id="bootstrap-data-table-export">
-						<c:if test="${orderList.size() ne 0 }">
+						<c:if test="${orderList.size() > 0 }">
 						<thead>
 							<tr>
 								<th scope="col">주문번호</th>
@@ -133,6 +133,11 @@
 					<div class="col-md-2"></div>
 				</div> -->
 				<!-- 페이징 처리 끝 -->
+				<div class="col-md-2"></div>
+				<div class="col-md-4">
+					<button class="btn btn-outline-secondary" onclick="location.href='userList.ad'">목록으로</button>
+				</div>	
+				<div class="col-md-6"></div>
 			</div>
 		</div>
 	</div>
