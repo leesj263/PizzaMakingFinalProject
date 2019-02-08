@@ -1,6 +1,7 @@
-
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <link rel="apple-touch-icon"href="${contextPath }/resources/admin/images/apple-icon.png">
 <link rel="shortcut icon"href="${contextPath }/resources/admin/images/favicon.ico">
 
@@ -8,7 +9,6 @@
 <link rel="stylesheet"href="${contextPath }/resources/admin/vendors/font-awesome/css/font-awesome.min.css">
 <link rel="stylesheet"href="${contextPath }/resources/admin/vendors/themify-icons/css/themify-icons.css">
 <link rel="stylesheet"href="${contextPath }/resources/admin/vendors/selectFX/css/cs-skin-elastic.css">
-<link rel="stylesheet"href="${contextPath }/resources/admin/vendors/jqvmap/dist/jqvmap.min.css">
 
 <link rel="stylesheet"href="${contextPath }/resources/admin/assets/css/style.css">
 
@@ -30,7 +30,7 @@
 			<ul class="nav navbar-nav">
 				 
 				<li class="active">
-					<a href="admin.ad?admin=adminMain"><i class="menu-icon fa fa-dashboard"></i>Dashboard</a>
+					<a href="admin.ad?admin=adminMain"><i class="menu-icon fa fa-dashboard"></i>Main</a>
 				</li>
 
 				<h3 class="menu-title">Member</h3>
@@ -60,9 +60,9 @@
 						<i class="menu-icon ti-flag-alt-2"></i>Seller
 					</a>
 					<ul class="sub-menu children dropdown-menu">
-						<li><i class="fa fa-table"></i><a href="admin.ad?admin=seller/sellerList">Seller List</a></li>
-						<li><i class="fa fa-spinner"></i><a href="admin.ad?admin=seller/waitSeller">Wait Seller List</a></li>
-						<li><i class="ti-shopping-cart"></i><a href="admin.ad?admin=seller/sellerOrder">Seller Order</a></li>
+						<li><i class="fa fa-table"></i><a href="sellerList.ad">Seller List</a></li>
+						<li><i class="fa fa-spinner"></i><a href="waitSeller.ad">Wait Seller List</a></li>
+						<li><i class="ti-shopping-cart"></i><a href="sellerOrder.ad">Seller Order</a></li>
 						<!-- 
 						<li><i class="fa fa-spinner"></i><a href="#">Wait Seller List</a></li> 
 						-->
