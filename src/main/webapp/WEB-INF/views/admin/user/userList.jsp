@@ -1,53 +1,88 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<jsp:include page="../common/header.jsp"/>
+<jsp:include page="../common/header.jsp" />
 <style>
-	div.card-header{
-		border:0px;
-	}
-	#bootstrap-data-table-export{
-		text-align:center;
-		align:center;
-	}
+div.card-header {
+	border: 0px;
+}
+h3.menu-title{
+	
+}
+
+#bootstrap-data-table-export {
+	text-align: center;
+	align: center;
+	width:700px;
+	
+}
+#bootstrap-data-table-export_info{
+	display:none;
+}
+#bootstrap-data-table-export > td :hover{
+	color:#9d9d9d;
+	cursor:pointer;
+}
 </style>
+<script>
+/* 	function searchUser() {
+		var searchUser = $("select[name='searchUser']").val();
+		var searchUserValue = $("input[name='searchUserValue']").val();
+		console.log(searchUser + " / " + searchUserValue);
+	}
+	$(function() {
+		$("#bootstrap-data-table-export").find("td").mouseenter(function() {
+			$(this).parent().css({"color" : "#9d9d9d","cursor" : "pointer"});
+		}).mouseout(function() {
+			$(this).parent().css({"color" : "#212529"});
+		}).click(function() {
+			var num = $(this).parent().children().eq(0).text();
+			console.log(num);
+			location.href = "userDetail.ad?num=" + num;
+		});
+	}); */
+	$(function(){
+		$("#bootstrap-data-table-export_info").empty();
+	});
+</script>
 <section class="container">
 	<div class="right-panel">
-	<p>userList.jsp</p>
-		<div class="card">
-			<div class="card-header col-md-12">
-				<h3 class="menu-title">회원목록</h3>
-			</div>
-			<div class="card-body">
-			<div class="row">
-				<div class="col-md-2"></div>
-				<table id="bootstrap-data-table-export" class="table table-striped" >
-					<thead>
-						<tr>
-							<th scope="col">회원번호</th>
-							<th scope="col">ID</th>
-							<th scope="col">이름</th>
-							<th scope="col">주문횟수</th>
-							<th scope="col">최근 주문일자</th>
-						</tr>
-					</thead>
-					<tbody>
-						<c:forEach items="${memberList}" var="m">
+		<p>userList.jsp</p>
+		<div class="col-md-12">
+			<div class="card">
+				<div class="card-header">
+					<h3 class="menu-title">회원목록</h3>
+				</div>
+				<div class="card-body">
+				<div class="row">
+					<div class="col-md-2"></div>
+					<table id="bootstrap-data-table-export" class="table table-striped table-bordered" function="">
+						<thead>
 							<tr>
-								<th scope="row">${m.memberNo }</th>
-								<td>${m.memberId }</td>
-								<td>${m.memberName }</td>
-								<td>${m.orderCount }</td>
-								<c:if test="${m.orderCount >0}">
-									<td>${m.orderDate }</td>
-								</c:if>
-								<c:if test="${m.orderCount ==0}">
-									<td>　</td>
-								</c:if>
+								<th scope="col">회원번호</th>
+								<th scope="col">ID</th>
+								<th scope="col">이름</th>
+								<th scope="col">주문횟수</th>
+								<th scope="col">최근 주문일자</th>
 							</tr>
-						</c:forEach>
-						<!-- <tr>
+						</thead>
+						<tbody>
+							<c:forEach items="${memberList}" var="m">
+								<tr style="cursor:pointer;" onclick="location.href='userDetail.ad?num=${m.memberNo}'">
+									<td scope="row">${m.rn }</th>
+									<td>${m.memberId }</td>
+									<td>${m.memberName }</td>
+									<td>${m.orderCount }</td>
+									<c:if test="${m.orderCount >0}">
+										<td>${m.orderDate }</td>
+									</c:if>
+									<c:if test="${m.orderCount ==0}">
+										<td></td>
+									</c:if>
+								</tr>
+							</c:forEach>
+							<!-- <tr>
 							<th scope="row">1</th>
 							<td>Mark</td>
 							<td>Otto</td>
@@ -68,14 +103,16 @@
 							<td>15</td>
 							<td>2019-01-20</td>
 						</tr> -->
-					</tbody>
-				</table>
-				<div class="col-md-2"></div>
+						</tbody>
+					</table>
+					<!-- <div class="col-md-2"></div>
+					</div> -->
+				</div>
+				</div>
 			</div>
 		</div>
-	</div>
-	</div>
-<!-- 	<div class="col-md-2"></div>
+		</div>
+		<!-- 	<div class="col-md-2"></div>
 	검색 영역
 	<div class="form-inline col-md-5">
 		<form class="search-form">
@@ -103,34 +140,17 @@
 		</ul>
 	</div>
 	<div class="col-md-1"></div> -->
-	<script>
-		/* function searchUser() {
-			var searchUser = $("select[name='searchUser']").val();
-			var searchUserValue = $("input[name='searchUserValue']").val();
-			console.log(searchUser + " / " + searchUserValue);
-		} */
-		$(function(){
-			$("#bootstrap-data-table-export").find("td").mouseenter(function(){
-				$(this).parent().css({"color":"#9d9d9d","cursor":"pointer"});
-			}).mouseout(function(){
-				$(this).parent().css({"color":"#212529"});
-			}).click(function(){
-				var num=$(this).parent().children().eq(0).text();
-				console.log(num);
-				location.href="userDetail.ad?num="+num;
-			});
-		})
-	</script>
-	<script src="${contextPath }/resources/admin/vendors/datatables.net/js/jquery.dataTables.min.js"></script>
-	<script src="${contextPath }/resources/admin/vendors/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
-	<script src="${contextPath }/resources/admin/vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
-	<script src="${contextPath }/resources/admin/vendors/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js"></script>
-	<script src="${contextPath }/resources/admin/vendors/jszip/dist/jszip.min.js"></script>
-	<script src="${contextPath }/resources/admin/vendors/pdfmake/build/pdfmake.min.js"></script>
-	<script src="${contextPath }/resources/admin/vendors/pdfmake/build/vfs_fonts.js"></script>
-	<script src="${contextPath }/resources/admin/vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
-	<script src="${contextPath }/resources/admin/vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
-	<script src="${contextPath }/resources/admin/vendors/datatables.net-buttons/js/buttons.colVis.min.js"></script>
-	<script src="${contextPath }/resources/admin/assets/js/init-scripts/data-table/datatables-init.js"></script>
+		
+		<script src="${contextPath }/resources/admin/vendors/datatables.net/js/jquery.dataTables.min.js"></script>
+		<script src="${contextPath }/resources/admin/vendors/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+		<script src="${contextPath }/resources/admin/vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+		<script src="${contextPath }/resources/admin/vendors/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js"></script>
+		<script src="${contextPath }/resources/admin/vendors/jszip/dist/jszip.min.js"></script>
+		<script src="${contextPath }/resources/admin/vendors/pdfmake/build/pdfmake.min.js"></script>
+		<script src="${contextPath }/resources/admin/vendors/pdfmake/build/vfs_fonts.js"></script>
+		<script src="${contextPath }/resources/admin/vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
+		<script src="${contextPath }/resources/admin/vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
+		<script src="${contextPath }/resources/admin/vendors/datatables.net-buttons/js/buttons.colVis.min.js"></script>
+		<script src="${contextPath }/resources/admin/assets/js/init-scripts/data-table/datatables-init.js"></script>
 </section>
-<jsp:include page="../common/footer.jsp"/>
+<jsp:include page="../common/footer.jsp" />

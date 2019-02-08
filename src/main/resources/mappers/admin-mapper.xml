@@ -30,6 +30,7 @@
 		<result property="comNo" column="COM_NO"/>
 		<result property="orderCount" column="ORDERCOUNT"/>
 		<result property="orderDate" column="ORDERDATE"/>
+		<result property="rn" column="ROWNUM"/>
 	</resultMap>
 	
 	<resultMap type="com.kh.pmfp.admin.model.vo.AdminOrder" id="adminOrderResultSet">
@@ -48,8 +49,32 @@
 		<result property="comNo" column="COM_NO" />
 	</resultMap>
 
+	<resultMap type="com.kh.pmfp.admin.model.vo.AdminSeller" id="adminSellerResultSet">
+		<id property="memberNo" column="MEMBER_NO"/>
+		<result property="memberCateg" column="MEMBER_CATEG"/>
+		<result property="memberId" column="MEMBER_ID"/>
+		<result property="memberPwd" column="MEMBER_PWD"/>
+		<result property="memberName" column="MEMBER_NAME"/>
+		<result property="memberNickName" column="MEMBER_NICKNAME"/>
+		<result property="memberEmail" column="MEMBER_EMAIL"/>
+		<result property="memberEnroll" column="MEMBER_ENROLL"/>
+		<result property="memberStatus" column="MEMBER_STATUS"/>
+		<result property="comNo" column="COM_NO"/>
+		<result property="comName" column="COM_NAME"/>
+		<result property="comAddress" column="COM_ADDRESS"/>
+		<result property="comTel" column="COM_TEL"/>
+		<result property="comLisenseNo" column="COM_LISENSENO"/>
+		<result property="comStatus" column="COM_STATUS"/>
+		<result property="comDate" column="COM_DATE"/>
+		<result property="salesTime" column="COM_SALESTIME"/>
+		<result property="comLoc" column="COM_LOCATION"/>
+		<result property="comPark" column="COM_PARKING"/>
+		<result property="comConfirm" column="COM_CONFIRM"/>
+		<result property="rn" column="ROWNUM"/>
+	</resultMap>
+	
 	<select id="selectMemberList" resultMap="adminMemberResultSet1">
-		SELECT (SELECT COUNT(*)  
+		SELECT ROWNUM, (SELECT COUNT(*)  
 					FROM ORDER_MAIN O 
 					WHERE O.MEMBER_NO=M.MEMBER_NO) AS ORDERCOUNT,
 					(SELECT ORDER_DATE 
@@ -79,9 +104,40 @@
 	</select>
 	
 	<select id="selectUserOrderList" resultMap="adminOrderResultSet" parameterType="_int">
-		SELECT OM.* 
+		SELECT OM.*
 		FROM ORDER_MAIN OM 
 		WHERE OM.MEMBER_NO=#{num}
 		
+	</select>
+	
+	<select id="selectSellerList" resultMap="adminSellerResultSet">
+		SELECT M.*, C.*, ROWNUM 
+		FROM MEMBER M
+		JOIN COMPANY C ON (M.COM_NO=C.COM_NO)
+		WHERE M.MEMBER_CATEG=1 
+		AND C.COM_STATUS='Y' OR C.COM_STATUS='W' OR C.COM_STATUS='S' 
+		AND C.COM_CONFIRM='Y'
+	</select>
+	
+	<select id="selectWaitSeller" resultMap="adminSellerResultSet">
+		SELECT M.*, C.*, ROWNUM 
+		FROM MEMBER M
+		JOIN COMPANY C ON (M.COM_NO=C.COM_NO)
+		WHERE M.MEMBER_CATEG=1 AND C.COM_CONFIRM='N'
+	</select>
+	
+	<select id="selectSeller" resultMap="adminSellerResultSet">
+		SELECT M.*, C.* 
+		FROM MEMBER M
+		JOIN COMPANY C ON (M.COM_NO=C.COM_NO)
+		WHERE M.MEMBER_CATEG=1 
+		AND C.COM_NO=#{num} 
+	</select>
+	
+	<select id="selectNoticeList" resultMap="boardResultSet">
+		SELECT ROWNUM, B.* 
+		FROM BOARD B 
+		JOIN MEMBER M ON (M.MEMBER_NO=B.MEMBER_NO) 
+		WHERE B.BOARD_TYPE=4 AND B.BOARD_STATUS='Y'
 	</select>
 </mapper>

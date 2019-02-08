@@ -9340,9 +9340,11 @@ header .form-inline .search-form.close {
 	.right-panel .content #bootstrap-data-table_wrapper {
 		font-size: 14px;
 		padding: 0;
+		align:center;
 	}
 	.right-panel .content #bootstrap-data-table_wrapper div[class*="col"] {
 		padding: 0;
+		align:center;
 	}
 	.right-panel .content #bootstrap-data-table_wrapper .table td,
 		.right-panel .content #bootstrap-data-table_wrapper .table th {

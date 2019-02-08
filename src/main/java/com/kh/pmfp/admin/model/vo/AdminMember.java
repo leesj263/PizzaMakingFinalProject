@@ -16,12 +16,13 @@ public class AdminMember implements java.io.Serializable{
 	private int comNo;
 	private int orderCount;
 	private Date orderDate;
+	private int rn;
 	
 	public AdminMember() {}
 
 	public AdminMember(int memberNo, int memberCateg, String memberId, String memberPwd, String memberName,
 			String memberNickName, String memberEmail, Date memberEnroll, String memberStatus, int comNo,
-			int orderCount, Date orderDate) {
+			int orderCount, Date orderDate, int rn) {
 		super();
 		this.memberNo = memberNo;
 		this.memberCateg = memberCateg;
@@ -35,6 +36,7 @@ public class AdminMember implements java.io.Serializable{
 		this.comNo = comNo;
 		this.orderCount = orderCount;
 		this.orderDate = orderDate;
+		this.rn = rn;
 	}
 
 	public int getMemberNo() {
@@ -133,12 +135,20 @@ public class AdminMember implements java.io.Serializable{
 		this.orderDate = orderDate;
 	}
 
+	public int getRn() {
+		return rn;
+	}
+
+	public void setRn(int rn) {
+		this.rn = rn;
+	}
+
 	@Override
 	public String toString() {
 		return "AdminMember [memberNo=" + memberNo + ", memberCateg=" + memberCateg + ", memberId=" + memberId
 				+ ", memberPwd=" + memberPwd + ", memberName=" + memberName + ", memberNickName=" + memberNickName
 				+ ", memberEmail=" + memberEmail + ", memberEnroll=" + memberEnroll + ", memberStatus=" + memberStatus
-				+ ", comNo=" + comNo + ", orderCount=" + orderCount + ", orderDate=" + orderDate + "]";
+				+ ", comNo=" + comNo + ", orderCount=" + orderCount + ", orderDate=" + orderDate + ", rn=" + rn + "]";
 	}
 
 	

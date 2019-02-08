@@ -1,15 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <jsp:include page="../common/header.jsp"/>
 <style>
 	#sellerSalesList, #sellerOrderList{
 		text-align:center;
 	}
+	.member-ul .member-li > span{
+		width : 110px !important;
+	}
 </style>
 <section>
 	<div class="right-panel">
 	
-		<p>sellerOrder.jsp</p>
+		<p>sellerDetail.jsp</p>
 	<div class="card">
 			<div class="card-header col-md-12">
 				<h3 class="menu-title">업체 정보</h3>
@@ -20,24 +25,39 @@
 					<div class="col-md-2"></div>
 					<div class="col-md-4">
 						<ul class="member-ul">
-							<li class="member-li"><span>지점명</span><p>강남점</p></li>
-							<li class="member-li"><span>이메일</span><p>asdflaksdf@asdfa.com</p></li>
-							<li class="member-li"><span>영업 상태</span><p>영업중</p></li>
+							<li class="member-li"><span>지점명</span><p>${seller.comName }</p></li>
+							<li class="member-li"><span>이메일</span><p>${seller.memberEmail }</p></li>
+							<li class="member-li"><span>영업 상태</span>
+								<p>
+									<c:choose>
+										<c:when test="${seller.comStatus.equals('Y') }">영업중</c:when>
+										<c:when test="${seller.comStatus.equals('Y') }">영업 정지</c:when>
+										<c:when test="${seller.comStatus.equals('Y') }">개점준비중</c:when>
+										<c:otherwise>영업 종료</c:otherwise>
+									</c:choose>
+								</p>
+							</li>
 							<li class="member-li"><span></span></li>
-							<li class="member-li"><span>매출</span></li>
+							<c:if test="${seller.comConfirm=='Y'}"><li class="member-li"><span>매출</span></li></c:if>
 						</ul> 
 					</div>
 					<div class="col-md-4">
 						<ul class="member-ul">
-							<li class="member-li"><span>아이디</span><p>asdfasdfa</p></li>
-							<li class="member-li"><span>개점일</span><p>2018-11-01</p></li>
-							<li class="member-li"><span>?????</span><p>2018-12-12</p></li>
+							<li class="member-li"><span>아이디</span><p>${seller.memberId }</p></li>
+							<li class="member-li"><span>가입일</span><p>${seller.memberEnroll }</p></li>
+							<li class="member-li"><span>개점일</span>
+								<p>
+									<c:if test="${empty seller.comDate}">미정</c:if>
+									<c:if test="${not empty seller.comDate}">${seller.comDate}</c:if>
+								</p>
+							</li>
 							<li class="member-li"><span></span></li>
-							<li class="member-li"><span>주문 내역</span></li>
+							<c:if test="${seller.comConfirm=='Y'}"><li class="member-li"><span>주문 내역</span></li></c:if>
 						</ul>
 					</div>
 					<div class="col-sm-1"></div>
 				</div>
+				<c:if test="${seller.comConfirm=='Y'}">
 				
 				<!-- 승인 상태일 때 불러오는 것 -->
 				<div class="row">
@@ -109,6 +129,7 @@
 					</table>
 					<div class="col-md-2"></div>
 				</div>
+				
 				<!-- 매출 선택 함수 -->
 				<script>
 					$(function() {
@@ -167,32 +188,40 @@
 					<div class="col-md-2"></div>
 				</div>
 				<!-- 페이징 처리 끝 -->
-				
-				
+				</c:if>
+				<c:if test="${seller.comConfirm=='N'}">
 				<!-- 승인 대기중일 때 불러오는 것 -->
+				<div class="row">
 				<div class="col-md-2"></div>
 				<div class="col-md-4">
 						<ul class="member-ul">
-							<li class="member-li"><span>계약일자</span><p>2019-01-15</p></li>
-							<li class="member-li"><span>계약자</span><p>홍길동</p></li>
-							<li class="member-li"><span></span><p>영업중</p></li>
+							<li class="member-li"><span>가입일자</span><p>${seller.memberEnroll }</p></li>
+							<li class="member-li"><span>점  주</span><p>${seller.memberName }</p></li>
+							<li class="member-li"><span>매장 주소</span><p>${seller.comAddress }</p></li>
 							<li class="member-li"><span></span></li>
 						</ul> 
 					</div>
 					<div class="col-md-4">
 						<ul class="member-ul">
-							<li class="member-li"><span>계약번호</span><p>asdfasdfa</p></li>
+							<li class="member-li"><span>사업자번호</span><p>${seller.comLisenseNo }</p></li>
 							<li class="member-li"><span>계약금</span><p>5,000,000</p></li>
-							<li class="member-li"><span>?????</span><p>2018-12-12</p></li>
+							<li class="member-li"><span>계정승인상태</span>
+								<p>
+									<c:if test="${seller.comConfirm=='N'}">
+									<button class="btn btn-outline-warning btn-sm" onclick="admit()">계정 승인</button>
+									</c:if>
+								</p></li>
 							<li class="member-li"><span></span></li>
 						</ul>
 					</div>
 				<div class="col-sm-1"></div>
+				</c:if>
 				<!-- 끝 -->
+				</div>
 				<div class="col-md-2"></div>
 				<div class="col-md-6"></div>	
 				<div class="col-md-4">
-					<button class="btn btn-outline-secondary" onclick="location.href='admin.ad?admin=seller/sellerOrder'">목록으로</button>
+					<button class="btn btn-outline-secondary" onclick="location.href='sellerList.ad'">목록으로</button>
 				</div>
 			</div>
 		</div>

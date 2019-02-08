@@ -185,9 +185,9 @@
 					<i class="dropdown icon"></i>
 					<span class="text">기본메뉴</span>
 					<div class="menu">
-						<div class="item">콤비네이션</div>
-						<div class="item">불고기피자</div>
-						<div class="item">맛있는피자</div>
+						<c:forEach var="menu" items="${ basicMenu }">
+							<div class="item">${ menu }</div>
+						</c:forEach>
 				    </div>
 				</div>
 				
@@ -301,8 +301,9 @@
 						<i class="dropdown icon"></i>
 						<div class="default text">도우</div>
 						<div class="menu">
-							<div class="item">오리지널</div>
-							<div class="item">씬</div>
+							<c:forEach var="menu" items="${ doughList }">
+								<div class="item">${ menu }</div>
+							</c:forEach>
 					    </div>
 					</div>
 					<span class="text-label">사이즈</span>
@@ -311,8 +312,9 @@
 						<i class="dropdown icon"></i>
 						<div class="default text">사이즈</div>
 						<div class="menu">
-							<div class="item">R</div>
-							<div class="item">L</div>
+							<c:forEach var="menu" items="${ sizeList }">
+								<div class="item" value="${ menu }">${ menu }</div>
+							</c:forEach>
 					    </div>
 					</div>
 					<span class="text-label">엣지</span>
@@ -321,8 +323,9 @@
 						<i class="dropdown icon"></i>
 						<div class="default text">엣지</div>
 						<div class="menu">
-							<div class="item">일반</div>
-							<div class="item">치즈크러스트</div>
+							<c:forEach var="menu" items="${ edgeList }">
+								<div class="item">${ menu }</div>
+							</c:forEach>
 					    </div>
 					</div>
 					<span class="text-label">소스</span>
@@ -331,8 +334,9 @@
 						<i class="dropdown icon"></i>
 						<div class="default text">소스</div>
 						<div class="menu">
-							<div class="item">토마토소스</div>
-							<div class="item">불고기소스</div>
+							<c:forEach var="menu" items="${ sauceList }">
+								<div class="item">${ menu }</div>
+							</c:forEach>
 					    </div>
 					</div>
 					
@@ -422,18 +426,14 @@
 							</tr>
 						</thead>
 						<tbody>
+							<c:forEach var="menu" items="${ toppingList }">
 							<tr>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
+								<td>${ menu.materialName }</td>
+								<td>${ menu.materialSize }</td>
+								<td>${ menu.materialWeight }</td>
+								<td>${ menu.materialSellprice }</td>
 							</tr>
-							<tr>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
-							</tr>
+							</c:forEach>
 						</tbody>
 					</table>
 				

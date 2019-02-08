@@ -14,13 +14,17 @@ public class CompanyBoard implements java.io.Serializable{
 	private int boardLevel;
 	private int boardRefno;
 	private String boardStatus;
+	private String boardAnswer;
+	private int boardComNo;
+	private String memberName;
 	
 	public CompanyBoard() {
 		
 	}
-	
-	public CompanyBoard(int boardNo, int boardType, int boardCateG, String boardTitle, String boardContent, int boardCount,
-			int memberNo, Date boardDate, int boardLevel, int boardRefno, String boardStatus) {
+
+	public CompanyBoard(int boardNo, int boardType, int boardCateG, String boardTitle, String boardContent,
+			int boardCount, int memberNo, Date boardDate, int boardLevel, int boardRefno, String boardStatus,
+			String boardAnswer, int boardComNo, String memberName) {
 		super();
 		this.boardNo = boardNo;
 		this.boardType = boardType;
@@ -33,6 +37,9 @@ public class CompanyBoard implements java.io.Serializable{
 		this.boardLevel = boardLevel;
 		this.boardRefno = boardRefno;
 		this.boardStatus = boardStatus;
+		this.boardAnswer = boardAnswer;
+		this.boardComNo = boardComNo;
+		this.memberName = memberName;
 	}
 
 	public int getBoardNo() {
@@ -123,13 +130,39 @@ public class CompanyBoard implements java.io.Serializable{
 		this.boardStatus = boardStatus;
 	}
 
+	public String getBoardAnswer() {
+		return boardAnswer;
+	}
+
+	public void setBoardAnswer(String boardAnswer) {
+		this.boardAnswer = boardAnswer;
+	}
+
+	public int getBoardComNo() {
+		return boardComNo;
+	}
+
+	public void setBoardComNo(int boardComNo) {
+		this.boardComNo = boardComNo;
+	}
+
+	public String getMemberName() {
+		return memberName;
+	}
+
+	public void setMemberName(String memberName) {
+		this.memberName = memberName;
+	}
+
 	@Override
 	public String toString() {
-		return "Board [boardNo=" + boardNo + ", boardType=" + boardType + ", boardCateG=" + boardCateG + ", boardTitle="
-				+ boardTitle + ", boardContent=" + boardContent + ", boardCount=" + boardCount + ", memberNo="
-				+ memberNo + ", boardDate=" + boardDate + ", boardLevel=" + boardLevel + ", boardRefno=" + boardRefno
-				+ ", boardStatus=" + boardStatus + "]";
+		return "CompanyBoard [boardNo=" + boardNo + ", boardType=" + boardType + ", boardCateG=" + boardCateG
+				+ ", boardTitle=" + boardTitle + ", boardContent=" + boardContent + ", boardCount=" + boardCount
+				+ ", memberNo=" + memberNo + ", boardDate=" + boardDate + ", boardLevel=" + boardLevel + ", boardRefno="
+				+ boardRefno + ", boardStatus=" + boardStatus + ", boardAnswer=" + boardAnswer + ", boardComNo="
+				+ boardComNo + ", memberName=" + memberName + "]";
 	}
+
 	
 	
 	

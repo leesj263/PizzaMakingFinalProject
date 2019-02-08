@@ -142,20 +142,20 @@ public class TestController {
 	
 	
 	//FAQ
-	@RequestMapping(value="/faqDetail.t")
+	@RequestMapping(value="/faqOrder.t")
 	public String faq1() {
-		return "customer/faq/faqDetail";
+		return "customer/faq/faqOrder";
 	}
-	@RequestMapping(value="/faqList.t")
+	@RequestMapping(value="/faqMember.t")
 	public String faq2() {
-		return "customer/faq/faqList";
+		return "customer/faq/faqMember";
 	}
-	@RequestMapping(value="/faqUpdate.t")
+	@RequestMapping(value="/faqPayCoupon.t")
 	public String faq3() {
-		return "customer/faq/faqUpdate";
+		return "customer/faq/faqPayCoupon";
 	}
-	@RequestMapping(value="/faqWrite.t")
+	@RequestMapping(value="/faqEtc.t")
 	public String faq4() {
-		return "customer/faq/faqWrite";
+		return "customer/faq/faqEtc";
 	}
 }
