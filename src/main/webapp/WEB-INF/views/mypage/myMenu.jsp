@@ -20,7 +20,7 @@
 	<%@ include file="/WEB-INF/views/main/menubar.jsp"%>
 
 	<div class="ui small vertical menu" style="float: left; width:20%; margin-top: 70px; width:150px;">
-		<a class="item" href="mypage.t">
+		<a class="item" href="mypage.mp">
 		    주문내역
 		  </a>
 		  <a class="item active" href="myPageMyMenu.t">

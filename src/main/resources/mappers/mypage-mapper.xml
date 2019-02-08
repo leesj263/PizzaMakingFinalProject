@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Mypage">
+	<resultMap type="com.kh.pmfp.mypage.model.vo.OrderList" id="mypageOrderResultSet">
+		<id property="orderNo" column="ORDER_NO"/>
+		<result property="orderMaterial" column="ORDER_MATERIAL"/>
+		<result property="orderMethod" column="ORDER_METHOD"/>
+		<result property="comName" column="COM_NAME"/>
+		<result property="payPrice" column="ORDER_PAYPRICE"/>
+	</resultMap>
+	
+	
+
+	<select id="selectOrderList" resultMap="mypageOrderResultSet" parameterType="Member">
+		SELECT om.order_no,
+      			 LISTAGG(cast(m.material_name || ot.order_tcount as VARCHAR(100)),'/') within group(order by m.material_no) ORDER_MATERIAL,
+      			 om.order_method, com.com_name, om.order_payprice
+		FROM order_main OM 
+			JOIN company COM ON om.com_no=com.com_no 
+			JOIN order_item OI ON om.order_no=oi.order_no
+			JOIN order_topping OT ON oi.order_ino=ot.order_ino
+			JOIN material m ON ot.material_no=m.material_no
+		WHERE om.MEMBER_NO=7
+		group by om.order_no, om.order_method, com.com_name, om.order_payprice
+	</select>
+	
+	
+</mapper>
