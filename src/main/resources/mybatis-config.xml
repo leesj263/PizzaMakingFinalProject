@@ -18,5 +18,6 @@
 		<mapper resource="mappers/member-mapper.xml"/>
 		<mapper resource="mappers/company-mapper.xml"/>
 		<mapper resource="mappers/admin-mapper.xml"/>
+		<mapper resource="mappers/customerOrder-mapper.xml"/>
 	</mappers>
 </configuration>
