@@ -135,7 +135,7 @@ h1 {
 			<li><a id="menuList2">고객센터</a>
 				<ul id="down2" style="display:none">
 					<li><a href="qnaList.t">Q&A</a></li><br>  <!-- 이건 그냥 테스트용으로 만든거! 지워도됨  : 솔 -->
-					<li><a href="faqDetail.t">FAQ</a></li>
+					<li><a href="faqOrder.t">FAQ</a></li>
 				</ul>
 			</li>
 			
