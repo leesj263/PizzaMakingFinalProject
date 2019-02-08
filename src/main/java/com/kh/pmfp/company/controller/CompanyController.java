@@ -1,5 +1,9 @@
 package com.kh.pmfp.company.controller;
 
+
+import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,11 +14,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.kh.pmfp.company.model.exception.FailInsertEmployeeInfo;
 import com.kh.pmfp.company.model.exception.FailSelectAdminMessage;
+import com.kh.pmfp.company.model.exception.FailSelectCompanyReview;
 import com.kh.pmfp.company.model.exception.FailSelectDeliveryMan;
 import com.kh.pmfp.company.model.exception.FailSelectEmployeeList;
 import com.kh.pmfp.company.model.exception.FailSelectOrder;
 import com.kh.pmfp.company.model.exception.FailUpdateDelivery;
+import com.kh.pmfp.company.model.exception.FailUpdateEmployeeInfo;
 import com.kh.pmfp.company.model.exception.FailUpdateOrderStatus;
 import com.kh.pmfp.company.model.exception.FaileDetailMessage;
 import com.kh.pmfp.company.model.service.CompanyService;
@@ -343,8 +350,90 @@ public class CompanyController {
 			request.setAttribute("msg", e.getMessage());
 			return "common/errorPage";
 		}
+	}
+	
+	
+	@RequestMapping("inputEmployeeInfo.com")
+	public void inputEmployeeInfo(HttpServletRequest request, HttpServletResponse response) {
+		String inputRank = request.getParameter("inputRank");
+		String inputName = request.getParameter("inputName");
+		String inputPhone = request.getParameter("inputPhone");
+		String inputAddress = request.getParameter("inputAddress");
+		String inputDate = request.getParameter("inputDate");
+		
+		System.out.println("inputRank : " + inputRank);
+		System.out.println("inputName : " + inputName);
+		System.out.println("inputPhone : " + inputPhone);
+		System.out.println("inputAddress : " + inputAddress);
+		System.out.println("inputDate : " + inputDate);
+		
+		
+		try {
+			java.sql.Date date = java.sql.Date.valueOf(inputDate);
+			
+			CompanyEmployee ce = new CompanyEmployee();
+			//나중에 업체번호도 넣어야됨
+			ce.setEmployeeRank(inputRank);
+			ce.setEmployeeName(inputName);
+			ce.setEmployeePhone(inputPhone);
+			ce.setEmployeeAddress(inputAddress);
+			ce.setEmployeeDate(date);
+			
+			int result = cs.inputEmployeeInfo(ce);
+			
+		} catch (FailInsertEmployeeInfo e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+	
+	@RequestMapping("deleteEmployeeInfo.com")
+	public void deleteEmployeeInfo(HttpServletRequest request, HttpServletResponse response) {
+		String[] empNoList = request.getParameterValues("arr");
+		ArrayList<Integer> list = new ArrayList<Integer>();
+		
+		System.out.println("empNoList길이 : " + empNoList.length);
+		
+		for(int i = 0; i< empNoList.length; i++) {
+			list.add(Integer.parseInt(empNoList[i]));
+			System.out.println("empNoList["+i+"] : " + empNoList[i]);
+		}
+		
+		try {
+			int result = cs.deleteEmployeeInfo(list);
+			
+			
+		} catch (FailUpdateEmployeeInfo e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		
 	}
+	
+	
+	@RequestMapping("selectCompanyReview.com")
+	public String selectCompanyReview(HttpServletRequest request, HttpServletResponse response) {
+		
+		ArrayList<CompanyBoard> list = new ArrayList<CompanyBoard>();
+		try {
+			//업체번호를 넘겨야됨(임시로 2번)
+			list = cs.selectCompanyReview(2);
+			request.setAttribute("list", list);
+			return "company/companyAnswer";
+			
+			
+		} catch (FailSelectCompanyReview e) {
+			request.setAttribute("msg", e.getMessage());
+			return "common/errorPage";
+		}
+		
+		
+		
+		
+	}
+	
+	
 
 }

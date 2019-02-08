@@ -5,11 +5,14 @@ import java.util.ArrayList;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.kh.pmfp.company.model.exception.FailInsertEmployeeInfo;
 import com.kh.pmfp.company.model.exception.FailSelectAdminMessage;
+import com.kh.pmfp.company.model.exception.FailSelectCompanyReview;
 import com.kh.pmfp.company.model.exception.FailSelectDeliveryMan;
 import com.kh.pmfp.company.model.exception.FailSelectEmployeeList;
 import com.kh.pmfp.company.model.exception.FailSelectOrder;
 import com.kh.pmfp.company.model.exception.FailUpdateDelivery;
+import com.kh.pmfp.company.model.exception.FailUpdateEmployeeInfo;
 import com.kh.pmfp.company.model.exception.FailUpdateOrderStatus;
 import com.kh.pmfp.company.model.exception.FaileDetailMessage;
 import com.kh.pmfp.company.model.vo.CompanyBoard;
@@ -220,6 +223,45 @@ public class CompanyDaoImpl implements CompanyDao{
 		
 		if(list == null) {
 			throw new FailSelectEmployeeList("업체 회원조회 실패!");
+		}
+		
+		return list;
+	}
+
+	@Override
+	public int inputEmployeeInfo(SqlSessionTemplate sqlSession, CompanyEmployee ce) throws FailInsertEmployeeInfo {
+		// TODO Auto-generated method stub
+		int result = sqlSession.insert("Company.inputEmployeeInfo", ce);
+		
+		if(result <= 0) {
+			throw new FailInsertEmployeeInfo("업체 회원 정보 삽입 실패!");
+		}
+		
+		return result;
+	}
+
+	@Override
+	public int deleteEmployeeInfo(SqlSessionTemplate sqlSession, ArrayList<Integer> list) throws FailUpdateEmployeeInfo {
+		// TODO Auto-generated method stub
+		int result = sqlSession.update("Company.deleteEmployeeInfo", list);
+		
+		//System.out.println("list : " + list);
+		
+		if(result <= 0) {
+			throw new FailUpdateEmployeeInfo("업체직원 정보 수정 실패!");
+		}
+		
+		return result;
+	}
+
+	@Override
+	public ArrayList<CompanyBoard> selectCompanyReview(SqlSessionTemplate sqlSession, int comNo) throws FailSelectCompanyReview {
+		// TODO Auto-generated method stub
+		ArrayList<CompanyBoard> list = new ArrayList<CompanyBoard>();
+		list = (ArrayList)sqlSession.selectList("Company.selectCompanyReview", comNo);
+		
+		if(list == null) {
+			throw new FailSelectCompanyReview("업체 후기 조회 실패!");
 		}
 		
 		return list;
