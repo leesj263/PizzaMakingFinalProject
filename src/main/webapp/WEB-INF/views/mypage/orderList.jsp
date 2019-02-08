@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,7 +13,7 @@
 	<%@ include file="/WEB-INF/views/main/menubar.jsp"%>
 
 	<div class="ui small vertical menu" style="float: left; width:20%; margin-top: 70px; width:150px;">
-		<a class="item active" href="mypage.t">
+		<a class="item active" href="mypage.mp">
 		    주문내역
 		  </a>
 		  <a class="item" href="myPageMyMenu.t">
@@ -50,7 +52,7 @@
 			    <th>주문금액</th>
 		 	</tr></thead>
 		  <tbody>
-		    <tr onclick="location.href='myPageOrderDetail.t'">
+		    <!-- <tr onclick="location.href='myPageOrderDetail.t'">
 		     <td>20190117</td>
 		     <td>도우-씬 /사이즈-L 
 				엣지-크러스트 / 소스-토마토소스
@@ -58,25 +60,25 @@
 		     <td>배달</td>
 		     <td>천호점</td>
 		     <td>25,000원</td>
-		    </tr>
-		    <tr>
-		     <td>20190118</td>
-		     <td>도우-씬 /사이즈-L 
-				엣지-크러스트 / 소스-토마토소스
-				토핑-불고기1, 새우1, 파인애플2</td>
-		     <td>배달</td>
-		     <td>동대문점</td>
-		     <td>38,000원</td>
-		    </tr>
-		    <tr>
-		    <td>20190120</td>
-		     <td>도우-씬 /사이즈-L 
-				엣지-크러스트 / 소스-토마토소스
-				토핑-불고기1, 새우1, 파인애플2</td>
-		     <td>배달</td>
-		     <td>역삼점</td>
-		     <td>40,000원</td>
-		    </tr>
+		    </tr> -->
+		    
+		    <c:forEach items="${ orderList }" var="o" varStatus="status">
+		    	<tr>
+		    		<td>${ o.orderNo }</td>
+					<td>${ toppingList[status.index] }</td>
+		    		
+		    		<c:if test="${o.orderMethod == 1}">
+		    			<td>방문포장</td>
+		    		</c:if>
+		    		<c:if test="${o.orderMethod == 2}">
+		    			<td>배달</td>
+		    		</c:if>
+		    		
+		    		<td>${ o.comName }점</td>
+		    		<td>${ o.payPrice }원</td>
+		    	</tr>
+		    </c:forEach>
+		    
 		  </tbody>
 		</table>
 		

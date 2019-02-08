@@ -464,7 +464,7 @@ h1 {
 		});
 
 		function mypage() {
-			location.href = "mypage.t";
+			location.href = "mypage.mp";
 
 		}
 	</script>
