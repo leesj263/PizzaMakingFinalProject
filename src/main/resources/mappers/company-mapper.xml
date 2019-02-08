@@ -52,10 +52,28 @@
 		<result property="empDeliveryStatus" column="EMP_DELIVERYSTATUS" />
 		<result property="empDeliveryONo" column="EMP_DELIVERINGONO" />
 	</resultMap>
+	
+	<resultMap type="com.kh.pmfp.company.model.vo.CompanyBoard"
+		id="companyReviewBoardResultSet">
+		<id property="boardNo" column="BOARD_NO" />
+		<result property="boardType" column="BOARD_TYPE" />
+		<result property="boardCateG" column="BOARD_CATEG" />
+		<result property="boardTitle" column="BOARD_TITLE" />
+		<result property="boardContent" column="BOARD_CONTENT" />
+		<result property="boardCount" column="BOARD_COUNT" />
+		<result property="memberNo" column="MEMBER_NO" />
+		<result property="boardDate" column="BOARD_DATE" />
+		<result property="boardLevel" column="BOARD_LEVEL" />
+		<result property="comboardRefno" column="BOARD_REFNO" />
+		<result property="boardStatus" column="BOARD_STATUS" />
+		<result property="boardAnswer" column="BOARD_ANSWER" />
+		<result property="boardComNo" column="BOARD_COMNO" />
+		<result property="memberName" column="MEMBER_ID" />
+	</resultMap>
 
 	<select id="selectAdminMessage"
 		resultMap="companyBoardResultSet">
-		SELECT *
+		SELECT BOARD_NO, BOARD_TYPE, BOARD_CATEG, BOARD_TITLE, BOARD_CONTENT, BOARD_COUNT,MEMBER_NO, BOARD_DATE, BOARD_LEVEL, BOARD_REFNO,  BOARD_STATUS   
 		FROM BOARD
 		WHERE BOARD_TYPE = 4
 		AND BOARD_STATUS = 'Y'
@@ -63,7 +81,7 @@
 
 	<select id="detailAdminMessage"
 		resultMap="companyBoardResultSet" parameterType="_int">
-		SELECT *
+		SELECT BOARD_NO, BOARD_TYPE, BOARD_CATEG, BOARD_TITLE, BOARD_CONTENT, BOARD_COUNT,MEMBER_NO, BOARD_DATE, BOARD_LEVEL, BOARD_REFNO,  BOARD_STATUS
 		FROM BOARD
 		WHERE BOARD_TYPE = 4
 		AND BOARD_STATUS = 'Y'
@@ -218,7 +236,7 @@
 	<select id="remainDeliveryMan" resultMap="companyEmployeeResultSet" parameterType="_int">
 		SELECT * 
 		FROM EMPLOYEE 
-		WHERE EMP_RANK = '배달원'
+		WHERE EMP_RANK = 'delivery'
 		AND COM_NO = #{ comNo }
 	</select>
 
@@ -263,7 +281,32 @@
 		FROM EMPLOYEE
 		WHERE COM_NO = #{ comNo }
 	</select>
+	
+	<insert id="inputEmployeeInfo">
+		INSERT INTO EMPLOYEE 
+		VALUES(SEQ_EMPNO.NEXTVAL, 2, #{ employeeName }, #{ employeePhone }, 'Y', #{employeeRank}, #{employeeDate}, #{employeeAddress}, NULL, NULL)
+	</insert>
 
+
+	<update id="deleteEmployeeInfo" parameterType="java.util.List">
+		UPDATE EMPLOYEE 
+		SET EMP_STATUS = 'N' 
+		WHERE EMP_NO IN
+		<foreach collection="list" item = "item" index="index" separator="," open="(" close=")">
+		 #{item.value}
+		</foreach>
+	</update>
+	
+	
+	<select id="selectCompanyReview" resultMap="companyReviewBoardResultSet" parameterType="_int">
+		SELECT B.BOARD_NO, B.BOARD_TYPE, B.BOARD_CATEG, B.BOARD_TITLE, B.BOARD_CONTENT, B.BOARD_COUNT, B.MEMBER_NO, B.BOARD_DATE, 
+		B.BOARD_LEVEL, B.BOARD_REFNO,  B.BOARD_STATUS, B.BOARD_ANSWER, B.BOARD_COMNO, M.MEMBER_ID
+		FROM BOARD B
+		JOIN MEMBER M
+		ON (B.MEMBER_NO = M.MEMBER_NO)
+		WHERE BOARD_TYPE = 1
+		AND BOARD_COMNO = #{comNo}
+	</select>
 </mapper>
 
 

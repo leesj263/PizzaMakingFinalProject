@@ -7,11 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.kh.pmfp.company.model.dao.CompanyDao;
+import com.kh.pmfp.company.model.exception.FailInsertEmployeeInfo;
 import com.kh.pmfp.company.model.exception.FailSelectAdminMessage;
+import com.kh.pmfp.company.model.exception.FailSelectCompanyReview;
 import com.kh.pmfp.company.model.exception.FailSelectDeliveryMan;
 import com.kh.pmfp.company.model.exception.FailSelectEmployeeList;
 import com.kh.pmfp.company.model.exception.FailSelectOrder;
 import com.kh.pmfp.company.model.exception.FailUpdateDelivery;
+import com.kh.pmfp.company.model.exception.FailUpdateEmployeeInfo;
 import com.kh.pmfp.company.model.exception.FailUpdateOrderStatus;
 import com.kh.pmfp.company.model.exception.FaileDetailMessage;
 import com.kh.pmfp.company.model.vo.CompanyBoard;
@@ -161,6 +164,31 @@ public class CompanyServiceImpl implements CompanyService{
 		// TODO Auto-generated method stub
 		ArrayList<CompanyEmployee> list = new ArrayList<CompanyEmployee>();
 		list = cd.selectEmployeeList(sqlSession, comNo);
+		return list;
+	}
+
+	@Override
+	public int inputEmployeeInfo(CompanyEmployee ce) throws FailInsertEmployeeInfo {
+		// TODO Auto-generated method stub
+		int result = cd.inputEmployeeInfo(sqlSession, ce);
+		
+		return result;
+	}
+
+	@Override
+	public int deleteEmployeeInfo(ArrayList<Integer> list) throws FailUpdateEmployeeInfo {
+		// TODO Auto-generated method stub
+		int result = cd.deleteEmployeeInfo(sqlSession, list);
+		
+		return result;
+	}
+
+	@Override
+	public ArrayList<CompanyBoard> selectCompanyReview(int comNo) throws FailSelectCompanyReview {
+		// TODO Auto-generated method stub
+		ArrayList<CompanyBoard> list = new ArrayList<CompanyBoard>();
+		list = cd.selectCompanyReview(sqlSession, comNo);
+		
 		return list;
 	}
 

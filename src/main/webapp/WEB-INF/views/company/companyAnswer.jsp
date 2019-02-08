@@ -1,6 +1,7 @@
 <!doctype html>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
@@ -52,30 +53,16 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr class="adminMessageTr" style="cursor: pointer;">
-								<td>1</td>
-								<td>minkyu112</td>
-								<td>사당점 추천해요~</td>
-								<td>이번에 집앞에 새로 생겨서 가봤는데, 정말 맛있어요!</td>
-								<td>190203 13:29</td>
-								<td>X</td>
-							</tr>
-							<tr class="adminMessageTr" style="cursor: pointer;">
-								<td>2</td>
-								<td>tjnwn123</td>
-								<td>치즈 많이 올려먹어보는거는 처음이에요!</td>
-								<td>기본 치즈양에서 추가로 올려먹으니까, 엄청 맛있어요</td>
-								<td>190202 11:05</td>
-								<td>X</td>
-							</tr>
-							<tr class="adminMessageTr" style="cursor: pointer;">
-								<td>3</td>
-								<td>pizzaMan551</td>
-								<td>직접 만드니까 재밌네요</td>
-								<td>제가 원하는대로 만들어먹으니까, 만족도가 높아요</td>
-								<td>190201 20:29</td>
-								<td>O</td>
-							</tr>
+							<c:forEach items="${list}" var="value">
+								<tr class="adminMessageTr" style="cursor: pointer;">
+									<td>${ value.boardNo }</td>
+									<td>${ value.memberName }</td>
+									<td>${ value.boardTitle }</td>
+									<td>${ value.boardContent }</td>
+									<td>${ value.boardDate }</td>
+									<td>${ value.boardAnswer }</td>
+								</tr>
+							</c:forEach>
 						</tbody>
 					</table>
 
