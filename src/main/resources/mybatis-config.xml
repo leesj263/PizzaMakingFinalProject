@@ -9,12 +9,13 @@
 		<typeAlias type="com.kh.pmfp.common.model.vo.Member" alias="Member"/>
 		<typeAlias type="com.kh.pmfp.company.model.vo.CompanyBoard" alias="CompanyBoard"/>
 		<typeAlias type="com.kh.pmfp.company.model.vo.CompanyOrder" alias="CompanyOrder"/>
-    	<typeAlias type="com.kh.pmfp.company.model.vo.CompanyEmployee" alias="CompanyEmployee"/>
+    <typeAlias type="com.kh.pmfp.company.model.vo.CompanyEmployee" alias="CompanyEmployee"/>
+    <typeAlias type="com.kh.pmfp.company.model.vo.CompanyMaterial" alias="CompanyMaterial"/>
 		<typeAlias type="com.kh.pmfp.admin.model.vo.AdminMember" alias="AdminMember"/>
 		<typeAlias type="com.kh.pmfp.admin.model.vo.AdminOrder" alias="AdminOrder"/>
 		<typeAlias type="com.kh.pmfp.admin.model.vo.AdminSeller" alias="AdminSeller"/>
-    	<typeAlias type="com.kh.pmfp.mypage.model.vo.OrderList" alias="OrderList"/>
-    	<typeAlias type="com.kh.pmfp.admin.model.vo.AdminBoard" alias="AdminBoard"/>
+    <typeAlias type="com.kh.pmfp.mypage.model.vo.OrderList" alias="OrderList"/>
+    <typeAlias type="com.kh.pmfp.admin.model.vo.AdminBoard" alias="AdminBoard"/>
 	</typeAliases>
 	
 	

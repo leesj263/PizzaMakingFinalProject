@@ -153,13 +153,21 @@
 		AND C.COM_NO=#{num} 
 	</select>
 	
+
+<!-- 	<select id="selectNoticeList" resultMap="boardResultSet">
+		SELECT ROWNUM, B.* 
+
 	<select id="selectNoticeList" resultMap="adminBoardResultSet">
 		SELECT B.*, M.MEMBER_NAME, M.MEMBER_NICKNAME, ROWNUM  
+
 		FROM BOARD B 
 		JOIN MEMBER M ON (B.MEMBER_NO=M.MEMBER_NO) 
 		WHERE B.BOARD_TYPE=4 AND B.BOARD_STATUS='Y'
+
+	</select> 
+
 		ORDER BY ROWNUM DESC
-	</select>
+	</select> -->
 	
 	<update id="updateBCount" parameterType="_int">
 		UPDATE BOARD 
@@ -174,4 +182,5 @@
 		WHERE B.BOARD_NO=#{num} AND B.BOARD_STATUS='Y'
 	</select>
 	
+
 </mapper>

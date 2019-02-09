@@ -20,6 +20,7 @@ import com.kh.pmfp.company.model.exception.FailSelectCompanyReview;
 import com.kh.pmfp.company.model.exception.FailSelectDeliveryMan;
 import com.kh.pmfp.company.model.exception.FailSelectEmployeeList;
 import com.kh.pmfp.company.model.exception.FailSelectOrder;
+import com.kh.pmfp.company.model.exception.FailSelectOrderStock;
 import com.kh.pmfp.company.model.exception.FailUpdateDelivery;
 import com.kh.pmfp.company.model.exception.FailUpdateEmployeeInfo;
 import com.kh.pmfp.company.model.exception.FailUpdateOrderStatus;
@@ -27,7 +28,9 @@ import com.kh.pmfp.company.model.exception.FaileDetailMessage;
 import com.kh.pmfp.company.model.service.CompanyService;
 import com.kh.pmfp.company.model.vo.CompanyBoard;
 import com.kh.pmfp.company.model.vo.CompanyEmployee;
+import com.kh.pmfp.company.model.vo.CompanyMaterial;
 import com.kh.pmfp.company.model.vo.CompanyOrder;
+import com.kh.pmfp.company.model.vo.CompanyOrderStock;
 
 
 @Controller
@@ -78,6 +81,11 @@ public class CompanyController {
 	@RequestMapping(value = "movePage.com", method=RequestMethod.GET)
 	public String moveCompanyPage(String movePage) {
 		return "company/"+movePage;
+	}
+	
+	@RequestMapping(value = "movePageToCustomerReview.com", method=RequestMethod.GET)
+	public String moveCompanyPage2(String movePage) {
+		return "customer/review/"+movePage;
 	}
 	
 	@RequestMapping(value = "goMain.com", method = RequestMethod.GET)
@@ -434,6 +442,42 @@ public class CompanyController {
 		
 	}
 	
+	@RequestMapping("orderStrok.com")
+	public String orderStrok(HttpServletRequest request, HttpServletResponse response) {
+		ArrayList<CompanyMaterial> list = new ArrayList<CompanyMaterial>();
+		try {
+			list = cs.orderStrok();
+			request.setAttribute("list", list);
+			return "company/orderStock";
+		} catch (FailSelectOrderStock e) {
+			request.setAttribute("msg", e.getMessage());
+			return "common/errorPage";
+		}
+			
+	}
+	
+	
+	@RequestMapping("applyStock.com")
+	public void applyStock(HttpServletRequest request, HttpServletResponse response) {
+		/*Object[] objects = request.getParameterValues("objects");
+		System.out.println("objects : " + objects);
+		System.out.println("objects의 길이 : " + objects.length);
+		
+		ArrayList<CompanyOrderStock> list = new ArrayList<CompanyOrderStock>();
+		CompanyOrderStock cos = new CompanyOrderStock();
+		
+		System.out.println("objects.toString() : " + objects.toString());
+		System.out.println("objects[0] : " + objects[0]);
+		System.out.println("objects[0].toString() : " + objects[0].toString());
+		System.out.println("objects[0].toString().indexOf(2) : " + objects[0].toString().indexOf(2));
+		for(int i = 0; i < objects.length ; i++) {
+			cos.setComNo(objects[i]);
+		}*/
+		String[] arr = request.getParameterValues("arr");
+		System.out.println("arr길이 : " + arr.length);
+		System.out.println("arr[0] : " + arr[0]);
+		System.out.println("arr[1] : " + arr[1]);
+	}
 	
 
 }

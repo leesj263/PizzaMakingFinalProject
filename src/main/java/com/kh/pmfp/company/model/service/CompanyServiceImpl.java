@@ -13,12 +13,14 @@ import com.kh.pmfp.company.model.exception.FailSelectCompanyReview;
 import com.kh.pmfp.company.model.exception.FailSelectDeliveryMan;
 import com.kh.pmfp.company.model.exception.FailSelectEmployeeList;
 import com.kh.pmfp.company.model.exception.FailSelectOrder;
+import com.kh.pmfp.company.model.exception.FailSelectOrderStock;
 import com.kh.pmfp.company.model.exception.FailUpdateDelivery;
 import com.kh.pmfp.company.model.exception.FailUpdateEmployeeInfo;
 import com.kh.pmfp.company.model.exception.FailUpdateOrderStatus;
 import com.kh.pmfp.company.model.exception.FaileDetailMessage;
 import com.kh.pmfp.company.model.vo.CompanyBoard;
 import com.kh.pmfp.company.model.vo.CompanyEmployee;
+import com.kh.pmfp.company.model.vo.CompanyMaterial;
 import com.kh.pmfp.company.model.vo.CompanyOrder;
 
 @Component
@@ -188,6 +190,15 @@ public class CompanyServiceImpl implements CompanyService{
 		// TODO Auto-generated method stub
 		ArrayList<CompanyBoard> list = new ArrayList<CompanyBoard>();
 		list = cd.selectCompanyReview(sqlSession, comNo);
+		
+		return list;
+	}
+
+	@Override
+	public ArrayList<CompanyMaterial> orderStrok() throws FailSelectOrderStock {
+		// TODO Auto-generated method stub
+		ArrayList<CompanyMaterial> list = new ArrayList<CompanyMaterial>();
+		list = cd.orderStrok(sqlSession);
 		
 		return list;
 	}
