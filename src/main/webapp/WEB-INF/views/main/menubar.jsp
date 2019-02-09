@@ -142,6 +142,7 @@ h1 {
 		<h1>Create account</h1>
 
 		<div class="mar">
+		<form action="" method="post" >
 			<table class="table">
 				<tr>
 					<td>
@@ -154,7 +155,7 @@ h1 {
 				</tr>
 				<tr style="display: none;" id="buisnessman">
 					<td colspan="2"><div class="ui input" style="width: 100%">
-							<input type="text" placeholder="사업자 번호를 입력하세요" id="businessNum">
+							<input type="text" placeholder="사업자 번호를 입력하세요" id="JoinBusinessNum">
 						</div></td>
 				</tr>
 				<tr>
@@ -167,18 +168,18 @@ h1 {
 							<input type="text" placeholder="아이디" id="JoinUserId">
 						</div></td>
 					<td align="center">
-						<button class="ui yellow basic button" style="width: 100%">아이디
+						<button class="ui yellow basic button" style="width: 100%" onclick="return IdCheckBtn()">아이디
 							중복확인</button>
 					</td>
 				</tr>
 				<tr>
 					<td colspan="2"><div class="ui input" style="width: 100%">
-							<input type="text" placeholder="비밀번호" id="JoinUserPwd">
+							<input type="password" placeholder="비밀번호" id="JoinUserPwd">
 						</div></td>
 				</tr>
 				<tr>
 					<td colspan="2"><div class="ui input" style="width: 100%">
-							<input type="text" placeholder="비밀번호 확인" id="JoinUserPwd2">
+							<input type="password" placeholder="비밀번호 확인" id="JoinUserPwd2">
 						</div></td>
 				</tr>
 				<tr>
@@ -186,16 +187,16 @@ h1 {
 							<input type="text" placeholder="이메일" id="JoinUserEmail">
 						</div></td>
 					<td align="center">
-						<button class="ui yellow basic button" style="width: 100%">인증번호 발송</button>
+						<button class="ui yellow basic button" style="width: 100%" onclick="return CertificationSendBtn()">인증번호 발송</button>
 					</td>
 				</tr>
 				<tr>
 					<td><div class="ui input" style="width: 100%">
-							<input type="text" placeholder="인증번호를 확인해주세요">
+							<input type="text" placeholder="인증번호를 확인해주세요" id="JoinCertificationNum">
 						</div></td>
 					<td align="center">
 						<button class="ui yellow basic button" style="width: 100%"
-							id="Certification">인증 확인</button>
+							id="Certification" onclick="return CertificationBtn()">인증 확인</button>
 					</td>
 				</tr>
 				<!-- 이메일 전화번호 -->
@@ -208,7 +209,7 @@ h1 {
 					</TD>
 					 -->
 					<TD align="center">
-						<button class="ui yellow button" onclick="CreateAccount();"
+						<button class="ui yellow button" onclick="return CreateAccount()"
 							style="width: 100%">계정만들기</button>
 
 
@@ -221,6 +222,7 @@ h1 {
 					</TD>
 				</tr>
 			</table>
+			</form>
 		</div>
 	</div>
 
@@ -518,12 +520,125 @@ h1 {
 		/* $("#login").click(function(){
 			$("#memberCateg1").h
 		}); */
+		var idCheck = 1;
+		var CertificationSend =1;
+		var Certification =1;
+		
+		//아이디 중복확인 버튼 
+		function IdCheckBtn(){
+			idCheck = 2;
+			return false;
+		}
+		
+		//인증번호 발송 버튼
+		function CertificationSendBtn(){
+			CertificationSend=2;
+			return false;
+		}
+		
+		//인증확인 버튼
+		function CertificationBtn(){
+			Certification=2;
+			return false;
+		}	
 		
 		//회원가입 유효성 검사
 		function CreateAccount(){
-			swal("Hello world!");
+			var JoinBusinessNum = $("#JoinBusinessNum").val();	//사업자 번호 
+			var JoinUserName = $("#JoinUserName").val();	//이름 
+			var JoinUserId = $("#JoinUserId").val();		//아이디 
+			var JoinUserPwd = $("#JoinUserPwd").val();		//비밀번호 
+			var JoinUserPwd2 = $("#JoinUserPwd2").val();	//비밀번호 확인
+			var JoinUserEmail = $("#JoinUserEmail").val();	//이메일 
+			var JoinCertificationNum = $("#JoinCertificationNum").val();	//인증번호 
 			
 			
+			
+			//이메일 유효성 검사(4글자 이상 나오고 @나오고 1글자 이상 주소)
+			var regEmail = /\w{4,}@\w+.\w{1,3}/;
+			//아이디 유효성 검사(첫글짜는 반드시 영문 소문자,4~12자로,숫자가 하나이상 포함, 영문소문자와숫자로!)
+			var regId= /^[a-z]+[a-z0-9]{4,12}$/;
+			
+			//이름 검사
+			if(JoinUserName==""){
+				swal("이름을 입력해주세요!");
+				$("#JoinUserName").focus();
+				return false;
+			}
+			
+			//아이디검사
+			if(JoinUserId==""){
+				swal("아이디 입력해주세요!");
+				$("#JoinUserId").focus();
+				return false;
+			}
+			
+			//아이디 중복확인 체크여부(체크 했는지 안했는징)
+			if(idCheck==1){
+				swal("중복체크해주세요");
+				return false;
+			}
+			
+			//비밀번호 검사
+			if(JoinUserPwd==""){
+				swal("비밀번호를 입력해주세요.");
+				return false;
+			}
+			if(JoinUserPwd!=JoinUserPwd2){
+				swal("비밀번호가 일치하지 않습니다.");
+				return false;
+			}
+			
+			//이메일 검사
+			if(JoinUserEmail==""){
+				swal("이메일을 입력해주세요!");
+				return false;
+			}
+			//인증번호 확인
+			if(JoinCertificationNum==""){
+				swal("인증번호를 입력해주세요");
+				return false;
+			}
+			
+			
+		 	if(regId.test(JoinUserId)){
+				//swal("아이디 정상입력");
+				console.log("정상 입력");
+			}else{
+				swal("아이디를 올바르게 입력해주세용");
+				console.log("아이디 비정상 입력");
+				return false;
+			} 
+			if(regEmail.test(JoinUserEmail)){
+				//swal("이메일 정상입력");
+				console.log("정상 입력");
+			}else{
+				swal("올바른 이메일을 입력해주세요");
+				return false;
+			} 
+			
+			//인증버호 발송 체크여부(체크 했는지 안했는징)
+			if(CertificationSend==1){
+				swal("인증번호 발송해주세요");
+				return false;
+			}
+			//인증확인 버튼  체크여부(체크 했는지 안했는징)
+			if(Certification==1){
+				swal("인증확인 해주세요");
+				return false;
+			}
+			
+			/* 
+			console.log('사업자 번호 '+JoinBusinessNum);
+			console.log('이름 이름 '+JoinUserName);
+			console.log('아이디 '+JoinUserId);
+			console.log('비밀번호'+JoinUserPwd);
+			console.log('비밀번호 확인'+JoinUserPwd2);
+			console.log('이메일 '+JoinUserEmail);
+			console.log('인증번호 '+JoinCertificationNum);
+			
+			 */
+			return false;
 		}
 	</script>
 
