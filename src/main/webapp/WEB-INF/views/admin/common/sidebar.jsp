@@ -23,12 +23,12 @@
 			</button> -->
 			
 			<a class="navbar-brand" href="./">
-			<img src="${contextPath }/resources/admin/images/logo.PNG" alt="Logo" height="60px"></a>
+				<img src="${contextPath }/resources/admin/images/logo.PNG" alt="Logo" height="60px">
+			</a>
 		</div>
 
 		<div id="main-menu" class="main-menu collapse navbar-collapse">
 			<ul class="nav navbar-nav">
-				 
 				<li class="active">
 					<a href="admin.ad?admin=adminMain"><i class="menu-icon fa fa-dashboard"></i>Main</a>
 				</li>
@@ -36,12 +36,13 @@
 				<h3 class="menu-title">Member</h3>
 				<!-- /.menu-title -->
 				<li class="menu-item-has-children dropdown">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> 
+					<a href="userList.ad" ><i class="menu-icon ti-user"></i>User</a>
+					<!-- <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> 
 						<i class="menu-icon ti-user"></i>User
 					</a>
 					<ul class="sub-menu children dropdown-menu">
 						<li><i class="fa fa fa-bars"></i><a href="userList.ad">List</a></li>
-						<li><i class="fa fa-id-badge"></i><a href="userDetail.ad?num=7">Details</a></li>
+						<li><i class="fa fa-id-badge"></i><a href="userDetail.ad?num=7">Details</a></li> -->
 					<!-- 			
 						<li><i class="fa fa-bars"></i><a href="#">Tabs</a></li>
 						<li><i class="fa fa-share-square-o"></i><a href="#">Social Buttons</a></li>
@@ -53,7 +54,7 @@
 						<li><i class="fa fa-th"></i><a href="#">Grids</a></li>
 						<li><i class="fa fa-file-word-o"></i><a href="#">Typography</a></li>
 					 -->
-					</ul>
+					<!-- </ul> -->
 				</li>
 				<li class="menu-item-has-children dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> 
@@ -133,8 +134,8 @@
 				<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> 
 					<i class="menu-icon fa fa-glass"></i>Notice</a>
 					<ul class="sub-menu children dropdown-menu">
-						<li><i class="menu-icon fa fa-sign-in"></i><a href="admin.ad?admin=board/noticeList">Notice List</a></li>
-						<li><i class="menu-icon fa fa-sign-in"></i><a href="admin.ad?admin=board/noticeWrite">Write</a></li>
+						<li><i class="menu-icon fa fa-sign-in"></i><a href="noticeList.ad">Notice List</a></li>
+						<li><i class="menu-icon fa fa-sign-in"></i><a href="noticeWriteView.ad">Write</a></li>
 						<!-- 
 						<li><i class="menu-icon fa fa-paper-plane"></i><a href="#">Forget	Pass</a></li>
 						 -->

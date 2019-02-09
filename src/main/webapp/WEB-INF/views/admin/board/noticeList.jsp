@@ -1,5 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <jsp:include page="../common/header.jsp"/>
 <style>
 	.card-header{
@@ -31,6 +32,29 @@
 						</tr>
 					</thead>
 					<tbody>
+						<c:forEach items="${noticeList }" var="notice">
+							<tr onclick="location.href='noticeDetail.ad?num=${notice.boardNo}'">
+								<th scope="row">${notice.rn }</th>
+								<c:choose>
+									<c:when test="${notice.boardCate==1 }">
+										<td>[안내]</td>
+									</c:when>
+									<c:when test="${notice.boardCate==2 }">
+										<td>[공지]</td>
+									</c:when>
+									<c:when test="${notice.boardCate==3 }">
+										<td>[경고]</td>
+									</c:when>
+									<c:otherwise>
+										<td>[이벤트]</td>
+									</c:otherwise>
+								</c:choose>
+								<td>${notice.boardTitle }</td>
+								<td>${notice.boardDate }</td>
+								<td>${notice.boardCount }</td>
+							</tr>
+						</c:forEach>
+						<!-- 
 						<tr>
 							<th scope="row">3</th>
 							<td>[업체][공지]</td>
@@ -52,6 +76,7 @@
 							<td>2019-01-20</td>
 							<td>15</td>
 						</tr>
+						-->
 					</tbody>
 				</table>
 				<div class="col-md-2"></div>
@@ -60,7 +85,7 @@
 	</div>
 	</div>
 	<div class="col-md-2"></div>
-	<div class="col-md-1"><button class="btn btn-outline-warning" onclick="location.href='admin.ad?admin=board/noticeWrite'">작성</button></div>
+	<div class="col-md-1"><button class="btn btn-outline-warning" onclick="location.href='noticeWriteView.ad'">작성</button></div>
 	<!-- 검색 영역 -->
 	<div class="form-inline col-md-4">
 		<form class="search-form">
@@ -69,7 +94,7 @@
 				<option value="userId">내용</option>
 				<option value="category">분류</option>
 			</select>
-			<select name="searchCategory" style="display:none;" class="form-control"></select>
+			<select name="searchCategory" style="display:none;" class="form-control" onChange="showCategory(this.options[this.selectedIndex].value)"></select>
 			<select name="searchCategory2" style="display:none;" class="form-control"></select>
 			<input class="form-control mr-sm-2" type="text" name="searchNoticeValue" placeholder="Search ..." aria-label="Search">
 		</form>
@@ -92,7 +117,7 @@
 	<div class="col-md-1"></div>
 	<script>
 		function selectSearch(obj){
-			var category=["업체공지","고객공지"];
+			var category=["분류", "업체공지", "고객공지"];
 			var $target = $("select[name='searchCategory']");
 			var data;
 			console.log(obj);
@@ -113,7 +138,7 @@
 		}
 		
 		function showCategory(obj) {
-			var category1 = [ "본사 공지", "본사 이벤트안내" ];
+			var category1 = [ "안내", "공지", "경고", "이벤트" ];
 			var category2 = [ "공지", "이벤트" ];
 			var $target = $("select[name='searchCategory2']");
 			var data;

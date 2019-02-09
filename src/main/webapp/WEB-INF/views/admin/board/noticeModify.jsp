@@ -25,22 +25,24 @@
 						<ul class="member-ul">
 							<li class="member-li"><span>분류</span>
 								<p>
-									<select name="noticeType" onChange="showCategory(this.options[this.selectedIndex].value);">
+									<select name="boardType" onChange="showCategory(this.options[this.selectedIndex].value);">
 										<option selected>분류</option>
-										<option value="seller">업체공지</option>
-										<option value="customer">고객공지</option>
+										<option value="4">업체공지</option>
+										<option value="5">고객공지</option>
 									</select> 
-									<select name="category" style="display:;">- 
-										<option value="notice">공지사항</option>
-										<option value="event">이벤트</option>
+									<select name="boardCate" style="display:none;">
+										<option value="1">안내</option>
+										<option value="2">공지</option>
+										<option value="3">경고</option>
+										<option value="4">이벤트</option>
 									</select>
 								</p>
 							</li>
 							<li class="member-li">
 								<span>제목</span>
-								<input type="hidden" name="nno" value="3">
+								<input type="hidden" name="boardNo" value="3">
 								<p>
-									<input type="text" name="nTitle" id="nTitle" class="form-control">
+									<input type="text" name="boardTitle" id="nTitle" class="form-control">
 								</p>
 							</li>
 							<!-- <li class="member-li"><span>첨부파일</span><p><input type="file" class="form-control" id="nFile" name="nFile"></p></li> -->
@@ -51,7 +53,7 @@
 				<div class="row">
 					<div class="col-md-2"></div>
 					<div class="col-md-7" id="summernote">
-						<textarea rows="15" cols="60" style="resize: none;" class="form-control" id="nContents" name="nContents"></textarea>
+						<textarea rows="15" cols="60" style="resize: none;" class="form-control" id="nContents" name="boardContent"></textarea>
 					</div>
 					<div class="col-md-3"></div>
 				</div>
@@ -88,15 +90,15 @@
 	</div>
 	<script>
 		function showCategory(obj) {
-			var category1 = [ "본사 공지", "이벤트안내" ];
-			var cateVal=["notice", "event"];
+			var category1 = [ "안내", "공지", "경고", "이벤트" ];
+			var cateVal=[1, 2, 3, 4];
 			var category2 = [ "공지사항", "이벤트" ];
-			var $target = $("select[name='category']");
+			var $target = $("select[name='boardCate']");
 			var data;
 
-			if (obj == "seller") {
+			if (obj == 4) {
 				data = category1;
-			} else if (obj == "customer") {
+			} else if (obj == 5) {
 				data = category2;
 			}
 
@@ -118,11 +120,11 @@
 			
 		});
 		function nModify() {
-			var num=$("input[name='nno']").val();
+			var num=$("input[name='boardNo']").val();
 			console.log(num);
 		}
 		function nList(){
-			location.href="admin.ad?admin=board/noticeList";
+			location.href="noticeList.ad";
 		}
 	</script>
 </section>

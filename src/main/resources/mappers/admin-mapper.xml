@@ -73,6 +73,25 @@
 		<result property="rn" column="ROWNUM"/>
 	</resultMap>
 	
+	<resultMap type="com.kh.pmfp.admin.model.vo.AdminBoard" id="adminBoardResultSet">
+		<id property="boardNo" column="BOARD_NO"/>
+		<result property="boardType" column="BOARD_TYPE"/>
+		<result property="boardCate" column="BOARD_CATEG" />
+		<result property="boardTitle" column="BOARD_TITLE" />
+		<result property="boardContent" column="BOARD_CONTENT" />
+		<result property="boardCount" column="BOARD_COUNT" />
+		<result property="memberNo" column="MEMBER_NO" />
+		<result property="memberName" column="MEMBER_NAME" />
+		<result property="memberNickname" column="MEMBER_NICKNAME" />
+		<result property="boardDate" column="BOARD_DATE" />
+		<result property="boardLevel" column="BOARD_LEVEL" />
+		<result property="boardRefNo" column="BOARD_REFNO" />
+		<result property="boardStatus" column="BOARD_STATUS" />
+		<result property="boardAnswer" column="BOARD_ANSWER" />
+		<result property="boardComNo" column="BOARD_COMNO" />
+		<result property="rn" column="ROWNUM"/>
+	</resultMap>
+
 	<select id="selectMemberList" resultMap="adminMemberResultSet1">
 		SELECT ROWNUM, (SELECT COUNT(*)  
 					FROM ORDER_MAIN O 
@@ -126,7 +145,7 @@
 		WHERE M.MEMBER_CATEG=1 AND C.COM_CONFIRM='N'
 	</select>
 	
-	<select id="selectSeller" resultMap="adminSellerResultSet">
+	<select id="selectSeller" resultMap="adminSellerResultSet" parameterType="_int">
 		SELECT M.*, C.* 
 		FROM MEMBER M
 		JOIN COMPANY C ON (M.COM_NO=C.COM_NO)
@@ -134,10 +153,25 @@
 		AND C.COM_NO=#{num} 
 	</select>
 	
-	<select id="selectNoticeList" resultMap="boardResultSet">
-		SELECT ROWNUM, B.* 
+	<select id="selectNoticeList" resultMap="adminBoardResultSet">
+		SELECT B.*, M.MEMBER_NAME, M.MEMBER_NICKNAME, ROWNUM  
 		FROM BOARD B 
-		JOIN MEMBER M ON (M.MEMBER_NO=B.MEMBER_NO) 
+		JOIN MEMBER M ON (B.MEMBER_NO=M.MEMBER_NO) 
 		WHERE B.BOARD_TYPE=4 AND B.BOARD_STATUS='Y'
+		ORDER BY ROWNUM DESC
 	</select>
+	
+	<update id="updateBCount" parameterType="_int">
+		UPDATE BOARD 
+		SET BOARD_COUNT=(SELECT BOARD_COUNT FROM BOARD WHERE BOARD_NO=#{num})+1 
+		WHERE BOARD_NO=#{num} AND BOARD_STATUS='Y' 
+	</update>
+	
+	<select id="selectNotice" resultMap="adminBoardResultSet" parameterType="_int">
+		SELECT B.*, M.MEMBER_NAME, M.MEMBER_NICKNAME, ROWNUM  
+		FROM BOARD B 
+		JOIN MEMBER M ON (B.MEMBER_NO=M.MEMBER_NO) 
+		WHERE B.BOARD_NO=#{num} AND B.BOARD_STATUS='Y'
+	</select>
+	
 </mapper>
