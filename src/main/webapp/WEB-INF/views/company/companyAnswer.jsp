@@ -54,7 +54,7 @@
 						</thead>
 						<tbody>
 							<c:forEach items="${list}" var="value">
-								<tr class="adminMessageTr" style="cursor: pointer;">
+								<tr class="adminMessageTr" style="cursor: pointer;" onclick = "location.href='movePageToCustomerReview.com?movePage=reviewDetail'">
 									<td>${ value.boardNo }</td>
 									<td>${ value.memberName }</td>
 									<td>${ value.boardTitle }</td>

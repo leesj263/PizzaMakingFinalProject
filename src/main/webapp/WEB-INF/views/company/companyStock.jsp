@@ -61,7 +61,7 @@
                 </div>
                 <div class = "stockBtn">
                  	<button onclick = "location.href = 'movePage.com?movePage=companyReceipt'" type="button" class="btn btn-secondary"><i class="fa fa-won"></i>&nbsp; 요금 명세서</button>
-                 	<button onclick = "location.href = 'movePage.com?movePage=orderStock'" type="button" class="btn btn-secondary"><i class="fa fa-truck"></i>&nbsp; 재고 주문</button>
+                 	<button onclick = "location.href = 'orderStrok.com'" type="button" class="btn btn-secondary"><i class="fa fa-truck"></i>&nbsp; 재고 주문</button>
                  	<button onclick = "location.href = 'movePage.com?movePage=orderStockList'" type="button" class="btn btn-secondary"><i class="fa fa-archive"></i>&nbsp; 재고 주문내역</button>
                  </div>
             </div>

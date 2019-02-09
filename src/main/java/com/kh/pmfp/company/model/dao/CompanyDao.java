@@ -10,12 +10,14 @@ import com.kh.pmfp.company.model.exception.FailSelectCompanyReview;
 import com.kh.pmfp.company.model.exception.FailSelectDeliveryMan;
 import com.kh.pmfp.company.model.exception.FailSelectEmployeeList;
 import com.kh.pmfp.company.model.exception.FailSelectOrder;
+import com.kh.pmfp.company.model.exception.FailSelectOrderStock;
 import com.kh.pmfp.company.model.exception.FailUpdateDelivery;
 import com.kh.pmfp.company.model.exception.FailUpdateEmployeeInfo;
 import com.kh.pmfp.company.model.exception.FailUpdateOrderStatus;
 import com.kh.pmfp.company.model.exception.FaileDetailMessage;
 import com.kh.pmfp.company.model.vo.CompanyBoard;
 import com.kh.pmfp.company.model.vo.CompanyEmployee;
+import com.kh.pmfp.company.model.vo.CompanyMaterial;
 import com.kh.pmfp.company.model.vo.CompanyOrder;
 
 
@@ -58,5 +60,7 @@ public interface CompanyDao {
 	int deleteEmployeeInfo(SqlSessionTemplate sqlSession, ArrayList<Integer> list) throws FailUpdateEmployeeInfo;
 
 	ArrayList<CompanyBoard> selectCompanyReview(SqlSessionTemplate sqlSession, int comNo) throws FailSelectCompanyReview;
+
+	ArrayList<CompanyMaterial> orderStrok(SqlSessionTemplate sqlSession) throws FailSelectOrderStock;
 
 }

@@ -11,12 +11,14 @@ import com.kh.pmfp.company.model.exception.FailSelectCompanyReview;
 import com.kh.pmfp.company.model.exception.FailSelectDeliveryMan;
 import com.kh.pmfp.company.model.exception.FailSelectEmployeeList;
 import com.kh.pmfp.company.model.exception.FailSelectOrder;
+import com.kh.pmfp.company.model.exception.FailSelectOrderStock;
 import com.kh.pmfp.company.model.exception.FailUpdateDelivery;
 import com.kh.pmfp.company.model.exception.FailUpdateEmployeeInfo;
 import com.kh.pmfp.company.model.exception.FailUpdateOrderStatus;
 import com.kh.pmfp.company.model.exception.FaileDetailMessage;
 import com.kh.pmfp.company.model.vo.CompanyBoard;
 import com.kh.pmfp.company.model.vo.CompanyEmployee;
+import com.kh.pmfp.company.model.vo.CompanyMaterial;
 import com.kh.pmfp.company.model.vo.CompanyOrder;
 
 @Repository
@@ -262,6 +264,19 @@ public class CompanyDaoImpl implements CompanyDao{
 		
 		if(list == null) {
 			throw new FailSelectCompanyReview("업체 후기 조회 실패!");
+		}
+		
+		return list;
+	}
+
+	@Override
+	public ArrayList<CompanyMaterial> orderStrok(SqlSessionTemplate sqlSession) throws FailSelectOrderStock {
+		// TODO Auto-generated method stub
+		ArrayList<CompanyMaterial> list = new ArrayList<CompanyMaterial>();
+		list = (ArrayList)sqlSession.selectList("Company.orderStrok");
+		
+		if(list == null) {
+			throw new FailSelectOrderStock("재고 조회 실패!");
 		}
 		
 		return list;

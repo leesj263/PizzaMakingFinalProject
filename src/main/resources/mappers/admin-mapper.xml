@@ -134,10 +134,10 @@
 		AND C.COM_NO=#{num} 
 	</select>
 	
-	<select id="selectNoticeList" resultMap="boardResultSet">
+<!-- 	<select id="selectNoticeList" resultMap="boardResultSet">
 		SELECT ROWNUM, B.* 
 		FROM BOARD B 
 		JOIN MEMBER M ON (M.MEMBER_NO=B.MEMBER_NO) 
 		WHERE B.BOARD_TYPE=4 AND B.BOARD_STATUS='Y'
-	</select>
+	</select> -->
 </mapper>

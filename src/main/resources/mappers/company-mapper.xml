@@ -70,6 +70,17 @@
 		<result property="boardComNo" column="BOARD_COMNO" />
 		<result property="memberName" column="MEMBER_ID" />
 	</resultMap>
+	
+	<resultMap type="com.kh.pmfp.company.model.vo.CompanyMaterial"
+		id="companyMaterialResultSet">
+		<id property="materialNo" column="MATERIAL_NO" />
+		<result property="materialName" column="MATERIAL_NAME" />
+		<result property="materialSize" column="MATERIAL_SIZE" />
+		<result property="materialWeight" column="MATERIAL_WEIGHT" />
+		<result property="materialBuyPrice" column="MATERIAL_BUYPRICE" />
+		<result property="materialSellPrice" column="MATERIAL_SELLPRICE" />
+		<result property="materialStatus" column="MATERIAL_STATUS" />
+	</resultMap>
 
 	<select id="selectAdminMessage"
 		resultMap="companyBoardResultSet">
@@ -306,6 +317,13 @@
 		ON (B.MEMBER_NO = M.MEMBER_NO)
 		WHERE BOARD_TYPE = 1
 		AND BOARD_COMNO = #{comNo}
+	</select>
+	
+	<select id="orderStrok" resultMap="companyMaterialResultSet">
+		SELECT MATERIAL_NO, MATERIAL_NAME , MATERIAL_SIZE, MATERIAL_WEIGHT, MATERIAL_BUYPRICE, MATERIAL_SELLPRICE, MATERIAL_STATUS
+		FROM MATERIAL
+		WHERE MOD(MATERIAL_NO, 2) = 0
+		AND MATERIAL_STATUS = 'Y'
 	</select>
 </mapper>
 
