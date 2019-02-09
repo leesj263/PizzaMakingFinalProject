@@ -1,5 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <jsp:include page="../common/header.jsp"/>
 <style>
 
@@ -19,14 +20,28 @@
 						<ul class="member-ul">
 							<li class="member-li"><span>제목</span>
 								<p>
-									2019년 1월 룰렛 이벤트 안내
-									<input type="hidden" name="nno" value="3">
+									${notice.boardTitle }
+									<input type="hidden" name="boardNo" value="${notice.boardNo }">
 								</p></li>
 							<li class="member-li"><span>분류</span>
 								<p>
-									[고객][이벤트]
+									<c:choose>
+										<c:when test="${notice.boardCate==1 }">
+											<td>[안내]</td>
+										</c:when>
+										<c:when test="${notice.boardCate==2 }">
+											<td>[공지]</td>
+										</c:when>
+										<c:when test="${notice.boardCate==3 }">
+											<td>[경고]</td>
+										</c:when>
+										<c:otherwise>
+											<td>[이벤트]</td>
+										</c:otherwise>
+									</c:choose>	
 								</p></li>
 							<!-- <li class="member-li"><span>첨부파일</span><p><input type="file" class="form-control" id="nFile" name="nFile"></p></li> -->
+							<li class="member-li"><span>작성일</span><p>${notice.boardDate }</p><span>조회수</span><p>${notice.boardCount }</p></li>
 						</ul>
 					</div>
 					<div class="col-md-2"></div>
@@ -37,9 +52,7 @@
 						<table class="table"> 
 							<tr>
 								<td id="nContents">
-									새로운 이벤트가 시작됩니다.
-									룰렛을 열심히 돌려 쿠폰을 획득하세요
-									룰렛 링크 :
+									${notice.boardContent }
 								</td>
 							</tr>
 						</table>
@@ -51,7 +64,7 @@
 				<div class="col-md-2"></div>
 				<div class="col-md-4"></div>
 				<div class="col-md-4">
-					<button class="btn btn-outline-secondary" onclick="location.href='admin.ad?admin=board/noticeList'">목록</button>
+					<button class="btn btn-outline-secondary" onclick="location.href='noticeList.ad?'">목록</button>
 					&nbsp;&nbsp;&nbsp;&nbsp;
 					<button class="btn btn-outline-warning" type="submit" onclick="nModify();">수정</button>
 					<button class="btn btn-outline-danger" type="submit" data-toggle="modal" data-target="#staticModal">삭제</button>
@@ -78,26 +91,6 @@
 		</div>
 	</div>
 	<script>
-		function showCategory(obj) {
-			var category1 = [ "본사 공지", "본사 이벤트안내" ];
-			var category2 = [ "공지", "이벤트" ];
-			var $target = $("select[name='category']");
-			var data;
-
-			if (obj == "seller") {
-				data = category1;
-			} else if (obj == "customer") {
-				data = category2;
-			}
-
-			$target.empty();
-			for (x in data) {
-				var option = "<option>" + data[x] + "</option>";
-				$target.append(option);
-			}
-			$target.css("display", "");
-		}
-
 		function nModify() {
 			var num=$("input[name='nno']").val();
 			console.log(num);
