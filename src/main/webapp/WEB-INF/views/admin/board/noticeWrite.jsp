@@ -29,15 +29,15 @@
 								<li class="member-li"><p>&nbsp;</p></li>
 								<li class="member-li"><span>제목</span>
 									<p>
-										<input type="text" name="nTitle" id="nTitle" class="form-control" placeholder="제목을 입력하세요">
+										<input type="text" name="boardTitle" id="boardTitle" class="form-control" placeholder="제목을 입력하세요">
 									</p></li>
 								<li class="member-li"><span>분류</span>
 									<p>
-										<select name="noticeType" onChange="showCategory(this.options[this.selectedIndex].value);">
+										<select name="boardType" onChange="showCategory(this.options[this.selectedIndex].value);">
 											<option selected>분류</option>
-											<option value="seller">업체공지</option>
-											<option value="customer">고객공지</option>
-										</select> <select name="category" style="display: none;">
+											<option value="4">업체공지</option>
+											<option value="5">고객공지</option>
+										</select> <select name="boardCate" style="display: none;">
 										</select>
 										<!-- 
 									<select name="category2" style="display:none;">
@@ -53,7 +53,7 @@
 					<div class="row">
 						<div class="col-md-2"></div>
 						<div class="col-md-7" id="summernote">
-							<textarea rows="15" cols="60" style="resize: none;" class="form-control" placeholder="내용을 입력하세요" id="nContents" name="nContents"></textarea>
+							<textarea rows="15" cols="60" style="resize: none;" class="form-control" placeholder="내용을 입력하세요" id="boardContent" name="boardContent"></textarea>
 						</div>
 						<div class="col-md-3"></div>
 					</div>
@@ -90,32 +90,36 @@
 	</div>
 	<script>
 		function showCategory(obj) {
-			var category1 = [ "본사 공지", "본사 이벤트안내" ];
-			var category2 = [ "공지", "이벤트" ];
-			var $target = $("select[name='category']");
+			var category1 = [ "안내", "공지", "경고", "이벤트" ];
+			var cateVal=[1, 2, 3, 4];
+			var category2 = [ "공지사항", "이벤트" ];
+			var $target = $("select[name='boardCate']");
 			var data;
-
-			if (obj == "seller") {
+	
+			if (obj == 4) {
 				data = category1;
-			} else if (obj == "customer") {
+			} else if (obj == 5) {
 				data = category2;
 			}
-
+	
 			$target.empty();
 			for (x in data) {
-				var option = "<option>" + data[x] + "</option>";
-				$target.append(option);
+				for(y in cateVal){
+					if(x==y){
+					var option = "<option value='"+cateVal[y]+"'>" + data[x] + "</option>";
+					$target.append(option);
+					}
+				}
 			}
 			$target.css("display", "");
 		}
-		
 		function nWrite(){
-			var nTitle=$("#nTitle").val();
-			var nContents=$("#nContents").val();
-			var nCategory1=$("select[name='noticeType']").val();
-			var nCategory2=$("select[name='category']").val();
+			var boardTitle=$("#boardTitle").val();
+			var boardContent=$("#boardContent").val();
+			var boardType=$("select[name='boardType']").val();
+			var boardCate=$("select[name='boardCate']").val();
 			//var nFile=$("#nFile").val();
-			console.log(nTitle+nCategory1+nCategory2+nContents);
+			console.log(boardTitle+boardContent+boardType+boardCate);
 		}
 	</script>
 </section>

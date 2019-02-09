@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.kh.pmfp.admin.model.exception.AdminCountException;
 import com.kh.pmfp.admin.model.exception.AdminSelectException;
+import com.kh.pmfp.admin.model.vo.AdminBoard;
 import com.kh.pmfp.admin.model.vo.AdminMember;
 import com.kh.pmfp.admin.model.vo.AdminOrder;
 import com.kh.pmfp.admin.model.vo.AdminSeller;
@@ -85,5 +87,45 @@ public class AdminDaoImpl implements AdminDao {
 		}
 		return seller;
 	}
+
+	//공지사항 목록 조회용
+	@Override
+	public ArrayList<AdminBoard> selectNoticeList(SqlSessionTemplate sqlSession) throws AdminSelectException {
+		ArrayList<AdminBoard> noticeList=new ArrayList<AdminBoard>();
+		noticeList=(ArrayList)sqlSession.selectList("Admin.selectNoticeList");
+		
+		if(noticeList==null) {
+			throw new AdminSelectException("공지사항 목록 조회 실패");
+		}
+		
+		return noticeList;
+	}
+
+	//조회수 증가용
+	@Override
+	public int updateBCount(SqlSessionTemplate sqlSession, int num) throws AdminCountException {
+		int result=0;
+		result=sqlSession.update("Admin.updateBCount", num);
+		
+		if(result<=0) {
+			throw new AdminCountException("조회수 증가 실패");
+		}
+		return result;
+	}
+	
+	//공지사항 상세보기용
+	@Override
+	public AdminBoard selectNotice(SqlSessionTemplate sqlSession, int num) throws AdminSelectException {
+		AdminBoard notice=new AdminBoard();
+		notice=sqlSession.selectOne("Admin.selectNotice", num);
+		
+		if(notice==null) {
+			throw new AdminSelectException("공지사항 상세조회 실패");
+		}
+		
+		return notice;
+	}
+
+
 
 }

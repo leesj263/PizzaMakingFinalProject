@@ -2,7 +2,6 @@ package com.kh.pmfp.admin.controller;
 
 import java.util.ArrayList;
 
-import javax.security.auth.message.callback.PrivateKeyCallback.Request;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -12,8 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.kh.pmfp.admin.model.exception.AdminCountException;
 import com.kh.pmfp.admin.model.exception.AdminSelectException;
 import com.kh.pmfp.admin.model.service.AdminService;
+import com.kh.pmfp.admin.model.vo.AdminBoard;
 import com.kh.pmfp.admin.model.vo.AdminMember;
 import com.kh.pmfp.admin.model.vo.AdminOrder;
 import com.kh.pmfp.admin.model.vo.AdminSeller;
@@ -171,4 +172,49 @@ public class AdminController {
 		}
 	}
 	*/
+	
+	@RequestMapping("noticeList.ad")
+	public String selectNoticeList(HttpServletRequest request, HttpServletResponse response) {
+		ArrayList<AdminBoard> noticeList=new ArrayList<AdminBoard>();
+		
+		try {
+			noticeList=as.selectNoticeList();
+			System.out.println("공지사항 목록 : "+noticeList);
+			request.setAttribute("noticeList", noticeList);
+			
+			return "admin/board/noticeList";
+		} catch (AdminSelectException e) {
+			request.setAttribute("msg", e.getMessage());
+			
+			return "common/errorPage";
+		}
+	}
+	
+	//공지사항 상세보기용
+	@RequestMapping(value="noticeDetail.ad", method=RequestMethod.GET)
+	public String selectNotice(int num, HttpServletRequest request, HttpServletResponse response) {
+		System.out.println("게시글 번호 : "+num);
+		AdminBoard notice=new AdminBoard();
+		
+		try {
+			notice=as.selectNotice(num);
+			System.out.println("공지사항 : "+notice);
+			request.setAttribute("notice", notice);
+			
+			return "admin/board/noticeDetail";
+		} catch (AdminSelectException e) {
+			request.setAttribute("msg", e.getMessage());
+			
+			return "common/errorPage";
+		} catch (AdminCountException e) {
+			request.setAttribute("msg", e.getMessage());
+			
+			return "common/errorPage";
+		}
+
+	}
+	@RequestMapping("noticeWriteView.ad")
+	public String noticeWriteView() {
+		return "admin/board/noticeWrite";
+	}
 }
