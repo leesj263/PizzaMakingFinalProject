@@ -20,4 +20,27 @@ public class MemberDaoImpl implements MemberDao{
 		return loginUser;
 	}
 
+	//일반회원 회원가입
+	@Override
+	public int insertNormalMember(SqlSessionTemplate sqlSession, Member m) {
+		
+		return sqlSession.insert("Member.insertNormalMember",m);
+	}
+
+	//암호화된 비밀번호 조회
+	@Override
+	public String selectEncPassword(SqlSessionTemplate sqlSession, Member m) {
+		
+		return sqlSession.selectOne("Member.selectPwd",m.getMemberId());
+	}
+	
+	//로그인 정보 조회용 메소드
+	@Override
+	public Member selectMember(SqlSessionTemplate sqlSession, Member m) {
+		
+		return sqlSession.selectOne("Member.selectLoginUser",m);
+	}
+	
+	
+
 }
