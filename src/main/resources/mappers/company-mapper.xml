@@ -81,6 +81,30 @@
 		<result property="materialSellPrice" column="MATERIAL_SELLPRICE" />
 		<result property="materialStatus" column="MATERIAL_STATUS" />
 	</resultMap>
+	
+	<resultMap type="com.kh.pmfp.company.model.vo.CompanyOrderStock"
+		id="companyOrderStockResultSet">
+		<id property="orderMNo" column="ORDER_MNO" />
+		<result property="comNo" column="COM_NO" />
+		<result property="materialNo" column="MATERIAL_NO" />
+		<result property="orderMDate" column="ORDER_MDATE" />
+		<result property="orderMStatus" column="ORDER_MSTATUS" />
+		<result property="orderMCalculate" column="ORDER_CALCULATE" />
+		<result property="orderExpenseNo" column="ORDEREXPENSE_NO" />
+		<result property="materialWeight" column="MATERIAL_WEIGHT" />
+		<result property="materialPrice" column="MATERIAL_PRICE" />
+		<result property="materialName" column="MATERIAL_NAME" />
+	</resultMap>
+	
+	
+	<resultMap type="com.kh.pmfp.company.model.vo.CompanyRemainMaterial"
+		id="companyRemainMaterialResultSet">
+		<id property="stockNo" column="STOCK_NO" />
+		<result property="materialNo" column="MATERIAL_NO" />
+		<result property="comNo" column="COM_NO" />
+		<result property="stockWeight" column="STOCK_WEIGHT" />
+		<result property="materialName" column="MATERIAL_NAME" />
+	</resultMap>
 
 	<select id="selectAdminMessage"
 		resultMap="companyBoardResultSet">
@@ -325,6 +349,57 @@
 		WHERE MOD(MATERIAL_NO, 2) = 0
 		AND MATERIAL_STATUS = 'Y'
 	</select>
+	
+	
+	<!-- <insert id="applyStock"  parameterType="java.util.List">
+		<foreach collection="list" item = "item" index = "index">
+			INSERT INTO ORDER_MATERIAL
+			VALUES(SEQ_ODMATNO.NEXTVAL, #{item.comNo}, #{item.materialNo}, SYSDATE, 1, 'N', 1, #{item.materialWeight}, #{item.materialPrice})
+		</foreach>
+	</insert> -->
+	<insert id="applyStock">
+		INSERT INTO ORDER_MATERIAL
+		VALUES(SEQ_ODMATNO.NEXTVAL, #{comNo}, #{materialNo}, SYSDATE, 1, 'N', 1, #{materialWeight}, #{materialPrice})
+	</insert>
+	
+	<select id="selectOrderStockList" resultMap="companyOrderStockResultSet">
+		SELECT OM.ORDER_MNO, OM.COM_NO, OM.MATERIAL_NO, OM.ORDER_MDATE, OM.ORDER_MSTATUS, OM.ORDER_CALCULATE, 
+		OM.ORDEREXPENSE_NO, OM.MATERIAL_WEIGHT, OM.MATERIAL_PRICE, M.MATERIAL_NAME
+		FROM ORDER_MATERIAL OM
+		JOIN MATERIAL M
+		ON(OM.MATERIAL_NO = M.MATERIAL_NO)
+		WHERE OM.COM_NO = #{comNo}
+	</select>
+	
+	
+	<update id="receiptConfirm" parameterType="java.util.List">
+		UPDATE ORDER_MATERIAL
+		SET ORDER_MSTATUS = 2
+		WHERE ORDER_MNO IN
+		<foreach collection="list" item = "item" index = "index" open = "(" close = ")" separator = ",">
+			#{item.value}
+		</foreach>
+	</update>
+	
+	<select id="selectReceiptList" resultMap="companyOrderStockResultSet">
+		SELECT OM.ORDER_MNO, OM.COM_NO, OM.MATERIAL_NO, OM.ORDER_MDATE, OM.ORDER_MSTATUS, OM.ORDER_CALCULATE, 
+		OM.ORDEREXPENSE_NO, OM.MATERIAL_WEIGHT, OM.MATERIAL_PRICE, M.MATERIAL_NAME
+		FROM ORDER_MATERIAL OM
+		JOIN MATERIAL M
+		ON(OM.MATERIAL_NO = M.MATERIAL_NO)
+		WHERE OM.COM_NO = #{comNo}
+		AND ORDER_CALCULATE = 'N'
+	</select>
+	
+	
+	<select id="selectAllMaterialList" resultMap="companyRemainMaterialResultSet">
+		SELECT S.STOCK_NO, S.MATERIAL_NO, S.COM_NO, S.STOCK_WEIGHT, M.MATERIAL_NAME
+		FROM STOCK S
+		JOIN MATERIAL M
+		ON(S.MATERIAL_NO = M.MATERIAL_NO)
+		WHERE COM_NO = #{comNo}
+	</select>
+	
 </mapper>
 
 

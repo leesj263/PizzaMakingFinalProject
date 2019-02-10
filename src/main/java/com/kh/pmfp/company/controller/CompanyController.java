@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.kh.pmfp.company.model.exception.FailInsertEmployeeInfo;
+import com.kh.pmfp.company.model.exception.FailInsertOrderStock;
 import com.kh.pmfp.company.model.exception.FailSelectAdminMessage;
 import com.kh.pmfp.company.model.exception.FailSelectCompanyReview;
 import com.kh.pmfp.company.model.exception.FailSelectDeliveryMan;
@@ -31,6 +32,7 @@ import com.kh.pmfp.company.model.vo.CompanyEmployee;
 import com.kh.pmfp.company.model.vo.CompanyMaterial;
 import com.kh.pmfp.company.model.vo.CompanyOrder;
 import com.kh.pmfp.company.model.vo.CompanyOrderStock;
+import com.kh.pmfp.company.model.vo.CompanyRemainMaterial;
 
 
 @Controller
@@ -459,25 +461,115 @@ public class CompanyController {
 	
 	@RequestMapping("applyStock.com")
 	public void applyStock(HttpServletRequest request, HttpServletResponse response) {
-		/*Object[] objects = request.getParameterValues("objects");
-		System.out.println("objects : " + objects);
-		System.out.println("objects의 길이 : " + objects.length);
+
+		String[] arr = request.getParameterValues("arr");
+		ArrayList<CompanyOrderStock> list = new ArrayList<CompanyOrderStock>();
+		
+		
+		/*for(int i = 0; i< arr.length; i++) {
+			System.out.println("arr[" + i + "] : " + arr[i]);
+		}*/
+		
+		for(int i = 0; i< arr.length; i++) {
+			String[] splitArr;
+			splitArr = arr[i].split(",");
+			CompanyOrderStock cos = new CompanyOrderStock();
+			cos.setComNo(Integer.parseInt(splitArr[0]));
+			cos.setMaterialNo(Integer.parseInt(splitArr[1]));
+			cos.setMaterialWeight(Integer.parseInt(splitArr[3].split("k")[0]));
+			cos.setMaterialPrice(Integer.parseInt(splitArr[4]));
+			list.add(cos);
+		}
+		System.out.println("list : " + list);
+		
+		try {
+			int result = cs.applyStock(list);
+			
+			
+		} catch (FailInsertOrderStock e) {
+			request.setAttribute("msg", e.getMessage());
+		}
+		
+	}
+	
+	
+	
+	
+	@RequestMapping("selectOrderStockList.com")
+	public String selectOrderStockList(HttpServletRequest request, HttpServletResponse response) {
 		
 		ArrayList<CompanyOrderStock> list = new ArrayList<CompanyOrderStock>();
-		CompanyOrderStock cos = new CompanyOrderStock();
-		
-		System.out.println("objects.toString() : " + objects.toString());
-		System.out.println("objects[0] : " + objects[0]);
-		System.out.println("objects[0].toString() : " + objects[0].toString());
-		System.out.println("objects[0].toString().indexOf(2) : " + objects[0].toString().indexOf(2));
-		for(int i = 0; i < objects.length ; i++) {
-			cos.setComNo(objects[i]);
-		}*/
+		try {
+			//회사번호 임의 입력
+			list = cs.selectOrderStockList(2);
+			request.setAttribute("list", list);
+			return "company/orderStockList";
+			
+		} catch (FailSelectOrderStock e) {
+			request.setAttribute("msg", e.getMessage());
+			return "common/errorPage";
+		}
+
+	}
+	
+	
+	
+	
+	
+	
+	@RequestMapping("receiptConfirm.com")
+	public void receiptConfirm(HttpServletRequest request, HttpServletResponse response) {
 		String[] arr = request.getParameterValues("arr");
-		System.out.println("arr길이 : " + arr.length);
-		System.out.println("arr[0] : " + arr[0]);
-		System.out.println("arr[1] : " + arr[1]);
+		ArrayList<Integer> orderMno = new ArrayList<Integer>();
+		
+		for(int i = 0; i < arr.length ; i++) {
+			orderMno.add(Integer.parseInt(arr[i]));
+		}
+		
+		System.out.println("orderMno : " + orderMno);
+		
+		try {
+			int result = cs.receiptConfirm(orderMno);
+			
+			
+		} catch (FailInsertOrderStock e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	
+	@RequestMapping("selectReceiptList.com")
+	public String selectReceiptList(HttpServletRequest request, HttpServletResponse response) {
+		ArrayList<CompanyOrderStock> list = new ArrayList<CompanyOrderStock>();
+		//임시로 회사번호 2번으로 넘김, 나중에 로그인 완성시 수정하기
+		try {
+			list = cs.selectReceiptList(2);
+			request.setAttribute("list", list);
+			return "company/companyReceipt";
+		} catch (FailSelectOrderStock e) {
+			request.setAttribute("msg", e.getMessage());
+			return "common/errorPage";
+		}
 	}
 	
 
+	
+	
+	
+	@RequestMapping("selectAllMaterialList.com")
+	public String selectAllMaterialList(HttpServletRequest request, HttpServletResponse response) {
+		//임시로 업체번호를 2번으로 지정, 나중에 로그인 완성시 수정하기
+		ArrayList<CompanyRemainMaterial> list = new ArrayList<CompanyRemainMaterial>();
+		try {
+			list = cs.selectAllMaterialList(2);
+			request.setAttribute("list", list);
+			System.out.println("조회한 모든 남은재고 list : " + list);
+			return "company/companyStock";
+			
+		} catch (FailSelectOrderStock e) {
+			request.setAttribute("msg", e.getMessage());
+			return "common/errorPage";
+		}
+	}
 }

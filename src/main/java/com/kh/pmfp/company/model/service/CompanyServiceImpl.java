@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import com.kh.pmfp.company.model.dao.CompanyDao;
 import com.kh.pmfp.company.model.exception.FailInsertEmployeeInfo;
+import com.kh.pmfp.company.model.exception.FailInsertOrderStock;
 import com.kh.pmfp.company.model.exception.FailSelectAdminMessage;
 import com.kh.pmfp.company.model.exception.FailSelectCompanyReview;
 import com.kh.pmfp.company.model.exception.FailSelectDeliveryMan;
@@ -22,6 +23,8 @@ import com.kh.pmfp.company.model.vo.CompanyBoard;
 import com.kh.pmfp.company.model.vo.CompanyEmployee;
 import com.kh.pmfp.company.model.vo.CompanyMaterial;
 import com.kh.pmfp.company.model.vo.CompanyOrder;
+import com.kh.pmfp.company.model.vo.CompanyOrderStock;
+import com.kh.pmfp.company.model.vo.CompanyRemainMaterial;
 
 @Component
 public class CompanyServiceImpl implements CompanyService{
@@ -199,6 +202,47 @@ public class CompanyServiceImpl implements CompanyService{
 		// TODO Auto-generated method stub
 		ArrayList<CompanyMaterial> list = new ArrayList<CompanyMaterial>();
 		list = cd.orderStrok(sqlSession);
+		
+		return list;
+	}
+
+	@Override
+	public int applyStock(ArrayList<CompanyOrderStock> list) throws FailInsertOrderStock {
+		// TODO Auto-generated method stub
+		int result = cd.applyStock(sqlSession, list);
+		return result;
+	}
+
+	@Override
+	public ArrayList<CompanyOrderStock> selectOrderStockList(int comNo) throws FailSelectOrderStock {
+		// TODO Auto-generated method stub
+		ArrayList<CompanyOrderStock> list = new ArrayList<CompanyOrderStock>();
+		list = cd.selectOrderStockList(sqlSession, comNo);
+		
+		return list;
+	}
+
+	@Override
+	public int receiptConfirm(ArrayList<Integer> orderMno) throws FailInsertOrderStock {
+		// TODO Auto-generated method stub
+		int result = cd.receiptConfirm(sqlSession, orderMno);
+		return result;
+	}
+
+	@Override
+	public ArrayList<CompanyOrderStock> selectReceiptList(int comNo) throws FailSelectOrderStock {
+		// TODO Auto-generated method stub
+		ArrayList<CompanyOrderStock> list = new ArrayList<CompanyOrderStock>();
+		list = cd.selectReceiptList(sqlSession, comNo);
+		
+		return list;
+	}
+
+	@Override
+	public ArrayList<CompanyRemainMaterial> selectAllMaterialList(int comNo) throws FailSelectOrderStock {
+		// TODO Auto-generated method stub
+		ArrayList<CompanyRemainMaterial> list = new ArrayList<CompanyRemainMaterial>();
+		list = cd.selectAllMaterialList(sqlSession, comNo);
 		
 		return list;
 	}
