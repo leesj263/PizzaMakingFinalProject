@@ -17,6 +17,7 @@
 		<id property="comNo" column="COM_NO"/>
 	</resultMap>
 	
+	<!-- 암호화전 로그인 -->
 	<select id="loginCheck" resultMap="memberResultSet" parameterType="Member">
 		SELECT *
 		FROM MEMBER
@@ -25,7 +26,28 @@
 		AND MEMBER_STATUS ='Y'
 	</select>
 	
+	<!-- 일반회원 회원가입 -->
+	<insert id="insertNormalMember" parameterType="Member">
+		INSERT INTO MEMBER
+		VALUES(SEQ_MNO.NEXTVAL,0,#{memberId},#{memberPwd},#{memberName},
+				#{memberNickName},#{memberEmail},SYSDATE,DEFAULT,null)
+	</insert>
 	
+	<!-- 암호화된 비밀번호 조회용 메소드 -->
+	<select id="selectPwd" resultType="java.lang.String" parameterType="java.lang.String">
+		SELECT MEMBER_PWD 
+		FROM MEMBER 
+		WHERE MEMBER_ID=#{memberId} 
+		AND MEMBER_STATUS='Y'
+	</select>
+	
+	<!-- 일반회원 암호화된 회원가입 -->
+	<select id="selectLoginUser" resultMap="memberResultSet" parameterType="Member">
+		SELECT *
+		FROM MEMBER
+		WHERE MEMBER_ID=#{memberId}
+		AND MEMBER_STATUS='Y'
+	</select>
 	
 </mapper>
 

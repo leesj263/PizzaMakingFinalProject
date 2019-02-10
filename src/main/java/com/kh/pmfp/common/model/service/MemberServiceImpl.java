@@ -2,6 +2,7 @@ package com.kh.pmfp.common.model.service;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.kh.pmfp.common.model.dao.MemberDao;
@@ -15,15 +16,46 @@ public class MemberServiceImpl implements MemberService{
 	private SqlSessionTemplate sqlSession;
 	@Autowired
 	private MemberDao md;
+	@Autowired
+	private BCryptPasswordEncoder passwordEncoder;
 	
 	
 	//암호화전 로그인
-	@Override
+/*	@Override
 	public Member loginMember(Member m) throws LoginException {
 		
 		Member loginUser = md.loginCheck(sqlSession,m);
 		
 		return loginUser;
+	}*/
+
+
+	//일반회원 회원가입
+	@Override
+	public int insertNormalMember(Member m) {
+		
+		int result = md.insertNormalMember(sqlSession,m);
+		
+		return result;
 	}
+	
+	//암호화 후 로그인
+	@Override
+	public Member loginMember(Member m) throws LoginException {
+		Member loginUser = null;
+		//암호화된 비밀번호 조회
+		String encPassword = md.selectEncPassword(sqlSession,m);
+		
+		System.out.println("로그인 요청 메소드 실행됨!");
+		
+		if(!passwordEncoder.matches(m.getMemberPwd(), encPassword)) {
+			throw new LoginException("로그인 실패");
+		}else {
+			loginUser=md.selectMember(sqlSession,m);
+		}
+		
+		return loginUser;
+	}
+	
 
 }

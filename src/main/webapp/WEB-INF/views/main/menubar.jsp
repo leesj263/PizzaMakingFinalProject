@@ -142,30 +142,32 @@ h1 {
 		<h1>Create account</h1>
 
 		<div class="mar">
-		<form action="" method="post" >
+		<form action="insertJoin.co" method="post" >
 			<table class="table">
 				<tr>
 					<td>
 						<div class="inline field">
 							<div class="ui toggle checkbox">
 								<input type="checkbox" tabindex="0" class="hidden"> <label>사업자로 변환하기</label>
+								<input type="hidden" name="changeNum" id="changeNum" value="1">
 							</div>
 						</div>
 					</td>
 				</tr>
-				<tr style="display: none;" id="buisnessman">
+				
+				<tr>
 					<td colspan="2"><div class="ui input" style="width: 100%">
-							<input type="text" placeholder="사업자 번호를 입력하세요" id="JoinBusinessNum">
+							<input type="text" placeholder="이름" id="memberName" name="memberName">
 						</div></td>
 				</tr>
 				<tr>
 					<td colspan="2"><div class="ui input" style="width: 100%">
-							<input type="text" placeholder="이름" id="JoinUserName">
+							<input type="text" placeholder="닉네임을 입력하세요" id="memberNickName" name="memberNickName">
 						</div></td>
 				</tr>
 				<tr>
 					<td><div class="ui input">
-							<input type="text" placeholder="아이디" id="JoinUserId">
+							<input type="text" placeholder="아이디" id="memberId" name="memberId">
 						</div></td>
 					<td align="center">
 						<button class="ui yellow basic button" style="width: 100%" onclick="return IdCheckBtn()">아이디
@@ -174,17 +176,17 @@ h1 {
 				</tr>
 				<tr>
 					<td colspan="2"><div class="ui input" style="width: 100%">
-							<input type="password" placeholder="비밀번호" id="JoinUserPwd">
+							<input type="password" placeholder="비밀번호" id="memberPwd" name="memberPwd">
 						</div></td>
 				</tr>
 				<tr>
 					<td colspan="2"><div class="ui input" style="width: 100%">
-							<input type="password" placeholder="비밀번호 확인" id="JoinUserPwd2">
+							<input type="password" placeholder="비밀번호 확인" id="memberPwd2">
 						</div></td>
 				</tr>
 				<tr>
 					<td><div class="ui input" style="width: 100%">
-							<input type="text" placeholder="이메일" id="JoinUserEmail">
+							<input type="text" placeholder="이메일" id="memberEmail" name="memberEmail">
 						</div></td>
 					<td align="center">
 						<button class="ui yellow basic button" style="width: 100%" onclick="return CertificationSendBtn()">인증번호 발송</button>
@@ -199,6 +201,51 @@ h1 {
 							id="Certification" onclick="return CertificationBtn()">인증 확인</button>
 					</td>
 				</tr>
+				
+				<tr style="display: none;" id="comNameTr">
+					<td colspan="2"><div class="ui input" style="width: 100%">
+							<input type="text" placeholder="지점명을 입력하세요" id="comName" name="comName">
+						</div></td>
+				</tr>
+				<tr style="display: none;" id="comAddressTr">
+					<td><div class="ui input" style="width: 100%">
+							<input type="text" placeholder="주소 입력" id="comAddress" name="comAddress">
+						</div></td>
+					<td align="center">
+						<button class="ui yellow basic button" style="width: 100%" onclick="">주소 검색</button>
+					</td>
+				</tr>
+				<tr style="display: none;" id="comAddressTr2">
+					<td colspan="2"><div class="ui input" style="width: 100%">
+							<input type="text" placeholder="상세주소를 입력하세요" id="comAddress2" name="comAddress2">
+						</div></td>
+				</tr>
+				<tr style="display: none;" id="comTelTr">
+					<td colspan="2"><div class="ui input" style="width: 100%">
+							<input type="tel" placeholder="전화번호를 입력하세요" id="comTel" name="comTel">
+						</div></td>
+				</tr>
+				<tr style="display: none;" id="comLisensenoTr">
+					<td colspan="2"><div class="ui input" style="width: 100%">
+							<input type="text" placeholder="사업자 번호를 입력하세요" id="comLisenseno" name="comLisenseno">
+						</div></td>
+				</tr>
+				<tr style="display: none;" id="comSalestimeTr">
+					<td colspan="2"><div class="ui input" style="width: 100%">
+							<input type="text" placeholder="오픈시간과 마감시간 입력해주세요" id="comSalestime" name="comSalestime">
+						</div></td>
+				</tr>
+				<tr style="display: none;" id="comLocationTr">
+					<td colspan="2"><div class="ui input" style="width: 100%">
+							<input type="text" placeholder="위치정보를 입력해주세요" id="comLocation" name="comLocation">
+						</div></td>
+				</tr>
+				<tr style="display: none;" id="comParkingTr">
+					<td colspan="2"><div class="ui input" style="width: 100%">
+							<input type="text" placeholder="주차정보를 입력해주세요" id="comParking" name="comParking">
+						</div></td>
+				</tr>
+				
 				<!-- 이메일 전화번호 -->
 				<tr>
 					<!-- <TD align="center">
@@ -474,6 +521,7 @@ h1 {
 	</div>
 
 
+<!----------------------- 화면 띄우기 script -------------------------------------->
 	<script>
 		var joindiv = document.all.joindiv;
 		var loginDiv = document.all.loginDiv;
@@ -542,106 +590,10 @@ h1 {
 			return false;
 		}	
 		
-		//회원가입 유효성 검사
-		function CreateAccount(){
-			var JoinBusinessNum = $("#JoinBusinessNum").val();	//사업자 번호 
-			var JoinUserName = $("#JoinUserName").val();	//이름 
-			var JoinUserId = $("#JoinUserId").val();		//아이디 
-			var JoinUserPwd = $("#JoinUserPwd").val();		//비밀번호 
-			var JoinUserPwd2 = $("#JoinUserPwd2").val();	//비밀번호 확인
-			var JoinUserEmail = $("#JoinUserEmail").val();	//이메일 
-			var JoinCertificationNum = $("#JoinCertificationNum").val();	//인증번호 
-			
-			
-			
-			//이메일 유효성 검사(4글자 이상 나오고 @나오고 1글자 이상 주소)
-			var regEmail = /\w{4,}@\w+.\w{1,3}/;
-			//아이디 유효성 검사(첫글짜는 반드시 영문 소문자,4~12자로,숫자가 하나이상 포함, 영문소문자와숫자로!)
-			var regId= /^[a-z]+[a-z0-9]{4,12}$/;
-			
-			//이름 검사
-			if(JoinUserName==""){
-				swal("이름을 입력해주세요!");
-				$("#JoinUserName").focus();
-				return false;
-			}
-			
-			//아이디검사
-			if(JoinUserId==""){
-				swal("아이디 입력해주세요!");
-				$("#JoinUserId").focus();
-				return false;
-			}
-			
-			//아이디 중복확인 체크여부(체크 했는지 안했는징)
-			if(idCheck==1){
-				swal("중복체크해주세요");
-				return false;
-			}
-			
-			//비밀번호 검사
-			if(JoinUserPwd==""){
-				swal("비밀번호를 입력해주세요.");
-				return false;
-			}
-			if(JoinUserPwd!=JoinUserPwd2){
-				swal("비밀번호가 일치하지 않습니다.");
-				return false;
-			}
-			
-			//이메일 검사
-			if(JoinUserEmail==""){
-				swal("이메일을 입력해주세요!");
-				return false;
-			}
-			//인증번호 확인
-			if(JoinCertificationNum==""){
-				swal("인증번호를 입력해주세요");
-				return false;
-			}
-			
-			
-		 	if(regId.test(JoinUserId)){
-				//swal("아이디 정상입력");
-				console.log("정상 입력");
-			}else{
-				swal("아이디를 올바르게 입력해주세용");
-				console.log("아이디 비정상 입력");
-				return false;
-			} 
-			if(regEmail.test(JoinUserEmail)){
-				//swal("이메일 정상입력");
-				console.log("정상 입력");
-			}else{
-				swal("올바른 이메일을 입력해주세요");
-				return false;
-			} 
-			
-			//인증버호 발송 체크여부(체크 했는지 안했는징)
-			if(CertificationSend==1){
-				swal("인증번호 발송해주세요");
-				return false;
-			}
-			//인증확인 버튼  체크여부(체크 했는지 안했는징)
-			if(Certification==1){
-				swal("인증확인 해주세요");
-				return false;
-			}
-			
-			/* 
-			console.log('사업자 번호 '+JoinBusinessNum);
-			console.log('이름 이름 '+JoinUserName);
-			console.log('아이디 '+JoinUserId);
-			console.log('비밀번호'+JoinUserPwd);
-			console.log('비밀번호 확인'+JoinUserPwd2);
-			console.log('이메일 '+JoinUserEmail);
-			console.log('인증번호 '+JoinCertificationNum);
-			
-			 */
-			return false;
-		}
+		
 	</script>
 
+<!----------------------- 인증확인 script -------------------------------------->
 	<script>
 		$("#Certification").click(function() {
 			swal({
@@ -674,19 +626,184 @@ h1 {
 
 		$('.ui.checkbox').checkbox();
 		console.log($('.ui.checkbox'));
+		
 
-		//사업자로 변환
-		 var check = $('.ui.toggle.checkbox');
+		
+
+<!----------------------- 사업자로 변환 script -------------------------------------->
+
+		//사업자로 변환시 양식 변환
+		var check = $('.ui.toggle.checkbox');
+		var num=1;
 		check.click(function(){
-			console.log("클릭되닝");
-			$("#buisnessman").toggle();
+			//console.log("클릭되닝");
+			num++;
+			$("#comLisensenoTr").toggle();
+			$("#comNameTr").toggle();
+			$("#comAddressTr").toggle();
+			$("#comAddressTr2").toggle();
+			$("#comTelTr").toggle();
+			$("#comSalestimeTr").toggle();
+			$("#comLocationTr").toggle();
+			$("#comParkingTr").toggle();
+			 
+			//사업자일때
+			if(num%2==0){ 
+				$("#joindiv").css({"height":"800px"});
+				
+			 } else{
+				 $("#joindiv").css({"height":"500px"});
+			 }
+			 console.log("클릭되닝?"+num);
+			 
+			 //짝수일때가 사업자!
+			var changeNum = $("#changeNum").val(num);
+			console.log(changeNum.val());
 		});
-
-		$("#changebox").click(function() {
-			console.log("클랙");
-		});
+	
+<!----------------------- 회원가입 유효성 검사 script -------------------------------------->
+		function CreateAccount(){
+			var comLisenseno = $("#comLisenseno").val();	//사업자 번호 
+			var memberName = $("#memberName").val();	//이름 
+			var memberId = $("#memberId").val();		//아이디 
+			var memberPwd = $("#memberPwd").val();		//비밀번호 
+			var memberPwd2 = $("#memberPwd2").val();	//비밀번호 확인
+			var memberEmail = $("#memberEmail").val();	//이메일 
+			var JoinCertificationNum = $("#JoinCertificationNum").val();	//인증번호 
+			var comName =$("#comName").val();			//지점명
+			var comAddress =$("#comAddress").val();		//주소
+			var comTel =$("#comTel").val();				//전화번호
+			var comLisenseno =$("#comLisenseno").val();	//사업자번호
+			var comSalestime =$("#comSalestime").val();	//영업시간
+			var comLocation =$("#comLocation").val();	//위치정보
+			var comParking =$("#comParking").val();		//주차정보
+			
+			//이메일 유효성 검사(4글자 이상 나오고 @나오고 1글자 이상 주소)
+			var regEmail = /\w{4,}@\w+.\w{1,3}/;
+			//아이디 유효성 검사(첫글짜는 반드시 영문 소문자,4~12자로,숫자가 하나이상 포함, 영문소문자와숫자로!)
+			var regId= /^[a-z]+[a-z0-9]{4,12}$/;
+			
+			//이름 검사
+			if(memberName==""){
+				swal("이름을 입력해주세요!");
+				$("#memberName").focus();
+				return false;
+			}
+			
+			//아이디검사
+			if(memberId==""){
+				swal("아이디 입력해주세요!");
+				$("#memberId").focus();
+				return false;
+			}
+			
+			//아이디 중복확인 체크여부(체크 했는지 안했는징)
+			if(idCheck==1){
+				swal("중복체크해주세요");
+				return false;
+			}
+			
+			//비밀번호 검사
+			if(memberPwd==""){
+				swal("비밀번호를 입력해주세요.");
+				return false;
+			}
+			if(memberPwd!=memberPwd2){
+				swal("비밀번호가 일치하지 않습니다.");
+				return false;
+			}
+			
+			//이메일 검사
+			if(memberEmail==""){
+				swal("이메일을 입력해주세요!");
+				return false;
+			}
+			//인증번호 확인
+			if(JoinCertificationNum==""){
+				swal("인증번호를 입력해주세요");
+				return false;
+			}
+			
+		 	if(regId.test(memberId)){
+				//swal("아이디 정상입력");
+				console.log("정상 입력");
+			}else{
+				swal("아이디를 올바르게 입력해주세용");
+				console.log("아이디 비정상 입력");
+				return false;
+			} 
+			if(regEmail.test(memberEmail)){
+				//swal("이메일 정상입력");
+				console.log("정상 입력");
+			}else{
+				swal("올바른 이메일을 입력해주세요");
+				return false;
+			} 
+			
+			//인증버호 발송 체크여부(체크 했는지 안했는징)
+			if(CertificationSend==1){
+				swal("인증번호 발송해주세요");
+				return false;
+			}
+			//인증확인 버튼  체크여부(체크 했는지 안했는징)
+			if(Certification==1){
+				swal("인증확인 해주세요");
+				return false;
+			}
+			
+			//사업자일때만 유효성
+			if(num%2==0){
+				if(comName==""){
+					swal("지점명을 입력해주세요");
+					return false;
+				}
+				if(comAddress==""){
+					swal("주소를 입력해주세요");
+					return false;
+				}
+				if(comTel==""){
+					swal("전화번호를 입력해주세요");
+					return false;
+				}
+				if(comLisenseno==""){
+					swal("사업자번호를 입력해주세요");
+					return false;
+				}
+				//사업자 번호 총 자리수는 10자리 이다!
+				if(comLisenseno.length!=10){
+					swal("사업자번호를 다시 확인해주세요");
+					return false;
+				}
+				if(comSalestime==""){
+					swal("영업시간 입력해주세요");
+					return false;
+				}
+				if(comLocation==""){
+					swal("위치정보를 입력해주세요");
+					return false;
+				}
+				if(comParking==""){
+					swal("주차정보를 입력해주세요");
+					return false;
+				}
+			}
+			
+			/* 
+			console.log('사업자 번호 '+comLisenseno);
+			console.log('이름 이름 '+memberName);
+			console.log('아이디 '+memberId);
+			console.log('비밀번호'+memberPwd);
+			console.log('비밀번호 확인'+memberPwd2);
+			console.log('이메일 '+memberEmail);
+			console.log('인증번호 '+JoinCertificationNum);
+			
+			 */
+			return true;
+		}
+		
 	</script>
-
+	
+	
 
 	<script>
 		//메뉴 드롭다운
