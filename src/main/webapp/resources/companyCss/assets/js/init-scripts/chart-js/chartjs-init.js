@@ -382,7 +382,7 @@
             labels: [ "Sun", "Mon", "Tu", "Wed", "Th", "Fri", "Sat" ],
             datasets: [
                 {
-                    label: "My First dataset",
+                    label: "남아있는 재고 개수",
                     data: [ 40, 55, 75, 81, 56, 55, 40 ],
                     borderColor: "rgba(0, 123, 255, 0.9)",
                     borderWidth: "0",
@@ -402,15 +402,15 @@
     } );
 
     // single bar chart
-    var ctx = document.getElementById( "consumptionChart" );
-    ctx.height = 150;
-    var myChart = new Chart( ctx, {
+    var ctx2 = document.getElementById( "consumptionChart" );
+    ctx2.height = 150;
+    var myChart = new Chart( ctx2, {
         type: 'bar',
         data: {
             labels: [ "Sun", "Mon", "Tu", "Wed", "Th", "Fri", "Sat" ],
             datasets: [
                 {
-                    label: "My First dataset",
+                    label: "소모된 재고 개수",
                     data: [ 40, 55, 75, 81, 56, 55, 40 ],
                     borderColor: "rgba(0, 123, 255, 0.9)",
                     borderWidth: "0",

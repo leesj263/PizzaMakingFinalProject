@@ -6,6 +6,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.kh.pmfp.company.model.exception.FailInsertEmployeeInfo;
+import com.kh.pmfp.company.model.exception.FailInsertOrderStock;
 import com.kh.pmfp.company.model.exception.FailSelectAdminMessage;
 import com.kh.pmfp.company.model.exception.FailSelectCompanyReview;
 import com.kh.pmfp.company.model.exception.FailSelectDeliveryMan;
@@ -20,6 +21,8 @@ import com.kh.pmfp.company.model.vo.CompanyBoard;
 import com.kh.pmfp.company.model.vo.CompanyEmployee;
 import com.kh.pmfp.company.model.vo.CompanyMaterial;
 import com.kh.pmfp.company.model.vo.CompanyOrder;
+import com.kh.pmfp.company.model.vo.CompanyOrderStock;
+import com.kh.pmfp.company.model.vo.CompanyRemainMaterial;
 
 @Repository
 public class CompanyDaoImpl implements CompanyDao{
@@ -274,6 +277,72 @@ public class CompanyDaoImpl implements CompanyDao{
 		// TODO Auto-generated method stub
 		ArrayList<CompanyMaterial> list = new ArrayList<CompanyMaterial>();
 		list = (ArrayList)sqlSession.selectList("Company.orderStrok");
+		
+		if(list == null) {
+			throw new FailSelectOrderStock("재고 조회 실패!");
+		}
+		
+		return list;
+	}
+
+	@Override
+	public int applyStock(SqlSessionTemplate sqlSession, ArrayList<CompanyOrderStock> list) throws FailInsertOrderStock {
+		// TODO Auto-generated method stub
+		int result = 0;
+		
+		for(int i = 0; i < list.size(); i++) {
+			result += sqlSession.insert("Company.applyStock", list.get(i));
+		}
+		
+		
+		if(result <= 0 ) {
+			throw new FailInsertOrderStock("재고 정보 삽입 실패!");
+		}
+		
+		return result;
+	}
+
+	@Override
+	public ArrayList<CompanyOrderStock> selectOrderStockList(SqlSessionTemplate sqlSession, int comNo) throws FailSelectOrderStock {
+		// TODO Auto-generated method stub
+		ArrayList<CompanyOrderStock> list = (ArrayList)sqlSession.selectList("Company.selectOrderStockList", comNo);
+		
+		if(list == null) {
+			throw new FailSelectOrderStock("재고 조회 실패!");
+		}
+		
+		return list;
+	}
+
+	@Override
+	public int receiptConfirm(SqlSessionTemplate sqlSession, ArrayList<Integer> orderMno) throws FailInsertOrderStock {
+		// TODO Auto-generated method stub
+		int result = sqlSession.update("Company.receiptConfirm", orderMno);
+		
+		if(result <= 0) {
+			throw new FailInsertOrderStock("재고 정보 삽입 실패!");
+		}
+		
+		return result;
+	}
+
+	@Override
+	public ArrayList<CompanyOrderStock> selectReceiptList(SqlSessionTemplate sqlSession, int comNo) throws FailSelectOrderStock {
+		// TODO Auto-generated method stub
+		ArrayList<CompanyOrderStock> list = (ArrayList)sqlSession.selectList("Company.selectReceiptList", comNo);
+		
+		if(list == null) {
+			throw new FailSelectOrderStock("재고 조회 실패!");
+		}
+		
+		return list;
+	}
+
+	@Override
+	public ArrayList<CompanyRemainMaterial> selectAllMaterialList(SqlSessionTemplate sqlSession, int comNo) throws FailSelectOrderStock {
+		// TODO Auto-generated method stub
+		ArrayList<CompanyRemainMaterial> list = new ArrayList<CompanyRemainMaterial>();
+		list = (ArrayList)sqlSession.selectList("Company.selectAllMaterialList", comNo);
 		
 		if(list == null) {
 			throw new FailSelectOrderStock("재고 조회 실패!");

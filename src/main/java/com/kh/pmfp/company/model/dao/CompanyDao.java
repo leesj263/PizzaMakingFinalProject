@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.mybatis.spring.SqlSessionTemplate;
 
 import com.kh.pmfp.company.model.exception.FailInsertEmployeeInfo;
+import com.kh.pmfp.company.model.exception.FailInsertOrderStock;
 import com.kh.pmfp.company.model.exception.FailSelectAdminMessage;
 import com.kh.pmfp.company.model.exception.FailSelectCompanyReview;
 import com.kh.pmfp.company.model.exception.FailSelectDeliveryMan;
@@ -19,6 +20,8 @@ import com.kh.pmfp.company.model.vo.CompanyBoard;
 import com.kh.pmfp.company.model.vo.CompanyEmployee;
 import com.kh.pmfp.company.model.vo.CompanyMaterial;
 import com.kh.pmfp.company.model.vo.CompanyOrder;
+import com.kh.pmfp.company.model.vo.CompanyOrderStock;
+import com.kh.pmfp.company.model.vo.CompanyRemainMaterial;
 
 
 public interface CompanyDao {
@@ -62,5 +65,15 @@ public interface CompanyDao {
 	ArrayList<CompanyBoard> selectCompanyReview(SqlSessionTemplate sqlSession, int comNo) throws FailSelectCompanyReview;
 
 	ArrayList<CompanyMaterial> orderStrok(SqlSessionTemplate sqlSession) throws FailSelectOrderStock;
+
+	int applyStock(SqlSessionTemplate sqlSession, ArrayList<CompanyOrderStock> list) throws FailInsertOrderStock;
+
+	ArrayList<CompanyOrderStock> selectOrderStockList(SqlSessionTemplate sqlSession, int comNo) throws FailSelectOrderStock;
+
+	int receiptConfirm(SqlSessionTemplate sqlSession, ArrayList<Integer> orderMno) throws FailInsertOrderStock;
+
+	ArrayList<CompanyOrderStock> selectReceiptList(SqlSessionTemplate sqlSession, int comNo) throws FailSelectOrderStock;
+
+	ArrayList<CompanyRemainMaterial> selectAllMaterialList(SqlSessionTemplate sqlSession, int comNo) throws FailSelectOrderStock;
 
 }

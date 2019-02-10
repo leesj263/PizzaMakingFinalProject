@@ -19,6 +19,7 @@
   src="https://code.jquery.com/jquery-3.3.1.js"
   integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
   crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <style>
 .card text-white bg-flat-color-1 {
 	position: relative;
@@ -54,7 +55,9 @@
 							<div class="col-lg-3">
 								<select id = "materialSelect"  style= "width : 150px; height : 30px; border-radius : 5px">
 									<c:forEach items = "${list}" var = "value" varStatus = "status">
-										<option value = "${ value.materialNo }" weight = "${ value.materialWeight }" sellPrice = "${ value.materialSellPrice }">${ value.materialName }</option>
+										<c:if test="${ value.materialNo  != 10}">
+											<option value = "${ value.materialNo }" weight = "${ value.materialWeight }" buyPrice = "${ value.materialBuyPrice }">${ value.materialName }</option>
+										</c:if>
 									</c:forEach>
 	                            </select>
 							</div>
@@ -158,13 +161,14 @@
 		
 		console.log("weight : " +$("#materialSelect option:selected").attr("weight"));
 		var materialWeight = $("#materialSelect option:selected").attr("weight");
-		console.log("sellPrice : " + $("#materialSelect option:selected").attr("sellPrice"));
-		var materialSellPrice = $("#materialSelect option:selected").attr("sellPrice");
+		console.log("buyPrice : " + $("#materialSelect option:selected").attr("buyPrice"));
+		var materialBuyPrice = $("#materialSelect option:selected").attr("buyPrice");
 		
-		var gramPrice = Math.round(materialSellPrice/ materialWeight);
+		var gramPrice = Math.round(materialBuyPrice/ materialWeight);
 		console.log(gramPrice);
 		
 		var materialPrice = gramPrice * (materialSelectWeight*1000);
+		
 		
 		
 		$("#orderStockTable").append("<tr id = " + materialSelect + "><th scope='row'>" + tableId + 
@@ -180,7 +184,12 @@
 	
 	function removeOrderStockTr(tr){
 		//$(tr).remove();
+		var minusPrice = $(tr).parent().parent().children("td").eq(2).text();
+		allPrice -= parseInt(minusPrice);
 		$(tr).parent().parent().remove();
+		
+		$("#allPricePlace").text("");
+		$("#allPricePlace").append(allPrice);
 	}
 	
 	function applyStock(){
@@ -229,8 +238,16 @@
 			type : "get",
 			traditional : true,
 			success : function(data){
-				console.log(data);
-				location.href = "movePage.com?movePage=companyStock";
+				
+				swal({
+					  title: "재료주문이 정상적으로 \n완료되었습니다!",
+					  icon: "success",
+					}).then((value) =>{
+					if(value = "ok"){
+						location.href = "movePage.com?movePage=companyStock";
+					}
+				});
+				
 			},
 			error : function(data){
 				console.log(data);

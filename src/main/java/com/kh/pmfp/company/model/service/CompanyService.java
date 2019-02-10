@@ -3,6 +3,7 @@ package com.kh.pmfp.company.model.service;
 import java.util.ArrayList;
 
 import com.kh.pmfp.company.model.exception.FailInsertEmployeeInfo;
+import com.kh.pmfp.company.model.exception.FailInsertOrderStock;
 import com.kh.pmfp.company.model.exception.FailSelectAdminMessage;
 import com.kh.pmfp.company.model.exception.FailSelectCompanyReview;
 import com.kh.pmfp.company.model.exception.FailSelectDeliveryMan;
@@ -17,6 +18,8 @@ import com.kh.pmfp.company.model.vo.CompanyBoard;
 import com.kh.pmfp.company.model.vo.CompanyEmployee;
 import com.kh.pmfp.company.model.vo.CompanyMaterial;
 import com.kh.pmfp.company.model.vo.CompanyOrder;
+import com.kh.pmfp.company.model.vo.CompanyOrderStock;
+import com.kh.pmfp.company.model.vo.CompanyRemainMaterial;
 
 public interface CompanyService {
 
@@ -59,5 +62,15 @@ public interface CompanyService {
 	ArrayList<CompanyBoard> selectCompanyReview(int comNo) throws FailSelectCompanyReview;
 
 	ArrayList<CompanyMaterial> orderStrok() throws FailSelectOrderStock;
+
+	int applyStock(ArrayList<CompanyOrderStock> list) throws FailInsertOrderStock;
+
+	ArrayList<CompanyOrderStock> selectOrderStockList(int comNo) throws FailSelectOrderStock;
+
+	int receiptConfirm(ArrayList<Integer> orderMno) throws FailInsertOrderStock;
+
+	ArrayList<CompanyOrderStock> selectReceiptList(int comNo) throws FailSelectOrderStock;
+
+	ArrayList<CompanyRemainMaterial> selectAllMaterialList(int comNo) throws FailSelectOrderStock;
 
 }

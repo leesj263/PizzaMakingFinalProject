@@ -11,13 +11,15 @@ public class CompanyOrderStock implements java.io.Serializable{
 	private String orderMCalculate;
 	private int orderExpenseNo;
 	private int materialWeight;
+	private int materialPrice;
+	private String materialName;
 	
 	public CompanyOrderStock() {
 		
 	}
 
 	public CompanyOrderStock(int orderMNo, int comNo, int materialNo, Date orderMDate, int orderMStatus,
-			String orderMCalculate, int orderExpenseNo, int materialWeight) {
+			String orderMCalculate, int orderExpenseNo, int materialWeight, int materialPrice, String materialName) {
 		super();
 		this.orderMNo = orderMNo;
 		this.comNo = comNo;
@@ -27,6 +29,8 @@ public class CompanyOrderStock implements java.io.Serializable{
 		this.orderMCalculate = orderMCalculate;
 		this.orderExpenseNo = orderExpenseNo;
 		this.materialWeight = materialWeight;
+		this.materialPrice = materialPrice;
+		this.materialName = materialName;
 	}
 
 	public int getOrderMNo() {
@@ -93,12 +97,32 @@ public class CompanyOrderStock implements java.io.Serializable{
 		this.materialWeight = materialWeight;
 	}
 
+	public int getMaterialPrice() {
+		return materialPrice;
+	}
+
+	public void setMaterialPrice(int materialPrice) {
+		this.materialPrice = materialPrice;
+	}
+
+	public String getMaterialName() {
+		return materialName;
+	}
+
+	public void setMaterialName(String materialName) {
+		this.materialName = materialName;
+	}
+
 	@Override
 	public String toString() {
 		return "CompanyOrderStock [orderMNo=" + orderMNo + ", comNo=" + comNo + ", materialNo=" + materialNo
 				+ ", orderMDate=" + orderMDate + ", orderMStatus=" + orderMStatus + ", orderMCalculate="
-				+ orderMCalculate + ", orderExpenseNo=" + orderExpenseNo + ", materialWeight=" + materialWeight + "]";
+				+ orderMCalculate + ", orderExpenseNo=" + orderExpenseNo + ", materialWeight=" + materialWeight
+				+ ", materialPrice=" + materialPrice + ", materialName=" + materialName + "]";
 	}
+
+	
+	
 	
 	
 }
