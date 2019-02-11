@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri = "http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -23,8 +25,8 @@
 		  <a class="item" href="myPageCoupon.mp">
 		    쿠폰함
 		  </a>
-		  <a class="item active" href="myPageQna.t">
-		    문의내역
+		  <a class="item active" href="myPageQna.mp">
+		    내 작성글
 		  </a>
 		  <a class="item" href="myPageMemModify.t">
 		   회원정보 수정
@@ -55,18 +57,29 @@
 			    <th>작성일</th>
 		 	</tr></thead>
 		  <tbody>
+		    <c:forEach items="${ myWritingList }" var="m">
 		    <tr>
-		     <td>20190117</td>
-		     <td>주문관련 문의드립니다</td>
-		     <td>답변</td>
-		     <td>2019-01-01</td>
+		    	<td>${ m.boardNo }</td>
+		    	<td>${ m.boardTitle }</td>
+		    	
+		    	<c:if test="${m.boardAnswer == 'Y' }">
+		    		<td>답변</td>
+		    	</c:if>
+		    	
+		    	<c:if test="${m.boardAnswer == 'N' }">
+		    		<td>미답변</td>
+		    	</c:if>
+		    	
+		    <%-- 	<td>${ m.boardDate }</td> --%>
+		    	
+		    	<c:set var="date" value="${ m.boardDate }"/>
+		    	<td>${ fn:substring(date,2,10) }</td>
+		    	
+		    
+		    	
+		    	
 		    </tr>
-		    <tr>
-		     <td>20190118</td>
-		     <td>쿠폰 이용기간 지났는데...	</td>
-		     <td>미답변</td>
-		     <td>2019-01-03</td>
-		    </tr>
+		    </c:forEach>
 		    
 		  </tbody>
 		</table>

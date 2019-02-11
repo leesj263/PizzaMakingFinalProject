@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.kh.pmfp.mypage.model.dao.MypageDao;
 import com.kh.pmfp.mypage.model.vo.Coupon;
 import com.kh.pmfp.mypage.model.vo.DelList;
+import com.kh.pmfp.mypage.model.vo.MyWriting;
 import com.kh.pmfp.mypage.model.vo.OrderList;
 
 @Service
@@ -49,6 +50,22 @@ public class MypageServiceImpl implements MypageService{
 		return iCouponList;
 	}
 
+	//내 작성글
+	@Override
+	public ArrayList<MyWriting> selectMyWritingList(int memberNo) {
+		ArrayList<MyWriting> myWritingList = md.selectMyWritingList(sqlSession, memberNo);
+		return myWritingList;
+	}
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	

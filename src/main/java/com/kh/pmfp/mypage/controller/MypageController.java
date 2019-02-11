@@ -2,6 +2,7 @@ package com.kh.pmfp.mypage.controller;
 
 import java.util.ArrayList;
 
+import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -14,6 +15,7 @@ import com.kh.pmfp.common.model.vo.Member;
 import com.kh.pmfp.mypage.model.service.MypageService;
 import com.kh.pmfp.mypage.model.vo.Coupon;
 import com.kh.pmfp.mypage.model.vo.DelList;
+import com.kh.pmfp.mypage.model.vo.MyWriting;
 import com.kh.pmfp.mypage.model.vo.OrderList;
 
 @Controller
@@ -113,6 +115,30 @@ public class MypageController {
 		
 		return "mypage/coupon2";
 	}
+	
+	
+	
+	//내 작성글
+	@RequestMapping(value="myPageQna.mp")
+	public String myWriting(HttpServletRequest request, Model model) {
+		HttpSession session = request.getSession();
+		Member loginUser = (Member)session.getAttribute("loginUser");
+		int memberNo = loginUser.getMemberNo();
+		
+		ArrayList<MyWriting> myWritingList = mps.selectMyWritingList(memberNo);
+		
+		model.addAttribute("myWritingList", myWritingList);
+		
+		return "mypage/qnaList";
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	

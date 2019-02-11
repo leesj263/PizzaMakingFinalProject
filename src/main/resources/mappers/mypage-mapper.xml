@@ -27,6 +27,13 @@
 		<result property="possiblePeriod" column="possiblePERIOD"/>
 	</resultMap>
 	
+	<resultMap type="com.kh.pmfp.mypage.model.vo.MyWriting" id="mypageMyWritingResultSet">
+		<id property="boardNo" column="BOARD_NO"/>
+		<result property="boardTitle" column="BOARD_TITLE"/>
+		<result property="boardAnswer" column="BOARD_ANSWER"/>
+		<result property="boardDate" column="BOARD_DATE"/>
+	</resultMap>
+	
 	
 
 	<select id="selectOrderList" resultMap="mypageOrderResultSet" parameterType="_int">
@@ -67,5 +74,10 @@
 		AND CI.issue_edate <![CDATA[<]]> SYSDATE
 	</select>
 	
+	<select id="selectMyWritingList" resultMap="mypageMyWritingResultSet" parameterType="_int">
+		select board_no, board_title, board_answer, board_date
+		from board
+		where board_type='3' and member_no=#{memberNo}
+	</select>
 	
 </mapper>

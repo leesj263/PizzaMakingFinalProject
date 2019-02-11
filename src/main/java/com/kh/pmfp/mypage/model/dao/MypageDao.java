@@ -6,6 +6,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 
 import com.kh.pmfp.mypage.model.vo.Coupon;
 import com.kh.pmfp.mypage.model.vo.DelList;
+import com.kh.pmfp.mypage.model.vo.MyWriting;
 import com.kh.pmfp.mypage.model.vo.OrderList;
 
 public interface MypageDao {
@@ -21,6 +22,9 @@ public interface MypageDao {
 
 	//쿠폰함 - 사용만료쿠폰
 	ArrayList<Coupon> selectICouponList(SqlSessionTemplate sqlSession, int memberNo);
+
+	//내 작성글
+	ArrayList<MyWriting> selectMyWritingList(SqlSessionTemplate sqlSession, int memberNo);
 
 
 
