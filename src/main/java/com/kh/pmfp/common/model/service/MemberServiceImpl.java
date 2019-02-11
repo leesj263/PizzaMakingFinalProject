@@ -46,7 +46,7 @@ public class MemberServiceImpl implements MemberService{
 		//암호화된 비밀번호 조회
 		String encPassword = md.selectEncPassword(sqlSession,m);
 		
-		System.out.println("로그인 요청 메소드 실행됨!");
+		//System.out.println("로그인 요청 메소드 실행됨!");
 		
 		if(!passwordEncoder.matches(m.getMemberPwd(), encPassword)) {
 			throw new LoginException("로그인 실패");
@@ -55,6 +55,14 @@ public class MemberServiceImpl implements MemberService{
 		}
 		
 		return loginUser;
+	}
+
+	//아이디 중복확인 체크
+	@Override
+	public int duplicationCheck(String memberId) {
+		int result = md.duplicationCheck(sqlSession,memberId);
+		//System.out.println("아이디 중복확인!보냄");
+		return result;
 	}
 	
 

@@ -22,6 +22,11 @@
 <script src="/pmfp/resources/main/assets/js/semantic/semantic.min.js"></script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
+<script>
+	//변수만 선언
+	//아이디 중복확인 체크 (마지막에 계정만들기 눌렀을떄 아이디가 중복체크)
+	idcheckcheck=0;
+</script>
 
 
 <style>
@@ -575,13 +580,65 @@ h1 {
 		//아이디 중복확인 버튼 
 		function IdCheckBtn(){
 			idCheck = 2;
+			var memberId = $("#memberId").val();
+			//console.log(memberId);
+			
+			$.ajax({
+				url:"duplicationCheck.co",
+				type:"post",
+				data:{memberId:memberId},
+				success:function(data){
+					console.log("성공");
+					console.log(data);
+					if(memberId==''){
+						swal("아이디를 입력해주세요");
+					}else{
+						if(data==0){
+							swal("사용 가능한 아이디 입니다.");
+							idcheckcheck=2;
+						}else{
+							swal("아이디가 중복됩니다.");
+							idcheckcheck=1;
+						}
+					}
+				},
+				error:function(data){
+					console.log(data);
+				}
+			});
+			
 			return false;
 		}
 		
 		//인증번호 발송 버튼
 		function CertificationSendBtn(){
 			CertificationSend=2;
+			var memberId = $("#memberId").val();
+			var memberEmail = $("#memberEmail").val();
+			//랜덤 코드 생성
+			var randomCode = Math.floor(Math.random() * 1000000)+100000;
+			if(randomCode>1000000){
+				randomCode = randomCode - 100000;
+			}
+			//console.log(memberId);
+			//console.log(memberEmail);
+			//console.log(randomCode);
+			
+		$.ajax({	
+			url:"joinSendMail.co",
+			type:"post",
+			data:{"memberId":memberId,
+				"memberEmail":memberEmail,
+				"randomCode":randomCode},
+			success:function(data){
+				console.log(data);
+			}
+				
+			});
+			
+			
 			return false;
+			
 		}
 		
 		//인증확인 버튼
@@ -627,11 +684,11 @@ h1 {
 		$('.ui.checkbox').checkbox();
 		console.log($('.ui.checkbox'));
 		
-
 		
 
-<!----------------------- 사업자로 변환 script -------------------------------------->
 
+
+/* ---------------------- 사업자로 변환 script -------------------------------------- */
 		//사업자로 변환시 양식 변환
 		var check = $('.ui.toggle.checkbox');
 		var num=1;
@@ -661,7 +718,8 @@ h1 {
 			console.log(changeNum.val());
 		});
 	
-<!----------------------- 회원가입 유효성 검사 script -------------------------------------->
+
+/* ---------------------- 회원가입 유효성 검사 script -------------------------------------- */
 		function CreateAccount(){
 			var comLisenseno = $("#comLisenseno").val();	//사업자 번호 
 			var memberName = $("#memberName").val();	//이름 
@@ -748,6 +806,11 @@ h1 {
 			//인증확인 버튼  체크여부(체크 했는지 안했는징)
 			if(Certification==1){
 				swal("인증확인 해주세요");
+				return false;
+			}
+			
+			if(idcheckcheck!=2){
+				swal("아이디가 중복됩니다.");
 				return false;
 			}
 			
