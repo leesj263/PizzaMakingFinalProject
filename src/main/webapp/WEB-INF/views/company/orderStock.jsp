@@ -137,7 +137,7 @@
 				<hr>
 					<div align = "right">
 					<button onclick = "applyStock()" type="button" class="btn btn-primary" style = "width : 150px">신청</button>
-					<button onclick = "location.href = 'movePage.com?movePage=companyStock'" type="button" class="btn btn-secondary" style = "width : 150px">취소</button>
+					<button onclick = "location.href = 'selectAllMaterialList.com'" type="button" class="btn btn-secondary" style = "width : 150px">취소</button>
 					</div>
 				</div>
 			</div>
@@ -244,7 +244,7 @@
 					  icon: "success",
 					}).then((value) =>{
 					if(value = "ok"){
-						location.href = "movePage.com?movePage=companyStock";
+						location.href = "selectAllMaterialList.com";
 					}
 				});
 				
