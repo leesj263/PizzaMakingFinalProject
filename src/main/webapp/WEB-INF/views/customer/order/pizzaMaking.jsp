@@ -12,6 +12,10 @@
 	.topping-table tbody tr td:not(:first-child){
 		text-align: center;
 	}
+	#toppingAllList tbody tr td,
+	#toppingSelectList tbody tr td{
+		text-align: center;
+	}
 	.topping-table tbody tr td:nth-child(2){
 		padding-left: 20px !important;
 	}
@@ -243,7 +247,7 @@
 	
 	<!-- 토핑 추가 모달 -->
 	<div class="ui longer modal" id="toppingModal" style="top: 40px;">
-		<div class="header">토핑 추가</div>
+		<div class="header">토핑 추가 (최대 6개까지 선택)</div>
 		<div class="content">
 			<div class="ui grid">
 				<div class="eight wide column">
@@ -251,10 +255,10 @@
 					<table class="ui single line table" id="toppingAllList">
 						<thead>
 							<tr>
-								<th style="width: 40%;">토핑</th>
-								<th style="width: 10%;">사이즈</th>
-								<th style="width: 20%;">중량(g)</th>
-								<th style="width: 30%;">가격(원)</th>
+								<th style="width: 40%; text-align: center;">토핑</th>
+								<th style="width: 10%; text-align: center;">사이즈</th>
+								<th style="width: 20%; text-align: center;">중량(g)</th>
+								<th style="width: 30%; text-align: center;">가격(원)</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -270,10 +274,10 @@
 					<table class="ui single line table" id="toppingSelectList">
 						<thead>
 							<tr>
-								<th style="width: 40%;">토핑</th>
-								<th style="width: 10%;">사이즈</th>
-								<th style="width: 20%;">중량(g)</th>
-								<th style="width: 30%;">가격(원)</th>
+								<th style="width: 40%; text-align: center;">토핑</th>
+								<th style="width: 10%; text-align: center;">사이즈</th>
+								<th style="width: 20%; text-align: center;">중량(g)</th>
+								<th style="width: 30%; text-align: center;">가격(원)</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -305,7 +309,6 @@
 	
 	<script src="/pmfp/resources/main/assets/js/semantic/semantic.min.js"></script>
 	<script src="/pmfp/resources/customer/js/jquery.cookie-1.4.1.min.js"></script>
-	<!-- <script src="/pmfp/resources/customer/js/json2.js"></script> -->
 	<script>
 		$('.ui.dropdown.no-action').dropdown({action: 'hide'});
 		$('.ui.dropdown.action').dropdown();
@@ -314,10 +317,12 @@
 		var basicMenuList;
 		var toppingList;
 		var sizeList;
-		var pizzaSetting = $.parseJSON($.cookie("pizzaSetting"));
+		var pizzaSetting;
 		
 		//onload -----------------------------------------------------------------------------------------------------------
 		$(function(){
+			if($.cookie("pizzaSetting")) pizzaSetting = $.parseJSON($.cookie("pizzaSetting"));
+			
 			$.ajax({
 				url: "pizzaMakingData.cor",
 				success: function(data){
@@ -354,6 +359,7 @@
 					//엣지 리스트
 					for(var i=0; i<edgeList.length; i++) $("#doughEdgeDiv .menu").append($("<div class='item'>").text(edgeList[i]));
 					
+					pizzaSettingFunc();
 					
 				}, error: function(data){
 					console.log("데이터 불러오기 실패");
@@ -388,8 +394,6 @@
 					var edge;
 					var pizzaName = basicMenuList[i].basicMenu;
 					var toppings = {};
-					
-					$("#pizzaName").val(pizzaName);
 					
 					//도우
 					for(var j=0; j<basicMenuList[i].basicTopping.length; j++){
@@ -433,9 +437,13 @@
 		//공통 -----------------------------------------------------------------------------------------------------------
 		//피자 세팅
 		function pizzaSettingFunc(){
-			//console.log(pizzaSetting);
+			console.log(pizzaSetting);
 			if(pizzaSetting){
-				toppingReset();
+				$("#toppings").empty();
+				$(".topping-table tbody td").empty();
+				$('.ui.dropdown').dropdown('restore defaults');
+				
+				$("#pizzaName").val(pizzaSetting.pizzaName);
 				
 				$("#doughDiv input").val(pizzaSetting.dough.materialName);
 				$("#doughDiv .text").text(pizzaSetting.dough.materialName);
@@ -456,6 +464,8 @@
 					$(".topping-table tbody tr").eq(i).children().eq(2).text(pizzaSetting.toppings[materialNo].topping.materialSellprice*pizzaSetting.toppings[materialNo].amount);
 					$(".topping-table tbody tr").eq(i++).children().eq(3).append($("<div class='mini-button' onclick='toppingTableListDel("+materialNo+", this);'>").text("×"));
 				}
+				
+				imgAll();
 			}
 		}
 		
@@ -492,6 +502,7 @@
 			$(".topping-table tbody").append($tr);
 			
 			delete pizzaSetting.toppings[no];
+			if($.isEmptyObject(pizzaSetting.toppings)) delete pizzaSetting.toppings;
 			$.cookie.raw = true;
 			$.removeCookie("pizzaSetting");
 			$.cookie("pizzaSetting", JSON.stringify(pizzaSetting), {expires: 1});
@@ -499,9 +510,12 @@
 		
 		//옵션 & 토핑 세팅 초기화
 		function toppingReset(){
+			$("#pizzaName").val("내 피자");
 			$("#toppings").empty();
 			$(".topping-table tbody td").empty();
 			$('.ui.dropdown').dropdown('restore defaults');
+			$.removeCookie("pizzaSetting");
+			pizzaSetting = null;
 		}
 		
 		//피자 이름 변경시
@@ -566,11 +580,14 @@
 						}).mouseout(function(){
 							$(this).css({"background":"white"});
 						});
-					for(var j=0; j<pizzaSetting.toppings.length; j++){
-						if(pizzaSetting.toppings[j].topping.materialName == toppingList[i].materialName){
-							$tr.css({"background":"lightgray"});
-							$tr.off('mouseout');
-							break;
+					
+					if(pizzaSetting){
+						for(var materialNo in pizzaSetting.toppings){
+							if(pizzaSetting.toppings[materialNo].topping.materialName == toppingList[i].materialName){
+								$tr.css({"background":"lightgray"});
+								$tr.off('mouseout');
+								break;
+							}
 						}
 					}
 					
@@ -587,20 +604,22 @@
 			var $toppingSelectList = $("#toppingSelectList tbody");
 			$toppingSelectList.empty();
 			
-			for(var i=0; i<pizzaSetting.toppings.length; i++){
-				var $tr = $("<tr onclick='delToppingModal(this)'>")
-					.mouseenter(function(){
-						$(this).css({"background":"lightgray", "cursor":"pointer"});
-					}).mouseout(function(){
-						$(this).css({"background":"white"});
-					});
-				$tr.append($("<input type='hidden' class='materialNo' value='"+pizzaSetting.toppings[i].topping.materialNo+"'>"));
-				$tr.append($("<td>").text(pizzaSetting.toppings[i].topping.materialName));
-				$tr.append($("<td>").text(pizzaSetting.toppings[i].topping.materialSize));
-				$tr.append($("<td>").text(pizzaSetting.toppings[i].topping.materialWeight));
-				$tr.append($("<td>").text(pizzaSetting.toppings[i].topping.materialSellprice));
-				
-				$toppingSelectList.append($tr);
+			if(pizzaSetting){
+				for(var materialNo in pizzaSetting.toppings){
+					var $tr = $("<tr onclick='delToppingModal(this)'>")
+						.mouseenter(function(){
+							$(this).css({"background":"lightgray", "cursor":"pointer"});
+						}).mouseout(function(){
+							$(this).css({"background":"white"});
+						});
+					$tr.append($("<input type='hidden' class='materialNo' value='"+pizzaSetting.toppings[materialNo].topping.materialNo+"'>"));
+					$tr.append($("<td>").text(pizzaSetting.toppings[materialNo].topping.materialName));
+					$tr.append($("<td>").text(pizzaSetting.toppings[materialNo].topping.materialSize));
+					$tr.append($("<td>").text(pizzaSetting.toppings[materialNo].topping.materialWeight));
+					$tr.append($("<td>").text(pizzaSetting.toppings[materialNo].topping.materialSellprice));
+					
+					$toppingSelectList.append($tr);
+				}
 			}
 		}
 		
@@ -621,7 +640,7 @@
 				$toppingSelectList.append($(tr).clone(true).attr("onclick", "delToppingModal(this)").css({"background":"white"}));
 				$(tr).css({"background":"lightgray"});
 				$(tr).off('mouseout');
-			} else if($toppingSelectList.children().length >= 6) {
+			} else if($toppingSelectList.children().length >= 6 && chk) {
 				alert("토핑은 최대 6개까지 선택 가능합니다.");
 			}
 		}
@@ -645,40 +664,221 @@
 		
 		//토핑 적용
 		function toppingApply(){
+			var materialNoList = $("#toppingSelectList tbody").find(".materialNo");
 			
+			if(materialNoList.length > 0){
+				var toppings = {};
+				for(var i=0; i<materialNoList.length; i++){
+					var chk = true;
+					for(var materialNo in pizzaSetting.toppings){
+						if(materialNoList[i].value == materialNo){
+							toppings[materialNoList[i].value] = pizzaSetting.toppings[materialNo];
+							chk = false;
+							break;
+						}
+					}
+					if(chk){
+						toppings[materialNoList[i].value] = {amount: 1, topping: mateMap[materialNoList[i].value]};
+					}
+				}
+				
+				delete pizzaSetting.toppings;
+				pizzaSetting["toppings"] = toppings;
+				
+				$.cookie.raw = true;
+				$.removeCookie("pizzaSetting");
+				$.cookie("pizzaSetting", JSON.stringify(pizzaSetting), {expires: 1});
+				
+				pizzaSettingFunc();
+			}
 		}
 		//-----------------------------------------------------------------------------------------------------------
 		
-		
-		
-		//이미지 -----------------------------------------------------------------------------------------------------------
-		//도우, 사이즈, 소스 선택시 이미지 추가
+		//도우, 사이즈, 소스, 엣지
 		$('#dough').change(function(){
-			if($('#dough').val() != "" && $('#doughSize').val() != "" && $('#doughImg').length == 0){
-				dough();
+			if($('#dough').val() != "" && $('#doughSize').val() != ""){
+				if($('#doughImg').length > 0) $('#doughImg').remove();
+				if($('#doughSauceImg').length > 0) $('#doughSauceImg').remove();
+				var dough;
+				
+				for(var materialNo in mateMap){
+					if(mateMap[materialNo].materialCateg == 1 && mateMap[materialNo].materialName == $('#dough').val()
+							&& mateMap[materialNo].materialSize == $('#doughSize').val().toUpperCase()) {
+						dough = mateMap[materialNo];
+						break;
+					}
+				}
+				
+				if(pizzaSetting){
+					pizzaSetting["pizzaName"] = $('#pizzaName').val();
+					pizzaSetting["dough"] = dough;
+					pizzaSetting["size"] = $('#doughSize').val().toUpperCase();
+				} else {
+					pizzaSetting = {
+							pizzaName: $('#pizzaName').val(),
+							dough: dough,
+							size: $('#doughSize').val().toUpperCase()
+					}
+				}
+				
+				
+				doughImg();
 				if($('#doughSauce').val() != ""){
-					setTimeout(function(){sauce();}, 700);
+					var sauce;
+					
+					for(var materialNo in mateMap){
+						if(mateMap[materialNo].materialCateg == 2 && mateMap[materialNo].materialName == $('#doughSauce').val()
+								&& mateMap[materialNo].materialSize == $('#doughSize').val().toUpperCase()) {
+							sauce = mateMap[materialNo];
+							break;
+						}
+					}
+					
+					pizzaSetting["sauce"] = sauce;
+					
+					setTimeout(function(){sauceImg();}, 600);
+				}
+				if($('#doughEdge').val() != ""){
+					var edge;
+					
+					for(var materialNo in mateMap){
+						if(mateMap[materialNo].materialCateg == 3 && mateMap[materialNo].materialName == $('#doughEdge').val()
+								&& mateMap[materialNo].materialSize == $('#doughSize').val().toUpperCase()) {
+							edge = mateMap[materialNo];
+							break;
+						}
+					}
+					
+					pizzaSetting["edge"] = edge;
 				}
 			}
 		});
 		$('#doughSize').change(function(){
-			if($('#dough').val() != "" && $('#doughSize').val() != "" && $('#doughImg').length == 0){
-				dough();
+			if($('#dough').val() != "" && $('#doughSize').val() != ""){
+				if($('#doughImg').length > 0) $('#doughImg').remove();
+				if($('#doughSauceImg').length > 0) $('#doughSauceImg').remove();
+				var dough;
+				
+				for(var materialNo in mateMap){
+					if(mateMap[materialNo].materialCateg == 1 && mateMap[materialNo].materialName == $('#dough').val()
+							&& mateMap[materialNo].materialSize == $('#doughSize').val().toUpperCase()) {
+						dough = mateMap[materialNo];
+						break;
+					}
+				}
+				
+				if(pizzaSetting){
+					pizzaSetting["pizzaName"] = $('#pizzaName').val();
+					pizzaSetting["dough"] = dough;
+					pizzaSetting["size"] = $('#doughSize').val().toUpperCase();
+				} else {
+					pizzaSetting = {
+							pizzaName: $('#pizzaName').val(),
+							dough: dough,
+							size: $('#doughSize').val().toUpperCase()
+					}
+				}
+				
+				doughImg();
 				if($('#doughSauce').val() != ""){
-					setTimeout(function(){sauce();}, 700);
+					var sauce;
+					
+					for(var materialNo in mateMap){
+						if(mateMap[materialNo].materialCateg == 2 && mateMap[materialNo].materialName == $('#doughSauce').val()
+								&& mateMap[materialNo].materialSize == $('#doughSize').val().toUpperCase()) {
+							sauce = mateMap[materialNo];
+							break;
+						}
+					}
+					
+					pizzaSetting["sauce"] = sauce;
+					
+					setTimeout(function(){sauceImg();}, 600);
+				}
+				if($('#doughEdge').val() != ""){
+					var edge;
+					
+					for(var materialNo in mateMap){
+						if(mateMap[materialNo].materialCateg == 3 && mateMap[materialNo].materialName == $('#doughEdge').val()
+								&& mateMap[materialNo].materialSize == $('#doughSize').val().toUpperCase()) {
+							edge = mateMap[materialNo];
+							break;
+						}
+					}
+					
+					pizzaSetting["edge"] = edge;
 				}
 			}
 		});
 		$('#doughSauce').change(function(){
-			if($('#doughSauce').val() != "" && $('#doughImg').length > 0 && $('#doughSauceImg').length == 0){
-				sauce();
+			if($('#doughSauce').val() != "" && $('#doughImg').length > 0){
+				if($('#doughSauceImg').length > 0) $('#doughSauceImg').remove();
+				var sauce;
+				
+				for(var materialNo in mateMap){
+					if(mateMap[materialNo].materialCateg == 2 && mateMap[materialNo].materialName == $('#doughSauce').val()
+							&& mateMap[materialNo].materialSize == $('#doughSize').val().toUpperCase()) {
+						sauce = mateMap[materialNo];
+						break;
+					}
+				}
+				
+				pizzaSetting["sauce"] = sauce;
+				
+				sauceImg();
+			}
+		});
+		$('#doughEdge').change(function(){
+			if($('#doughEdge').val() != "" && $('#doughImg').length > 0 ) {
+				var edge;
+				
+				for(var materialNo in mateMap){
+					if(mateMap[materialNo].materialCateg == 3 && mateMap[materialNo].materialName == $('#doughEdge').val()
+							&& mateMap[materialNo].materialSize == $('#doughSize').val().toUpperCase()) {
+						edge = mateMap[materialNo];
+						break;
+					}
+				}
+				
+				pizzaSetting["edge"] = edge;
 			}
 		});
 		
+		//이미지 -----------------------------------------------------------------------------------------------------------
+		//이미지 공통
+		function imgAll(){
+			if($('#dough').val() != "" && $('#doughSize').val() != "" && $('#doughImg').length == 0){
+				setTimeout(function(){doughImg();}, 100);
+				if($('#doughSauce').val() != "") setTimeout(function(){sauceImg();}, 600);
+				
+				var interval = 0;
+				if(pizzaSetting.toppings){
+					for(var materialNo in pizzaSetting.toppings){
+						if(pizzaSetting.toppings[materialNo].topping.imgOriginname.indexOf("cheese") > -1){
+							setTimeout(function(){cheeseImg();}, 800 + interval);
+							interval = interval + 400;
+						} else {
+							(function(no){
+								setTimeout(function(){toppingImg(no);}, 800 + interval);
+								interval = interval + 200;
+							})(materialNo);
+						}
+					}
+				}
+				
+				return;
+			}
+			if($('#doughSauce').val() != "" && $('#doughImg').length > 0 && $('#doughSauceImg').length == 0){
+				setTimeout(function(){sauceImg();}, 100);
+				
+				return;
+			}
+		}
+		
 		//도우 이미지
-		function dough(){
+		function doughImg(){
 			var $dough = $("<img id='doughImg'>");
-			$dough.attr("src", "resources/customer/images/order/dough.png");
+			$dough.attr("src", "resources/customer/images/material/1/"+pizzaSetting.dough.imgOriginname);
 			$dough.addClass("scale-down-center");
 			$dough.css({"position":"absolute", "z-index":"2", "width":"420px", "height":"420px"});
 			
@@ -686,9 +886,9 @@
 		}
 		
 		//소스 이미지
-		function sauce(){
+		function sauceImg(){
 			var $sauce = $("<img id='doughSauceImg'>");
-			$sauce.attr("src", "resources/customer/images/order/tomato_sauce.png");
+			$sauce.attr("src", "resources/customer/images/material/2/"+pizzaSetting.sauce.imgOriginname);
 			$sauce.addClass("scale-up-center");
 			$sauce.css({"position":"absolute", "z-index":"3", "width":"420px", "height":"420px"});
 			
@@ -696,13 +896,23 @@
 		}
 		
 		//치즈 이미지
-		function cheese(){
+		function cheeseImg(){
 			var $cheese = $("<img id='doughCheeseImg'>");
-			$cheese.attr("src", "resources/customer/images/order/cheese.png");
+			$cheese.attr("src", "resources/customer/images/material/4/cheese.png");
 			$cheese.addClass("scale-up-center");
 			$cheese.css({"position":"absolute", "z-index":"4", "width":"420px", "height":"420px"});
 			
 			$("#toppings").append($cheese);
+		}
+		
+		//토핑 이미지
+		function toppingImg(materialNo){
+			var $topping = $("<img id='doughToppingImg"+materialNo+"'>");
+			$topping.attr("src", "resources/customer/images/material/4/" + pizzaSetting.toppings[materialNo].topping.imgOriginname);
+			$topping.addClass("scale-down-center");
+			$topping.css({"position":"absolute", "z-index":materialNo, "width":"420px", "height":"420px"});
+			
+			$("#toppings").append($topping);
 		}
 		//-----------------------------------------------------------------------------------------------------------
 	</script>
