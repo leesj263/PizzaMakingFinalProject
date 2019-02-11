@@ -1,6 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-    
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>    
 <jsp:include page="../common/header.jsp"/>
 
 <section>
@@ -17,10 +17,26 @@
 					<div class="col-md-8">
 						<ul class="member-ul">
 							<li class="member-li"><span>분류</span>
-								<p>[결제]</p></li>
-							<li class="member-li"><input type="hidden" name="qno" value="3">
+								<p>
+									<c:choose>
+										<c:when test="${faq.boardCate==1 }">
+											<td>[결제]</td>
+										</c:when>
+										<c:when test="${faq.boardCate==2 }">
+											<td>[주문]</td>
+										</c:when>
+										<c:when test="${faq.boardCate==3 }">
+											<td>[공유 / 후기 / 질문답변]</td>
+										</c:when>
+										<c:otherwise>
+											<td>[이벤트]</td>
+										</c:otherwise>
+									</c:choose>	
+								</p>
+							</li>
+							<li class="member-li"><input type="hidden" name="fno" value="3">
 								<span>제목</span>
-								<p>카카오페이 결제가 안돼요</p>
+								<p>${faq.boardTitle }</p>
 							</li>
 						</ul>
 					</div>
@@ -32,10 +48,8 @@
 						<table class="table"> 
 							<tr>
 								<td id="nContents">
-									서버 차원의 오류로 정상 결제가 진행되지 않는 경우에는 공지사항에 작성하고 있습니다.
-									공지사항 페이지에서 확인할 수 없는 경우는 고객님의 카드 혹은 페이 측의 서버 문제이므로
-									해당 카드사 혹은 카카오에 문의해주시기 바랍니다.
-									공지사항 링크 :
+									<% pageContext.setAttribute("newLineChar", "\n"); %>
+									${fn:replace(faq.boardContent, newLineChar, "<br/>")}
 								</td>
 							</tr>
 						</table>
@@ -47,7 +61,7 @@
 				<div class="col-md-2"></div>
 				<div class="col-md-5"></div>
 				<div class="col-md-3">
-					<button class="btn btn-outline-secondary" onclick="location.href='admin.ad?admin=board/faqList'">목록</button>
+					<button class="btn btn-outline-secondary" onclick="location.href='faqList.ad'">목록</button>
 					<button class="btn btn-outline-warning" type="submit" onclick="fModify();">수정</button>
 					<button class="btn btn-outline-danger" type="submit" data-toggle="modal" data-target="#staticModal">삭제</button>
 				</div>
@@ -68,12 +82,12 @@
 	</div>
 			<script>
 				function fModify(){
-					var num=$("input[name='qno']").val();
+					var num=$("input[name='fno']").val();
 					console.log(num);
 					location.href="admin.ad?admin=board/faqModify";
 				}
 				function fDelete(){
-					var num=$("input[name='qno']").val();
+					var num=$("input[name='fno']").val();
 					console.log(num);
 				}
 			</script>

@@ -1,5 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <jsp:include page="../common/header.jsp"/>
 <style>
 	.member-ul .member-li{
@@ -18,7 +19,7 @@
 				<h3 class="menu-title">공지사항 수정</h3>
 			</div>
 			<div class="card-body">
-			<form>
+			<form id="noticeModify" action="noticeModify.ad" method="post">
 				<div class="row">
 					<div class="col-md-2"></div>
 					<div class="col-md-8">
@@ -26,23 +27,23 @@
 							<li class="member-li"><span>분류</span>
 								<p>
 									<select name="boardType" onChange="showCategory(this.options[this.selectedIndex].value);">
-										<option selected>분류</option>
-										<option value="4">업체공지</option>
-										<option value="5">고객공지</option>
+										<option>분류</option>
+										<option value="4" <c:if test="${notice.boardType==4}">selected</c:if>>업체공지</option>
+										<option value="5" <c:if test="${notice.boardType==5}">selected</c:if>>고객공지</option>
 									</select> 
-									<select name="boardCate" style="display:none;">
-										<option value="1">안내</option>
-										<option value="2">공지</option>
-										<option value="3">경고</option>
-										<option value="4">이벤트</option>
+									<select name="boardCate" style="display:;">
+										<option value="1" <c:if test="${notice.boardCate==1}">selected</c:if>>안내</option>
+										<option value="2" <c:if test="${notice.boardCate==2}">selected</c:if>>공지</option>
+										<option value="3" <c:if test="${notice.boardCate==3}">selected</c:if>>경고</option>
+										<option value="4" <c:if test="${notice.boardCate==4}">selected</c:if>>이벤트</option>
 									</select>
 								</p>
 							</li>
 							<li class="member-li">
 								<span>제목</span>
-								<input type="hidden" name="boardNo" value="3">
+								<input type="hidden" name="boardNo" value="${notice.boardNo }">
 								<p>
-									<input type="text" name="boardTitle" id="nTitle" class="form-control">
+									<input type="text" name="boardTitle" id="nTitle" class="form-control" value="${notice.boardTitle }">
 								</p>
 							</li>
 							<!-- <li class="member-li"><span>첨부파일</span><p><input type="file" class="form-control" id="nFile" name="nFile"></p></li> -->
@@ -53,19 +54,20 @@
 				<div class="row">
 					<div class="col-md-2"></div>
 					<div class="col-md-7" id="summernote">
-						<textarea rows="15" cols="60" style="resize: none;" class="form-control" id="nContents" name="boardContent"></textarea>
+						<textarea rows="15" cols="60" style="resize: none;" class="form-control" id="nContents" name="boardContent">${notice.boardContent}</textarea>
 					</div>
 					<div class="col-md-3"></div>
 				</div>
-				</form>
+				
 			<br>
 			<div class="row">
 				<div class="col-md-2"></div>
 				<div class="col-md-5"></div>
 				<div class="col-md-3">
-					<button class="btn btn-outline-secondary" data-toggle="modal" data-target="#staticModal">목록</button>
+					<button class="btn btn-outline-secondary" type="button" data-toggle="modal" data-target="#staticModal">목록</button>
 					&nbsp;&nbsp;&nbsp;&nbsp;
 					<button class="btn btn-outline-warning" type="submit" onclick="nModify();">수정</button>
+				</form>
 				</div>
 				<div class="col-md-2"></div>
 			</div>
@@ -114,10 +116,12 @@
 			$target.css("display", "");
 		}
 		$(function(){
-			var option="seller";
-			$("input[name='nTitle']").val("2019년 1월 룰렛 이벤트 안내");
-			$("textarea[name='nContents']").val("새로운 이벤트가 시작됩니다.룰렛을 열심히 돌려 쿠폰을 획득하세요룰렛 링크 :");
-			
+			$("select[name='boardType'] > option").each(function(){
+				if(this.val==${notice.boardType}){
+					console.log("1");
+				 	$(this).attr("selected","selected");
+				}
+			});
 		});
 		function nModify() {
 			var num=$("input[name='boardNo']").val();

@@ -8,8 +8,12 @@ import org.springframework.stereotype.Service;
 
 import com.kh.pmfp.admin.model.dao.AdminDao;
 import com.kh.pmfp.admin.model.exception.AdminCountException;
+import com.kh.pmfp.admin.model.exception.AdminDeleteException;
+import com.kh.pmfp.admin.model.exception.AdminInsertException;
 import com.kh.pmfp.admin.model.exception.AdminSelectException;
+import com.kh.pmfp.admin.model.exception.AdminUpdateException;
 import com.kh.pmfp.admin.model.vo.AdminBoard;
+import com.kh.pmfp.admin.model.vo.AdminBoard2;
 import com.kh.pmfp.admin.model.vo.AdminMember;
 import com.kh.pmfp.admin.model.vo.AdminOrder;
 import com.kh.pmfp.admin.model.vo.AdminSeller;
@@ -98,4 +102,114 @@ public class AdminServiceImpl implements AdminService {
 		
 		return notice;
 	}
+
+	//faq 목록 조회용
+	@Override
+	public ArrayList<AdminBoard> selectFaqList() throws AdminSelectException {
+		ArrayList<AdminBoard> faqList=new ArrayList<AdminBoard>();
+		faqList=ad.selectFaqList(sqlSession);
+		
+		return faqList;
+	}
+
+	//qna 목록 조회용
+	@Override
+	public ArrayList<AdminBoard> selectQnaList() throws AdminSelectException {
+		ArrayList<AdminBoard> qnaList=new ArrayList<AdminBoard>();
+		qnaList=ad.selectQnaList(sqlSession);
+		
+		return qnaList;
+	}
+
+	//qna 답변 대기 목록 조회용
+	@Override
+	public ArrayList<AdminBoard> selectQnaWaitList() throws AdminSelectException {
+		ArrayList<AdminBoard> qnaWaitList=new ArrayList<AdminBoard>();
+		qnaWaitList=ad.selectQnaWaitList(sqlSession);
+		
+		return qnaWaitList;
+	}
+
+	//qna 답변 완료 목록 조회용
+	@Override
+	public ArrayList<AdminBoard> selectQnaCompleteList() throws AdminSelectException {
+		ArrayList<AdminBoard> qnaCompleteList=new ArrayList<AdminBoard>();
+		qnaCompleteList=ad.selectQnaCompleteList(sqlSession);
+		
+		return qnaCompleteList;
+	}
+
+	//faq 상세보기용
+	@Override
+	public AdminBoard selectFaq(int num) throws AdminSelectException, AdminCountException {
+		AdminBoard faq=new AdminBoard();
+
+		//조회수 증가
+		int result=ad.updateBCount(sqlSession,num);
+		
+		System.out.println("조회수 증가 결과 : "+result);
+		
+		if(result>0) {
+			faq=ad.selectFaq(sqlSession, num);
+		}
+		
+		return faq;
+	}
+
+	//qna 상세보기용
+	@Override
+	public AdminBoard selectQna(int num) throws AdminSelectException, AdminCountException {
+		AdminBoard qna=new AdminBoard();
+
+		//조회수 증가
+		int result=ad.updateBCount(sqlSession,num);
+		
+		System.out.println("조회수 증가 결과 : "+result);
+		
+		if(result>0) {
+			qna=ad.selectQna(sqlSession, num);
+		}
+		
+		return qna;
+	}
+
+	@Override
+	public AdminBoard selectAnswer(int num) throws AdminSelectException, AdminCountException {
+		AdminBoard answer=new AdminBoard();
+		answer=ad.selectAnswer(sqlSession, num);
+		
+		return answer;
+	}
+
+	//공지사항 작성용
+	@Override
+	public int insertNotice(AdminBoard notice) throws AdminInsertException {
+		int result=ad.insertNotice(sqlSession, notice);
+		return result;
+	}
+
+	//수정할 공지사항 조회용
+	@Override
+	public AdminBoard selectModNotice(int num) throws AdminSelectException {
+		AdminBoard notice=new AdminBoard();
+		notice=ad.selectModNotice(sqlSession, num);
+		
+		return notice;
+	}
+
+	//공지사항 수정용
+	@Override
+	public int updateNotice(AdminBoard notice) throws AdminUpdateException {
+		int result=ad.updateNotice(sqlSession, notice);
+		return result;
+	}
+
+	//공지사항 삭제용
+	@Override
+	public int deleteNotice(int num) throws AdminDeleteException {
+		int result=ad.deleteNotice(sqlSession, num);
+		return result;
+	}
+
+
 }

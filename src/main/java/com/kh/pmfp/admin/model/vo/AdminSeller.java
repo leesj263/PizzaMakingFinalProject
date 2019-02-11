@@ -2,7 +2,8 @@ package com.kh.pmfp.admin.model.vo;
 
 import java.sql.Date;
 
-public class AdminSeller {
+public class AdminSeller implements java.io.Serializable{
+	
 	private int memberNo;
 	private int memberCateg;
 	private String memberId;

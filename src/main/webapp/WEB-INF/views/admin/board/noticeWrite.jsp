@@ -21,7 +21,7 @@
 				<h3 class="menu-title">공지사항 작성</h3>
 			</div>
 			<div class="card-body">
-				<form id="noticeWrite" action="uploadNotice" method="post">
+				<form id="noticeWrite" action="noticeWrite.ad" method="post">
 					<div class="row">
 						<div class="col-md-2"></div>
 						<div class="col-md-8">
@@ -57,16 +57,17 @@
 						</div>
 						<div class="col-md-3"></div>
 					</div>
-				</form>
+				
 				<br>
 				<div class="row">
 					<div class="col-md-2"></div>
 					<div class="col-md-5"></div>
 					<div class="col-md-3">
-						<button class="btn btn-outline-secondary" data-toggle="modal"
+						<button class="btn btn-outline-secondary" type="button" data-toggle="modal"
 							data-target="#staticModal">목록</button>
 						&nbsp;&nbsp;&nbsp;&nbsp;
 						<button class="btn btn-outline-warning" type="submit" onclick="nWrite();">등록</button>
+						</form>
 					</div>
 					<div class="col-md-2"></div>
 				</div>
@@ -83,7 +84,7 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
-					<button type="button" class="btn btn-outline-primary" onclick="location.href='admin.ad?admin=board/noticeList'">Confirm</button>
+					<button type="button" class="btn btn-outline-primary" onclick="location.href='noticeList.ad'">Confirm</button>
 				</div>
 			</div>
 		</div>

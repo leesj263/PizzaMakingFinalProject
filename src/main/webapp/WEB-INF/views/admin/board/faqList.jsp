@@ -1,5 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <jsp:include page="../common/header.jsp"/>
 <style>
 	table{
@@ -19,12 +20,34 @@
 				<table class="table table-striped col-md-8" id="faqList">
 					<thead>
 						<tr>
+							<!-- <th scope="col"> </th> -->
 							<th scope="col">분류</th>
-							<th scope="col">제목</th>
+							<th scope="col" colspan="3">제목</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
+						<c:forEach items="${faqList }" var="faq">
+							<tr onclick="location.href='faqDetail.ad?num=${faq.boardNo}'">
+							<!-- onclick="location.href='faqDetail.ad?num=${faq.boardNo}'" -->
+								<%-- <th scope="row">${faq.rn }</th> --%>
+								<c:choose>
+									<c:when test="${faq.boardCate==1 }">
+										<td>[결제]</td>
+									</c:when>
+									<c:when test="${faq.boardCate==2 }">
+										<td>[주문]</td>
+									</c:when>
+									<c:when test="${faq.boardCate==3 }">
+										<td>[공유 / 후기 / 질문답변]</td>
+									</c:when>
+									<c:otherwise>
+										<td>[이벤트]</td>
+									</c:otherwise>
+								</c:choose>
+								<td  colspan="3">${faq.boardTitle }</td>
+							</tr>
+						</c:forEach>
+						<!-- <tr>
 							<td>[결제]</td>
 							<td>카카오페이 결제가 안돼요</td>
 						</tr>
@@ -35,7 +58,7 @@
 						<tr>
 							<td>[배달]</td>
 							<td>배달완료라고 하는데 배달이 오지 않아요</td>
-						</tr>
+						</tr> -->
 					</tbody>
 				</table>
 				<div class="col-md-2"></div>
@@ -106,9 +129,27 @@
 			}).click(function(){
 				var num=$(this).parent().children().eq(0).text();
 				console.log(num);
-				location.href="admin.ad?admin=board/faqDetail";
+				location.href="faqDetail.ad?num="+num;
 			});
-		})
+		});
+		/* 
+		function clickblock(num) {
+			//console.log($("<tr>"));
+			for (i = 1; i < 10; i++) { //10이라는 수는 줄수보다 1 더한값을 적어주세요//
+				var left_menu = eval("block" + i + ".style");
+				if (num == i) {
+					if (left_menu.display == "") {
+						left_menu.display = "none";
+					} else {
+						left_menu.display = "";
+						//$("#block1").show();
+					}
+				} else {
+					left_menu.display = "none";
+				}
+			}
+		}
+*/
 	</script>
 	</div>
 </section>

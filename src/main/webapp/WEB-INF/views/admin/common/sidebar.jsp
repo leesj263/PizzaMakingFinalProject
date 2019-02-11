@@ -145,8 +145,8 @@
 				<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> 
 					<i class="menu-icon ti-headphone-alt"></i>Customer Satisfaction</a>
 					<ul class="sub-menu children dropdown-menu">
-						<li><i class="menu-icon ti-info-alt"></i><a href="admin.ad?admin=board/faqList">FAQ</a></li>
-						<li><i class="menu-icon ti-help-alt"></i><a href="admin.ad?admin=board/qnaList">Q&A</a></li>
+						<li><i class="menu-icon ti-info-alt"></i><a href="faqList.ad">FAQ</a></li>
+						<li><i class="menu-icon ti-help-alt"></i><a href="qnaList.ad">Q&A</a></li>
 					</ul>
 				</li>
 				

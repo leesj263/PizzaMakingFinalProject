@@ -21,7 +21,7 @@
 			<div class="col-md-8">
 				<button class="btn btn-sm btn-outline-warning" onclick="location.href='qnaWaitList.ad'">
 					<i class="fa fa-lightbulb-o"></i>   미답변 질문 보기</button>
-				<button class="btn btn-sm btn-outline-secondary" onclick="location.href='qnaCompleteList.ad'">답변완료 질문 보기</button>
+				<button class="btn btn-sm btn-secondary"disabled onclick="location.href='qnaCompleteList.ad'">답변완료 질문 보기</button>
 			</div>
 			<div class="col-md-2"></div>
 			</div>
@@ -37,8 +37,9 @@
 						</tr>
 					</thead>
 					<tbody>
-						<c:forEach items="${qnaList }" var="qna">
-							<tr onclick="location.href='qnaDetail.ad?num=${qna.boardNo}'">
+						<c:forEach items="${qnaCompleteList }" var="qna">
+							<tr onclick="location.href='admin.ad?admin=board/qnaDetail'">
+							<!-- onclick="location.href='qnaDetail.ad?num=${qna.boardNo}'" -->
 								<th scope="row">${qna.rn }</th>
 								<c:choose>
 									<c:when test="${qna.boardCate==1 }">
@@ -48,10 +49,10 @@
 										<td>[주문]</td>
 									</c:when>
 									<c:when test="${qna.boardCate==3 }">
-										<td>[공유 / 후기 / 질문답변]</td>
+										<td>[공유 or 후기]</td>
 									</c:when>
 									<c:otherwise>
-										<td>[이벤트]</td>
+										<td>[질문 & 답변]</td>
 									</c:otherwise>
 								</c:choose>
 								<td>${qna.boardTitle }</td>
@@ -150,7 +151,7 @@
 			}).click(function(){
 				var num=$(this).parent().children().eq(0).text();
 				console.log(num);
-				location.href="qnaDetail.ad?num="+num;
+				location.href="admin.ad?admin=board/qnaDetail";
 			});
 		})
 	</script>	
