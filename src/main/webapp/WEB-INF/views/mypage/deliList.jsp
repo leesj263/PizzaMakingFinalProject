@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,10 +18,10 @@
 		  <a class="item" href="myPageMyMenu.t">
 		    나만의 메뉴
 		  </a>
-		  <a class="item active" href="myPageDelAddr.t">
+		  <a class="item active" href="myPageDelAddr.mp">
 		    배송지 관리
 		  </a>
-		  <a class="item" href="myPageCoupon.t">
+		  <a class="item" href="myPageCoupon.mp">
 		    쿠폰함
 		  </a>
 		  <a class="item" href="myPageQna.t">
@@ -49,24 +50,20 @@
 			    <th>배달매장</th>
 		 	</tr></thead>
 		  <tbody>
-		    <tr>
+		   <!--  <tr>
 		     <td><input type="checkbox"></td>
 		     <td>집</td>
 		     <td>서울시 강동구</td>
 		     <td>천호점(02-4425-1659)</td>
-		    </tr>
-		    <tr>
-		     <td><input type="checkbox"></td>
-		     <td>회사</td>
-		     <td>서울시 동대문구</td>
-		     <td>동대문점(01-5329-4659)</td>
-		    </tr>
-		    <tr>
-		    <td><input type="checkbox"></td>
-		     <td>회사2</td>
-		     <td>서울시 광진구</td>
-		     <td>자양점(02-110-1326)</td>
-		    </tr>
+		    </tr> -->
+		    <c:forEach items="${ delList }" var="d">
+		    	<tr>
+		    		<td><input type="checkbox"></td>
+		    		<td>${ d.delName }</td>
+		    		<td>${ d.delAddr }</td>
+		    		<td>${ d.comName }점</td>
+		    	</tr>
+		    </c:forEach>
 		  </tbody>
 		</table>
 		

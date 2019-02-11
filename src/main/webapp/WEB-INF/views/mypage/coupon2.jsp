@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,10 +18,10 @@
 		  <a class="item" href="myPageMyMenu.t">
 		    나만의 메뉴
 		  </a>
-		  <a class="item" href="myPageDelAddr.t">
+		  <a class="item" href="myPageDelAddr.mp">
 		    배송지 관리
 		  </a>
-		  <a class="item active" href="myPageCoupon.t">
+		  <a class="item active" href="myPageCoupon.mp">
 		    쿠폰함
 		  </a>
 		  <a class="item" href="myPageQna.t">
@@ -42,8 +43,8 @@
 		
 		
 		<div class="ui top attached tabular menu">
-		  <a class="item" data-tab="first" href="myPageCoupon.t">사용 가능 쿠폰</a>
-		  <a class="active item" data-tab="second" href="myPageCouponTimeOut.t">사용 만료 쿠폰</a>
+		  <a class="item" data-tab="first" href="myPageCoupon.mp">사용 가능 쿠폰</a>
+		  <a class="active item" data-tab="second" href="myPageCouponTimeOut.mp">사용 만료 쿠폰</a>
 
 		</div>
 		<div class="ui bottom attached active tab segment" data-tab="first">
@@ -55,24 +56,22 @@
 			    <th>유효기간</th>
 			  </tr></thead>
 			  <tbody>
-			    <tr>
-			      <td>7845623</td>
-			      <td>이벤트 당첨 5,000원 할인권</td>
-			      <td>사용</td>
-			      <td>2019-12-12~2019-12-15</td>
-			    </tr>
-			    <tr>
-			      <td>7845623</td>
-			      <td>이벤트 당첨 5,000원 할인권</td>
-			      <td>사용</td>
-			      <td>2019-12-12~2019-12-15</td>
-			    </tr>
-			    <tr>
-			      <td>7845623</td>
-			      <td>이벤트 당첨 5,000원 할인권</td>
-			      <td>사용</td>
-			      <td>2019-12-12~2019-12-15</td>
-			    </tr>
+			   <c:forEach items="${iCouponList}" var="i">
+			   	<tr>
+			   		<td>${i.issueNo }</td>
+			    	<td>${i.couponName }</td>
+			    	
+			    	<c:if test="${i.issueStatus == 'Y'}">
+			    		<td>사용</td>
+			    	</c:if>
+			    	<c:if test="${ i.issueStatus == 'N' }">
+			    		<td>미사용</td>
+			    	</c:if>
+			    		
+			    	<td>${i.possiblePeriod }</td>
+			   	</tr>
+			   </c:forEach>
+			    
 			  </tbody>
 			</table>
 		</div>
