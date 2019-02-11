@@ -17,10 +17,10 @@
 		  <a class="item" href="myPageMyMenu.t">
 		    나만의 메뉴
 		  </a>
-		  <a class="item" href="myPageDelAddr.t">
+		  <a class="item" href="myPageDelAddr.mp">
 		    배송지 관리
 		  </a>
-		  <a class="item" href="myPageCoupon.t">
+		  <a class="item" href="myPageCoupon.mp">
 		    쿠폰함
 		  </a>
 		  <a class="item active" href="myPageQna.t">
@@ -39,14 +39,20 @@
 	
 	
 	<div style="float: left; width:80%; padding:20px; margin-top: 50px;">
+	
+		<select class="ui dropdown" id="selectBox">
+		  <option value="qna">QnA</option>
+		  <option value="review">후기게시판</option>
+		  <option value="share">공유게시판</option>
+		</select>
 		
 		<table class="ui celled table">
 		  <thead>
 		    <tr>
 			    <th>문의번호</th>
 			    <th>문의제목</th>
-			    <th>배달방식</th>
-			    <th>주문매장</th>
+			    <th>답변여부</th>
+			    <th>작성일</th>
 		 	</tr></thead>
 		  <tbody>
 		    <tr>

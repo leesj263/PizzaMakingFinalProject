@@ -1,20 +1,25 @@
 package com.kh.pmfp.common.controller;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
 import com.kh.pmfp.common.model.exception.LoginException;
 import com.kh.pmfp.common.model.service.MemberService;
 import com.kh.pmfp.common.model.vo.Company;
+import com.kh.pmfp.common.model.vo.MailHandler;
 import com.kh.pmfp.common.model.vo.Member;
 
 @SessionAttributes("loginUser")
@@ -25,6 +30,8 @@ public class MemberController {
 	private MemberService ms;
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
+	@Autowired
+	private JavaMailSender mailSender;
 	
 	
 	//로그인!-암호화 처리 전
@@ -118,6 +125,64 @@ public class MemberController {
 		
 		return null;
 	}
+	
+	//아이디 중복확인 체크!
+	@RequestMapping("duplicationCheck.co")
+	public @ResponseBody int duplicationCheck(@RequestParam String memberId, HttpServletResponse response) {
+		
+		System.out.println(memberId);
+		int result = ms.duplicationCheck(memberId);
+	
+		if(result>0) {
+			System.out.println("아이디 중복됨!!!");
+		}else if(result==0){
+			System.out.println("사용 가능한 아이디입니당");
+		}else {
+			System.out.println("아이디 공백쓰...?");
+			result=100;
+		}
+		
+		return result;
+	}
+	
+	
+	//회원가입-이메일 인증
+	@RequestMapping("joinSendMail.co")
+	public String joinSendMail(@RequestParam String memberId,@RequestParam String memberEmail,@RequestParam String randomCode) throws MessagingException {
+		System.out.println(memberId+memberEmail+randomCode);
+		
+		MailHandler sendMail = new MailHandler(mailSender);
+		sendMail.setSubject("[이메일 인증 발송]");
+		
+		
+		
+		return null;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	

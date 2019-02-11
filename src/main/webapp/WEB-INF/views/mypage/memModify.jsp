@@ -16,10 +16,10 @@
 		  <a class="item" href="myPageMyMenu.t">
 		    나만의 메뉴
 		  </a>
-		  <a class="item" href="myPageDelAddr.t">
+		  <a class="item" href="myPageDelAddr.mp">
 		    배송지 관리
 		  </a>
-		  <a class="item" href="myPageCoupon.t">
+		  <a class="item" href="myPageCoupon.mp">
 		    쿠폰함
 		  </a>
 		  <a class="item" href="myPageQna.t">
