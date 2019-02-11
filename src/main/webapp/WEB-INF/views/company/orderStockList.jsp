@@ -144,7 +144,7 @@
 						onclick = "receiptConfirm()"
 						type="button" class="btn btn-primary" style="width: 150px">수령확인</button>
 					<button
-						onclick="location.href = 'movePage.com?movePage=companyStock'"
+						onclick="location.href = 'selectAllMaterialList.com'"
 						type="button" class="btn btn-secondary" style="width: 150px">취소</button>
 				</div>
 			</div>

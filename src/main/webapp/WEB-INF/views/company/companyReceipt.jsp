@@ -6,6 +6,7 @@
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
 <!--[if gt IE 8]><!-->
+
 <html class="no-js" lang="en">
 <!--<![endif]-->
 
@@ -15,10 +16,9 @@
 <title>Sufee Admin - HTML5 Admin Template</title>
 <meta name="description" content="Sufee Admin - HTML5 Admin Template">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<script
-  src="https://code.jquery.com/jquery-3.3.1.js"
-  integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
-  crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.js"
+	integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+	crossorigin="anonymous"></script>
 <script>
 	allPrice = 0;
 </script>
@@ -53,15 +53,17 @@
 								<tr>
 									<td>${ value.materialName }</td>
 									<td>${ value.materialWeight }KG</td>
-									<td>황민규</td><!-- 나중에 로그인 되면 로그인세션에서 받아오기 -->
+									<td>황민규</td>
+									<!-- 나중에 로그인 되면 로그인세션에서 받아오기 -->
 									<td>${ value.orderMDate }</td>
-									<td class = "materialPriceTd">${ value.materialPrice }</td>
+									<td class="materialPriceTd">${ value.materialPrice }</td>
 								</tr>
 							</c:forEach>
 							<tr>
 								<td colspan="4" style="text-align: right; font-size: 1.3em"><b>결제
 										예정 금액</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-								<td style="color: red"><b style="font-size: 1.3em" id = "resultPlace"></b>원</td>
+								<td style="color: red"><b style="font-size: 1.3em"
+									id="resultPlace"></b>원</td>
 							</tr>
 						</tbody>
 					</table>
@@ -70,7 +72,7 @@
 			</div>
 		</div>
 
-<script>
+		<script>
 	$(function(){
 		$(".materialPriceTd").each(function(){
 			allPrice += parseInt($(this).text());
@@ -91,17 +93,44 @@
 			</div>
 			<div class="col-lg-4">
 				<div align="right">
-					<button
-						onclick="location.href = 'movePage.com?movePage=companyStock'"
-						type="button" class="btn btn-primary" style="width: 150px">명세서
-						확인</button>
-					<button
-						onclick="location.href = 'movePage.com?movePage=companyStock'"
+					<button onclick="sendMsg()" type="button" class="btn btn-primary"
+						style="width: 150px">명세서 확인</button>
+					<button onclick="location.href = 'selectAllMaterialList.com'"
 						type="button" class="btn btn-secondary" style="width: 150px">취소</button>
 				</div>
 			</div>
 
 		</div>
 	</div>
+
+
+	<script>
+	
+	function sendMsg(){
+		/* $.ajax({
+			url : "https://rest.coolsms.co.kr/messages/v4/send",
+			headers: { 				
+				'Authorization': 
+			},
+			data : {
+				to : "",
+				from : "",
+				text : "",
+				type : "SMS"
+			},
+			type : "post",
+			contentType:'application/json; charset=UTF-8',
+			//dataType: 'jsonp',
+			success : function(data){
+				console.log(data);
+
+				
+			},
+			error : function(){
+				console.log("실패!");
+			}
+		}); */
+	}
+</script>
 </body>
 </html>
