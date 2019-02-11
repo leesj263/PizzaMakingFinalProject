@@ -29,6 +29,7 @@ public class OrderDaoImpl implements OrderDao {
 		return basicMenuList;
 	}
 
+	//기본메뉴 토핑 리스트 가져오기
 	@Override
 	public ArrayList<BasicTopping> selectBasicToppingList(SqlSessionTemplate sqlSession) throws OrderException {
 		ArrayList<BasicTopping> basicToppingList = (ArrayList)sqlSession.selectList("CustomerOrder.selectBasicToppingList");

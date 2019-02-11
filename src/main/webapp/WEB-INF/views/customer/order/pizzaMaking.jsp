@@ -181,13 +181,11 @@
 		<div class="controllerPlace">
 			<div class="tableCell">
 			
-				<div class="ui icon floating labeled dropdown green button no-action">
+				<div class="ui icon floating labeled dropdown green button no-action" id="basicMenuDiv">
 					<i class="dropdown icon"></i>
 					<span class="text">기본메뉴</span>
 					<div class="menu">
-						<c:forEach var="menu" items="${ basicMenu }">
-							<div class="item">${ menu }</div>
-						</c:forEach>
+						<!-- basicMenu -->
 				    </div>
 				</div>
 				
@@ -296,47 +294,39 @@
 				
 				<div class="tableCell" style="width: 180px; padding-left: 10px; vertical-align: top;">
 					<span class="text-label">도우</span>
-					<div class="ui fluid selection dropdown action">
+					<div class="ui fluid selection dropdown action" id="doughDiv">
 						<input type="hidden" name="dough" id="dough" value="">
 						<i class="dropdown icon"></i>
 						<div class="default text">도우</div>
 						<div class="menu">
-							<c:forEach var="menu" items="${ doughList }">
-								<div class="item">${ menu }</div>
-							</c:forEach>
+							<!-- doughList -->
 					    </div>
 					</div>
 					<span class="text-label">사이즈</span>
-					<div class="ui fluid selection dropdown action">
+					<div class="ui fluid selection dropdown action" id="doughSizeDiv">
 						<input type="hidden" name="doughSize" id="doughSize" value="">
 						<i class="dropdown icon"></i>
 						<div class="default text">사이즈</div>
 						<div class="menu">
-							<c:forEach var="menu" items="${ sizeList }">
-								<div class="item" value="${ menu }">${ menu }</div>
-							</c:forEach>
+							<!-- sizeList -->
 					    </div>
 					</div>
 					<span class="text-label">엣지</span>
-					<div class="ui fluid selection dropdown action">
+					<div class="ui fluid selection dropdown action" id="doughEdgeDiv">
 						<input type="hidden" name="doughEdge" id="doughEdge">
 						<i class="dropdown icon"></i>
 						<div class="default text">엣지</div>
 						<div class="menu">
-							<c:forEach var="menu" items="${ edgeList }">
-								<div class="item">${ menu }</div>
-							</c:forEach>
+							<!-- edgeList -->
 					    </div>
 					</div>
 					<span class="text-label">소스</span>
-					<div class="ui fluid selection dropdown action">
+					<div class="ui fluid selection dropdown action" id="doughSauceDiv">
 						<input type="hidden" name="doughSauce" id="doughSauce">
 						<i class="dropdown icon"></i>
 						<div class="default text">소스</div>
 						<div class="menu">
-							<c:forEach var="menu" items="${ sauceList }">
-								<div class="item">${ menu }</div>
-							</c:forEach>
+							<!-- sauseList -->
 					    </div>
 					</div>
 					
@@ -410,30 +400,23 @@
 	
 	
 	<!-- 토핑 추가 모달 -->
-	<div class="ui longer modal" id="toppingModal">
+	<div class="ui longer modal" id="toppingModal" style="top: 40px;">
 		<div class="header">토핑 추가</div>
 		<div class="content">
 			<div class="ui grid">
 				<div class="eight wide column">
 					<h4>토핑 목록</h4>
-					<table class="ui single line table">
+					<table class="ui single line table" id="toppingAllList">
 						<thead>
 							<tr>
-								<th>토핑</th>
-								<th>사이즈</th>
-								<th>중량(g)</th>
-								<th>가격(원)</th>
+								<th style="width: 40%;">토핑</th>
+								<th style="width: 10%;">사이즈</th>
+								<th style="width: 20%;">중량(g)</th>
+								<th style="width: 30%;">가격(원)</th>
 							</tr>
 						</thead>
 						<tbody>
-							<c:forEach var="menu" items="${ toppingList }">
-							<tr>
-								<td>${ menu.materialName }</td>
-								<td>${ menu.materialSize }</td>
-								<td>${ menu.materialWeight }</td>
-								<td>${ menu.materialSellprice }</td>
-							</tr>
-							</c:forEach>
+						
 						</tbody>
 					</table>
 				
@@ -442,28 +425,17 @@
 				
 				<div class="eight wide column">
 					<h4>토핑 추가</h4>
-					<table class="ui single line table">
+					<table class="ui single line table" id="toppingSelectList">
 						<thead>
 							<tr>
-								<th>토핑</th>
-								<th>사이즈</th>
-								<th>중량(g)</th>
-								<th>가격(원)</th>
+								<th style="width: 40%;">토핑</th>
+								<th style="width: 10%;">사이즈</th>
+								<th style="width: 20%;">중량(g)</th>
+								<th style="width: 30%;">가격(원)</th>
 							</tr>
 						</thead>
 						<tbody>
-							<tr>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
-							</tr>
-							<tr>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
-							</tr>
+						
 						</tbody>
 					</table>
 				
@@ -473,17 +445,76 @@
 		</div>
 		
 		<div class="actions">
-			<div class="ui positive approve button">추가</div>
+			<div class="ui positive approve button" onclick="toppingApply();">추가</div>
 			<div class="ui negative cancel button">취소</div>
 		</div>
 	</div>
 	
+	<!-- 기본메뉴 사이즈 선택 모달 -->
+	<div class="ui modal" id="basicMenuSizeModal">
+		<div class="header">사이즈 선택</div>
+		<div class="content">
+			<div class="two blue ui attached buttons" style="height: 50px;">
+			
+			</div>
+		</div>
+	</div>
 	
 	
 	<script src="/pmfp/resources/main/assets/js/semantic/semantic.min.js"></script>
+	<script src="/pmfp/resources/customer/js/jquery.cookie-1.4.1.min.js"></script>
 	<script>
 		$('.ui.dropdown.no-action').dropdown({action: 'hide'});
 		$('.ui.dropdown.action').dropdown();
+		
+		var mateMap;
+		var basicMenuList;
+		var toppingList;
+		var sizeList;
+		
+		$(function(){
+			$.ajax({
+				url: "pizzaMakingData.cor",
+				success: function(data){
+					mateMap = data["mateMap"];
+					basicMenuList = data["basicMenuList"];
+					toppingList = data["toppingList"];
+					sizeList = data["sizeList"];
+					
+					var doughList = data["doughList"];
+					var sauceList = data["sauceList"];
+					var edgeList = data["edgeList"];
+					var basicMenu = data["basicMenu"];
+					console.log(mateMap);
+					/* console.log(mateMap);
+					console.log(doughList);
+					console.log(sizeList);
+					console.log(sauceList);
+					console.log(edgeList);
+					console.log(toppingList);
+					console.log(basicMenu);
+					console.log(basicMenuList); */
+					
+					//기본메뉴
+					for(var i=0; i<basicMenu.length; i++) $("#basicMenuDiv .menu").append($("<div class='item' onclick='selectBasicMenuSize(this);'>").text(basicMenu[i]));
+					//도우 리스트
+					for(var i=0; i<doughList.length; i++) $("#doughDiv .menu").append($("<div class='item'>").text(doughList[i]));
+					//사이즈 리스트
+					for(var i=0; i<sizeList.length; i++) {
+						$("#doughSizeDiv .menu").append($("<div class='item'>").text(sizeList[i]));
+						$("#basicMenuSizeModal .content .buttons").append($("<button class='ui button' onclick='selectBasicMenu(this);'>").text(sizeList[i]));
+					}
+					//소스 리스트
+					for(var i=0; i<sauceList.length; i++) $("#doughSauceDiv .menu").append($("<div class='item'>").text(sauceList[i]));
+					//엣지 리스트
+					for(var i=0; i<edgeList.length; i++) $("#doughEdgeDiv .menu").append($("<div class='item'>").text(edgeList[i]));
+					
+					
+				}, error: function(data){
+					console.log("데이터 불러오기 실패");
+				}
+			});
+		});
 		
 		//옵션 & 토핑 세팅 초기화
 		function toppingReset(){
@@ -513,6 +544,63 @@
 				sauce();
 			}
 		});
+		
+		var basicMenu;
+		//기본메뉴 사이즈 선택
+		function selectBasicMenuSize(div){
+			basicMenu = $(div).text();
+			$('#basicMenuSizeModal').modal('show');
+		}
+		
+		//기본메뉴 선택
+		function selectBasicMenu(div){
+			$('#basicMenuSizeModal').modal('hide');
+			var doughSize = $(div).text();
+			
+			//console.log(basicMenu+":"+doughSize);
+			
+			for(var i=0; i<basicMenuList.length; i++){
+				if(basicMenuList[i].basicMenu == basicMenu && basicMenuList[i].basicSize == doughSize){
+					//console.log(basicMenuList[i]);
+					
+					var dough;
+					var sauce;
+					var edge;
+					var toppings = [];
+					
+					//도우
+					for(var j=0; j<basicMenuList[i].basicTopping.length; j++){
+						var mate = mateMap[basicMenuList[i].basicTopping[j].materialNo];
+						
+						if(mate.materialCateg == 1) {
+							dough = mate;
+						} else if(mate.materialCateg == 2){
+							sauce = mate;
+						} else if(mate.materialCateg == 3){
+							edge = mate;
+						} else if(mate.materialCateg == 4){
+							toppings.push(mate);
+						}
+					};
+					
+					var pizzaSetting = {
+							dough:dough,
+							size: doughSize,
+							sauce:sauce,
+							edge:edge,
+							toppings: toppings
+					}
+					
+					console.log(pizzaSetting);
+					
+					$.cookie.json = true;
+					$.cookie("pizzaSetting", pizzaSetting, {expires:1, path:"/"});
+					
+					console.log($.cookie("pizzaSetting"));
+					break;
+				}
+			}
+		}
 		
 		//토핑 추가 버튼
 		$("#addToppingBtn").click(function (){
@@ -544,11 +632,82 @@
 				    }
 				}).popup('show');	//팝업 보이기
 			} else {
+				selectToppingList();
 				$('#toppingModal').modal('show');
 			}
 		});
 		
+		//토핑 목록 가져오기(사이즈)
+		function selectToppingList(){
+			var materialSize = $("#doughSize").val().toUpperCase();
+			
+			var $toppingAllList = $("#toppingAllList tbody");
+			$toppingAllList.empty();
+			
+			for(var i=0; i<toppingList.length; i++){
+				if(toppingList[i].materialSize == materialSize){
+					var $tr = $("<tr onclick='addToppingModal(this)'>")
+						.mouseenter(function(){
+							$(this).css({"background":"lightgray", "cursor":"pointer"});
+						}).mouseout(function(){
+							$(this).css({"background":"white"});
+						});
+					$tr.append($("<input type='hidden' class='materialNo' value='"+toppingList[i].materialNo+"'>"));
+					$tr.append($("<td>").text(toppingList[i].materialName));
+					$tr.append($("<td>").text(toppingList[i].materialSize));
+					$tr.append($("<td>").text(toppingList[i].materialWeight));
+					$tr.append($("<td>").text(toppingList[i].materialSellprice));
+					
+					$toppingAllList.append($tr);
+				}
+			}
+		}
 		
+		//토핑 추가
+		function addToppingModal(tr){
+			var $toppingSelectList = $("#toppingSelectList tbody");
+			var chk = true;
+			var materialNo = $(tr).children().eq(0).val();
+			var materialNoSel = $("#toppingSelectList tbody .materialNo")
+
+			for(var i=0; i<materialNoSel.length; i++){
+				if(materialNoSel[i].value == materialNo) {
+					chk = false;
+					break;
+				}
+			}
+			if($toppingSelectList.children().length < 6 && chk){
+				$toppingSelectList.append($(tr).clone(true).attr("onclick", "delToppingModal(this)").css({"background":"white"}));
+				$(tr).css({"background":"lightgray"});
+				$(tr).off('mouseout');
+			} else if($toppingSelectList.children().length >= 6) {
+				alert("토핑은 최대 6개까지 선택 가능합니다.");
+			}
+		}
+		
+		//토핑 제거
+		function delToppingModal(tr){
+			var materialNo = $(tr).children().eq(0).val();
+			var materialNoAll = $("#toppingAllList tbody .materialNo");
+			
+			for(var i=0; i<materialNoAll.length; i++){
+				if(materialNoAll[i].value == materialNo) {
+					$(materialNoAll[i]).parent().css({"background":"white"})
+					.mouseout(function(){
+						$(this).css({"background":"white"});
+					});
+					break;
+				}
+			}
+			$(tr).remove();
+		}
+		
+		//토핑 적용
+		function toppingApply(){
+			
+		}
+		
+		//도우 이미지
 		function dough(){
 			var $dough = $("<img id='doughImg'>");
 			$dough.attr("src", "resources/customer/images/order/dough.png");
@@ -557,6 +716,8 @@
 			
 			$("#toppings").append($dough);
 		}
+		
+		//소스 이미지
 		function sauce(){
 			var $sauce = $("<img id='doughSauceImg'>");
 			$sauce.attr("src", "resources/customer/images/order/tomato_sauce.png");
@@ -565,6 +726,8 @@
 			
 			$("#toppings").append($sauce);
 		}
+		
+		//치즈 이미지
 		function cheese(){
 			var $cheese = $("<img id='doughCheeseImg'>");
 			$cheese.attr("src", "resources/customer/images/order/cheese.png");

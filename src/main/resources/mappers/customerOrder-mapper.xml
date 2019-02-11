@@ -57,7 +57,6 @@
 		SELECT *
 		FROM BASIC_MENU
 	</select>
-	
 	<select id="selectBasicToppingList" resultMap="basicToppingResultSet">
 		SELECT *
 		FROM BASIC_TOPPING
