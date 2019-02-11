@@ -17,8 +17,9 @@ public class Board implements Serializable {
 	private String boardStatus;
 	private String boardAnswer;
 	private int boardComNo;
-	
+	   
 	public Board() {}
+	
 
 	public Board(int boardNo, int boardType, int boardCateg, String boardTitle, String boardContent, int boardCount,
 			int memberNo, Date boardDate, int boardLevel, int boardRefNo, String boardStatus, String boardAnswer,
