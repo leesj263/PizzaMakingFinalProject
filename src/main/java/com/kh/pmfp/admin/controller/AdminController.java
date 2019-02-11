@@ -7,14 +7,19 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.kh.pmfp.admin.model.exception.AdminCountException;
+import com.kh.pmfp.admin.model.exception.AdminDeleteException;
+import com.kh.pmfp.admin.model.exception.AdminInsertException;
 import com.kh.pmfp.admin.model.exception.AdminSelectException;
+import com.kh.pmfp.admin.model.exception.AdminUpdateException;
 import com.kh.pmfp.admin.model.service.AdminService;
 import com.kh.pmfp.admin.model.vo.AdminBoard;
+import com.kh.pmfp.admin.model.vo.AdminBoard2;
 import com.kh.pmfp.admin.model.vo.AdminMember;
 import com.kh.pmfp.admin.model.vo.AdminOrder;
 import com.kh.pmfp.admin.model.vo.AdminSeller;
@@ -213,8 +218,209 @@ public class AdminController {
 		}
 
 	}
+	
+	//공지사항 작성 페이지 이동용
 	@RequestMapping("noticeWriteView.ad")
 	public String noticeWriteView() {
 		return "admin/board/noticeWrite";
 	}
+	
+	//faq 목록 조회용
+	@RequestMapping("faqList.ad")
+	public String faqList(HttpServletRequest request, HttpServletResponse response) {
+		ArrayList<AdminBoard> faqList=new ArrayList<AdminBoard>();
+		
+		try {
+			faqList=as.selectFaqList();
+			System.out.println("FAQ 목록 : "+faqList);
+			request.setAttribute("faqList", faqList);
+			
+			return "admin/board/faqList";
+		} catch (AdminSelectException e) {
+			request.setAttribute("msg", e.getMessage());
+			
+			return "common/errorPage";
+		}
+	}
+	
+	//qna 목록 조회용
+	@RequestMapping("qnaList.ad")
+	public String qnaList(HttpServletRequest request, HttpServletResponse response) {
+		ArrayList<AdminBoard> qnaList=new ArrayList<AdminBoard>();
+		
+		try {
+			qnaList=as.selectQnaList();
+			System.out.println("Q&A목록 : "+qnaList);
+			request.setAttribute("qnaList", qnaList);
+			
+			return "admin/board/qnaList";
+		} catch (AdminSelectException e) {
+			request.setAttribute("msg", e.getMessage());
+			
+			return "common/errorPage";
+		}
+	}
+	
+	//qna 답변 대기 목록 조회용
+	@RequestMapping("qnaWaitList.ad")
+	public String qnaWaitList(HttpServletRequest request, HttpServletResponse response) {
+		ArrayList<AdminBoard> qnaWaitList=new ArrayList<AdminBoard>();
+		
+		try {
+			qnaWaitList=as.selectQnaWaitList();
+			System.out.println("Q&A 답변 대기 목록 : "+qnaWaitList);
+			request.setAttribute("qnaWaitList", qnaWaitList);
+			
+			return "admin/board/qnaWaitList";
+		} catch (AdminSelectException e) {
+			request.setAttribute("msg", e.getMessage());
+			
+			return "common/errorPage";
+		}
+	}
+	
+	//qna 답변 완료 목록 조회용
+	@RequestMapping("qnaCompleteList.ad")
+	public String qnaCompleteList(HttpServletRequest request, HttpServletResponse response) {
+		ArrayList<AdminBoard> qnaCompleteList=new ArrayList<AdminBoard>();
+		
+		try {
+			qnaCompleteList=as.selectQnaCompleteList();
+			System.out.println("Q&A 답변 완료 목록 : "+qnaCompleteList);
+			request.setAttribute("qnaCompleteList", qnaCompleteList);
+			
+			return "admin/board/qnaCompleteList";
+		} catch (AdminSelectException e) {
+			request.setAttribute("msg", e.getMessage());
+			
+			return "common/errorPage";
+		}
+	}
+
+	//faq 상세보기용
+	@RequestMapping(value="faqDetail.ad", method=RequestMethod.GET)
+	public String selectFaq(int num, HttpServletRequest request, HttpServletResponse response) {
+		System.out.println("게시글 번호 : "+num);
+		AdminBoard faq=new AdminBoard();
+		
+		try {
+			faq=as.selectFaq(num);
+			System.out.println("FAQ : "+faq);
+			request.setAttribute("faq", faq);
+			
+			return "admin/board/faqDetail";
+		} catch (AdminSelectException e) {
+			request.setAttribute("msg", e.getMessage());
+			
+			return "common/errorPage";
+		} catch (AdminCountException e) {
+			request.setAttribute("msg", e.getMessage());
+			
+			return "common/errorPage";
+		}
+
+	}
+	
+	//qna 상세보기용
+	@RequestMapping(value="qnaDetail.ad", method=RequestMethod.GET)
+	public String selectQna(int num, HttpServletRequest request, HttpServletResponse response) {
+		System.out.println("게시글 번호 : "+num);
+		AdminBoard qna=new AdminBoard();
+		AdminBoard answer=new AdminBoard();
+		try {
+			qna=as.selectQna(num);
+			answer=as.selectAnswer(num);
+			System.out.println("Q&A : "+qna);
+			System.out.println("Answer : "+answer);
+			
+			request.setAttribute("qna", qna);
+			request.setAttribute("answer", answer);
+			return "admin/board/qnaDetail";
+		} catch (AdminSelectException e) {
+			request.setAttribute("msg", e.getMessage());
+			
+			return "common/errorPage";
+		} catch (AdminCountException e) {
+			request.setAttribute("msg", e.getMessage());
+			
+			return "common/errorPage";
+		}
+	}
+	
+	//공지사항 작성용
+	@RequestMapping("noticeWrite.ad")
+	public String noticeWrite(@ModelAttribute AdminBoard notice, HttpServletRequest request, HttpServletResponse response) {
+		System.out.println(notice);
+		
+		//로그인 처리하면 1 -> Session.get으로 바꾸기
+		notice.setMemberNo(1);
+		
+		//엔터 처리
+		notice.setBoardContent(notice.getBoardContent().replace("\r\n", "<br>"));
+		
+		try {
+			int result=as.insertNotice(notice);
+			System.out.println("작성한 공지사항 개수: "+result);
+			
+			return "redirect:noticeList.ad";
+		} catch (AdminInsertException e) {
+			request.setAttribute("msg", e.getMessage());
+			
+			return "common/errorPage";
+		}
+	}
+	
+	@RequestMapping(value="noticeModifyView.ad", method=RequestMethod.GET)
+	public String noticeModifyView(@RequestParam int num, HttpServletRequest request) {
+		System.out.println("수정할 게시글 번호 : "+num);
+		AdminBoard notice=new AdminBoard();
+		
+		try {
+			notice=as.selectModNotice(num);
+			System.out.println("공지사항 : "+notice);
+			request.setAttribute("notice", notice);
+			
+			return "admin/board/noticeModify";
+		} catch (AdminSelectException e) {
+			request.setAttribute("msg", e.getMessage());
+			
+			return "common/errorPage";
+		} 
+	}
+	
+	@RequestMapping("noticeModify.ad")
+	public String noticeModify(@ModelAttribute AdminBoard notice, HttpServletRequest request, HttpServletResponse response) {
+		System.out.println("수정한 게시글 : "+notice);
+		
+		//로그인 해결 되면 관리자 계정 ID SET 해주기
+		notice.setMemberNo(1);
+		try {
+			int result=as.updateNotice(notice);
+			System.out.println("수정한 게시글 수 : "+result);
+			
+			return "redirect:noticeList.ad";
+		} catch (AdminUpdateException e) {
+			request.setAttribute("msg", e.getMessage());
+			
+			return "common/errorPage";
+		}
+	}
+	
+	@RequestMapping(value="noticeDelete.ad", method=RequestMethod.GET)
+	public String noticeDelete(@RequestParam int num, HttpServletRequest request, HttpServletResponse response) {
+		System.out.println("삭제할 게시글 : "+num);
+		
+		try {
+			int result=as.deleteNotice(num);
+			System.out.println("삭제한 게시글 수 : "+result);
+			
+			return "redirect:noticeList.ad";
+		}catch(AdminDeleteException e) {
+			request.setAttribute("msg", e.getMessage());
+			
+			return "common/errorPage";
+		}
+		
+	}
+	
 }

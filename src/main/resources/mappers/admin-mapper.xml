@@ -92,6 +92,32 @@
 		<result property="rn" column="ROWNUM"/>
 	</resultMap>
 
+	<resultMap type="com.kh.pmfp.admin.model.vo.AdminBoard2" id="adminBoardResultSet1">
+		<id property="boardNo" column="BOARD_NO"/>
+		<result property="boardType" column="BOARD_TYPE"/>
+		<result property="boardCate" column="BOARD_CATEG" />
+		<result property="boardTitle" column="BOARD_TITLE" />
+		<result property="boardContent" column="BOARD_CONTENT" />
+		<result property="boardCount" column="BOARD_COUNT" />
+		<result property="memberNo" column="MEMBER_NO" />
+		<result property="memberName" column="MEMBER_NAME" />
+		<result property="memberNickname" column="MEMBER_NICKNAME" />
+		<result property="boardDate" column="BOARD_DATE" />
+		<result property="boardLevel" column="BOARD_LEVEL" />
+		<result property="boardRefNo" column="BOARD_REFNO" />
+		<result property="boardStatus" column="BOARD_STATUS" />
+		<result property="boardAnswer" column="BOARD_ANSWER" />
+		<result property="boardComNo" column="BOARD_COMNO" />
+		<result property="rn" column="ROWNUM"/>
+		<result property="answerMemberNo" column="ANSWER_MEMBERNO" />
+		<result property="answerName" column="ANSWER_NAME" />
+		<result property="answerNickname" column="ANSWER_NICKNAME" />
+		<result property="answerTitle" column="ANSWER_TITLE" />
+		<result property="answerContent" column="ANSWER_CONTENT" />
+		<result property="answeLevel" column="ANSWER_LEVEL" />
+		<result property="answerRefNo" column="ANSWER_REFNO"/>
+	</resultMap>
+	
 	<select id="selectMemberList" resultMap="adminMemberResultSet1">
 		SELECT ROWNUM, (SELECT COUNT(*)  
 					FROM ORDER_MAIN O 
@@ -154,21 +180,14 @@
 	</select>
 	
 
-<!-- 	<select id="selectNoticeList" resultMap="boardResultSet">
-		SELECT ROWNUM, B.* 
-
 	<select id="selectNoticeList" resultMap="adminBoardResultSet">
 		SELECT B.*, M.MEMBER_NAME, M.MEMBER_NICKNAME, ROWNUM  
-
 		FROM BOARD B 
 		JOIN MEMBER M ON (B.MEMBER_NO=M.MEMBER_NO) 
 		WHERE B.BOARD_TYPE=4 AND B.BOARD_STATUS='Y'
-
+		ORDER BY ROWNUM DESC
 	</select> 
 
-		ORDER BY ROWNUM DESC
-	</select> -->
-	
 	<update id="updateBCount" parameterType="_int">
 		UPDATE BOARD 
 		SET BOARD_COUNT=(SELECT BOARD_COUNT FROM BOARD WHERE BOARD_NO=#{num})+1 
@@ -182,5 +201,72 @@
 		WHERE B.BOARD_NO=#{num} AND B.BOARD_STATUS='Y'
 	</select>
 	
-
+	<select id="selectFaqList" resultMap="adminBoardResultSet">
+		SELECT B.*, M.MEMBER_NAME, M.MEMBER_NICKNAME, ROWNUM  
+		FROM BOARD B 
+		JOIN MEMBER M ON (B.MEMBER_NO=M.MEMBER_NO) 
+		WHERE B.BOARD_TYPE=2 AND B.BOARD_STATUS='Y'
+		ORDER BY ROWNUM DESC
+	</select>
+	
+	<select id="selectQnaList" resultMap="adminBoardResultSet">
+		SELECT B.*, M.MEMBER_NAME, M.MEMBER_NICKNAME, ROWNUM  
+		FROM BOARD B 
+		JOIN MEMBER M ON (B.MEMBER_NO=M.MEMBER_NO) 
+		WHERE B.BOARD_TYPE=3 AND B.BOARD_LEVEL=1 AND B.BOARD_STATUS='Y'
+		ORDER BY ROWNUM DESC
+	</select>
+	
+	<select id="selectQnaWaitList" resultMap="adminBoardResultSet">
+		SELECT B.*, M.MEMBER_NAME, M.MEMBER_NICKNAME, ROWNUM  
+		FROM BOARD B 
+		JOIN MEMBER M ON (B.MEMBER_NO=M.MEMBER_NO) 
+		WHERE B.BOARD_TYPE=3 AND B.BOARD_LEVEL=1 AND B.BOARD_ANSWER='N' AND B.BOARD_STATUS='Y'
+		ORDER BY ROWNUM DESC
+	</select>
+	
+	<select id="selectQnaCompleteList" resultMap="adminBoardResultSet">
+		SELECT B.*, M.MEMBER_NAME, M.MEMBER_NICKNAME, ROWNUM  
+		FROM BOARD B 
+		JOIN MEMBER M ON (B.MEMBER_NO=M.MEMBER_NO) 
+		WHERE B.BOARD_TYPE=3 AND B.BOARD_LEVEL=1 AND B.BOARD_ANSWER='Y' AND B.BOARD_STATUS='Y'
+		ORDER BY ROWNUM DESC
+	</select>
+	
+	<select id="selectFaq" resultMap="adminBoardResultSet" parameterType="_int">
+		SELECT B.*, M.MEMBER_NAME, M.MEMBER_NICKNAME, ROWNUM  
+		FROM BOARD B 
+		JOIN MEMBER M ON (B.MEMBER_NO=M.MEMBER_NO) 
+		WHERE B.BOARD_NO=#{num} AND B.BOARD_STATUS='Y'
+	</select>
+	
+	<select id="selectQna" resultMap="adminBoardResultSet" parameterType="_int">
+		SELECT B.*, M.MEMBER_NAME, M.MEMBER_NICKNAME, ROWNUM  
+		FROM BOARD B 
+		JOIN MEMBER M ON (B.MEMBER_NO=M.MEMBER_NO) 
+		WHERE B.BOARD_NO=#{num} AND B.BOARD_STATUS='Y'
+	</select>
+	
+	<select id="selectAnswer" resultMap="adminBoardResultSet" parameterType="_int">
+		SELECT B.*, M.MEMBER_NAME, M.MEMBER_NICKNAME
+		FROM BOARD B 
+		JOIN MEMBER M ON (B.MEMBER_NO=M.MEMBER_NO) 
+		WHERE B.BOARD_REFNO=#{num} AND B.BOARD_STATUS='Y'
+	</select>
+	
+	<insert id="insertNotice" parameterType="AdminBoard">
+		INSERT INTO BOARD VALUES (SEQ_BONO.NEXTVAL, #{boardType}, #{boardCate}, #{boardTitle},
+		#{boardContent}, DEFAULT, #{memberNo},  DEFAULT, 1, NULL, DEFAULT, NULL, NULL)
+	</insert>
+	
+	<update id="updateNotice" parameterType="AdminBoard">
+		UPDATE BOARD SET BOARD_TYPE=#{boardType}, BOARD_CATEG=#{boardCate}, BOARD_TITLE=#{boardTitle},
+		BOARD_CONTENT=#{boardContent}, MEMBER_NO=#{memberNo}, BOARD_DATE=SYSDATE
+		WHERE BOARD_NO=#{boardNo} AND BOARD_STATUS='Y'
+	</update>
+	
+	<update id="deleteNotice" parameterType="_int">
+		UPDATE BOARD SET BOARD_STATUS='N' 
+		WHERE BOARD_NO=#{boardNo} 
+	</update>
 </mapper>

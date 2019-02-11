@@ -52,7 +52,8 @@
 						<table class="table"> 
 							<tr>
 								<td id="nContents">
-									${notice.boardContent }
+								<% pageContext.setAttribute("newLineChar", "\n"); %>
+								${fn:replace(notice.boardContent, newLineChar, "<br/>")}
 								</td>
 							</tr>
 						</table>
@@ -81,7 +82,7 @@
 		<div class="modal-dialog modal-sm" role="document">
 			<div class="modal-content">
 				<div class="modal-body">
-					<p>[     ] 공지사항을 정말 삭제하시겠습니까?</p>
+					<p>[${notice.boardTitle }] 공지사항을 정말 삭제하시겠습니까?</p>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
@@ -91,14 +92,16 @@
 		</div>
 	</div>
 	<script>
+		
 		function nModify() {
-			var num=$("input[name='nno']").val();
+			var num=$("input[name='boardNo']").val();
 			console.log(num);
-			location.href="admin.ad?admin=board/noticeModify";
+			location.href="noticeModifyView.ad?num="+num;
 		}
 		function nDelete(){
-			var num=$("input[name='nno']").val();
+			var num=$("input[name='boardNo']").val();
 			console.log(num);
+			location.href="noticeDelete.ad?num="+num;
 		}
 	</script>
 </section>
