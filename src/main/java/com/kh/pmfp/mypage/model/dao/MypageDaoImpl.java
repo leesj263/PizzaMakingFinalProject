@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import com.kh.pmfp.mypage.model.vo.Coupon;
 import com.kh.pmfp.mypage.model.vo.DelList;
+import com.kh.pmfp.mypage.model.vo.MyWriting;
 import com.kh.pmfp.mypage.model.vo.OrderList;
 
 @Repository
@@ -68,6 +69,35 @@ public class MypageDaoImpl implements MypageDao{
 		return iCouponList;
 	}
 
+	//내 작성글
+	@Override
+	public ArrayList<MyWriting> selectMyWritingList(SqlSessionTemplate sqlSession, int memberNo) {
+		ArrayList<MyWriting> myWritingList = (ArrayList)sqlSession.selectList("Mypage.selectMyWritingList", memberNo);
+		
+		if(myWritingList==null) {
+			System.out.println("예외처리 하기: 내 작성글 - 문의내역 조회 실패");
+		}
+		
+		System.out.println("dao : " + myWritingList);
+		
+		return myWritingList;
+		
+	}
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 

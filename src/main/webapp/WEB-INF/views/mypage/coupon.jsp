@@ -24,8 +24,8 @@
 		  <a class="item active" href="myPageCoupon.mp">
 		    쿠폰함
 		  </a>
-		  <a class="item" href="myPageQna.t">
-		    문의내역
+		  <a class="item" href="myPageQna.mp">
+		    내 작성글
 		  </a>
 		 <a class="item" href="myPageMemModify.t">
 		   회원정보 수정
