@@ -34,7 +34,7 @@
 									</c:choose>	
 								</p>
 							</li>
-							<li class="member-li"><input type="hidden" name="fno" value="3">
+							<li class="member-li"><input type="hidden" name="boardNo" value="${faq.boardNo }">
 								<span>제목</span>
 								<p>${faq.boardTitle }</p>
 							</li>
@@ -82,13 +82,14 @@
 	</div>
 			<script>
 				function fModify(){
-					var num=$("input[name='fno']").val();
+					var num=$("input[name='boardNo']").val();
 					console.log(num);
-					location.href="admin.ad?admin=board/faqModify";
+					location.href="faqModifyView.ad?num="+num;
 				}
 				function fDelete(){
-					var num=$("input[name='fno']").val();
+					var num=$("input[name='boardNo']").val();
 					console.log(num);
+					location.href="faqDelete.ad?num="+num;
 				}
 			</script>
 		</div>

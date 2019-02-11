@@ -65,8 +65,8 @@
 			</div>
 		</div>
 	</div>
-	<div class="col-md-4"></div>
-	<!-- <div class="col-md-1"><button class="btn btn-outline-warning">작성</button></div> -->
+	<div class="col-md-2"></div>
+	<div class="col-md-4"><button class="btn btn-outline-warning" onclick="location.href='faqWriteView.ad'">작성</button></div> 
 	<!-- 검색 영역 -->
 <!-- 	<div class="form-inline col-md-5">
 		<form class="search-form">

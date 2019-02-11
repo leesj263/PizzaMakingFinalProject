@@ -233,6 +233,7 @@ public class AdminDaoImpl implements AdminDao {
 		return result;
 	}
 
+	//수정할 공지사항 가져오기
 	@Override
 	public AdminBoard selectModNotice(SqlSessionTemplate sqlSession, int num) throws AdminSelectException {
 		AdminBoard notice=new AdminBoard();
@@ -270,6 +271,85 @@ public class AdminDaoImpl implements AdminDao {
 		}
 		return result;
 	}
+
+	//수정할 faq 조회용
+	@Override
+	public AdminBoard selectModFaq(SqlSessionTemplate sqlSession, int num) throws AdminSelectException {
+		AdminBoard faq=new AdminBoard();
+		faq=sqlSession.selectOne("Admin.selectFaq", num);
+		
+		if(faq==null) {
+			throw new AdminSelectException("수정할 FAQ 가져오기 실패");
+		}
+		
+		return faq;
+	}
+
+	//faq 수정용
+	@Override
+	public int updateFaq(SqlSessionTemplate sqlSession, AdminBoard faq) throws AdminUpdateException {
+		int result=0;
+		result=sqlSession.update("Admin.updateFaq", faq);
+		
+		if(result<=0) {
+			throw new AdminUpdateException("FAQ 수정 실패");
+		}
+
+		return result;
+	}
+
+	//faq 삭제용
+	@Override
+	public int deleteFaq(SqlSessionTemplate sqlSession, int num) throws AdminDeleteException {
+		int result=0;
+		result=sqlSession.update("Admin.deleteFaq", num);
+		
+		if(result<=0) {
+			throw new AdminDeleteException("FAQ 삭제 실패");
+		}
+
+		return result;
+	}
+
+	//faq 작성용
+	@Override
+	public int insertFaq(SqlSessionTemplate sqlSession, AdminBoard faq) throws AdminInsertException {
+		int result=sqlSession.insert("Admin.insertFaq", faq);
+		if(result<=0) {
+			throw new AdminInsertException("FAQ 작성 실패");
+		}
+		return result;
+	}
+	
+	//qna 답변용
+	@Override
+	public int insertAnswer(SqlSessionTemplate sqlSession, AdminBoard answer) throws AdminInsertException {
+		int result=0;
+		
+		result=sqlSession.insert("Admin.insertAnswer", answer);
+		
+		if(result<=0) {
+			throw new AdminInsertException("Q&A 답변 등록 실패");
+		}
+		return result;
+	}
+
+
+	//qna 답변결과 적용
+	@Override
+	public int updateQna(SqlSessionTemplate sqlSession, int boardRefNo) throws AdminUpdateException {
+		int result=0;
+		int num=boardRefNo;
+		result=sqlSession.update("Admin.updateQna", num);
+		
+		if(result<=0) {
+			throw new AdminUpdateException("Q&A 답변 상태 변경 실패");
+		}
+		
+		return result;
+	}
+	
+
 
 
 

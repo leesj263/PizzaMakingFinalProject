@@ -71,4 +71,20 @@ public interface AdminService {
 
 	//공지사항 삭제용
 	int deleteNotice(int num) throws AdminDeleteException;
+
+	//수정할 faq 조회용
+	AdminBoard selectModFaq(int num) throws AdminSelectException;
+
+	//faq 수정용
+	int updateFaq(AdminBoard faq) throws AdminUpdateException;
+
+	//faq 삭제용
+	int deleteFaq(int num) throws AdminDeleteException;
+
+	//faq 작성용 
+	int insertFaq(AdminBoard faq) throws AdminInsertException;
+	
+	//qna 답변용
+	int insertAnswer(AdminBoard answer) throws AdminInsertException, AdminUpdateException;
+
 }
