@@ -66,6 +66,6 @@
 	</div>
 	
 	
-</div><!-- id:all -->	
+</div>
 </body>
 </html>

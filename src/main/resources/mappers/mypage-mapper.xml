@@ -12,9 +12,24 @@
 		<result property="payPrice" column="ORDER_PAYPRICE"/>
 	</resultMap>
 	
+	<resultMap type="com.kh.pmfp.mypage.model.vo.DelList" id="mypageDelResultSet">
+		<id property="delNo" column="DELIVERY_NO"/>
+		<result property="memberNo" column="MEMBER_NO"/>
+		<result property="comName" column="COM_NAME"/>
+		<result property="delAddr" column="DELIVERY_ADDRESS"/>
+		<result property="delName" column="DELIVERY_NAME"/>
+	</resultMap>
+	
+	<resultMap type="com.kh.pmfp.mypage.model.vo.Coupon" id="mypagePCouponResultSet">
+		<id property="issueNo" column="ISSUE_NO"/>
+		<result property="couponName" column="COUPON_NAME"/>
+		<result property="issueStatus" column="ISSUE_STATUS"/>
+		<result property="possiblePeriod" column="possiblePERIOD"/>
+	</resultMap>
+	
 	
 
-	<select id="selectOrderList" resultMap="mypageOrderResultSet" parameterType="Member">
+	<select id="selectOrderList" resultMap="mypageOrderResultSet" parameterType="_int">
 		SELECT om.order_no,
       			 LISTAGG(cast(m.material_name || ot.order_tcount as VARCHAR(100)),'/') within group(order by m.material_no) ORDER_MATERIAL,
       			 om.order_method, com.com_name, om.order_payprice
@@ -23,8 +38,33 @@
 			JOIN order_item OI ON om.order_no=oi.order_no
 			JOIN order_topping OT ON oi.order_ino=ot.order_ino
 			JOIN material m ON ot.material_no=m.material_no
-		WHERE om.MEMBER_NO=7
+		WHERE om.MEMBER_NO=#{memberNo}
 		group by om.order_no, om.order_method, com.com_name, om.order_payprice
+	</select>
+	
+	
+	<select id="selectDelList" resultMap="mypageDelResultSet" parameterType="_int">
+		SELECT d.DELIVERY_NAME, d.DELIVERY_ADDRESS, c.COM_Name 
+		FROM DELIVERY d 
+		JOIN company c ON c.com_no = d.com_no
+		WHERE MEMBER_NO = #{memberNo}
+	</select>
+	
+	
+	<select id="selectPCouponList" resultMap="mypagePCouponResultSet" parameterType="_int">
+		SELECT ci.issue_no, c.coupon_name, ci.issue_status, ci.issue_cdate || ' ~ ' ||ci.issue_edate possiblePeriod
+		FROM coupon_issue CI 
+		JOIN coupon c ON ci.coupon_no = c.coupon_no
+		WHERE MEMBER_NO = #{memberNo} 
+		AND ci.issue_edate >= SYSDATE
+	</select>
+	
+	<select id="selectICouponList" resultMap="mypagePCouponResultSet" parameterType="_int">
+		SELECT ci.issue_no, c.coupon_name, ci.issue_status, ci.issue_cdate || ' ~ ' ||ci.issue_edate possiblePeriod
+		FROM coupon_issue CI 
+		JOIN coupon c ON ci.coupon_no = c.coupon_no
+		WHERE MEMBER_NO = #{memberNo} 
+		AND CI.issue_edate <![CDATA[<]]> SYSDATE
 	</select>
 	
 	
