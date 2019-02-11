@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.pmfp.admin.model.exception.AdminCountException;
 import com.kh.pmfp.admin.model.exception.AdminDeleteException;
@@ -356,7 +357,7 @@ public class AdminController {
 		notice.setMemberNo(1);
 		
 		//엔터 처리
-		notice.setBoardContent(notice.getBoardContent().replace("\r\n", "<br>"));
+		//notice.setBoardContent(notice.getBoardContent().replace("\r\n", "<br>"));
 		
 		try {
 			int result=as.insertNotice(notice);
@@ -370,6 +371,7 @@ public class AdminController {
 		}
 	}
 	
+	//공지사항 수정페이지 보기
 	@RequestMapping(value="noticeModifyView.ad", method=RequestMethod.GET)
 	public String noticeModifyView(@RequestParam int num, HttpServletRequest request) {
 		System.out.println("수정할 게시글 번호 : "+num);
@@ -388,12 +390,15 @@ public class AdminController {
 		} 
 	}
 	
+	//공지사항 수정용
 	@RequestMapping("noticeModify.ad")
 	public String noticeModify(@ModelAttribute AdminBoard notice, HttpServletRequest request, HttpServletResponse response) {
 		System.out.println("수정한 게시글 : "+notice);
 		
 		//로그인 해결 되면 관리자 계정 ID SET 해주기
 		notice.setMemberNo(1);
+		//notice.setBoardContent(notice.getBoardContent().replace("\r\n", "<br>"));
+		
 		try {
 			int result=as.updateNotice(notice);
 			System.out.println("수정한 게시글 수 : "+result);
@@ -406,6 +411,7 @@ public class AdminController {
 		}
 	}
 	
+	//공지사항 삭제용
 	@RequestMapping(value="noticeDelete.ad", method=RequestMethod.GET)
 	public String noticeDelete(@RequestParam int num, HttpServletRequest request, HttpServletResponse response) {
 		System.out.println("삭제할 게시글 : "+num);
@@ -420,7 +426,103 @@ public class AdminController {
 			
 			return "common/errorPage";
 		}
+	}
+	
+	@RequestMapping(value="faqModifyView.ad", method=RequestMethod.GET)
+	public String faqModifyView(@RequestParam int num, HttpServletRequest request) {
+		System.out.println("수정할 게시글 번호 : "+num);
+		AdminBoard faq=new AdminBoard();
+		
+		try {
+			faq=as.selectModFaq(num);
+			System.out.println("FAQ : "+faq);
+			request.setAttribute("faq", faq);
+			
+			return "admin/board/faqModify";
+		} catch (AdminSelectException e) {
+			request.setAttribute("msg", e.getMessage());
+			
+			return "common/errorPage";
+		} 
+	}
+	
+	@RequestMapping("faqModify.ad")
+	public String faqModify(@ModelAttribute AdminBoard faq, HttpServletRequest request) {
+		
+		//faq.setBoardContent(faq.getBoardContent().replace("\r\n", "<br>"));
+		//로그인 처리되면 바꾸기
+		faq.setMemberNo(1);
+		System.out.println("수정할 게시글 : "+faq);
+		
+		try {
+			int result=as.updateFaq(faq);
+			System.out.println("수정한 게시글 수 : "+result);
+			
+			return "redirect:faqList.ad";
+		} catch (AdminUpdateException e) {
+			request.setAttribute("msg", e.getMessage());
+			
+			return "common/errorPage";
+		}
+	}
+	
+	@RequestMapping(value="faqDelete.ad", method=RequestMethod.GET)
+	public String faqDelete(@RequestParam int num, HttpServletRequest request) {
+		System.out.println("삭제할 FAQ 번호 : "+num);
+		
+		try {
+			int result=as.deleteFaq(num);
+			
+			return "redirect:faqList.ad";
+		} catch (AdminDeleteException e) {
+			request.setAttribute("msg", e.getMessage());
+			
+			return "common/errorPage";
+		}
+	}
+	
+	//faq 작성 페이지 이동용
+	@RequestMapping("faqWriteView.ad")
+	public String faqWriteView() {
+		return "admin/board/faqWrite";
+	}
+	
+	//faq 작성용
+	@RequestMapping(value="faqWrite.ad", method=RequestMethod.POST)
+	public String faqWrite(@ModelAttribute AdminBoard faq, HttpServletRequest request) {
+		System.out.println("faq : "+ faq);
+		faq.setMemberNo(1);
+		
+		try {
+			int result=as.insertFaq(faq);
+			System.out.println("FAQ 작성 완료");
+			return "redirect:faqList.ad";
+		} catch (AdminInsertException e) {
+			request.setAttribute("msg", e.getMessage());
+			return "common/errorPage";
+		}
+	}
+	
+	//qna 답변 작성용
+	@RequestMapping(value="qnaAnswerWrite.ad", method=RequestMethod.POST)
+	public String qnaAnswerWrite(@ModelAttribute AdminBoard answer, HttpServletRequest request, RedirectAttributes redirectAttributes) {
+		System.out.println("answer : "+answer);
+		//로그인 처리하고 세션에서 아이디 가져오기
+		answer.setMemberNo(1);
+		
+		try {
+			int result=as.insertAnswer(answer);
+			redirectAttributes.addAttribute("num", answer.getBoardRefNo());
+			return "redirect:qnaDetail.ad";
+		} catch (AdminInsertException e) {
+			request.setAttribute("msg", e.getMessage());
+			return "common/errorPage";
+		} catch (AdminUpdateException e) {
+			request.setAttribute("msg", e.getMessage());
+			return "common/errorPage";
+		}
 		
 	}
+		
 	
 }

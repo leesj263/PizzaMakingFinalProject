@@ -267,6 +267,34 @@
 	
 	<update id="deleteNotice" parameterType="_int">
 		UPDATE BOARD SET BOARD_STATUS='N' 
-		WHERE BOARD_NO=#{boardNo} 
+		WHERE BOARD_NO=#{num} 
+	</update>
+	
+	<update id="updateFaq" parameterType="AdminBoard">
+		UPDATE BOARD SET BOARD_TYPE=#{boardType}, BOARD_CATEG=#{boardCate}, BOARD_TITLE=#{boardTitle},
+		BOARD_CONTENT=#{boardContent}, MEMBER_NO=#{memberNo}, BOARD_DATE=SYSDATE
+		WHERE BOARD_NO=#{boardNo} AND BOARD_STATUS='Y'
+	</update>
+	
+	<update id="deleteFaq" parameterType="_int">
+		UPDATE BOARD SET BOARD_STATUS='N' 
+		WHERE BOARD_NO=#{num} 
+	</update>
+	
+	<insert id="insertFaq" parameterType="AdminBoard">
+		INSERT INTO BOARD VALUES (SEQ_BONO.NEXTVAL, #{boardType}, #{boardCate}, 
+		#{boardTitle}, #{boardContent}, DEFAULT, #{memberNo},
+		SYSDATE, 1, NULL, DEFAULT, NULL, NULL)
+	</insert>
+	
+	<insert id="insertAnswer" parameterType="AdminBoard">
+		INSERT INTO BOARD VALUES (SEQ_BONO.NEXTVAL, #{boardType}, #{boardCate}, 
+		'QnA답변', #{boardContent}, DEFAULT, #{memberNo}, 
+		SYSDATE, 2, #{boardRefNo}, DEFAULT, NULL, NULL)
+	</insert>
+	
+	<update id="updateQna" parameterType="_int">
+		UPDATE BOARD SET BOARD_ANSWER='Y'
+		WHERE BOARD_NO=#{num}
 	</update>
 </mapper>

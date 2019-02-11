@@ -211,5 +211,54 @@ public class AdminServiceImpl implements AdminService {
 		return result;
 	}
 
+	//수정할 faq 조회용
+	@Override
+	public AdminBoard selectModFaq(int num) throws AdminSelectException {
+		AdminBoard faq=new AdminBoard();
+		faq=ad.selectModFaq(sqlSession, num);
+		
+		return faq;
+	}
+
+	//faq 수정용
+	@Override
+	public int updateFaq(AdminBoard faq) throws AdminUpdateException {
+		int result=ad.updateFaq(sqlSession, faq);
+		return result;
+	}
+
+	//faq 삭제용
+	@Override
+	public int deleteFaq(int num) throws AdminDeleteException {
+		int result=ad.deleteFaq(sqlSession, num);
+		return result;
+	}
+
+	@Override
+	public int insertFaq(AdminBoard faq) throws AdminInsertException {
+		int result=ad.insertFaq(sqlSession, faq);
+		return result;
+	}
+	
+	//qna 답변용
+	@Override
+	public int insertAnswer(AdminBoard answer) throws AdminInsertException, AdminUpdateException {
+		int result1=0;
+		int result2=0;
+		int result=0;
+		
+		result1=ad.insertAnswer(sqlSession, answer);
+		if(result1>0) {
+			System.out.println("답변 등록 성공");
+			result2=ad.updateQna(sqlSession, answer.getBoardRefNo());
+		}
+		if(result1>0 && result2>0) {
+			result=1;
+			System.out.println("질문 상태 변경 완료");
+		}
+		return result;
+	}
+
+
 
 }

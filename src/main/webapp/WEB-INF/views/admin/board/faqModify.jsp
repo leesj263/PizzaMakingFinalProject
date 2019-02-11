@@ -19,17 +19,18 @@
 				<h3 class="menu-title">FAQ 수정</h3>
 			</div>
 			<div class="card-body">
-			<form>
+			<form action="faqModify.ad" method="post">
 				<div class="row">
 					<div class="col-md-2"></div>
 					<div class="col-md-8">
 						<ul class="member-ul">
-							<li class="member-li"><span>분류</span>
+							<li class="member-li"><span><input type="hidden" name="boardType" value="2">분류</span>
 								<p>
-									<select name="faqType">
-										<option value="credit" selected>결제</option>
-										<option value="coupon">쿠폰</option>
-										<option value="order">주문</option>
+									<select name="boardCate">
+										<option value="1" <c:if test="${faq.boardCate==1}">selected</c:if>>결제</option>
+										<option value="2" <c:if test="${faq.boardCate==2}">selected</c:if>>주문</option>
+										<option value="3" <c:if test="${faq.boardCate==3}">selected</c:if>>공유/후기/질문답변</option>
+										<option value="4" <c:if test="${faq.boardCate==4}">selected</c:if>>이벤트</option>
 									</select>
 								</p>
 							</li>
@@ -84,39 +85,15 @@
 		</div>
 	</div>
 	<script>
-		function showCategory(obj) {
-			var category1 = [ "본사 공지", "이벤트안내" ];
-			var cateVal=["notice", "event"];
-			var category2 = [ "공지사항", "이벤트" ];
-			var $target = $("select[name='category']");
-			var data;
-
-			if (obj == "seller") {
-				data = category1;
-			} else if (obj == "customer") {
-				data = category2;
-			}
-
-			$target.empty();
-			for (x in data) {
-				for(y in cateVal){
-					if(x==y){
-					var option = "<option value='"+cateVal[y]+"'>" + data[x] + "</option>";
-					$target.append(option);
-					}
-				}
-			}
-			$target.css("display", "");
-		}
 		$(function(){
 			
 		});
 		function fModify() {
-			var num=$("input[name='fno']").val();
+			var num=$("input[name='boardNo']").val();
 			console.log(num);
 		}
 		function fList(){
-			location.href="admin.ad?admin=board/faqList";
+			location.href="faqList.ad";
 		}
 	</script>
 </section>

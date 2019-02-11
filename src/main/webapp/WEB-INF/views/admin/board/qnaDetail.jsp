@@ -16,7 +16,7 @@
 					<div class="col-md-2"></div>
 					<div class="col-md-8">
 						<ul class="member-ul">
-							<li class="member-li"><span>분류</span>
+							<li class="member-li"><span><input type="hidden" name="boardType" value="${qna.boardType }">분류</span>
 								<p>
 									<c:choose>
 										<c:when test="${qna.boardCate==1 }">
@@ -36,7 +36,7 @@
 							</li>
 							<li class="member-li"><span>제목</span>
 								<p>쿠폰 사용 후 주문 취소를 했는데...
-									<input type="hidden" name="qno" value="3">
+									<input type="hidden" name="boardNo" value="${qna.boardNo }">
 								</p>
 							</li>
 							<li class="member-li">
@@ -78,7 +78,12 @@
 				</div>
 				</c:if>
 				<c:if test="${answer.boardContent eq null }">
-					<textarea cols="85" rows="4"></textarea>
+				<form id="answerWrite" action="qnaAnswerWrite.ad" method="post">
+					<input type="hidden" name="boardRefNo" value="${qna.boardNo }">
+					<input type="hidden" name="boardType" value="${qna.boardType }">
+					<input type="hidden" name="boardCate" value="${qna.boardCate }">
+					<textarea cols="85" rows="4" id="answerContent" name="boardContent"></textarea>
+				</form>
 				</c:if>
 				<div class="col-md-3"></div>
 			</div>
@@ -97,8 +102,9 @@
 			</div>
 			<script>
 				function qWrite(){
-					var num=$("input[name='qno']").val();
-					console.log(num);
+					var num=$("input[name='boardNo']").val();
+					var answerContent=$("textarea[name='boardContent']").val();
+					$("#answerWrite").submit();
 				}
 			</script>
 		</div>

@@ -77,5 +77,25 @@ public interface AdminDao {
 	//공지사항 삭제용
 	int deleteNotice(SqlSessionTemplate sqlSession, int num) throws AdminDeleteException;
 
+	//수정할 faq 조회용
+	AdminBoard selectModFaq(SqlSessionTemplate sqlSession, int num) throws AdminSelectException;
+
+	//faq 수정용
+	int updateFaq(SqlSessionTemplate sqlSession, AdminBoard faq) throws AdminUpdateException;
+
+	//faq 삭제용
+	int deleteFaq(SqlSessionTemplate sqlSession, int num) throws AdminDeleteException;
+
+	//faq 작성용 
+	int insertFaq(SqlSessionTemplate sqlSession, AdminBoard faq) throws AdminInsertException;
+	
+	//qna 답변용
+	int insertAnswer(SqlSessionTemplate sqlSession, AdminBoard answer) throws AdminInsertException;
+
+	//qna 답변결과 적용
+	int updateQna(SqlSessionTemplate sqlSession, int boardRefNo) throws AdminUpdateException;
+
+
+
 
 }
