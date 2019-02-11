@@ -412,7 +412,7 @@ h1 {
 					</tr>
 					<tr>
 						<td><div class="ui left icon input">
-								<input type="text" placeholder="인증번호" name="memberCertificationNumber">
+								<input type="text" placeholder="인증번호" name="memberCertificationNumber" id="memberCertificationNumber">
 								<i class="envelope outline icon"></i>
 							</div></td>
 						
@@ -611,6 +611,7 @@ h1 {
 		}
 		
 		//인증번호 발송 버튼
+		var chkRandomCode = 0;
 		function CertificationSendBtn(){
 			CertificationSend=2;
 			var memberId = $("#memberId").val();
@@ -620,6 +621,7 @@ h1 {
 			if(randomCode>1000000){
 				randomCode = randomCode - 100000;
 			}
+			chkRandomCode = randomCode;
 			//console.log(memberId);
 			//console.log(memberEmail);
 			//console.log(randomCode);
@@ -632,6 +634,11 @@ h1 {
 				"randomCode":randomCode},
 			success:function(data){
 				console.log(data);
+				if(data.sendMail == '성공'){
+				swal("인증번호 전송완료 ! 인증번호를 입력해주세요");					
+				}
+			},error:function(data){
+				console.log("통신실패");
 			}
 				
 			});
@@ -644,6 +651,13 @@ h1 {
 		//인증확인 버튼
 		function CertificationBtn(){
 			Certification=2;
+			if($("#JoinCertificationNum").val() == chkRandomCode){
+				console.log("인증확인 되었습니당~!!");
+				swal("인증 완료!");
+			}else{
+				swal("인증 번호 확인해주세요");
+				return false;
+			}
 			return false;
 		}	
 		
@@ -652,7 +666,7 @@ h1 {
 
 <!----------------------- 인증확인 script -------------------------------------->
 	<script>
-		$("#Certification").click(function() {
+	/* 	$("#Certification").click(function() {
 			swal({
 				title : "인증 확인",
 				text : "인증이 확인되었습니다.",
@@ -660,7 +674,7 @@ h1 {
 				button : "확인",
 			});
 			console.log($('.ui.checkbox'));
-		})
+		}) */
 		
 		$("#nonMemberCertification").click(function() {
 			swal({

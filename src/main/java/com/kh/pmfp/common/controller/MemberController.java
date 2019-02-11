@@ -1,5 +1,8 @@
 package com.kh.pmfp.common.controller;
 
+import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -148,15 +151,22 @@ public class MemberController {
 	
 	//회원가입-이메일 인증
 	@RequestMapping("joinSendMail.co")
-	public String joinSendMail(@RequestParam String memberId,@RequestParam String memberEmail,@RequestParam String randomCode) throws MessagingException {
+	public @ResponseBody HashMap<String,Object> joinSendMail(@RequestParam String memberId,@RequestParam String memberEmail,@RequestParam String randomCode) throws MessagingException, UnsupportedEncodingException {
 		System.out.println(memberId+memberEmail+randomCode);
 		
+		HashMap<String, Object> hmap=new HashMap<String,Object>();
 		MailHandler sendMail = new MailHandler(mailSender);
-		sendMail.setSubject("[이메일 인증 발송]");
+		sendMail.setSubject("[피자 스쿨 이메일 인증 발송]");
+		sendMail.setText(new StringBuffer().append("<h1>인증번호</h1>")
+                .append("["+randomCode+"]")
+                .toString());
+		sendMail.setFrom("yesols9003@gmail.com", "예솔쓰");
+		sendMail.setTo(memberEmail);
+		sendMail.send();
 		
+		hmap.put("sendMail", "성공");
+		return hmap;
 		
-		
-		return null;
 	}
 	
 	
