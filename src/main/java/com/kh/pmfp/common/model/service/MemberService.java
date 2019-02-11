@@ -11,4 +11,7 @@ public interface MemberService {
 	//일반회원 회원가입
 	int insertNormalMember(Member m);
 
+	//id중복확인 체크
+	int duplicationCheck(String memberId);
+
 }

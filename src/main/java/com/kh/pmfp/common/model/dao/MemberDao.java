@@ -18,5 +18,8 @@ public interface MemberDao {
 	
 	//로그인 정보 조회용 메소드
 	Member selectMember(SqlSessionTemplate sqlSession, Member m);
+	
+	//아이디 중복확인 체크
+	int duplicationCheck(SqlSessionTemplate sqlSession, String memberId);
 
 }

@@ -49,6 +49,15 @@
 		AND MEMBER_STATUS='Y'
 	</select>
 	
+	<!-- 아이디 중복확인 -->
+	<select id="duplicationCheck" resultType="_int">
+		SELECT COUNT(*)
+		FROM MEMBER
+		WHERE MEMBER_ID=#{memberId}
+	</select>
+	
+	
+	
 </mapper>
 
 
