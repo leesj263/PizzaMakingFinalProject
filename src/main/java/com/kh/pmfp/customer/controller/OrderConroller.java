@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.kh.pmfp.customer.model.exception.OrderException;
 import com.kh.pmfp.customer.model.service.OrderService;
@@ -24,6 +26,13 @@ public class OrderConroller {
 	//피자 만들기 페이지
 	@RequestMapping(value="/pizzaMaking.cor")
 	public String pizzaMaking(HttpServletRequest request, Model model) {
+		return "customer/order/pizzaMaking";
+	}
+	
+	//피자 만들기 정보 가져오기
+	@RequestMapping(value="/pizzaMakingData.cor")
+	public @ResponseBody HashMap<String, Object> pizzaMakingData(HttpServletRequest request) {
+		HashMap<String, Object> data = new HashMap<String, Object>();
 		try {
 			//재료 메뉴----------------------------------------------------------------------------------------------
 			//재료+이미지 가져오기
@@ -58,12 +67,18 @@ public class OrderConroller {
 				}
 			}
 			
-			model.addAttribute("mateMap", mateMap);
-			model.addAttribute("doughList", doughList);
-			model.addAttribute("sizeList", sizeList);
-			model.addAttribute("sauceList", sauceList);
-			model.addAttribute("edgeList", edgeList);
-			model.addAttribute("toppingList", toppingList);
+			/*System.out.println(mateMap);
+			System.out.println(doughList);
+			System.out.println(sizeList);
+			System.out.println(sauceList);
+			System.out.println(edgeList);
+			System.out.println(toppingList);*/
+			data.put("mateMap", mateMap);
+			data.put("doughList", doughList);
+			data.put("sizeList", sizeList);
+			data.put("sauceList", sauceList);
+			data.put("edgeList", edgeList);
+			data.put("toppingList", toppingList);
 			//----------------------------------------------------------------------------------------------
 			
 			//기본메뉴----------------------------------------------------------------------------------------------
@@ -77,25 +92,31 @@ public class OrderConroller {
 			//기본메뉴 리스트 작성
 			ArrayList<String> basicMenu = new ArrayList<String>();
 			for(BasicMenu menu : basicMenuList) {
-				if(!basicMenu.contains(menu.getBasicMenu())) basicMenu.add(menu.getBasicMenu());
+				if(!basicMenu.contains(menu.getBasicMenu())) {
+					basicMenu.add(menu.getBasicMenu());
+				}
 				
 				ArrayList<BasicTopping> toppings = new ArrayList<BasicTopping>();
 				for(BasicTopping topping : basicToppingList) {
-					if(menu.getBasicNo() == topping.getBasicNo()) toppings.add(topping);
+					if(menu.getBasicNo() == topping.getBasicNo()) {
+						toppings.add(topping);
+					}
 				}
 				menu.setBasicTopping(toppings);
 			}
 			
-			model.addAttribute("basicMenu", basicMenu);
-			model.addAttribute("basicMenuList", basicMenuList);
+			/*for(String asd : basicMenu) System.out.println(asd);
+			for(BasicMenu asd : basicMenuList) System.out.println(asd);*/
+			data.put("basicMenu", basicMenu);
+			data.put("basicMenuList", basicMenuList);
 			//----------------------------------------------------------------------------------------------
 			
-			return "customer/order/pizzaMaking";
+			return data;
 		} catch (OrderException e) {
-			model.addAttribute("msg", e.getMessage());
-			return "common/errorPage";
+			return null;
 		}
 	}
+	
 	//사이드 메뉴 페이지
 	@RequestMapping(value="/sideMenu.cor")
 	public String sideMenu() {
