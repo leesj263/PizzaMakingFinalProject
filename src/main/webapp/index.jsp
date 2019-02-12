@@ -12,7 +12,6 @@
 	
 	<a href="adminMain.t">관리자 페이지</a>
 	<a href="goMain.com">업체 페이지</a>
-	<a href="pizzaMaking.cor">주문 페이지</a>
 	<a href="main.t">메인 페이지</a>
 	
 	

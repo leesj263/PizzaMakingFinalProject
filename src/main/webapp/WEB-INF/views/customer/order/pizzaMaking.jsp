@@ -195,7 +195,7 @@
 					</div>
 					
 					<div style="width: 422px; display: inline-block; text-align: right;">
-						<button class="ui orange button" style="width: 150px;">
+						<button class="ui orange button" style="width: 150px;" onclick="addCart();">
 							장바구니에 담기
 						</button>
 					</div>
@@ -299,11 +299,12 @@
 	
 	<button onclick="imgSave();">이미지 저장</button>
 	<div id="img-out"></div>
+	<button onclick="cartLoad();">장바구니</button>
 	
 	<script src="/pmfp/resources/main/assets/js/semantic/semantic.min.js"></script>
 	<script src="/pmfp/resources/customer/js/jquery.cookie-1.4.1.min.js"></script>
-	<script type="text/javascript" src="https://github.com/niklasvh/html2canvas/releases/download/0.4.1/html2canvas.js"></script>
-	<script src="/pmfp/resources/customer/js/canvas2image.js"></script>
+	<script src="/pmfp/resources/customer/js/html2canvas.js"></script>
+	<!-- <script src="/pmfp/resources/customer/js/canvas2image.js"></script> -->
 	<script>
 		$('.ui.dropdown.no-action').dropdown({action: 'hide'});
 		$('.ui.dropdown.action').dropdown();
@@ -446,7 +447,8 @@
 		//공통 -----------------------------------------------------------------------------------------------------------
 		//피자 세팅
 		function pizzaSettingFunc(){
-			//console.log(pizzaSetting);
+			console.log(pizzaSetting);
+			console.log(pizzaSettingTopping);
 			if(pizzaSetting){
 				if(pizzaSetting.pizzaName) $("#pizzaName").val(pizzaSetting.pizzaName);
 				if(pizzaSetting.dough){
@@ -488,7 +490,7 @@
 			if(pizzaSettingTopping[no].amount < 6) {
 				pizzaSettingTopping[no].amount++;
 				$(btn).parent().parent().children().eq(1).find(".amount").text(pizzaSettingTopping[no].amount);
-				$(btn).parent().parent().children().eq(2).text(pizzaSettingTopping[no].topping.materialSellprice*pizzaSettingTopping[no].amount);
+				$(btn).parent().parent().children().eq(2).text(numComma(pizzaSettingTopping[no].topping.materialSellprice*pizzaSettingTopping[no].amount));
 				priceCalc();
 				
 				$.cookie.raw = true;
@@ -502,7 +504,7 @@
 			if(pizzaSettingTopping[no].amount > 1) {
 				pizzaSettingTopping[no].amount--;
 				$(btn).parent().parent().children().eq(1).find(".amount").text(pizzaSettingTopping[no].amount);
-				$(btn).parent().parent().children().eq(2).text(pizzaSettingTopping[no].topping.materialSellprice*pizzaSettingTopping[no].amount);
+				$(btn).parent().parent().children().eq(2).text(numComma(pizzaSettingTopping[no].topping.materialSellprice*pizzaSettingTopping[no].amount));
 				priceCalc();
 				
 				$.cookie.raw = true;
@@ -1074,7 +1076,7 @@
 			var $cheese = $("<img class='doughToppingImg doughToppingImg"+materialNo+"'>");
 			$cheese.attr("src", "resources/customer/images/material/4/cheese.png");
 			$cheese.addClass("scale-up-center");
-			$cheese.css({"position":"absolute", "z-index":materialNo, "width":"420px", "height":"420px"});
+			$cheese.css({"position":"absolute", "z-index":"4", "width":"420px", "height":"420px"});
 			
 			$("#toppings").append($cheese);
 		}
@@ -1098,19 +1100,70 @@
 		}
 		//-----------------------------------------------------------------------------------------------------------
 		
+		
+		var cartNo = 0;
+		var cartNoList = [];
+		var cartList = {};
+		//장바구니 -----------------------------------------------------------------------------------------------------------
+		//장바구니에 추가
+		function addCart(){
+			cartNoList.push(cartNo);
+			var cart = {
+					cartNo: cartNo,
+					categ: 1,
+					pizzaName: pizzaSetting.pizzaName,
+					dough: pizzaSetting.dough.materialNo,
+					size: pizzaSetting.size,
+					edge: pizzaSetting.edge.materialNo,
+					sauce: pizzaSetting.sauce.materialNo,
+					amount: 0
+			};
+			var toppings = [];
+			
+			for(var materialNo in pizzaSettingTopping){
+				toppings.push({
+					materialNo: pizzaSettingTopping[materialNo].topping.materialNo,
+					amount: pizzaSettingTopping[materialNo].amount
+				});
+			}
+			cart["toppings"] = toppings;
+			
+			//console.log(cart);
+			
+			$.cookie.raw = true;
+			$.removeCookie("cartNoList");
+			$.cookie("cartNoList", JSON.stringify(cartNoList), {expires: 1});
+			$.cookie("cartNo"+cartNo, JSON.stringify(cart), {expires: 1});
+			cartNo++;
+		}
+		
+		//장바구니 불러오기
+		function cartLoad(){
+			if($.cookie("cartNoList")) {
+				cartNoList = $.parseJSON($.cookie("cartNoList"));
+				cartNo = cartNoList[cartNoList.length-1] + 1;
+			}
+			if(cartNoList.length> 0){
+				for(var i=0; i<cartNoList.length; i++){
+					cartList[cartNoList[i]] = $.parseJSON($.cookie("cartNo"+cartNoList[i]));
+				}
+			}
+			console.log(cartList);
+		}
+		//-----------------------------------------------------------------------------------------------------------
+		
+		
 		function imgSave(){
-			html2canvas($("#toppings"), {
-	            onrendered: function(canvas) {
-	                theCanvas = canvas;
-	                document.body.appendChild(canvas);
-	
-	                // Convert and download as image 
-	                //Canvas2Image.saveAsPNG(canvas); 
-	                $("#img-out").append(Canvas2Image.convertToImage(canvas));
-	                // Clean up 
-	                //document.body.removeChild(canvas);
-	            }
-	        });
+			$("#doughImg").removeClass('scale-down-center');
+		    $("#doughSauceImg").removeClass('scale-up-center');
+		    $(".doughToppingImg").removeClass('scale-up-center');
+		    $(".doughToppingImg").removeClass('scale-down-center');
+			html2canvas(document.getElementById("toppings")).then(function(canvas) {
+			    var img = new Image();
+			    img.src = canvas.toDataURL("image/png");
+			    
+			    $("#img-out").append(img);
+			});
 		}
 	</script>
 </body>
