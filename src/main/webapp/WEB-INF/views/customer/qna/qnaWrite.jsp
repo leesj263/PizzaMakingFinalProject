@@ -23,7 +23,7 @@
 		<br>
 		<br>
 		<div class="tableArea">
-			<form action="<%-- <%= request.getContextPath() %>/insert.bo --%>" method="post">
+			<form action="insertQna.b" method="post">
 				<table align="center">
 					<tr>
 						<td><b>분야</b></td>
@@ -41,7 +41,7 @@
 					<tr>
 						<td><b>제목</b></td>
 						<td colspan="3">
-							<input type="text" size="60" name="title">
+							<input type="text" size="60" name="title" placeholder="제목을 입력해주세요">
 						</td>
 					</tr>
 					<tr></tr>
@@ -49,7 +49,7 @@
 					<tr>
 						<td><b>내용</b></td>
 						<td>
-							<textarea name="content" cols="100" rows="25" style="resize:none;"></textarea>
+							<input type="textarea" name="content" cols="100" rows="25" style="resize:none;" placeholder="내용을 입력해주세요"></textarea>
 						</td>
 					</tr>
 					<tr>
