@@ -16,6 +16,7 @@
 <title>Sufee Admin - HTML5 Admin Template</title>
 <meta name="description" content="Sufee Admin - HTML5 Admin Template">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE9" />
 <script src="https://code.jquery.com/jquery-3.3.1.js"
 	integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
 	crossorigin="anonymous"></script>
@@ -73,13 +74,13 @@
 		</div>
 
 		<script>
-	$(function(){
-		$(".materialPriceTd").each(function(){
-			allPrice += parseInt($(this).text());
-		});
-		$("#resultPlace").append(allPrice);
-	});
-</script>
+			$(function() {
+				$(".materialPriceTd").each(function() {
+					allPrice += parseInt($(this).text());
+				});
+				$("#resultPlace").append(allPrice);
+			});
+		</script>
 
 
 		<div class="content mt-3">
@@ -102,35 +103,81 @@
 
 		</div>
 	</div>
-
-
-	<script>
+	<!-- <form name='form' method='post' action='http://www.skysms.co.kr/apiSend/sendApi_UTF8.php'>
+		<input type='hidden' name='sUserid' value='kan47'>
+		회원 UserId, 필수입력정보 9원문자 회원가입 시 발급
+		<input type='hidden' name='authKey'
+			value='5Uo7qX5vrt1nV7DBh8TQFujP3G433qUR'>
+		회원 인증키, 필수입력정보 9원문자 회원가입,연동신청  후 발급
+		<input type='hidden' name='sendMsg' value='제대로 가나?'>
+		전송할 메세지 내용, 필수입력정보
+		<input type='hidden' name='destNum' value='01095902959'>
+		받는분 휴대폰번호, 필수입력정보 대량전송의 경우 |로 구분하여 입력해주시기 바랍니다. 01000000000|01000000001|01000000002
+		<input type='hidden' name='callNum' value='01095902959'>
+		보내는분 전화번호, 필수입력정보
+		<input type='hidden' name='sMode' value='Test'>
+		실제전송과 테스트전송을 구분하는 변수, 필수입력정보, 테스트전송(Test) or 실전송(Real) 기본값 : Test 
+		<input type='hidden' name='sendDate' value=''>
+		전송시간설정(예약), 선택옵션 입력정보, 값이없거나 지난 시간의 경우 즉시발송 형식을 지켜주시기 바랍니다.
+		<input type='hidden' name='returnURL' value=''>
+		전송 후 이동할 사이트 URL, 선택옵션 입력정보, 결과코드,완료건수,실패건수,남은건수등을 받아볼수 있습니다.
+		<input type='hidden' name='customVal' value=''>
+		사용자정의 변수, 선택옵션 입력정보, 회원님께서 임의로 지정한 변수를 사용할수 있습니다. 변수명^값|변수명^값
+		<input type='hidden' name='sType' value='SMS'>
+		짧은문자와 장문문자를 구분하는 변수, 선택입력정보, 짧은문자(SMS) or 장문문자(LMS) 기본값 : SMS
+		<input type='hidden' name='sSubject' value=''>
+		sType의 값이 LMS일 경우만 사용, 장문문자의 제목, 최대길이 한글20자이내설정, 기본값:장문메세지
+	</form> -->
 	
-	function sendMsg(){
-		/* $.ajax({
-			url : "https://rest.coolsms.co.kr/messages/v4/send",
-			headers: { 				
-				'Authorization': 
-			},
-			data : {
-				to : "",
-				from : "",
-				text : "",
-				type : "SMS"
-			},
-			type : "post",
-			contentType:'application/json; charset=UTF-8',
-			//dataType: 'jsonp',
-			success : function(data){
-				console.log(data);
+	<form method="post" id="smsForm">
+    <ul>
+      <li>보낼사람 : <input type="text" name="from"/></li>
+      <li>내용 : <textarea name="text"></textarea></li>
+      <li><input type="button" onclick="sendSMS('sendExampleMsg.com')" value="전송하기" /></li>
+    </ul>
+  </form>
 
-				
-			},
-			error : function(){
-				console.log("실패!");
-			}
-		}); */
-	}
-</script>
+  <script>
+    function sendSMS(pageName){
+
+    	console.log("문자를 전송합니다.");
+    	$("#smsForm").attr("action", pageName);
+    	$("#smsForm").submit();
+    }
+  </script>
+	<script type="text/javascript">
+		function sendMsg() {
+			//location.href = "sendExampleMsg.com";
+			/* $.ajax({
+				url : "https://rest.coolsms.co.kr/messages/v4/send",
+				Headers : {
+					Authorization : HMAC-SHA256 apiKey=NCSGX2TG8G6ONABL, 
+					date=2018-07-04T00:06:38Z, 
+					salt=jqskl8jj6d3xwj, 
+					signature=7ceff00b74f9c242e8593c3be851d3431a00739c61d53f45e23e38d5fa6aa70e
+				}
+				data : {
+					sUserid : "kan47",
+					authKey : "5Uo7qX5vrt1nV7DBh8TQFujP3G433qUR",
+					sendMsg : "제대로 가나?",
+					destNum : "01095902959",
+					callNum : "01095902959",
+					sMode : "Test",
+					sType : "SMS"
+					},
+				type : "post",
+				success : function(data){
+					console.log(data);
+				},
+				error : function(data){
+					console.log(data);
+				}
+			}); */
+			
+			document.form.submit();
+			//$("form[name='form']").submit();
+			
+		}
+	</script>
 </body>
 </html>
