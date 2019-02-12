@@ -3,6 +3,7 @@ package com.kh.pmfp.common.model.dao;
 import org.mybatis.spring.SqlSessionTemplate;
 
 import com.kh.pmfp.common.model.exception.LoginException;
+import com.kh.pmfp.common.model.vo.Company;
 import com.kh.pmfp.common.model.vo.Member;
 
 public interface MemberDao {
@@ -21,5 +22,8 @@ public interface MemberDao {
 	
 	//아이디 중복확인 체크
 	int duplicationCheck(SqlSessionTemplate sqlSession, String memberId);
+
+	//사업자 회원가입(Company)
+	int insertBusinessCompany(SqlSessionTemplate sqlSession, Company c);
 
 }
