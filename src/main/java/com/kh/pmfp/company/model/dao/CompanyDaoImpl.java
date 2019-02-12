@@ -292,6 +292,7 @@ public class CompanyDaoImpl implements CompanyDao{
 		
 		for(int i = 0; i < list.size(); i++) {
 			result += sqlSession.insert("Company.applyStock", list.get(i));
+			result += sqlSession.insert("Company.applyStockAndAddExpense", list.get(i));
 		}
 		
 		

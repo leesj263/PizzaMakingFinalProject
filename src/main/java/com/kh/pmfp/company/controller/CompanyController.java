@@ -573,7 +573,8 @@ public class CompanyController {
 
 	    set.put("to", (String)request.getParameter("from")); // 발신번호
 	    set.put("text", (String)request.getParameter("text")); // 문자내용
-	    set.put("type", "sms"); // 문자 타입
+	    set.put("subject", "피자학교"); // 문자내용
+	    set.put("type", "lms"); // 문자 타입
 
 	    System.out.println(set);
 
@@ -600,7 +601,13 @@ public class CompanyController {
 	
 	
 	
-	
+	@RequestMapping("selectAllCompanySales.com")
+	public String selectAllCompanySales() {
+		
+		
+		
+		return "";
+	}
 	
 	
 }
