@@ -72,8 +72,14 @@
 	<insert id="insertBusinessCompany" parameterType="Company">
 		INSERT INTO COMPANY
 		VALUES(SEQ_COMNO.NEXTVAL,#{comName},#{comAddress},#{comTel},#{comLisenseno},
-				DEFAULT,#{comSalestime},#{comLocation},#{comParking})
+				DEFAULT,null,#{comSalestime},#{comLocation},#{comParking},'Y')
+	</insert>
 	
+	<!-- 사업지 회원가입(Member테이블) -->
+	<insert id="insertBusinessMember" parameterType="Member">
+		INSERT INTO MEMBER
+		VALUES(SEQ_MNO.NEXTVAL,1,#{memberId},#{memberPwd},#{memberName},
+				#{memberNickName},#{memberEmail},SYSDATE,DEFAULT,SEQ_COMNO.CURRVAL)
 	</insert>
 	
 </mapper>

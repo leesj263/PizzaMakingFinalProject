@@ -84,8 +84,8 @@ public class MemberController {
 		String allSalestime = openTime+" ~ "+closeTime;
 		c.setComAddress(allAddress);
 		c.setComSalestime(allSalestime);
-		//System.out.println("Member"+m);
-		//System.out.println("Company"+c);
+		System.out.println("Member"+m);
+		System.out.println("Company"+c);
 		//System.out.println("전체주소는 : "+allAddress);
 		//System.out.println("전체 영업시간은 : "+allSalestime);
 		//System.out.println(changeNum); //짝수이면 사업자 회원가입
@@ -118,29 +118,20 @@ public class MemberController {
 		System.out.println("암호화후 :"+encPassword);
 		
 		m.setMemberPwd(encPassword);
-		
+		int result=0;
 		//사업자 회원가입
 		if(Integer.parseInt(changeNum)%2==0) {
-			int result = ms.insertBusinessMember(m,c);
-			
-			if(result>0) {
-				return "redirect:goMain.co";
-			}else {
-				return "common/errorPage";
-			}
-			
+			result = ms.insertBusinessMember(m,c);
 		}else {
 			//일반회원 회원가입
-			int result = ms.insertNormalMember(m);
-			
-			if(result>0) {
-				return "redirect:goMain.co";
-			}else {
-				return "common/errorPage";
-			}
-			
+			result = ms.insertNormalMember(m);
 		}
 		
+		if(result>0) {
+			return "redirect:goMain.co";
+		}else {
+			return "common/errorPage";
+		}
 		
 		//return null;
 	}
@@ -169,6 +160,7 @@ public class MemberController {
 	@RequestMapping("joinSendMail.co")
 	public @ResponseBody HashMap<String,Object> joinSendMail(@RequestParam String memberId,@RequestParam String memberEmail,@RequestParam String randomCode) throws MessagingException, UnsupportedEncodingException {
 		System.out.println(memberId+memberEmail+randomCode);
+		
 		
 		HashMap<String, Object> hmap=new HashMap<String,Object>();
 		MailHandler sendMail = new MailHandler(mailSender);

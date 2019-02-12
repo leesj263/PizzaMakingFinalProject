@@ -55,6 +55,13 @@ public class MemberDaoImpl implements MemberDao{
 		
 		return sqlSession.insert("Member.insertBusinessCompany",c);
 	}
+
+	//사업자 회원가입(Member 테이블)
+	@Override
+	public int insertBusinessMember(SqlSessionTemplate sqlSession, Member m) {
+		
+		return sqlSession.insert("Member.insertBusinessMember", m);
+	}
 	
 	
 

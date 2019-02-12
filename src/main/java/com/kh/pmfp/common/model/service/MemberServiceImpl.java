@@ -70,10 +70,10 @@ public class MemberServiceImpl implements MemberService{
 	@Override
 	public int insertBusinessMember(Member m, Company c) {
 		
-/*		int result = 0;
+		int result = 0;
 		
 		int result1 = md.insertBusinessCompany(sqlSession,c);
-		//int result2 = md.insertBusinessMember(sqlSession,m,c);
+		int result2 = md.insertBusinessMember(sqlSession,m);
 		
 		if(result1>0&&result2>0) {
 			result=1;
@@ -81,9 +81,9 @@ public class MemberServiceImpl implements MemberService{
 			result=0;
 		}
 		
-		return result;*/
+		return result;
 		
-		return 0;
+		//return 0;
 	}
 
 
