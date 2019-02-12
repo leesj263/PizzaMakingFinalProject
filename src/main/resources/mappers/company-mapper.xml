@@ -362,6 +362,11 @@
 		VALUES(SEQ_ODMATNO.NEXTVAL, #{comNo}, #{materialNo}, SYSDATE, 1, 'N', 1, #{materialWeight}, #{materialPrice})
 	</insert>
 	
+	<insert id="applyStockAndAddExpense">
+		INSERT INTO EXPENSE
+		VALUES(SEQ_EXPNO.NEXTVAL, 2, #{materialPrice}, NULL , SEQ_ODMATNO.CURRVAL)
+	</insert>
+	
 	<select id="selectOrderStockList" resultMap="companyOrderStockResultSet">
 		SELECT OM.ORDER_MNO, OM.COM_NO, OM.MATERIAL_NO, OM.ORDER_MDATE, OM.ORDER_MSTATUS, OM.ORDER_CALCULATE, 
 		OM.ORDEREXPENSE_NO, OM.MATERIAL_WEIGHT, OM.MATERIAL_PRICE, M.MATERIAL_NAME
