@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.kh.pmfp.common.model.vo.Member;
 import com.kh.pmfp.common.model.vo.PageInfo;
@@ -118,63 +119,57 @@ public class MypageController {
 	
 	//내 작성글 - 문의
 	@RequestMapping(value="myPageQna.mp")
-	public String myWritingQna(HttpServletRequest request, Model model) {
+	public String myWritingQna(HttpServletRequest request, Model model, @RequestParam(value="currentPage", required=false, defaultValue="1")int currentPage) {
 		HttpSession session = request.getSession();
 		Member loginUser = (Member)session.getAttribute("loginUser");
 		int memberNo = loginUser.getMemberNo();
 		
-		ArrayList<MyWriting> myWritingList = mps.selectMyWritingList(memberNo);
+		int listCount = mps.selectListCount(memberNo, 0);
+		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
+		
+		ArrayList<MyWriting> myWritingList = mps.selectMyWritingList(memberNo, pi);
 		
 		model.addAttribute("myWritingList", myWritingList);
 		model.addAttribute("boardType", myWritingList.get(0).getBoardType());
-		System.out.println("boardType : " + myWritingList.get(0).getBoardType());
+		model.addAttribute("pi", pi);
 		
 		return "mypage/qnaList";
 	}
 	
 	//내 작성글 - 후기
 	@RequestMapping(value="myPageReview.mp")
-	public String myWritingReview(HttpServletRequest request, Model model) {
+	public String myWritingReview(HttpServletRequest request, Model model, @RequestParam(value="currentPage", required=false, defaultValue="1")int currentPage) {
 		HttpSession session = request.getSession();
 		Member loginUser = (Member)session.getAttribute("loginUser");
 		int memberNo = loginUser.getMemberNo();
 		
-		ArrayList<MyWriting> myWritingList = mps.selectMyWritingReviewList(memberNo);
+		int listCount = mps.selectListCount(memberNo, 0);
+		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
+		
+		ArrayList<MyWriting> myWritingList = mps.selectMyWritingReviewList(memberNo, pi);
 		
 		model.addAttribute("myWritingList", myWritingList);
 		model.addAttribute("boardType", myWritingList.get(0).getBoardType());
-		System.out.println("boardType : " + myWritingList.get(0).getBoardType());
+		model.addAttribute("pi", pi);
 		
 		return "mypage/qnaList";
 	}
 	
 	//내 작성글 - 공유
 	@RequestMapping(value="myPageShare.mp")
-	public String myWritingShare(HttpServletRequest request, Model model) {
-		/*if(currentPage == 0) {
-			currentPage = 1;
-		}
-		
-		System.out.println("currentPage : " + currentPage);*/
-		
-		//테스트용 
-		int currentPage = 1;
-		
-		int boardType = 1;
-		
+	public String myWritingShare(HttpServletRequest request, Model model, @RequestParam(value="currentPage", required=false, defaultValue="1")int currentPage) {
 		HttpSession session = request.getSession();
 		Member loginUser = (Member)session.getAttribute("loginUser");
 		int memberNo = loginUser.getMemberNo();
 		
-		int listCount = mps.selectListCount(memberNo, boardType);
+		int listCount = mps.selectListCount(memberNo, 1);
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
 		
 		ArrayList<MyWriting> myWritingList = mps.selectMyWritingShareList(memberNo, pi);
 		
 		model.addAttribute("myWritingList", myWritingList);
-		//model.addAttribute("boartType", boardType);
 		model.addAttribute("boardType", myWritingList.get(0).getBoardType());
-		//System.out.println("boardType : " + myWritingList.get(0).getBoardType());
+		model.addAttribute("pi", pi);
 		
 		return "mypage/qnaList";
 	}

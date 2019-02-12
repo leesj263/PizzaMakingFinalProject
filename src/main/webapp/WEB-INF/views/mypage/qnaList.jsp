@@ -62,17 +62,19 @@
 					location.href="myPageShare.mp"
 				}
 			});
-			
+		
 			$(function(){
-				if(${boardType == "3"}){
+				if(${boardType == 3}){
 					$("#selectBox").val("qna").prop("selected",true);
-				}else if(${boardType == "0"}){
+				}
+				else if(${boardType == 0}){
 					$("#selectBox").val("review").prop("selected",true);
-				}else if(${boardType == "1"}){
+				}
+				else if(${boardType == 1}){
 					$("#selectBox").val("share").prop("selected",true);
 				}
 				
-			});
+			})
 		</script>
 		
 
@@ -104,15 +106,13 @@
 		    	<td>${ m.boardNo }</td>
 		    	<td>${ m.boardTitle }</td>
 		    	
-		    	<%-- <c:if test="${ boardType == '0' || boardType == '3' }"> --%>
 			    	<c:if test="${m.boardAnswer == 'Y' }">
 			    		<td>답변</td>
 			    	</c:if>
-			    	
+			 
 			    	<c:if test="${m.boardAnswer == 'N' }">
 			    		<td>미답변</td>
 			    	</c:if>
-		    <%-- 	</c:if>		 --%>  
 		    	  	
 		    	<c:set var="date" value="${ m.boardDate }"/>
 		    	<td>${ fn:substring(date,2,10) }</td>
@@ -125,46 +125,63 @@
 		
 		
 		
+		
+		
+
+		<c:if test="${ boardType == 3 }">
+			<c:set var="addr" value="myPageQna.mp"/>
+		</c:if>
+		<c:if test="${ boardType == 0 }">
+			<c:set var="addr" value="myPageReview.mp"/>
+		</c:if>
+		<c:if test="${ boardType == 1 }">
+			<c:set var="addr" value="myPageShare.mp"/>
+		</c:if>
+		
+		
+		
 		<!-- 페이징 버튼 영역 -->
 		<div id="pagingArea" align="center">
-			<c:if test="${ pi.currentPage <= 1 }">
-				[이전] &nbsp;
-			</c:if>
-			<c:if test="${ pi.currentPage > 1 }">
-				<c:url var="blistBack" value="/selectList.bo">
-					<c:param name="currentPage" value="${ pi.currentPage -1 }"/>
+			<c:if test="${ pi.currentPage > 1}">
+				<c:url var="front" value="${ addr }">
+					<c:param name="currentPage" value="1"/>                       
 				</c:url>
-				<a href="${ blistBack }">[이전]</a> &nbsp;
+				<a href="${ front }"> &lt;&lt; </a> &nbsp;	
 			</c:if>
-		</div>
-		
-		<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
-			<c:if test="${ p eq pi.currentPage }">
-				<font color="red" size="4"><b>[${p}]</b></font>
+
+			
+			
+			<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
+				<c:if test="${ p eq pi.currentPage }">
+					<font color="black">&nbsp;<b>[${p}]</b>&nbsp;</font>
+				</c:if>
+				
+				<c:if test = "${ p ne pi.currentPage }">
+					<c:url var="btnList" value="${ addr }">
+						<c:param name="currentPage" value="${ p }"/>
+					</c:url>
+					<a href="${ btnList }">&nbsp;${p}&nbsp;</a>
+				</c:if>
+			</c:forEach>
+			
+			
+			
+			
+			
+
+
+			
+			<c:if test="${ pi.currentPage < pi.maxPage }">
+				<c:url var="back" value="${ addr }">
+					<c:param name="currentPage" value="${pi.maxPage}"/>
+				</c:url>
+				<a href="${ back }">&gt;&gt;</a>
 			</c:if>
 			
-			<c:if test="${ p ne pi.currentPage }">
-				<c:url var="blistCheck" value="selectList.bo">
-					<c:param name="currentPage" value="${ p }"/>
-				</c:url>
-				<a href="${ blistCheck }">${p }</a>
-			</c:if>
-		</c:forEach>
-		
-		<c:if test="${ pi.currentPage >= pi.maxPage }">
-			&nbsp;[다음]
-		</c:if>
-		
-		<c:if test="${pi.currentPage < pi.maxPage }">
-			<c:url var="blistEnd" value="selectList.bo">
-				<c:param name="currentPage" value="${ pi.currentPage +1 }"/>
-			</c:url>
-			&nbsp;<a href="${blistEnd }">[다음]</a>
-		</c:if>
-		
-	</div>
+			
+		</div>
 	
 	
-
+</div>
 </body>
 </html>
