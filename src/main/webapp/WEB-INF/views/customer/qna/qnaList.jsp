@@ -34,8 +34,7 @@
 						<th style="width: 3% background-color:#eeeeee; text-align: center;">조회수</th>
 					</tr>		 		
 		 		</thead>
-		 		<tbody align="center">
-		 				
+		 		<tbody align="center"> 				
 			<c:forEach var="b" items="${ list }">
 				<tr>
 					<td>${ b.bid }</td>
