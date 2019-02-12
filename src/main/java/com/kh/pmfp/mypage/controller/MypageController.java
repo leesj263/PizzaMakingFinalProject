@@ -10,8 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.kh.pmfp.common.model.vo.Member;
+import com.kh.pmfp.common.model.vo.PageInfo;
+import com.kh.pmfp.common.model.vo.Pagination;
 import com.kh.pmfp.mypage.model.service.MypageService;
 import com.kh.pmfp.mypage.model.vo.Coupon;
 import com.kh.pmfp.mypage.model.vo.DelList;
@@ -41,8 +45,6 @@ public class MypageController {
 		String arr1 = ""; //도우,소스,크러스트
 		String arr2 = ""; //나머지 토핑
 		
-		ArrayList<String> toppingList = new ArrayList<String>();
-		
 		for(int i=0;i<orderList.size();i++) {
 			arr = orderList.get(i).getOrderMaterial().split("/");
 			for(int j=0;j<3;j++) {
@@ -55,20 +57,16 @@ public class MypageController {
 					arr2 += arr[k]+" / ";					
 				}
 			}
-			//toppingList.add(arr1+arr2);
 			
 			orderList.get(i).setOrderMaterial(arr1+arr2);
 			
 			arr1="";
 			arr2="";
 		}
-		
-		
+
 		
 		model.addAttribute("orderList",orderList);
-		//model.addAttribute("toppingList", toppingList);
-		
-		
+
 		return "mypage/orderList";
 	}
 	
@@ -118,9 +116,9 @@ public class MypageController {
 	
 	
 	
-	//내 작성글
+	//내 작성글 - 문의
 	@RequestMapping(value="myPageQna.mp")
-	public String myWriting(HttpServletRequest request, Model model) {
+	public String myWritingQna(HttpServletRequest request, Model model) {
 		HttpSession session = request.getSession();
 		Member loginUser = (Member)session.getAttribute("loginUser");
 		int memberNo = loginUser.getMemberNo();
@@ -128,16 +126,58 @@ public class MypageController {
 		ArrayList<MyWriting> myWritingList = mps.selectMyWritingList(memberNo);
 		
 		model.addAttribute("myWritingList", myWritingList);
+		model.addAttribute("boardType", myWritingList.get(0).getBoardType());
+		System.out.println("boardType : " + myWritingList.get(0).getBoardType());
 		
 		return "mypage/qnaList";
 	}
 	
+	//내 작성글 - 후기
+	@RequestMapping(value="myPageReview.mp")
+	public String myWritingReview(HttpServletRequest request, Model model) {
+		HttpSession session = request.getSession();
+		Member loginUser = (Member)session.getAttribute("loginUser");
+		int memberNo = loginUser.getMemberNo();
+		
+		ArrayList<MyWriting> myWritingList = mps.selectMyWritingReviewList(memberNo);
+		
+		model.addAttribute("myWritingList", myWritingList);
+		model.addAttribute("boardType", myWritingList.get(0).getBoardType());
+		System.out.println("boardType : " + myWritingList.get(0).getBoardType());
+		
+		return "mypage/qnaList";
+	}
 	
-	
-	
-	
-	
-	
+	//내 작성글 - 공유
+	@RequestMapping(value="myPageShare.mp")
+	public String myWritingShare(HttpServletRequest request, Model model) {
+		/*if(currentPage == 0) {
+			currentPage = 1;
+		}
+		
+		System.out.println("currentPage : " + currentPage);*/
+		
+		//테스트용 
+		int currentPage = 1;
+		
+		int boardType = 1;
+		
+		HttpSession session = request.getSession();
+		Member loginUser = (Member)session.getAttribute("loginUser");
+		int memberNo = loginUser.getMemberNo();
+		
+		int listCount = mps.selectListCount(memberNo, boardType);
+		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
+		
+		ArrayList<MyWriting> myWritingList = mps.selectMyWritingShareList(memberNo, pi);
+		
+		model.addAttribute("myWritingList", myWritingList);
+		//model.addAttribute("boartType", boardType);
+		model.addAttribute("boardType", myWritingList.get(0).getBoardType());
+		//System.out.println("boardType : " + myWritingList.get(0).getBoardType());
+		
+		return "mypage/qnaList";
+	}
 	
 	
 	

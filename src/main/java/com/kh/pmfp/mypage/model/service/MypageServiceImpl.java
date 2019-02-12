@@ -6,6 +6,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.kh.pmfp.common.model.vo.PageInfo;
 import com.kh.pmfp.mypage.model.dao.MypageDao;
 import com.kh.pmfp.mypage.model.vo.Coupon;
 import com.kh.pmfp.mypage.model.vo.DelList;
@@ -50,11 +51,32 @@ public class MypageServiceImpl implements MypageService{
 		return iCouponList;
 	}
 
-	//내 작성글
+	//내 작성글 - 문의
 	@Override
 	public ArrayList<MyWriting> selectMyWritingList(int memberNo) {
 		ArrayList<MyWriting> myWritingList = md.selectMyWritingList(sqlSession, memberNo);
 		return myWritingList;
+	}
+
+	//내 작성글 - 후기
+	@Override
+	public ArrayList<MyWriting> selectMyWritingReviewList(int memberNo) {
+		ArrayList<MyWriting> myWritingList = md.selectMyWritingReviewList(sqlSession, memberNo);
+		return myWritingList;
+	}
+
+	//내 작성글 - 공유
+	@Override
+	public ArrayList<MyWriting> selectMyWritingShareList(int memberNo, PageInfo pi) {
+		ArrayList<MyWriting> myWritingList = md.selectMyWritingShareList(sqlSession, memberNo, pi);
+		return myWritingList;
+	}
+	
+	//글 목록수 조회
+	@Override
+	public int selectListCount(int memberNo, int boardType) {
+		int listCount = md.selectListCount(sqlSession, memberNo, boardType);
+		return listCount;
 	}
 
 	

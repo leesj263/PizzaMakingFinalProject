@@ -44,7 +44,7 @@
 		
 		<div class="ui top attached tabular menu">
 		  <a class="item" data-tab="first" href="myPageCoupon.mp">사용 가능 쿠폰</a>
-		  <a class="active item" data-tab="second" href="myPageCouponTimeOut.mp">사용 만료 쿠폰</a>
+		  <a class="active item" data-tab="second" href="myPageCouponTimeOut.mp">기간 만료 쿠폰</a>
 
 		</div>
 		<div class="ui bottom attached active tab segment" data-tab="first">
