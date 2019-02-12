@@ -34,6 +34,7 @@
 
 <style>
 
+
 /* 회원가입 창 */
 .hiddenCss {
 	position: absolute;
@@ -62,6 +63,8 @@ h1 {
 .mar2 {
 	margin: 30px 50px 10px;
 }
+
+
 </style>
 
 </head>
@@ -143,7 +146,7 @@ h1 {
 		</c:if>
 	</nav>
 
-	<!-- ---------------회원가입=------------------ -->
+	<!--------------------------------------회원가입=------------------------------------------------------->
 
 	<div id="joindiv" class="hiddenCss">
 		<br>
@@ -197,11 +200,11 @@ h1 {
 							<input type="text" placeholder="이메일" id="memberEmail" name="memberEmail">
 						</div></td>
 					<td align="center">
-						<button class="ui yellow basic button" style="width: 100%" onclick="return CertificationSendBtn()">인증번호 발송</button>
+						<button class="ui yellow basic button" style="width:100%" onclick="return CertificationSendBtn()">인증번호 발송</button>
 					</td>
 				</tr>
 				<tr>
-					<td><div class="ui input" style="width: 100%">
+					<td><div class="ui input" style="width:100%">
 							<input type="text" placeholder="인증번호를 확인해주세요" id="JoinCertificationNum">
 						</div></td>
 					<td align="center">
@@ -250,7 +253,7 @@ h1 {
 				</tr>
 				<tr style="display: none;" id="comSalestimeTr">
 						<td>
-						<div class="ui selection dropdown">
+						<div class="ui selection dropdown compact" style="width:170px">
 							<input type="hidden" name="openTime" id="openTime" value=""> <i
 								class="dropdown icon"></i>
 							<div class="default text">오픈시간</div>
@@ -269,7 +272,7 @@ h1 {
 						</div>
 						</td>
 						<td>
-						<div class="ui selection dropdown">
+						<div class="ui selection dropdown compact" style="width:170px">
 							<input type="hidden" name="closeTime" id="closeTime" value=""> <i class="dropdown icon"></i>
 							<div class="default text">마감시간</div>
 							<div class="menu">
@@ -328,7 +331,7 @@ h1 {
 	</div>
 
 
-	<!-- ---------------로그인=------------------ -->
+	<!--------------------------------------------로그인=---------------------------------------------------->
 
 	<form action="login.co" method="post">
 		<div id="loginDiv" class="hiddenCss">
@@ -400,7 +403,7 @@ h1 {
 			</div>
 		</div>
 	</form>
-	<!-- --------------비회원 로그인---------------- -->
+	<!---------------------------------------------비회원 로그인------------------------------------------------>
 
 
 	<div id="nonMemberloginDiv" class="hiddenCss">
@@ -497,8 +500,9 @@ h1 {
 		</div>
 	</div>
 
-	<!-- --------------아이디/비밀번호 찾기-------------- -->
+	<!---------------------------------------아이디/비밀번호 찾기---------------------------------------------->
 
+<form action="" method="post">
 	<div id="idPwdSearchDiv" class="hiddenCss">
 		<br>
 		<h1>FIND ID AND PASSWORD</h1>
@@ -510,16 +514,15 @@ h1 {
 				</tr>
 				<tr>
 					<td colspan="2"><div class="ui input" style="width: 100%">
-							<input type="text" placeholder="이름 입력">
+							<input type="text" placeholder="이름 입력" id="idSearchName" name="memberName">
 						</div></td>
 				</tr>
 				<tr>
 					<td><div class="ui input">
-							<input type="text" placeholder="이메일">
+							<input type="text" placeholder="이메일" id="idSearchEmail" name="memberEmail">
 						</div></td>
 					<td align="center">
-						<button class="ui yellow basic button" style="width: 100%">아이디
-							전송</button>
+						<div class="ui yellow basic button" style="width: 100%" onclick="return idSendBtn();">아이디 전송</div>
 					</td>
 				</tr>
 				<tr>
@@ -530,16 +533,15 @@ h1 {
 				</tr>
 				<tr>
 					<td colspan="2"><div class="ui input" style="width: 100%">
-							<input type="text" placeholder="아이디를 입력하세요">
+							<input type="text" placeholder="아이디를 입력하세요" id="PwdSearchid" name="memberId">
 						</div></td>
 				</tr>
 				<tr>
 					<td><div class="ui input">
-							<input type="text" placeholder="이메일을 입력하세요">
+							<input type="text" placeholder="이메일을 입력하세요" id="PwdSearchEmail" name="memberEmail">
 						</div></td>
 					<td align="center">
-						<button class="ui yellow basic button" style="width: 100%">임시
-							비밀번호</button>
+						<div class="ui yellow basic button" style="width: 100%" onclick="return PwdSendBtn();">임시 비밀번호</div>
 					</td>
 				</tr>
 				<tr>
@@ -557,7 +559,7 @@ h1 {
 			</table>
 		</div>
 	</div>
-
+</form>
 
 	<!-----------------모달창--------------------------->
 	<div class="ui basic modal">
@@ -997,6 +999,19 @@ h1 {
         }).open();
     }
 </script>
+
+	<script>
+		//아이디 찾기
+		function idSendBtn(){
+			
+		}
+		
+		//비밀번호 찾기(임시 비밀번호)
+		function PwdSendBtn(){
+			
+		}
+	
+	</script>
 	
 	
 

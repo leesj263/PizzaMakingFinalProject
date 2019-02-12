@@ -26,4 +26,7 @@ public interface MemberDao {
 	//사업자 회원가입(Company)
 	int insertBusinessCompany(SqlSessionTemplate sqlSession, Company c);
 
+	//사업자 회원가입(Member)
+	int insertBusinessMember(SqlSessionTemplate sqlSession, Member m);
+
 }
