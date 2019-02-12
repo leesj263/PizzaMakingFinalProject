@@ -2,9 +2,11 @@ package com.kh.pmfp.mypage.model.dao;
 
 import java.util.ArrayList;
 
+import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.kh.pmfp.common.model.vo.PageInfo;
 import com.kh.pmfp.mypage.model.vo.Coupon;
 import com.kh.pmfp.mypage.model.vo.DelList;
 import com.kh.pmfp.mypage.model.vo.MyWriting;
@@ -69,7 +71,7 @@ public class MypageDaoImpl implements MypageDao{
 		return iCouponList;
 	}
 
-	//내 작성글
+	//내 작성글 - 문의
 	@Override
 	public ArrayList<MyWriting> selectMyWritingList(SqlSessionTemplate sqlSession, int memberNo) {
 		ArrayList<MyWriting> myWritingList = (ArrayList)sqlSession.selectList("Mypage.selectMyWritingList", memberNo);
@@ -82,6 +84,56 @@ public class MypageDaoImpl implements MypageDao{
 		
 		return myWritingList;
 		
+	}
+
+	//내 작성글 - 후기
+	@Override
+	public ArrayList<MyWriting> selectMyWritingReviewList(SqlSessionTemplate sqlSession, int memberNo) {
+		ArrayList<MyWriting> myWritingList = (ArrayList)sqlSession.selectList("Mypage.selectMyWritingReviewList", memberNo);
+		
+		if(myWritingList==null) {
+			System.out.println("예외처리 하기: 내 작성글 - 후기 조회 실패");
+		}
+		
+		System.out.println("dao : " + myWritingList);
+		
+		return myWritingList;
+	}
+
+	//내 작성글 - 공유
+	@Override
+	public ArrayList<MyWriting> selectMyWritingShareList(SqlSessionTemplate sqlSession, int memberNo, PageInfo pi) {
+		ArrayList<MyWriting> myWritingList = null;
+				
+		int offset = (pi.getCurrentPage() -1) * pi.getLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getLimit());
+		
+		myWritingList = (ArrayList)sqlSession.selectList("Mypage.selectMyWritingShareList", memberNo, rowBounds);
+		
+		
+		if(myWritingList==null) {
+			System.out.println("예외처리 하기: 내 작성글 - 후기 조회 실패");
+		}
+		
+		System.out.println("dao : " + myWritingList);
+		
+		return myWritingList;
+	}
+
+	//글 목록수 조회
+	@Override
+	public int selectListCount(SqlSessionTemplate sqlSession, int memberNo, int boardType) {
+		MyWriting mw = new MyWriting(memberNo, boardType);
+		
+		int listCount = sqlSession.selectOne("Mypage.selectListCount", mw);
+		
+		System.out.println("listCount : " + listCount);
+		
+		if(listCount <= 0) {
+			System.out.println("글 목록수 조회 실패");
+		}
+		
+		return listCount;
 	}
 
 	

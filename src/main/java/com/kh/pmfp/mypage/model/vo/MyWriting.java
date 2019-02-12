@@ -1,21 +1,46 @@
 package com.kh.pmfp.mypage.model.vo;
 
-import java.util.Date;
-
 public class MyWriting implements java.io.Serializable{
 	private int boardNo;
 	private String boardTitle;
 	private String boardAnswer;
 	private String boardDate;
+	private int boardType;
+	private int memberNo;
 	
 	public MyWriting() {}
-
-	public MyWriting(int boardNo, String boardTitle, String boardAnswer, String boardDate) {
+	
+	public MyWriting(int boardNo, String boardTitle, String boardAnswer, String boardDate, int boardType, int memberNo) {
 		super();
 		this.boardNo = boardNo;
 		this.boardTitle = boardTitle;
 		this.boardAnswer = boardAnswer;
 		this.boardDate = boardDate;
+		this.boardType = boardType;
+		this.memberNo = memberNo;
+	}
+
+	public MyWriting(int boardNo, String boardTitle, String boardAnswer, String boardDate, int boardType) {
+		super();
+		this.boardNo = boardNo;
+		this.boardTitle = boardTitle;
+		this.boardAnswer = boardAnswer;
+		this.boardDate = boardDate;
+		this.boardType = boardType;
+	}
+	
+	public MyWriting(int boardNo, String boardTitle, String boardDate, int boardType) {
+		super();
+		this.boardNo = boardNo;
+		this.boardTitle = boardTitle;
+		this.boardDate = boardDate;
+		this.boardType = boardType;
+	}
+	
+	public MyWriting(int memberNo,  int boardType) {
+		super();
+		this.memberNo = memberNo;
+		this.boardType = boardType;
 	}
 
 	public int getBoardNo() {
@@ -50,11 +75,31 @@ public class MyWriting implements java.io.Serializable{
 		this.boardDate = boardDate;
 	}
 
+	public int getBoardType() {
+		return boardType;
+	}
+
+	public void setBoardType(int boardType) {
+		this.boardType = boardType;
+	}
+	
+	public int getMemberNo() {
+		return memberNo;
+	}
+
+	public void setMemberNo(int memberNo) {
+		this.memberNo = memberNo;
+	}
+
 	@Override
 	public String toString() {
 		return "MyWriting [boardNo=" + boardNo + ", boardTitle=" + boardTitle + ", boardAnswer=" + boardAnswer
-				+ ", boardDate=" + boardDate + "]";
+				+ ", boardDate=" + boardDate + ", boardType=" + boardType + ", memberNo=" + memberNo + "]";
 	}
+
+	
+
+	
 	
 	
 }
