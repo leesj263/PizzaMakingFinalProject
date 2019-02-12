@@ -25,6 +25,7 @@
 		<result property="couponName" column="COUPON_NAME"/>
 		<result property="issueStatus" column="ISSUE_STATUS"/>
 		<result property="possiblePeriod" column="possiblePERIOD"/>
+		<result property="couponCondition" column="COUPON_CONDITION"/>
 	</resultMap>
 	
 	<resultMap type="com.kh.pmfp.mypage.model.vo.MyWriting" id="mypageMyWritingResultSet">
@@ -32,9 +33,22 @@
 		<result property="boardTitle" column="BOARD_TITLE"/>
 		<result property="boardAnswer" column="BOARD_ANSWER"/>
 		<result property="boardDate" column="BOARD_DATE"/>
+		<result property="boardType" column="BOARD_TYPE"/>
+		<result property="memberNo" column="MEMBER_NO"/>
+	</resultMap>
+	
+	<resultMap type="com.kh.pmfp.mypage.model.vo.MyWriting" id="mypageMyWritingResultSet2">
+		<id property="boardNo" column="BOARD_NO"/>
+		<result property="boardTitle" column="BOARD_TITLE"/>
+		<result property="boardDate" column="BOARD_DATE"/>
+		<result property="boardType" column="BOARD_TYPE"/>
+		<result property="memberNo" column="MEMBER_NO"/>
 	</resultMap>
 	
 	
+
+
+
 
 	<select id="selectOrderList" resultMap="mypageOrderResultSet" parameterType="_int">
 		SELECT om.order_no,
@@ -59,7 +73,7 @@
 	
 	
 	<select id="selectPCouponList" resultMap="mypagePCouponResultSet" parameterType="_int">
-		SELECT ci.issue_no, c.coupon_name, ci.issue_status, ci.issue_cdate || ' ~ ' ||ci.issue_edate possiblePeriod
+		SELECT ci.issue_no, c.coupon_name, ci.issue_status, ci.issue_cdate || ' ~ ' ||ci.issue_edate possiblePeriod, c.coupon_condition
 		FROM coupon_issue CI 
 		JOIN coupon c ON ci.coupon_no = c.coupon_no
 		WHERE MEMBER_NO = #{memberNo} 
@@ -74,10 +88,41 @@
 		AND CI.issue_edate <![CDATA[<]]> SYSDATE
 	</select>
 	
+	
+	
+	
+	
 	<select id="selectMyWritingList" resultMap="mypageMyWritingResultSet" parameterType="_int">
-		select board_no, board_title, board_answer, board_date
+		select board_no, board_title, board_answer, board_date, board_type
 		from board
 		where board_type='3' and member_no=#{memberNo}
+		order by board_no
 	</select>
+	
+	<select id="selectMyWritingReviewList" resultMap="mypageMyWritingResultSet" parameterType="_int">
+		select board_no, board_title, board_answer, board_date, board_type
+		from board
+		where board_type='0' and member_no=#{memberNo}
+		order by board_no
+	</select>
+	
+	<select id="selectMyWritingShareList" resultMap="mypageMyWritingResultSet2" parameterType="_int">
+		select board_no, board_title, board_date, board_type
+		from board
+		where board_type='1' and member_no=#{memberNo}
+		order by board_no
+	</select>
+	
+	<select id="selectListCount" resultType="_int" parameterType="MyWriting">
+		select count(*) 
+		from board 
+		where member_no=#{memberNo} 
+		and board_type=#{boardType}
+
+		
+	
+	</select>
+	
+	
 	
 </mapper>

@@ -1,6 +1,7 @@
 package com.kh.pmfp.common.model.service;
 
 import com.kh.pmfp.common.model.exception.LoginException;
+import com.kh.pmfp.common.model.vo.Company;
 import com.kh.pmfp.common.model.vo.Member;
 
 public interface MemberService {
@@ -13,5 +14,12 @@ public interface MemberService {
 
 	//id중복확인 체크
 	int duplicationCheck(String memberId);
+
+	//사업자 회원가입
+	int insertBusinessMember(Member m, Company c);
+
+
+
+	
 
 }

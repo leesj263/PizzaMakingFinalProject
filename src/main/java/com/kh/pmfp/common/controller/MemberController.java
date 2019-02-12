@@ -75,10 +75,19 @@ public class MemberController {
 		return "redirect:goMain.co";
 	}
 	
+	//회원가입
 	@RequestMapping("insertJoin.co")
 	public String insertMember(Member m,Company c, HttpServletRequest request, HttpServletResponse response
-								,@RequestParam String changeNum) {
-		System.out.println("Member"+m);
+								,@RequestParam String changeNum ,@RequestParam String comAddress3,@RequestParam String comAddress2,
+								@RequestParam String openTime,@RequestParam String closeTime) {
+		String allAddress = comAddress3+" "+comAddress2;
+		String allSalestime = openTime+" ~ "+closeTime;
+		c.setComAddress(allAddress);
+		c.setComSalestime(allSalestime);
+		//System.out.println("Member"+m);
+		//System.out.println("Company"+c);
+		//System.out.println("전체주소는 : "+allAddress);
+		//System.out.println("전체 영업시간은 : "+allSalestime);
 		//System.out.println(changeNum); //짝수이면 사업자 회원가입
 		
 		//bcrypt란?
@@ -112,6 +121,13 @@ public class MemberController {
 		
 		//사업자 회원가입
 		if(Integer.parseInt(changeNum)%2==0) {
+			int result = ms.insertBusinessMember(m,c);
+			
+			if(result>0) {
+				return "redirect:goMain.co";
+			}else {
+				return "common/errorPage";
+			}
 			
 		}else {
 			//일반회원 회원가입
@@ -126,7 +142,7 @@ public class MemberController {
 		}
 		
 		
-		return null;
+		//return null;
 	}
 	
 	//아이디 중복확인 체크!

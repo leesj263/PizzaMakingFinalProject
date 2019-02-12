@@ -4,6 +4,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.kh.pmfp.common.model.exception.LoginException;
+import com.kh.pmfp.common.model.vo.Company;
 import com.kh.pmfp.common.model.vo.Member;
 
 @Repository
@@ -46,6 +47,13 @@ public class MemberDaoImpl implements MemberDao{
 	public int duplicationCheck(SqlSessionTemplate sqlSession, String memberId) {
 		
 		return sqlSession.selectOne("Member.duplicationCheck",memberId);
+	}
+
+	//사업자 회원가입(Company 테이블)
+	@Override
+	public int insertBusinessCompany(SqlSessionTemplate sqlSession, Company c) {
+		
+		return sqlSession.insert("Member.insertBusinessCompany",c);
 	}
 	
 	

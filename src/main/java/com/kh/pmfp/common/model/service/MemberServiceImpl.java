@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.kh.pmfp.common.model.dao.MemberDao;
 import com.kh.pmfp.common.model.exception.LoginException;
+import com.kh.pmfp.common.model.vo.Company;
 import com.kh.pmfp.common.model.vo.Member;
 
 @Service
@@ -64,6 +65,28 @@ public class MemberServiceImpl implements MemberService{
 		//System.out.println("아이디 중복확인!보냄");
 		return result;
 	}
+
+	//사업자 회원가입
+	@Override
+	public int insertBusinessMember(Member m, Company c) {
+		
+/*		int result = 0;
+		
+		int result1 = md.insertBusinessCompany(sqlSession,c);
+		//int result2 = md.insertBusinessMember(sqlSession,m,c);
+		
+		if(result1>0&&result2>0) {
+			result=1;
+		}else {
+			result=0;
+		}
+		
+		return result;*/
+		
+		return 0;
+	}
+
+
 	
 
 }

@@ -5,15 +5,17 @@ public class Coupon implements java.io.Serializable{
 	private String couponName;
 	private String issueStatus;
 	private String possiblePeriod;
+	private String couponCondition;
 	
 	public Coupon() {}
 
-	public Coupon(int issueNo, String couponName, String issueStatus, String possiblePeriod) {
+	public Coupon(int issueNo, String couponName, String issueStatus, String possiblePeriod, String couponCondition) {
 		super();
 		this.issueNo = issueNo;
 		this.couponName = couponName;
 		this.issueStatus = issueStatus;
 		this.possiblePeriod = possiblePeriod;
+		this.couponCondition = couponCondition;
 	}
 
 	public int getIssueNo() {
@@ -48,11 +50,21 @@ public class Coupon implements java.io.Serializable{
 		this.possiblePeriod = possiblePeriod;
 	}
 
+	public String getCouponCondition() {
+		return couponCondition;
+	}
+
+	public void setCouponCondition(String couponCondition) {
+		this.couponCondition = couponCondition;
+	}
+
 	@Override
 	public String toString() {
-		return "PossibleCoupon [issueNo=" + issueNo + ", couponName=" + couponName + ", issueStatus=" + issueStatus
-				+ ", possiblePeriod=" + possiblePeriod + "]";
+		return "Coupon [issueNo=" + issueNo + ", couponName=" + couponName + ", issueStatus=" + issueStatus
+				+ ", possiblePeriod=" + possiblePeriod + ", couponCondition=" + couponCondition + "]";
 	}
+
+	
 	
 	
 	

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.mybatis.spring.SqlSessionTemplate;
 
+import com.kh.pmfp.common.model.vo.PageInfo;
 import com.kh.pmfp.mypage.model.vo.Coupon;
 import com.kh.pmfp.mypage.model.vo.DelList;
 import com.kh.pmfp.mypage.model.vo.MyWriting;
@@ -23,8 +24,17 @@ public interface MypageDao {
 	//쿠폰함 - 사용만료쿠폰
 	ArrayList<Coupon> selectICouponList(SqlSessionTemplate sqlSession, int memberNo);
 
-	//내 작성글
+	//내 작성글 - 문의
 	ArrayList<MyWriting> selectMyWritingList(SqlSessionTemplate sqlSession, int memberNo);
+
+	//내 작성글 - 후기
+	ArrayList<MyWriting> selectMyWritingReviewList(SqlSessionTemplate sqlSession, int memberNo);
+
+	//내 작성글 - 공유
+	ArrayList<MyWriting> selectMyWritingShareList(SqlSessionTemplate sqlSession, int memberNo, PageInfo pi);
+
+	//글 목록수 조회
+	int selectListCount(SqlSessionTemplate sqlSession, int memberNo, int boardType);
 
 
 

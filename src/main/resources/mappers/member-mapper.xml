@@ -6,15 +6,27 @@
 <mapper namespace="Member">
 	<resultMap type="com.kh.pmfp.common.model.vo.Member" id="memberResultSet">
 		<id property="memberNo" column="MEMBER_NO"/>
-		<id property="memberCateg" column="MEMBER_CATEG"/>
-		<id property="memberId" column="MEMBER_ID"/>
-		<id property="memberPwd" column="MEMBER_PWD"/>
-		<id property="memberName" column="MEMBER_NAME"/>
-		<id property="memberNickName" column="MEMBER_NICKNAME"/>
-		<id property="memberEmail" column="MEMBER_EMAIL"/>
-		<id property="memberEnroll" column="MEMBER_ENROLL"/>
-		<id property="memberStatus" column="MEMBER_STATUS"/>
+		<result property="memberCateg" column="MEMBER_CATEG"/>
+		<result property="memberId" column="MEMBER_ID"/>
+		<result property="memberPwd" column="MEMBER_PWD"/>
+		<result property="memberName" column="MEMBER_NAME"/>
+		<result property="memberNickName" column="MEMBER_NICKNAME"/>
+		<result property="memberEmail" column="MEMBER_EMAIL"/>
+		<result property="memberEnroll" column="MEMBER_ENROLL"/>
+		<result property="memberStatus" column="MEMBER_STATUS"/>
+		<result property="comNo" column="COM_NO"/>
+	</resultMap>
+	
+	<resultMap type="com.kh.pmfp.common.model.vo.Company" id="companyResultSet">
 		<id property="comNo" column="COM_NO"/>
+		<result property="comName" column="COM_NAME"/>
+		<result property="comAddress" column="COM_ADDRESS"/>
+		<result property="comTel" column="COM_TEL"/>
+		<result property="comLisenseno" column="COM_LISENSENO"/>
+		<result property="comStatus" column="COM_STATUS"/>
+		<result property="comSalestime" column="COM_SALESTIME"/>
+		<result property="comLocation" column="COM_LOCATION"/>
+		<result property="comParking" column="COM_PARKING"/>
 	</resultMap>
 	
 	<!-- 암호화전 로그인 -->
@@ -56,7 +68,13 @@
 		WHERE MEMBER_ID=#{memberId}
 	</select>
 	
+	<!-- 사업자 회원가입(Company테이블) -->
+	<insert id="insertBusinessCompany" parameterType="Company">
+		INSERT INTO COMPANY
+		VALUES(SEQ_COMNO.NEXTVAL,#{comName},#{comAddress},#{comTel},#{comLisenseno},
+				DEFAULT,#{comSalestime},#{comLocation},#{comParking})
 	
+	</insert>
 	
 </mapper>
 

@@ -45,7 +45,7 @@
 		
 		<div class="ui top attached tabular menu">
 		  <a class="active item" data-tab="first" href="myPageCoupon.mp">사용 가능 쿠폰</a>
-		  <a class="item" data-tab="second" href="myPageCouponTimeOut.mp">사용 만료 쿠폰</a>
+		  <a class="item" data-tab="second" href="myPageCouponTimeOut.mp">기간 만료 쿠폰</a>
 
 		</div>
 		<div class="ui bottom attached active tab segment" data-tab="first">
@@ -54,6 +54,7 @@
 			    <tr><th>쿠폰번호</th>
 			    <th>쿠폰명</th>
 			    <th>사용여부</th>
+			    <th>사용조건</th>
 			    <th>유효기간</th>
 			  </tr></thead>
 			  <tbody>
@@ -75,7 +76,7 @@
 			    			<td>미사용</td>
 			    		</c:if>
 			    		
-			    		
+			    		<td>${ p.couponCondition }원 이상 구매시</td>
 			    		<td>${p.possiblePeriod }</td>
 			    	</tr>
 			    </c:forEach>

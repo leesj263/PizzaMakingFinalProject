@@ -21,7 +21,7 @@
 				<h1>셀프 피자 제작소</h1>
 			</header>
 			<!-- <a href="#main" class="button big scrolly">주문하러 가기</a> -->
-			<button class="ui yellow button">주문하러 가기</button>
+			<button class="ui yellow button" onclick="location.href='pizzaMaking.cor'">주문하러 가기</button>
 		</div>
 	</section>
 
