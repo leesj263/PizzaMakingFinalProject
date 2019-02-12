@@ -14,6 +14,8 @@ import com.kh.pmfp.admin.model.vo.AdminBoard2;
 import com.kh.pmfp.admin.model.vo.AdminMember;
 import com.kh.pmfp.admin.model.vo.AdminOrder;
 import com.kh.pmfp.admin.model.vo.AdminSeller;
+import com.kh.pmfp.admin.model.vo.AdminSellerOrder;
+import com.kh.pmfp.admin.model.vo.AdminSellerOrderList;
 
 public interface AdminDao {
 
@@ -94,6 +96,12 @@ public interface AdminDao {
 
 	//qna 답변결과 적용
 	int updateQna(SqlSessionTemplate sqlSession, int boardRefNo) throws AdminUpdateException;
+
+	//업체 주문 목록 조회용
+	ArrayList<AdminSellerOrderList> selectSellerOrderList(SqlSessionTemplate sqlSession) throws AdminSelectException;
+
+	//업체 주문 상세 조회용
+	ArrayList<AdminSellerOrder> selectSellerOrder(SqlSessionTemplate sqlSession, AdminSellerOrderList orderList) throws AdminSelectException;
 
 
 

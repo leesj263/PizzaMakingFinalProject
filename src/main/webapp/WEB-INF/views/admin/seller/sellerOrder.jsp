@@ -1,9 +1,14 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>    
 <jsp:include page="../common/header.jsp"/>
 <style>
-	#sellerOrderList{
+	#bootstrap-data-table-export{
 		text-align:center;
+		width:800px;
+	}
+	#com{
+		width:50px !important;
 	}
 </style>
 <section>
@@ -20,7 +25,7 @@
 			<div class="row">
 				<div class="col-md-4"></div>
 				<div class="col-md-6">
-					<button class="btn btn-sm btn-link" disabled>선택한 주문을</button>
+					<!-- <button class="btn btn-sm btn-link" disabled>선택한 주문을</button>
 					<select name="orderStatus">
 						<option>분류를 선택하세요</option>
 						<option value="delivery">주문상태</option>
@@ -31,26 +36,56 @@
 						<option value="delivery">발송완료</option>
 						<option value="calculate">정산완료</option>
 					</select>
-					<button class="btn btn-sm btn-outline-warning">로 상태변경</button>
+					<button class="btn btn-sm btn-outline-warning">로 상태변경</button> -->
 				</div>
 				<div class="col-md-2"></div>
 			</div>
 			<div class="row">
 				<div class="col-md-2"></div>
-				<table class="table table-striped col-md-8" id="sellerOrderList">
+				<table class="table table-striped col-md-8" id="bootstrap-data-table-export">
 					<thead>
 						<tr>
-							<th><input type="checkbox"></th>
-							<th scope="col">주문번호</th>
+							<!-- <th><input type="checkbox"></th> -->
+							<th scope="col"></th>
 							<th scope="col">주문일자</th>
-							<th scope="col">지점</th>
+							<th id="com" scope="col">지점</th>
 							<th scope="col">주문내역</th>
 							<th scope="col">진행상태</th>
 							<th scope="col">정산여부</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
+						<c:forEach items="${orderList }" var="order">
+							<tr>
+								<td><input type="hidden" name="comNo" value="${order.comNo}"></td>
+								<td>${order.orderMDate }</td>
+								<td>${order.comName }</td>
+								<td>${order.orderList }</td>
+								<c:choose>
+									<c:when test="${order.orderMStatus ==1}">
+										<td>주문 완료
+										<button class="btn btn-sm btn-outline-warning" type="button" onclick="orderMStatus();">배송완료</button></td>
+									</c:when>
+									<c:when test="${order.orderMStatus ==2}">
+										<td>배송 완료
+										<button class="btn btn-sm btn-outline-warning" disabled type="button"onclick="orderMStatus();">수령 대기중</button></td>
+									</c:when>
+									<c:otherwise>
+										<td>수령 완료</td>
+									</c:otherwise>
+								</c:choose>
+								<c:choose>
+									<c:when test="${order.orderCal=='N' }">
+										<td>미정산
+										<button class="btn btn-sm btn-outline-warning" type="button" onclik="orderCal();">정산완료</button></td>
+									</c:when>
+									<c:otherwise>
+										<td>정산완료</td>
+									</c:otherwise>
+								</c:choose>
+							</tr>
+						</c:forEach>
+						<!-- <tr>
 							<td><input type="checkbox"></td>
 							<th scope="row">3</th>
 							<td>2019-01-26</td>
@@ -76,16 +111,16 @@
 							<td>피자 박스 1000개 외 12건</td>
 							<td>수령완료</td>
 							<td>미정산</td>
-						</tr>
+						</tr> -->
 					</tbody>
 				</table>
 				<div class="col-md-2"></div>
 			</div>
 		</div>
 	</div>
-		<div class="col-md-4"></div>
-			<div class="dataTables_paginate paging_simple_numbers col-md-4" id="bootstrap-data-table_paginate">
-		<ul class="pagination">
+<!-- 	<div class="col-md-4"></div>
+	<div class="dataTables_paginate paging_simple_numbers col-md-4" id="bootstrap-data-table_paginate">
+		 <ul class="pagination">
 			<li class="paginate_button page-item previous disabled" id="bootstrap-data-table_previous"><a href="#" aria-controls="bootstrap-data-table" data-dt-idx="0" tabindex="0" class="page-link"><i class="ti-angle-left"></i></a></li>
 			<li class="paginate_button page-item active"><a href="#" aria-controls="bootstrap-data-table" data-dt-idx="1" tabindex="0" class="page-link">1</a></li>
 			<li class="paginate_button page-item "><a href="#" aria-controls="bootstrap-data-table" data-dt-idx="2" tabindex="0" class="page-link">2</a></li>
@@ -95,20 +130,39 @@
 			<li class="paginate_button page-item next" id="bootstrap-data-table_next"><a href="#" aria-controls="bootstrap-data-table" data-dt-idx="7" tabindex="0" class="page-link"><i class="ti-angle-right"></i></a></li>
 		</ul>
 	</div>
-	<div class="col-md-4"></div>
+	<div class="col-md-4"></div> -->
 		<script>
 		$(function(){
-			$("#sellerOrderList").find("td").mouseenter(function(){
+			$("#bootstrap-data-table-export").find("td").mouseenter(function(){
 				$(this).parent().css({"color":"#9d9d9d","cursor":"pointer"});
 			}).mouseout(function(){
 				$(this).parent().css({"color":"#212529"});
 			}).click(function(){
-				var num=$(this).parent().children().eq(0).text();
-				console.log(num);
-				location.href="admin.ad?admin=seller/sellerOrderDetail";
+				var orderMDate=$(this).parent().children().eq(1).text();
+				var comNo=$(this).parent().children().eq(0).children().val();
+				location.href="sellerOrderDetail.ad?comNo="+comNo+"&orderMDate="+orderMDate;
+				console.log("sellerOrderDetail.ad?comNo="+comNo+"&orderMDate="+orderMDate);
 			});
-		})
+
+			$("#bootstrap-data-table-export_length").empty();
+			$("#bootstrap-data-table-export_filter").empty();
+			$("#bootstrap-data-table-export_info").empty();
+			$("#bootstrap-data-table-export_paginate").css({"float":"center"});
+		});
 	</script>
 	</div>
 </section>
+
+		<script src="${contextPath }/resources/admin/vendors/datatables.net/js/jquery.dataTables.min.js"></script>
+		<script src="${contextPath }/resources/admin/vendors/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+		<script src="${contextPath }/resources/admin/vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+		<script src="${contextPath }/resources/admin/vendors/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js"></script>
+		<script src="${contextPath }/resources/admin/vendors/jszip/dist/jszip.min.js"></script>
+		<script src="${contextPath }/resources/admin/vendors/pdfmake/build/pdfmake.min.js"></script>
+		<script src="${contextPath }/resources/admin/vendors/pdfmake/build/vfs_fonts.js"></script>
+		<script src="${contextPath }/resources/admin/vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
+		<script src="${contextPath }/resources/admin/vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
+		<script src="${contextPath }/resources/admin/vendors/datatables.net-buttons/js/buttons.colVis.min.js"></script>
+		<script src="${contextPath }/resources/admin/assets/js/init-scripts/data-table/datatables-init.js"></script>
+</section>	
 <jsp:include page="../common/footer.jsp"/>

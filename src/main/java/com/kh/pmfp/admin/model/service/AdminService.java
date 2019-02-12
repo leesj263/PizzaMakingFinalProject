@@ -12,6 +12,8 @@ import com.kh.pmfp.admin.model.vo.AdminBoard2;
 import com.kh.pmfp.admin.model.vo.AdminMember;
 import com.kh.pmfp.admin.model.vo.AdminOrder;
 import com.kh.pmfp.admin.model.vo.AdminSeller;
+import com.kh.pmfp.admin.model.vo.AdminSellerOrder;
+import com.kh.pmfp.admin.model.vo.AdminSellerOrderList;
 
 public interface AdminService {
 
@@ -86,5 +88,11 @@ public interface AdminService {
 	
 	//qna 답변용
 	int insertAnswer(AdminBoard answer) throws AdminInsertException, AdminUpdateException;
+
+	//업체 주문 목록 조회용
+	ArrayList<AdminSellerOrderList> selectSellerOrderList() throws AdminSelectException;
+
+	//업체 주문 상세 조회용
+	ArrayList<AdminSellerOrder> selectSellerOrder(AdminSellerOrderList orderList) throws AdminSelectException;
 
 }

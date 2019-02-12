@@ -15,6 +15,8 @@ import com.kh.pmfp.admin.model.vo.AdminBoard2;
 import com.kh.pmfp.admin.model.vo.AdminMember;
 import com.kh.pmfp.admin.model.vo.AdminOrder;
 import com.kh.pmfp.admin.model.vo.AdminSeller;
+import com.kh.pmfp.admin.model.vo.AdminSellerOrder;
+import com.kh.pmfp.admin.model.vo.AdminSellerOrderList;
 
 @Repository
 public class AdminDaoImpl implements AdminDao {
@@ -347,6 +349,32 @@ public class AdminDaoImpl implements AdminDao {
 		}
 		
 		return result;
+	}
+
+	//업체 주문 목록 조회용
+	@Override
+	public ArrayList<AdminSellerOrderList> selectSellerOrderList(SqlSessionTemplate sqlSession)
+			throws AdminSelectException {
+		ArrayList<AdminSellerOrderList> orderList=new ArrayList<AdminSellerOrderList>();
+		orderList=(ArrayList)sqlSession.selectList("Admin.selectSellerOrderList");
+		
+		if(orderList==null) {
+			throw new AdminSelectException("업체 주문 목록 조회 실패");
+		}
+		
+		return orderList;
+	}
+
+	//업체 주문 상세 조회용
+	@Override
+	public ArrayList<AdminSellerOrder> selectSellerOrder(SqlSessionTemplate sqlSession, AdminSellerOrderList orderList)
+			throws AdminSelectException {
+		ArrayList<AdminSellerOrder> order=new ArrayList<AdminSellerOrder>();
+		order=(ArrayList)sqlSession.selectList("Admin.selectSellerOrder", orderList);
+		if(order==null) {
+			throw new AdminSelectException("업체 주문 상세 조회 - 주문이력 가져오기 실패");
+		}
+		return order;
 	}
 	
 

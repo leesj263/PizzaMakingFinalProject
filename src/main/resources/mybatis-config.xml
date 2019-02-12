@@ -10,19 +10,19 @@
 		<typeAlias type="com.kh.pmfp.common.model.vo.Company" alias="Company"/>
 		<typeAlias type="com.kh.pmfp.company.model.vo.CompanyBoard" alias="CompanyBoard"/>
 		<typeAlias type="com.kh.pmfp.company.model.vo.CompanyOrder" alias="CompanyOrder"/>
-	  <typeAlias type="com.kh.pmfp.company.model.vo.CompanyEmployee" alias="CompanyEmployee"/>
-	  <typeAlias type="com.kh.pmfp.company.model.vo.CompanyMaterial" alias="CompanyMaterial"/>
-	  <typeAlias type="com.kh.pmfp.company.model.vo.CompanyOrderStock" alias="CompanyOrderStock"/> 
-	  <typeAlias type="com.kh.pmfp.company.model.vo.CompanyRemainMaterial" alias="CompanyRemainMaterial"/>   
+		<typeAlias type="com.kh.pmfp.company.model.vo.CompanyEmployee" alias="CompanyEmployee"/>
+		<typeAlias type="com.kh.pmfp.company.model.vo.CompanyMaterial" alias="CompanyMaterial"/>
+		<typeAlias type="com.kh.pmfp.company.model.vo.CompanyOrderStock" alias="CompanyOrderStock"/> 
+		<typeAlias type="com.kh.pmfp.company.model.vo.CompanyRemainMaterial" alias="CompanyRemainMaterial"/>   
 		<typeAlias type="com.kh.pmfp.admin.model.vo.AdminMember" alias="AdminMember"/>
 		<typeAlias type="com.kh.pmfp.admin.model.vo.AdminOrder" alias="AdminOrder"/>
 		<typeAlias type="com.kh.pmfp.admin.model.vo.AdminSeller" alias="AdminSeller"/>
-    <typeAlias type="com.kh.pmfp.mypage.model.vo.OrderList" alias="OrderList"/>
+		<typeAlias type="com.kh.pmfp.admin.model.vo.AdminSellerOrderList" alias="AdminSellerOrderList"/>
     <typeAlias type="com.kh.pmfp.admin.model.vo.AdminBoard" alias="AdminBoard"/>
+    <typeAlias type="com.kh.pmfp.mypage.model.vo.OrderList" alias="OrderList"/>
     <typeAlias type="com.kh.pmfp.mypage.model.vo.DelList" alias="DelList"/>
     <typeAlias type="com.kh.pmfp.mypage.model.vo.Coupon" alias="Coupon"/>
     <typeAlias type="com.kh.pmfp.mypage.model.vo.MyWriting" alias="MyWriting"/>
-
 	</typeAliases>
 	
 	
