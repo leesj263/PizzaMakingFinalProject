@@ -9,7 +9,7 @@ public class MaterialImage implements Serializable {
 	private String materialName;
 	private String materialSize;
 	private int materialWeight;
-	private int materialBuyprice;
+	//private int materialBuyprice;
 	private int materialSellprice;
 	private String materialStatus;
 	private int imgNo;
@@ -27,16 +27,15 @@ public class MaterialImage implements Serializable {
 	public MaterialImage() {}
 
 	public MaterialImage(int materialNo, int materialCateg, String materialName, String materialSize,
-			int materialWeight, int materialBuyprice, int materialSellprice, String materialStatus, int imgNo,
-			int imgCateg, String imgOriginname, String imgChangename, String imgFilepath, Date imgUploaddate,
-			String imgStatus, int boardNo, int mypizzaNo, int eventNo, int basicNo) {
+			int materialWeight, int materialSellprice, String materialStatus, int imgNo, int imgCateg,
+			String imgOriginname, String imgChangename, String imgFilepath, Date imgUploaddate, String imgStatus,
+			int boardNo, int mypizzaNo, int eventNo, int basicNo) {
 		super();
 		this.materialNo = materialNo;
 		this.materialCateg = materialCateg;
 		this.materialName = materialName;
 		this.materialSize = materialSize;
 		this.materialWeight = materialWeight;
-		this.materialBuyprice = materialBuyprice;
 		this.materialSellprice = materialSellprice;
 		this.materialStatus = materialStatus;
 		this.imgNo = imgNo;
@@ -90,14 +89,6 @@ public class MaterialImage implements Serializable {
 
 	public void setMaterialWeight(int materialWeight) {
 		this.materialWeight = materialWeight;
-	}
-
-	public int getMaterialBuyprice() {
-		return materialBuyprice;
-	}
-
-	public void setMaterialBuyprice(int materialBuyprice) {
-		this.materialBuyprice = materialBuyprice;
 	}
 
 	public int getMaterialSellprice() {
@@ -208,12 +199,12 @@ public class MaterialImage implements Serializable {
 	public String toString() {
 		return "MaterialImage [materialNo=" + materialNo + ", materialCateg=" + materialCateg + ", materialName="
 				+ materialName + ", materialSize=" + materialSize + ", materialWeight=" + materialWeight
-				+ ", materialBuyprice=" + materialBuyprice + ", materialSellprice=" + materialSellprice
-				+ ", materialStatus=" + materialStatus + ", imgNo=" + imgNo + ", imgCateg=" + imgCateg
-				+ ", imgOriginname=" + imgOriginname + ", imgChangename=" + imgChangename + ", imgFilepath="
-				+ imgFilepath + ", imgUploaddate=" + imgUploaddate + ", imgStatus=" + imgStatus + ", boardNo=" + boardNo
-				+ ", mypizzaNo=" + mypizzaNo + ", eventNo=" + eventNo + ", basicNo=" + basicNo + "]";
+				+ ", materialSellprice=" + materialSellprice + ", materialStatus=" + materialStatus + ", imgNo=" + imgNo
+				+ ", imgCateg=" + imgCateg + ", imgOriginname=" + imgOriginname + ", imgChangename=" + imgChangename
+				+ ", imgFilepath=" + imgFilepath + ", imgUploaddate=" + imgUploaddate + ", imgStatus=" + imgStatus
+				+ ", boardNo=" + boardNo + ", mypizzaNo=" + mypizzaNo + ", eventNo=" + eventNo + ", basicNo=" + basicNo
+				+ "]";
 	}
-	
+
 	
 }

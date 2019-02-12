@@ -11,7 +11,7 @@
 		<result property="materialName" column="MATERIAL_NAME" />
 		<result property="materialSize" column="MATERIAL_SIZE" />
 		<result property="materialWeight" column="MATERIAL_WEIGHT" />
-		<result property="materialBuyprice" column="MATERIAL_BUYPRICE" />
+		<!-- <result property="materialBuyprice" column="MATERIAL_BUYPRICE" /> -->
 		<result property="materialSellprice" column="MATERIAL_SELLPRICE" />
 		<result property="materialStatus" column="MATERIAL_STATUS" />
 		<result property="imgNo" column="IMG_NO" />
