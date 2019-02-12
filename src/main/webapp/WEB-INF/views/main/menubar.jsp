@@ -22,6 +22,9 @@
 <script src="/pmfp/resources/main/assets/js/semantic/semantic.min.js"></script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
+<!-- 다음 주소 api -->
+<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
+
 <script>
 	//변수만 선언
 	//아이디 중복확인 체크 (마지막에 계정만들기 눌렀을떄 아이디가 중복체크)
@@ -214,40 +217,86 @@ h1 {
 				</tr>
 				<tr style="display: none;" id="comAddressTr">
 					<td><div class="ui input" style="width: 100%">
-							<input type="text" placeholder="주소 입력" id="comAddress" name="comAddress">
+							<input type="text" placeholder="우편 번호 (검색 이용)" id="comAddress" name="comAddress" readonly>
 						</div></td>
 					<td align="center">
-						<button class="ui yellow basic button" style="width: 100%" onclick="">주소 검색</button>
+						<div class="ui yellow basic button" style="width: 100%" onclick="return postNumSearch()">우편번호 검색</div>
 					</td>
 				</tr>
-				<tr style="display: none;" id="comAddressTr2">
+				<tr style="display: none;" id="comAddressTr3">
 					<td colspan="2"><div class="ui input" style="width: 100%">
-							<input type="text" placeholder="상세주소를 입력하세요" id="comAddress2" name="comAddress2">
+							<input type="text" placeholder="주소 " id="comAddress3" name="comAddress3" readonly>
 						</div></td>
 				</tr>
+				
+				<tr style="display: none;" id="comAddressTr2">
+					<td><div class="ui input" style="width: 100%">
+							<input type="text" placeholder="상세주소 입력" id="comAddress2" name="comAddress2">
+						</div></td>
+						<td><div class="ui input" style="width: 100%">
+							<input type="text" placeholder="참고주소(입력X)" id="comAddress4" name="comAddress4" readonly>
+						</div></td>
+				</tr>
+				
 				<tr style="display: none;" id="comTelTr">
 					<td colspan="2"><div class="ui input" style="width: 100%">
-							<input type="tel" placeholder="전화번호를 입력하세요" id="comTel" name="comTel">
+							<input type="tel" placeholder="매장 전화번호 (EX:02-1234-1234)" id="comTel" name="comTel">
 						</div></td>
 				</tr>
 				<tr style="display: none;" id="comLisensenoTr">
 					<td colspan="2"><div class="ui input" style="width: 100%">
-							<input type="text" placeholder="사업자 번호를 입력하세요" id="comLisenseno" name="comLisenseno">
+							<input type="text" placeholder="사업자 번호" id="comLisenseno" name="comLisenseno">
 						</div></td>
 				</tr>
 				<tr style="display: none;" id="comSalestimeTr">
-					<td colspan="2"><div class="ui input" style="width: 100%">
+						<td>
+						<div class="ui selection dropdown">
+							<input type="hidden" name="openTime" id="openTime" value=""> <i
+								class="dropdown icon"></i>
+							<div class="default text">오픈시간</div>
+							<div class="menu">
+								<div class="item" data-value="AM 05:00">AM 05:00</div>
+								<div class="item" data-value="AM 06:00">AM 06:00</div>
+								<div class="item" data-value="AM 07:00">AM 07:00</div>
+								<div class="item" data-value="AM 08:00">AM 08:00</div>
+								<div class="item" data-value="AM 09:00">AM 09:00</div>
+								<div class="item" data-value="AM 10:00">AM 10:00</div>
+								<div class="item" data-value="AM 11:00">AM 11:00</div>
+								<div class="item" data-value="PM 12:00">PM 12:00</div>
+								<div class="item" data-value="PM 01:00">PM 01:00</div>
+								<div class="item" data-value="PM 02:00">PM 02:00</div>
+							</div>
+						</div>
+						</td>
+						<td>
+						<div class="ui selection dropdown">
+							<input type="hidden" name="closeTime" id="closeTime" value=""> <i class="dropdown icon"></i>
+							<div class="default text">마감시간</div>
+							<div class="menu">
+								<div class="item" data-value="PM 08:00">PM 08:00</div>
+								<div class="item" data-value="PM 09:00">PM 09:00</div>
+								<div class="item" data-value="PM 10:00">PM 10:00</div>
+								<div class="item" data-value="PM 11:00">PM 11:00</div>
+								<div class="item" data-value="PM 12:00">AM 12:00</div>
+								<div class="item" data-value="AM 01:00">AM 01:00</div>
+								<div class="item" data-value="AM 02:00">AM 02:00</div>
+								<div class="item" data-value="AM 03:00">AM 03:00</div>
+								<div class="item" data-value="AM 04:00">AM 04:00</div>
+							</div>
+						</div>
+						</td>
+						<!-- <td colspan="2"><div class="ui input" style="width: 100%">
 							<input type="text" placeholder="오픈시간과 마감시간 입력해주세요" id="comSalestime" name="comSalestime">
-						</div></td>
+						</div></td> -->
 				</tr>
 				<tr style="display: none;" id="comLocationTr">
 					<td colspan="2"><div class="ui input" style="width: 100%">
-							<input type="text" placeholder="위치정보를 입력해주세요" id="comLocation" name="comLocation">
+							<input type="text" placeholder="매장 상세 위치정보 (EX : 역삼역 4번출구 방향)" id="comLocation" name="comLocation">
 						</div></td>
 				</tr>
 				<tr style="display: none;" id="comParkingTr">
 					<td colspan="2"><div class="ui input" style="width: 100%">
-							<input type="text" placeholder="주차정보를 입력해주세요" id="comParking" name="comParking">
+							<input type="text" placeholder="주차정보 (EX : 약 10대 주차가능 or 주차불가능)" id="comParking" name="comParking">
 						</div></td>
 				</tr>
 				
@@ -290,7 +339,7 @@ h1 {
 				<table class="table">
 					<tr>
 						<td><div class="ui left icon input">
-								<input type="text" placeholder="아이디" id="memberId"
+								<input type="text" placeholder="아이디" id="memberIdLogin"
 									name="memberId"> <i class="user outline icon"></i>
 							</div></td>
 						<td rowspan="2">
@@ -390,7 +439,7 @@ h1 {
 						<table class="table">
 						<tr >
 						<td colspan="2"><div class="ui left icon input">
-								<input type="text" placeholder="이름" id="memberName"
+								<input type="text" placeholder="이름" id="memberNonName"
 									name="memberName" style="width: 350px"> <i class="user outline icon"></i>
 							</div></td>
 						<!--  <td rowspan="3">
@@ -528,6 +577,12 @@ h1 {
 
 <!----------------------- 화면 띄우기 script -------------------------------------->
 	<script>
+	
+	//드롭다운
+	$('.ui.dropdown')
+	  .dropdown()
+	;
+	
 		var joindiv = document.all.joindiv;
 		var loginDiv = document.all.loginDiv;
 		var idPwdSearchDiv = document.all.idPwdSearchDiv;
@@ -717,10 +772,11 @@ h1 {
 			$("#comSalestimeTr").toggle();
 			$("#comLocationTr").toggle();
 			$("#comParkingTr").toggle();
+			$("#comAddressTr3").toggle();
 			 
 			//사업자일때
 			if(num%2==0){ 
-				$("#joindiv").css({"height":"800px"});
+				$("#joindiv").css({"height":"900px"});
 				
 			 } else{
 				 $("#joindiv").css({"height":"500px"});
@@ -734,6 +790,7 @@ h1 {
 	
 
 /* ---------------------- 회원가입 유효성 검사 script -------------------------------------- */
+		//계정만들기 Btn
 		function CreateAccount(){
 			var comLisenseno = $("#comLisenseno").val();	//사업자 번호 
 			var memberName = $("#memberName").val();	//이름 
@@ -743,12 +800,19 @@ h1 {
 			var memberEmail = $("#memberEmail").val();	//이메일 
 			var JoinCertificationNum = $("#JoinCertificationNum").val();	//인증번호 
 			var comName =$("#comName").val();			//지점명
-			var comAddress =$("#comAddress").val();		//주소
+			var comAddress =$("#comAddress").val();		//우편번호
+			var comAddress2 = $("#comAddress2").val();	//상세 주소
+			var comAddress4 = $("#comAddress4").val();	//참고 주소
 			var comTel =$("#comTel").val();				//전화번호
 			var comLisenseno =$("#comLisenseno").val();	//사업자번호
-			var comSalestime =$("#comSalestime").val();	//영업시간
+			//var comSalestime =$("#comSalestime").val();	//영업시간
 			var comLocation =$("#comLocation").val();	//위치정보
 			var comParking =$("#comParking").val();		//주차정보
+			var openTime = $("#openTime").val();		//오픈 시간
+			var closeTime = $("#closeTime").val();		//마감 시간
+			
+			console.log(openTime);
+			console.log(closeTime);
 			
 			//이메일 유효성 검사(4글자 이상 나오고 @나오고 1글자 이상 주소)
 			var regEmail = /\w{4,}@\w+.\w{1,3}/;
@@ -835,7 +899,7 @@ h1 {
 					return false;
 				}
 				if(comAddress==""){
-					swal("주소를 입력해주세요");
+					swal("우편번호를 입력해주세요");
 					return false;
 				}
 				if(comTel==""){
@@ -851,8 +915,12 @@ h1 {
 					swal("사업자번호를 다시 확인해주세요");
 					return false;
 				}
-				if(comSalestime==""){
-					swal("영업시간 입력해주세요");
+				if(openTime==""){
+					swal("오픈 시간을 선택해주세요");
+					return false;
+				}
+				if(closeTime==""){
+					swal("마감 시간을 선택해주세요");
 					return false;
 				}
 				if(comLocation==""){
@@ -879,6 +947,56 @@ h1 {
 		}
 		
 	</script>
+	
+	<script>
+    function postNumSearch() {
+        new daum.Postcode({
+            oncomplete: function(data) {
+                // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+                // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+                // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+                var addr = ''; // 주소 변수
+                var extraAddr = ''; // 참고항목 변수
+
+                //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+                if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+                    addr = data.roadAddress;
+                } else { // 사용자가 지번 주소를 선택했을 경우(J)
+                    addr = data.jibunAddress;
+                }
+
+                // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+                if(data.userSelectedType === 'R'){
+                    // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+                    // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+                    if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+                        extraAddr += data.bname;
+                    }
+                    // 건물명이 있고, 공동주택일 경우 추가한다.
+                    if(data.buildingName !== '' && data.apartment === 'Y'){
+                        extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                    }
+                    // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+                    if(extraAddr !== ''){
+                        extraAddr = ' (' + extraAddr + ')';
+                    }
+                    // 조합된 참고항목을 해당 필드에 넣는다.
+                    document.getElementById("comAddress4").value = extraAddr;
+                
+                } else {
+                    document.getElementById("comAddress4").value = '';
+                }
+
+                // 우편번호와 주소 정보를 해당 필드에 넣는다.
+                document.getElementById('comAddress').value = data.zonecode;
+                document.getElementById("comAddress3").value = addr;
+                // 커서를 상세주소 필드로 이동한다.
+                document.getElementById("comAddress2").focus();
+            }
+        }).open();
+    }
+</script>
 	
 	
 
@@ -916,7 +1034,7 @@ h1 {
 	<script src="/pmfp/resources/main/assets/js/skel.min.js"></script>
 	<script src="/pmfp/resources/main/assets/js/util.js"></script>
 	<script src="/pmfp/resources/main/assets/js/main.js"></script>
-
+	
 
 
 
