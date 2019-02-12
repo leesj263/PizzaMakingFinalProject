@@ -25,10 +25,10 @@ public interface MypageDao {
 	ArrayList<Coupon> selectICouponList(SqlSessionTemplate sqlSession, int memberNo);
 
 	//내 작성글 - 문의
-	ArrayList<MyWriting> selectMyWritingList(SqlSessionTemplate sqlSession, int memberNo);
+	ArrayList<MyWriting> selectMyWritingList(SqlSessionTemplate sqlSession, int memberNo, PageInfo pi);
 
 	//내 작성글 - 후기
-	ArrayList<MyWriting> selectMyWritingReviewList(SqlSessionTemplate sqlSession, int memberNo);
+	ArrayList<MyWriting> selectMyWritingReviewList(SqlSessionTemplate sqlSession, int memberNo, PageInfo pi);
 
 	//내 작성글 - 공유
 	ArrayList<MyWriting> selectMyWritingShareList(SqlSessionTemplate sqlSession, int memberNo, PageInfo pi);

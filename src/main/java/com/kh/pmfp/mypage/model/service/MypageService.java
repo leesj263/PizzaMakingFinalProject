@@ -23,10 +23,10 @@ public interface MypageService {
 	ArrayList<Coupon> selectICouponList(int memberNo);
 
 	//내 작성글 - 문의
-	ArrayList<MyWriting> selectMyWritingList(int memberNo);
+	ArrayList<MyWriting> selectMyWritingList(int memberNo, PageInfo pi);
 
 	//내 작성글 - 후기
-	ArrayList<MyWriting> selectMyWritingReviewList(int memberNo);
+	ArrayList<MyWriting> selectMyWritingReviewList(int memberNo, PageInfo pi);
 
 	//내 작성글 - 공유
 	ArrayList<MyWriting> selectMyWritingShareList(int memberNo, PageInfo pi);

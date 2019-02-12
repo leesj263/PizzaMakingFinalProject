@@ -73,30 +73,36 @@ public class MypageDaoImpl implements MypageDao{
 
 	//내 작성글 - 문의
 	@Override
-	public ArrayList<MyWriting> selectMyWritingList(SqlSessionTemplate sqlSession, int memberNo) {
-		ArrayList<MyWriting> myWritingList = (ArrayList)sqlSession.selectList("Mypage.selectMyWritingList", memberNo);
+	public ArrayList<MyWriting> selectMyWritingList(SqlSessionTemplate sqlSession, int memberNo, PageInfo pi) {
+		ArrayList<MyWriting> myWritingList = null;
+		
+		int offset = (pi.getCurrentPage() -1) * pi.getLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getLimit());
+		
+		myWritingList = (ArrayList)sqlSession.selectList("Mypage.selectMyWritingList", memberNo, rowBounds);
 		
 		if(myWritingList==null) {
 			System.out.println("예외처리 하기: 내 작성글 - 문의내역 조회 실패");
 		}
-		
-		System.out.println("dao : " + myWritingList);
-		
+
 		return myWritingList;
 		
 	}
 
 	//내 작성글 - 후기
 	@Override
-	public ArrayList<MyWriting> selectMyWritingReviewList(SqlSessionTemplate sqlSession, int memberNo) {
-		ArrayList<MyWriting> myWritingList = (ArrayList)sqlSession.selectList("Mypage.selectMyWritingReviewList", memberNo);
+	public ArrayList<MyWriting> selectMyWritingReviewList(SqlSessionTemplate sqlSession, int memberNo, PageInfo pi) {
+		ArrayList<MyWriting> myWritingList = null;
+		
+		int offset = (pi.getCurrentPage() -1) * pi.getLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getLimit());
+		
+		myWritingList = (ArrayList)sqlSession.selectList("Mypage.selectMyWritingReviewList", memberNo, rowBounds);
 		
 		if(myWritingList==null) {
 			System.out.println("예외처리 하기: 내 작성글 - 후기 조회 실패");
 		}
-		
-		System.out.println("dao : " + myWritingList);
-		
+
 		return myWritingList;
 	}
 
@@ -110,12 +116,9 @@ public class MypageDaoImpl implements MypageDao{
 		
 		myWritingList = (ArrayList)sqlSession.selectList("Mypage.selectMyWritingShareList", memberNo, rowBounds);
 		
-		
 		if(myWritingList==null) {
 			System.out.println("예외처리 하기: 내 작성글 - 후기 조회 실패");
 		}
-		
-		System.out.println("dao : " + myWritingList);
 		
 		return myWritingList;
 	}
@@ -126,9 +129,7 @@ public class MypageDaoImpl implements MypageDao{
 		MyWriting mw = new MyWriting(memberNo, boardType);
 		
 		int listCount = sqlSession.selectOne("Mypage.selectListCount", mw);
-		
-		System.out.println("listCount : " + listCount);
-		
+
 		if(listCount <= 0) {
 			System.out.println("글 목록수 조회 실패");
 		}

@@ -53,15 +53,15 @@ public class MypageServiceImpl implements MypageService{
 
 	//내 작성글 - 문의
 	@Override
-	public ArrayList<MyWriting> selectMyWritingList(int memberNo) {
-		ArrayList<MyWriting> myWritingList = md.selectMyWritingList(sqlSession, memberNo);
+	public ArrayList<MyWriting> selectMyWritingList(int memberNo, PageInfo pi) {
+		ArrayList<MyWriting> myWritingList = md.selectMyWritingList(sqlSession, memberNo, pi);
 		return myWritingList;
 	}
 
 	//내 작성글 - 후기
 	@Override
-	public ArrayList<MyWriting> selectMyWritingReviewList(int memberNo) {
-		ArrayList<MyWriting> myWritingList = md.selectMyWritingReviewList(sqlSession, memberNo);
+	public ArrayList<MyWriting> selectMyWritingReviewList(int memberNo, PageInfo pi) {
+		ArrayList<MyWriting> myWritingList = md.selectMyWritingReviewList(sqlSession, memberNo, pi);
 		return myWritingList;
 	}
 
