@@ -118,6 +118,32 @@
 		<result property="answerRefNo" column="ANSWER_REFNO"/>
 	</resultMap>
 	
+	<resultMap type="com.kh.pmfp.admin.model.vo.AdminSellerOrderList" id="adminSellerOrderListResultSet">
+		<id property="comNo" column="COM_NO"/>
+		<id property="orderMDate" column="ORDER_MDATE"/>
+		<result property="orderExpenseNo" column="ORDEREXPENSE_NO" />
+		<result property="comName" column="COM_NAME" />
+		<result property="orderMStatus" column="ORDER_MSTATUS" />
+		<result property="orderList" column="ORDERLIST" />
+		<result property="orderCal" column="ORDER_CALCULATE" />
+		<result property="rn" column="ROWNUM"/>
+	</resultMap>
+	
+	<resultMap type="com.kh.pmfp.admin.model.vo.AdminSellerOrder" id="adminSellerOrderResultSet">
+		<id property="orderMno" column="ORDER_MNO"/>
+		<result property="comNo" column="COM_NO"/>
+		<result property="orderCal" column="ORDER_CALCULATE" />
+		<result property="orderMStatus" column="ORDER_MSTATUS" />
+		<result property="orderMDate" column="ORDER_MDATE" />
+		<result property="materialNo" column="MATERIAL_NO" />
+		<result property="materialName" column="MATERIAL_NAME" />
+		<result property="weight" column="WEIGHT" />
+		<result property="unit" column="UNIT"/>
+		<result property="materialWeight" column="MATERIAL_WEIGHT" />
+		<result property="price" column="PRICE"/>
+		<result property="rn" column="ROWNUM"/>
+	</resultMap>
+	
 	<select id="selectMemberList" resultMap="adminMemberResultSet1">
 		SELECT ROWNUM, (SELECT COUNT(*)  
 					FROM ORDER_MAIN O 
@@ -297,4 +323,28 @@
 		UPDATE BOARD SET BOARD_ANSWER='Y'
 		WHERE BOARD_NO=#{num}
 	</update>
+	
+	<select id="selectSellerOrderList" resultMap="adminSellerOrderListResultSet">
+		SELECT ROWNUM, SOL.* 
+		FROM 
+			(SELECT OM.COM_NO, C.COM_NAME, OM.ORDEREXPENSE_NO, OM.ORDER_MDATE, OM.ORDER_MSTATUS, 
+			(MIN(M.MATERIAL_NAME) || ' 외 ' || (COUNT(1) - 1)|| '건') AS ORDERLIST, OM.ORDER_CALCULATE
+			FROM ORDER_MATERIAL OM 
+			JOIN MATERIAL M ON(M.MATERIAL_NO = OM.MATERIAL_NO) 
+			JOIN COMPANY C ON (C.COM_NO=OM.COM_NO) 
+			GROUP BY OM.COM_NO,C.COM_NAME, OM.ORDER_MDATE, OM.ORDER_CALCULATE, OM.ORDEREXPENSE_NO, OM.ORDER_MSTATUS
+			ORDER BY OM.ORDER_MDATE DESC) SOL
+		ORDER BY ROWNUM
+	</select>
+	
+	<select id="selectSellerOrder" resultMap="adminSellerOrderResultSet">
+		SELECT ROWNUM, OM.ORDER_MNO, OM.COM_NO, OM.ORDER_MDATE, OM.ORDER_CALCULATE, OM.ORDER_MSTATUS, OM.MATERIAL_NO, M.MATERIAL_NAME, M.MATERIAL_WEIGHT AS WEIGHT, 
+		M.MATERIAL_BUYPRICE AS UNIT, OM.MATERIAL_WEIGHT, OM.MATERIAL_WEIGHT*M.MATERIAL_BUYPRICE AS PRICE
+		FROM ORDER_MATERIAL OM 
+		JOIN MATERIAL M ON (M.MATERIAL_NO = OM.MATERIAL_NO) 
+		WHERE ORDER_MDATE=TO_DATE(#{orderMDate}, 'RR-MM-DD') AND COM_NO=#{comNo} 
+		GROUP BY ROWNUM, OM.ORDER_MNO, OM.COM_NO, OM.ORDER_MDATE, OM.ORDER_CALCULATE, OM.ORDER_MSTATUS, OM.MATERIAL_NO,
+		M.MATERIAL_NAME, OM.MATERIAL_WEIGHT, M.MATERIAL_BUYPRICE, M.MATERIAL_WEIGHT, OM.MATERIAL_WEIGHT*M.MATERIAL_BUYPRICE
+		ORDER BY OM.MATERIAL_NO
+	</select>
 </mapper>

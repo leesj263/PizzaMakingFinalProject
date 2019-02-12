@@ -24,6 +24,8 @@ import com.kh.pmfp.admin.model.vo.AdminBoard2;
 import com.kh.pmfp.admin.model.vo.AdminMember;
 import com.kh.pmfp.admin.model.vo.AdminOrder;
 import com.kh.pmfp.admin.model.vo.AdminSeller;
+import com.kh.pmfp.admin.model.vo.AdminSellerOrder;
+import com.kh.pmfp.admin.model.vo.AdminSellerOrderList;
 
 @Controller
 public class AdminController {
@@ -134,51 +136,55 @@ public class AdminController {
 	}
 	
 	//업체 주문 목록 조회용
-	
 	@RequestMapping("sellerOrder.ad")
 	public String sellerOrder(HttpServletRequest request, HttpServletResponse response) {
-		//ArrayList<AdminSeller> sellerOrder=new ArrayList<AdminSeller>();
-		/*
-		try {
-			sellerOrder=as.selectWaitSeller();
-			System.out.println("업체 주문 : "+sellerOrder);
-			request.setAttribute("sellerOrder", sellerOrder);
-			return "admin/seller/sellerOrder";
-			
-		} catch (AdminSelectException e) {
-			request.setAttribute("msg", e.getMessage());
-			
-			return "common/errorPage";
-		}	*/
-		return "admin/seller/sellerOrder";
-	}
-	
-	
-	//업체 주문 상세 조회용
-	/*
-	@RequestMapping(value="sellerOrderDetail.ad", method=RequestMethod.GET)
-	public String sellerOrderDetail(int num, HttpServletRequest request, HttpServletResponse response) {
-		System.out.println("재료주문번호 : "+num);
-		AdminMember am=new AdminMember();
-		ArrayList<AdminOrder> orderList=new ArrayList<AdminOrder>();
+		ArrayList<AdminSellerOrderList> orderList=new ArrayList<AdminSellerOrderList>();
 		
 		try {
-			am=as.selectUser(num);
-			orderList=as.selectUserOrder(num);
-			System.out.println("조회 회원 : "+am);
-			System.out.println("주문 목록 : "+orderList);
+			orderList=as.selectSellerOrderList();
+			System.out.println("업체 주문 목록 : "+orderList);
 			
-			request.setAttribute("member", am);
 			request.setAttribute("orderList", orderList);
-			
-			return "admin/user/userDetail";
+			return "admin/seller/sellerOrder";
 		} catch (AdminSelectException e) {
 			request.setAttribute("msg", e.getMessage());
+			
 			return "common/errorPage";
 		}
+		
 	}
-	*/
 	
+	//업체 주문 상세 조회용
+	@RequestMapping(value="sellerOrderDetail.ad", method=RequestMethod.GET)
+	public String sellerOrderDetail(@ModelAttribute AdminSellerOrderList orderList, HttpServletRequest request, HttpServletResponse response) {
+		System.out.println("재료주문번호 : "+orderList.getComNo()+"/"+orderList.getOrderMDate());
+		AdminSeller seller=new AdminSeller();
+		ArrayList<AdminSellerOrder> order=new ArrayList<AdminSellerOrder>();
+		AdminSellerOrder orderOne=new AdminSellerOrder();
+		int total=0;
+		try {
+			seller=as.selectSeller(orderList.getComNo());
+			order=as.selectSellerOrder(orderList);
+			orderOne=order.get(0);
+			for(int i=0;i<order.size();i++) {
+				total+=order.get(i).getPrice();
+			}
+			System.out.println("업체 정보 : "+seller);
+			System.out.println("업체 주문 내역 : "+order);
+			request.setAttribute("seller", seller);
+			request.setAttribute("order", order);
+			request.setAttribute("orderOne", orderOne);
+			request.setAttribute("total", total);
+			return "admin/seller/sellerOrderDetail";
+		} catch (AdminSelectException e) {
+			request.setAttribute("msg", e.getMessage());
+			
+			return "common/errorPage";
+		}
+		
+	}
+	
+	//공지사항 목록 조회용
 	@RequestMapping("noticeList.ad")
 	public String selectNoticeList(HttpServletRequest request, HttpServletResponse response) {
 		ArrayList<AdminBoard> noticeList=new ArrayList<AdminBoard>();
@@ -428,6 +434,7 @@ public class AdminController {
 		}
 	}
 	
+	//faq 수정페이지 보기
 	@RequestMapping(value="faqModifyView.ad", method=RequestMethod.GET)
 	public String faqModifyView(@RequestParam int num, HttpServletRequest request) {
 		System.out.println("수정할 게시글 번호 : "+num);
@@ -446,6 +453,7 @@ public class AdminController {
 		} 
 	}
 	
+	//faq 수정용
 	@RequestMapping("faqModify.ad")
 	public String faqModify(@ModelAttribute AdminBoard faq, HttpServletRequest request) {
 		
@@ -466,6 +474,7 @@ public class AdminController {
 		}
 	}
 	
+	//faq 삭제용
 	@RequestMapping(value="faqDelete.ad", method=RequestMethod.GET)
 	public String faqDelete(@RequestParam int num, HttpServletRequest request) {
 		System.out.println("삭제할 FAQ 번호 : "+num);

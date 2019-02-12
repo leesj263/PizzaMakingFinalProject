@@ -17,6 +17,8 @@ import com.kh.pmfp.admin.model.vo.AdminBoard2;
 import com.kh.pmfp.admin.model.vo.AdminMember;
 import com.kh.pmfp.admin.model.vo.AdminOrder;
 import com.kh.pmfp.admin.model.vo.AdminSeller;
+import com.kh.pmfp.admin.model.vo.AdminSellerOrder;
+import com.kh.pmfp.admin.model.vo.AdminSellerOrderList;
 
 @Service
 public class AdminServiceImpl implements AdminService {
@@ -259,6 +261,23 @@ public class AdminServiceImpl implements AdminService {
 		return result;
 	}
 
+	//업체 주문 목록 조회용
+	@Override
+	public ArrayList<AdminSellerOrderList> selectSellerOrderList() throws AdminSelectException {
+		ArrayList<AdminSellerOrderList> orderList=new ArrayList<AdminSellerOrderList>();
+		orderList=ad.selectSellerOrderList(sqlSession);
+		return orderList;
+	}
 
+	//업체 주문 상세 조회용
+	@Override
+	public ArrayList<AdminSellerOrder> selectSellerOrder(AdminSellerOrderList orderList) throws AdminSelectException {
+		ArrayList<AdminSellerOrder> order=new ArrayList<AdminSellerOrder>();
+		order=ad.selectSellerOrder(sqlSession, orderList);
+		
+		return order;
+	}
+
+	
 
 }

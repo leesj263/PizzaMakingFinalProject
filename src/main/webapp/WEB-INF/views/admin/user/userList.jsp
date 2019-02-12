@@ -68,6 +68,7 @@ h3.menu-title{
 							</tr>
 						</thead>
 						<tbody>
+						
 							<c:forEach items="${memberList}" var="m">
 								<tr style="cursor:pointer;" onclick="location.href='userDetail.ad?num=${m.memberNo}'">
 									<td scope="row">${m.rn }</th>
@@ -81,6 +82,7 @@ h3.menu-title{
 										<td></td>
 									</c:if>
 								</tr>
+
 							</c:forEach>
 							<!-- <tr>
 							<th scope="row">1</th>
@@ -140,7 +142,8 @@ h3.menu-title{
 		</ul>
 	</div>
 	<div class="col-md-1"></div> -->
-		
+	
+	
 		<script src="${contextPath }/resources/admin/vendors/datatables.net/js/jquery.dataTables.min.js"></script>
 		<script src="${contextPath }/resources/admin/vendors/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
 		<script src="${contextPath }/resources/admin/vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
