@@ -18,6 +18,7 @@ import com.kh.pmfp.company.model.exception.FailInsertEmployeeInfo;
 import com.kh.pmfp.company.model.exception.FailInsertOrderStock;
 import com.kh.pmfp.company.model.exception.FailSelectAdminMessage;
 import com.kh.pmfp.company.model.exception.FailSelectCompanyReview;
+import com.kh.pmfp.company.model.exception.FailSelectCompanySales;
 import com.kh.pmfp.company.model.exception.FailSelectDeliveryMan;
 import com.kh.pmfp.company.model.exception.FailSelectEmployeeList;
 import com.kh.pmfp.company.model.exception.FailSelectOrder;
@@ -33,6 +34,7 @@ import com.kh.pmfp.company.model.vo.CompanyMaterial;
 import com.kh.pmfp.company.model.vo.CompanyOrder;
 import com.kh.pmfp.company.model.vo.CompanyOrderStock;
 import com.kh.pmfp.company.model.vo.CompanyRemainMaterial;
+import com.kh.pmfp.company.model.vo.CompanySales;
 
 import net.sf.json.JSONObject;
 
@@ -602,11 +604,21 @@ public class CompanyController {
 	
 	
 	@RequestMapping("selectAllCompanySales.com")
-	public String selectAllCompanySales() {
+	public String selectAllCompanySales(HttpServletRequest request, HttpServletResponse response) {
 		
-		
-		
-		return "";
+		ArrayList<CompanySales> list = new ArrayList<CompanySales>();
+		//임시로 업체번호 입력
+		try {
+			list = cs.selectAllCompanySales(2);
+			request.setAttribute("list", list);
+			return "company/companySales";
+			
+			
+		} catch (FailSelectCompanySales e) {
+			request.setAttribute("msg", e.getMessage());
+			return "common/errorPage";
+		}
+
 	}
 	
 	
