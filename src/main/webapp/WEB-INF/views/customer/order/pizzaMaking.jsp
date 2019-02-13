@@ -23,7 +23,7 @@
 		text-align: center;
 	}
 	.cartTable tbody tr td{
-		height: 60px;
+		height: 80px;
 	}
 </style>
 </head>
@@ -223,14 +223,18 @@
 				<tr>
 					<th style="width: 5%; text-align: center;"></th>
 					<th style="width: 75%">주문제품</th>
-					<th style="width: 5%; text-align: center;">수량</th>
-					<th style="width: 15%; text-align: center;">가격</th>
+					<th style="width: 9%;">수량</th>
+					<th style="width: 16%; text-align: center;">가격</th>
 				</tr>
 			</thead>
 			<tbody>
-				<tr><td></td><td></td><td></td><td></td></tr>
+				<tr><td colspan='4'>상품이 없습니다.</td></tr>
 			</tbody>
 		</table>
+		<div class="ui container right aligned" style="margin-bottom: 50px;">
+			<span class="text-label text-price">총 금액 : </span>
+			<span class="text-label text-price" id="cartTotalPrice">0 원</span>
+		</div>
 		
 		<div class="ui container center aligned">
 			<button class="ui blue button" style="width: 150px;" onclick="location.href='order.cor'">
@@ -322,7 +326,9 @@
 		var sizeList;
 		var pizzaSetting;
 		var pizzaSettingTopping;
-		
+		var cartNo = 0;
+		var cartNoList = [];
+		var cartList = {};
 		//onload -----------------------------------------------------------------------------------------------------------
 		$(function(){
 			if($.cookie("pizzaSetting")) pizzaSetting = $.parseJSON($.cookie("pizzaSetting"));
@@ -1125,9 +1131,7 @@
 		//-----------------------------------------------------------------------------------------------------------
 		
 		
-		var cartNo = 0;
-		var cartNoList = [];
-		var cartList = {};
+		
 		//장바구니 -----------------------------------------------------------------------------------------------------------
 		//장바구니에 추가
 		function addCart(){
@@ -1159,11 +1163,14 @@
 			$.cookie("cartNoList", JSON.stringify(cartNoList), {expires: 1});
 			$.cookie("cartNo"+cartNo, JSON.stringify(cart), {expires: 1});
 			cartNo++;
+			
+			cartLoad();
 		}
 		
 		//장바구니 불러오기
 		function cartLoad(){
 			if($.cookie("cartNoList")) {
+				
 				cartNoList = $.parseJSON($.cookie("cartNoList"));
 				cartNo = cartNoList[cartNoList.length-1] + 1;
 				
@@ -1177,39 +1184,117 @@
 				var $cartTable = $("#cartTable tbody");
 				$cartTable.empty();
 				
-				for(var cartNo in cartList){
-					if(cartList[cartNo].categ == 1){
+				for(var cart in cartList){
+					if(cartList[cart].categ == 1){
 						var price = 0;
-						var orderProductBasic = "- 도우: " + mateMap[cartList[cartNo].dough].materialName
-								+ ", 사이즈: " + cartList[cartNo].size
-								+ ", 엣지: " + mateMap[cartList[cartNo].edge].materialName
-								+ ", 소스: " + mateMap[cartList[cartNo].sauce].materialName;
+						var orderProductBasic = "- 도우: " + mateMap[cartList[cart].dough].materialName
+								+ ", 사이즈: " + cartList[cart].size
+								+ ", 엣지: " + mateMap[cartList[cart].edge].materialName
+								+ ", 소스: " + mateMap[cartList[cart].sauce].materialName;
 						
-						price += mateMap[cartList[cartNo].dough].materialSellprice
-							+ mateMap[cartList[cartNo].edge].materialSellprice
-							+ mateMap[cartList[cartNo].sauce].materialSellprice;
+						price += mateMap[cartList[cart].dough].materialSellprice
+							+ mateMap[cartList[cart].edge].materialSellprice
+							+ mateMap[cartList[cart].sauce].materialSellprice;
 						
 						var orderProductTopping = "- ";
-						for(var i=0; i<cartList[cartNo].toppings.length; i++){
-							orderProductTopping += mateMap[cartList[cartNo].toppings[i].materialNo].materialName
-									+  "(" + mateMap[cartList[cartNo].toppings[i].materialNo].materialWeight + "g) "
-									+ cartList[cartNo].toppings[i].amount + "개";
-							if(i < cartList[cartNo].toppings.length - 1) orderProductTopping += ", ";
+						for(var i=0; i<cartList[cart].toppings.length; i++){
+							orderProductTopping += mateMap[cartList[cart].toppings[i].materialNo].materialName
+									+  "(" + mateMap[cartList[cart].toppings[i].materialNo].materialWeight + "g) "
+									+ cartList[cart].toppings[i].amount + "개";
+							if(i < cartList[cart].toppings.length - 1) orderProductTopping += ", ";
 							
-							price += mateMap[cartList[cartNo].toppings[i].materialNo].materialSellprice;
+							price += mateMap[cartList[cart].toppings[i].materialNo].materialSellprice * cartList[cart].toppings[i].amount;
 						}
+						price *= cartList[cart].amount;
 						
 						var $tr = $("<tr>");
-						$tr.append($("<td>").append($("<div class='mini-button'>").text("×")));
-						$tr.append($("<td>").html(cartList[cartNo].pizzaName + "<br>" + orderProductBasic + "<br>" + orderProductTopping));
-						$tr.append($("<td>").text(cartList[cartNo].amount));
+						$tr.append($("<td>").append($("<div class='mini-button' onclick='delCart(this, "+cart+")'>").text("×")));
+						$tr.append($("<td>").html(cartList[cart].pizzaName + "<br>" + orderProductBasic + "<br>" + orderProductTopping));
+						$tr.append($("<td>").append($("<span class='amount'>").text(cartList[cart].amount))
+								.append($("<div class='mini-button' onclick='cartAmountPlus("+cart+", this);'>").text("＋"))
+								.append($("<div class='mini-button' onclick='cartAmountMinus("+cart+", this);'>").text("－")));
 						$tr.append($("<td>").text(numComma(price)));
 						
 						$cartTable.append($tr);
 					}
 				}
+				cartTotalCalc();
 			}
 		}
+		
+		//장바구니 삭제
+		function delCart(btn, cart){
+			//console.log(cartList);
+			//console.log(cartNoList);
+			$(btn).parent().parent().remove();
+			
+			delete cartList[cart];
+			for(var i=0; i<cartNoList.length; i++) {
+				if(cartNoList[i] == cart) {
+					cartNoList.splice(i, 1);
+					break;
+				}
+			}
+			
+			$.cookie.raw = true;
+			$.removeCookie("cartNo"+cart);
+			$.removeCookie("cartNoList");
+			if(cartNoList.length > 0) $.cookie("cartNoList", JSON.stringify(cartNoList), {expires: 1});
+			
+			if($("#cartTable tbody tr").length == 0) $("#cartTable tbody").append($("<tr>").append($("<td colspan='4'>").text("상품이 없습니다.")));
+			cartTotalCalc();
+		}
+		
+		//장바구니 수량 증가
+		function cartAmountPlus(cart, btn){
+			//console.log(cartList);
+			var price = $(btn).parent().parent().children().eq(3).text().replace(/,/g, "")/cartList[cart].amount;
+			cartList[cart].amount++;
+			
+			$.cookie.raw = true;
+			$.removeCookie("cartNo"+cart);
+			$.cookie("cartNo"+cart, JSON.stringify(cartList[cart]), {expires: 1});
+			
+			$(btn).parent().parent().children().eq(2).find(".amount").text(cartList[cart].amount);
+			$(btn).parent().parent().children().eq(3).text(numComma(price*cartList[cart].amount));
+			cartTotalCalc();
+			//cartLoad();
+		}
+		
+		//장바구니 수량 감소
+		function cartAmountMinus(cart, btn){
+			if(cartList[cart].amount > 1){
+				var price = $(btn).parent().parent().children().eq(3).text().replace(/,/g, "")/cartList[cart].amount;
+				cartList[cart].amount--;
+				
+				$.cookie.raw = true;
+				$.removeCookie("cartNo"+cart);
+				$.cookie("cartNo"+cart, JSON.stringify(cartList[cart]), {expires: 1});
+				
+				$(btn).parent().parent().children().eq(2).find(".amount").text(cartList[cart].amount);
+				$(btn).parent().parent().children().eq(3).text(numComma(price*cartList[cart].amount));
+				cartTotalCalc();
+				//cartLoad();
+			}
+		}
+		
+		//장바구니 총액 계산
+		function cartTotalCalc(){
+			if(cartNoList.length > 0){
+				var totalPrice = 0;
+				var $cartTable = $("#cartTable tbody tr");
+				
+				for(var i=0; i<$cartTable.length; i++){
+					var price = Number($($cartTable[i]).children().eq(3).text().replace(/,/g, ""));
+					totalPrice += price;
+				}
+				
+				$("#cartTotalPrice").text(numComma(totalPrice) + " 원")
+			} else {
+				$("#cartTotalPrice").text("0 원")
+			}
+		}
+		
 		//-----------------------------------------------------------------------------------------------------------
 		
 		
