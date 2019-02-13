@@ -106,7 +106,7 @@
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> 
 					<i class="menu-icon fa fa-area-chart"></i>Menu</a>
 					<ul class="sub-menu children dropdown-menu">
-						<li><i class="menu-icon fa fa-map-o"></i><a href="admin.ad?admin=sales/menu/toppingList">Topping List</a></li>
+						<li><i class="menu-icon fa fa-map-o"></i><a href="toppingList.ad">Topping List</a></li>
 						<li><i class="menu-icon fa fa-street-view"></i><a href="admin.ad?admin=sales/menu/addTopping">Add Topping</a></li>
 					</ul>
 				</li>

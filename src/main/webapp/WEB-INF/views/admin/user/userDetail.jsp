@@ -62,7 +62,7 @@
 								<tr>
 									<th scope="row">${o.orderNo }</th>
 									<td>${o.orderDate }</td>
-									<td>${o.comNo }</td>
+									<td>${o.comName}</td>
 									<td>${o.orderPayPrice}</td>
 									<c:choose>
 										<c:when test="${o.orderStatus==1}">

@@ -11,16 +11,21 @@ import com.kh.pmfp.admin.model.exception.AdminSelectException;
 import com.kh.pmfp.admin.model.exception.AdminUpdateException;
 import com.kh.pmfp.admin.model.vo.AdminBoard;
 import com.kh.pmfp.admin.model.vo.AdminBoard2;
+import com.kh.pmfp.admin.model.vo.AdminMaterial;
 import com.kh.pmfp.admin.model.vo.AdminMember;
 import com.kh.pmfp.admin.model.vo.AdminOrder;
 import com.kh.pmfp.admin.model.vo.AdminSeller;
 import com.kh.pmfp.admin.model.vo.AdminSellerOrder;
 import com.kh.pmfp.admin.model.vo.AdminSellerOrderList;
+import com.kh.pmfp.common.model.vo.PageInfo;
 
 public interface AdminDao {
 
+	//회원 페이징 -카운트 조회용
+	int selectUserCount(SqlSessionTemplate sqlSession, AdminMember member) throws AdminCountException;
+	
 	//회원 목록 조회용
-	ArrayList<AdminMember> selectUserList(SqlSessionTemplate sqlSession) throws AdminSelectException;
+	ArrayList<AdminMember> selectUserList(SqlSessionTemplate sqlSession, PageInfo pi) throws AdminSelectException;
 
 	//회원 상세조회용
 	AdminMember selectUser(SqlSessionTemplate sqlSession, int num) throws AdminSelectException;
@@ -29,7 +34,7 @@ public interface AdminDao {
 	ArrayList<AdminOrder> selectOrderList(SqlSessionTemplate sqlSession, int num) throws AdminSelectException;
 
 	//업체 목록 조회용
-	ArrayList<AdminSeller> selectSellerList(SqlSessionTemplate sqlSession) throws AdminSelectException;
+	ArrayList<AdminSeller> selectSellerList(SqlSessionTemplate sqlSession, PageInfo pi) throws AdminSelectException;
 
 	//승인 대기 목록 조회용
 	ArrayList<AdminSeller> selectWaitSeller(SqlSessionTemplate sqlSession) throws AdminSelectException;
@@ -96,12 +101,32 @@ public interface AdminDao {
 
 	//qna 답변결과 적용
 	int updateQna(SqlSessionTemplate sqlSession, int boardRefNo) throws AdminUpdateException;
+	
+	//업체 주문 수 확인용
+	int selectSellerOrderCount(SqlSessionTemplate sqlSession) throws AdminCountException;
 
 	//업체 주문 목록 조회용
-	ArrayList<AdminSellerOrderList> selectSellerOrderList(SqlSessionTemplate sqlSession) throws AdminSelectException;
+	ArrayList<AdminSellerOrderList> selectSellerOrderList(SqlSessionTemplate sqlSession, PageInfo pi) throws AdminSelectException;
 
 	//업체 주문 상세 조회용
 	ArrayList<AdminSellerOrder> selectSellerOrder(SqlSessionTemplate sqlSession, AdminSellerOrderList orderList) throws AdminSelectException;
+
+	//재료(토핑) 페이징- 게시글 수 확인용
+	int selectMatCount(SqlSessionTemplate sqlSession) throws AdminCountException;
+
+	//재료 목록 조회용
+	ArrayList<AdminMaterial> selectMaterialList(SqlSessionTemplate sqlSession, PageInfo pi) throws AdminSelectException;
+
+	//재료 이미지 여부 확인
+	int selectIfMaterial(SqlSessionTemplate sqlSession, int materialNo) throws AdminCountException;
+
+	//재료 상세보기용
+	AdminMaterial selectMaterial(SqlSessionTemplate sqlSession, int materialNo) throws AdminSelectException;
+
+	//재료 상세보기용
+	AdminMaterial selectMaterialImg(SqlSessionTemplate sqlSession, int materialNo) throws AdminSelectException;
+
+
 
 
 
