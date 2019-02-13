@@ -21,11 +21,14 @@ import com.kh.pmfp.admin.model.exception.AdminUpdateException;
 import com.kh.pmfp.admin.model.service.AdminService;
 import com.kh.pmfp.admin.model.vo.AdminBoard;
 import com.kh.pmfp.admin.model.vo.AdminBoard2;
+import com.kh.pmfp.admin.model.vo.AdminMaterial;
 import com.kh.pmfp.admin.model.vo.AdminMember;
 import com.kh.pmfp.admin.model.vo.AdminOrder;
 import com.kh.pmfp.admin.model.vo.AdminSeller;
 import com.kh.pmfp.admin.model.vo.AdminSellerOrder;
 import com.kh.pmfp.admin.model.vo.AdminSellerOrderList;
+import com.kh.pmfp.common.model.vo.PageInfo;
+import com.kh.pmfp.common.model.vo.Pagination;
 
 @Controller
 public class AdminController {
@@ -41,15 +44,21 @@ public class AdminController {
 	
 	//회원 목록 출력용
 	@RequestMapping("userList.ad")
-	public String userList(HttpServletRequest request, HttpServletResponse response) {
+	public String userList(@RequestParam(value="currentPage", required=false, defaultValue="1")int currentPage, HttpServletRequest request, HttpServletResponse response) {
 		ArrayList<AdminMember> userList=new ArrayList<AdminMember>();
-		
+		AdminMember member=new AdminMember();
+		member.setMemberCateg(0);
 		try {
-			userList=as.selectUserList();
+			int listCount=as.selectUserCount(member);
+			PageInfo pi=Pagination.getPageInfo(currentPage, listCount);
+			
+			userList=as.selectUserList(pi);
 			System.out.println("회원 목록 : "+userList);
 			request.setAttribute("memberList", userList);
+			request.setAttribute("pi", pi);
+			
 			return "admin/user/userList";
-		} catch (AdminSelectException e) {
+		} catch (AdminSelectException | AdminCountException e) {
 			request.setAttribute("msg", e.getMessage());
 			return "common/errorPage";
 		}
@@ -80,15 +89,19 @@ public class AdminController {
 	
 	//업체 목록 출력용
 	@RequestMapping("sellerList.ad")
-	public String sellerList(HttpServletRequest request, HttpServletResponse response) {
+	public String sellerList(@RequestParam(value="currentPage", required=false, defaultValue="1")int currentPage, HttpServletRequest request, HttpServletResponse response) {
 		ArrayList<AdminSeller> sellerList=new ArrayList<AdminSeller>();
-		
+		AdminMember member=new AdminMember();
+		member.setMemberCateg(1);
 		try {
-			sellerList=as.selectSellerList();
+			int listCount=as.selectUserCount(member);
+			PageInfo pi=Pagination.getPageInfo(currentPage, listCount);
+			sellerList=as.selectSellerList(pi);
 			System.out.println("지점 목록 : "+sellerList);
 			request.setAttribute("sellerList", sellerList);
+			request.setAttribute("pi", pi);
 			return "admin/seller/sellerList";
-		} catch (AdminSelectException e) {
+		} catch (AdminSelectException | AdminCountException e) {
 			request.setAttribute("msg", e.getMessage());
 			
 			return "common/errorPage";
@@ -137,16 +150,18 @@ public class AdminController {
 	
 	//업체 주문 목록 조회용
 	@RequestMapping("sellerOrder.ad")
-	public String sellerOrder(HttpServletRequest request, HttpServletResponse response) {
+	public String sellerOrder(@RequestParam(value="currentPage", required=false, defaultValue="1")int currentPage, HttpServletRequest request, HttpServletResponse response) {
 		ArrayList<AdminSellerOrderList> orderList=new ArrayList<AdminSellerOrderList>();
 		
 		try {
-			orderList=as.selectSellerOrderList();
+			int listCount=as.selectSellerOrderCount();
+			PageInfo pi=Pagination.getPageInfo(currentPage, listCount);
+			orderList=as.selectSellerOrderList(pi);
 			System.out.println("업체 주문 목록 : "+orderList);
-			
+			request.setAttribute("pi", pi);
 			request.setAttribute("orderList", orderList);
 			return "admin/seller/sellerOrder";
-		} catch (AdminSelectException e) {
+		} catch (AdminSelectException | AdminCountException e) {
 			request.setAttribute("msg", e.getMessage());
 			
 			return "common/errorPage";
@@ -533,5 +548,53 @@ public class AdminController {
 		
 	}
 		
+	@RequestMapping("toppingList.ad")
+	public String toppingList(@RequestParam(value="currentPage", required=false, defaultValue="1")int currentPage, HttpServletRequest request) {
+		try {
+			int listCount=as.selectMatCount();
+			PageInfo pi=Pagination.getPageInfo(currentPage, listCount);
+			
+			ArrayList<AdminMaterial> toppingList=new ArrayList<AdminMaterial>();
+			toppingList=as.selectMaterialList(pi);
+			
+			request.setAttribute("toppingList", toppingList);
+			request.setAttribute("pi", pi);
+			
+			return "admin/sales/menu/toppingList";
+		} catch (AdminCountException | AdminSelectException e) {
+			request.setAttribute("msg", e.getMessage());
+			return "common/errorPage";
+		}
+	}
 	
+	//재료 상세보기용
+	@RequestMapping(value="toppingDetail.ad", method=RequestMethod.GET)
+	public String toppingDetail(@RequestParam int materialNo, HttpServletRequest request) {
+		AdminMaterial topping=new AdminMaterial();
+		try {
+			topping=as.selectMaterial(materialNo);
+			System.out.println("조회 토핑 : "+topping);
+			request.setAttribute("topping", topping);
+			return "admin/sales/menu/toppingDetail";
+		} catch (AdminSelectException | AdminCountException e) {
+			request.setAttribute("msg", e.getMessage());
+			
+			return "common/errorPage";
+		}
+	}
+	
+	@RequestMapping(value="modToppingView.ad", method=RequestMethod.GET)
+	public String modToppingView(@RequestParam int materialNo, HttpServletRequest request) {
+		AdminMaterial topping=new AdminMaterial();
+		try {
+			topping=as.selectMaterial(materialNo);
+			System.out.println("수정 토핑 : "+topping);
+			request.setAttribute("topping", topping);
+			return "admin/sales/menu/modTopping";
+		} catch (AdminSelectException | AdminCountException e) {
+			request.setAttribute("msg", e.getMessage());
+			
+			return "common/errorPage";
+		}
+	}
 }
