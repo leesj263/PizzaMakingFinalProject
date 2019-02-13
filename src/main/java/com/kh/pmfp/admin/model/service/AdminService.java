@@ -9,16 +9,21 @@ import com.kh.pmfp.admin.model.exception.AdminSelectException;
 import com.kh.pmfp.admin.model.exception.AdminUpdateException;
 import com.kh.pmfp.admin.model.vo.AdminBoard;
 import com.kh.pmfp.admin.model.vo.AdminBoard2;
+import com.kh.pmfp.admin.model.vo.AdminMaterial;
 import com.kh.pmfp.admin.model.vo.AdminMember;
 import com.kh.pmfp.admin.model.vo.AdminOrder;
 import com.kh.pmfp.admin.model.vo.AdminSeller;
 import com.kh.pmfp.admin.model.vo.AdminSellerOrder;
 import com.kh.pmfp.admin.model.vo.AdminSellerOrderList;
+import com.kh.pmfp.common.model.vo.PageInfo;
 
 public interface AdminService {
 
+	//회원 페이징 -카운트 조회용
+	int selectUserCount(AdminMember member) throws AdminCountException;
+	
 	//회원 목록 조회용
-	ArrayList<AdminMember> selectUserList() throws AdminSelectException;
+	ArrayList<AdminMember> selectUserList(PageInfo pi) throws AdminSelectException;
 
 	//회원 상세조회용
 	AdminMember selectUser(int num) throws AdminSelectException;
@@ -27,7 +32,7 @@ public interface AdminService {
 	ArrayList<AdminOrder> selectUserOrder(int num) throws AdminSelectException;
 
 	//업체 목록 조회용
-	ArrayList<AdminSeller> selectSellerList() throws AdminSelectException;
+	ArrayList<AdminSeller> selectSellerList(PageInfo pi) throws AdminSelectException;
 
 	//승인 대기 목록 조회용
 	ArrayList<AdminSeller> selectWaitSeller() throws AdminSelectException;
@@ -89,10 +94,25 @@ public interface AdminService {
 	//qna 답변용
 	int insertAnswer(AdminBoard answer) throws AdminInsertException, AdminUpdateException;
 
+	//업체 주문 수 확인용
+	int selectSellerOrderCount() throws AdminCountException;
+	
 	//업체 주문 목록 조회용
-	ArrayList<AdminSellerOrderList> selectSellerOrderList() throws AdminSelectException;
+	ArrayList<AdminSellerOrderList> selectSellerOrderList(PageInfo pi) throws AdminSelectException;
 
 	//업체 주문 상세 조회용
 	ArrayList<AdminSellerOrder> selectSellerOrder(AdminSellerOrderList orderList) throws AdminSelectException;
+
+	//재료(토핑) 페이징- 게시글 수 확인용
+	int selectMatCount() throws AdminCountException;
+
+	//재료 목록 조회용
+	ArrayList<AdminMaterial> selectMaterialList(PageInfo pi) throws AdminSelectException;
+
+	//재료 상세보기용
+	AdminMaterial selectMaterial(int materialNo) throws AdminSelectException, AdminCountException;
+
+
+	
 
 }

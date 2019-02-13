@@ -84,8 +84,8 @@ public class MemberController {
 		String allSalestime = openTime+" ~ "+closeTime;
 		c.setComAddress(allAddress);
 		c.setComSalestime(allSalestime);
-		System.out.println("Member"+m);
-		System.out.println("Company"+c);
+		//System.out.println("Member"+m);
+		//System.out.println("Company"+c);
 		//System.out.println("전체주소는 : "+allAddress);
 		//System.out.println("전체 영업시간은 : "+allSalestime);
 		//System.out.println(changeNum); //짝수이면 사업자 회원가입
@@ -159,7 +159,7 @@ public class MemberController {
 	//회원가입-이메일 인증
 	@RequestMapping("joinSendMail.co")
 	public @ResponseBody HashMap<String,Object> joinSendMail(@RequestParam String memberId,@RequestParam String memberEmail,@RequestParam String randomCode) throws MessagingException, UnsupportedEncodingException {
-		System.out.println(memberId+memberEmail+randomCode);
+		//System.out.println(memberId+memberEmail+randomCode);
 		
 		
 		HashMap<String, Object> hmap=new HashMap<String,Object>();
@@ -177,7 +177,97 @@ public class MemberController {
 		
 	}
 	
-	
+	//아이디 찾기-전송
+	 @RequestMapping("idSearch.co")
+	 public @ResponseBody HashMap<String, Object> idSearch(Member m, @RequestParam String idSearchName,@RequestParam String idSearchEmail) throws MessagingException, UnsupportedEncodingException{
+		 //System.out.println(idSearchEmail+idSearchName);
+		 
+	     m.setMemberName(idSearchName);
+	     m.setMemberEmail(idSearchEmail);
+	     
+	     String idSearch = ms.selectIdSearch(m);
+	    // String dbIDsearch=idSearch.getMemberId();
+	     
+	     System.out.println(idSearch);
+	     if(idSearch!=null) {
+	    	//id와 pwd가 일치한다면 아이디 가져오기(정보있음)
+	    	
+	    	HashMap<String, Object> hmap=new HashMap<String,Object>();
+	 		MailHandler sendMail = new MailHandler(mailSender);
+	 		sendMail.setSubject("[피자 제작소 아이디 찾기]");
+	 		sendMail.setText(new StringBuffer().append("<h1>아이디 찾기</h1>")
+	                 .append(idSearchName+"님의 아이디는 ["+idSearch+"] 입니다.")
+	                 .append("까먹지 마세용!")
+	                 .toString());
+	 		sendMail.setFrom("yesols9003@gmail.com", "예솔쓰");
+	 		sendMail.setTo(idSearchEmail);
+	 		sendMail.send();
+	 		
+	 		hmap.put("sendMail", "성공");
+	 		return hmap;
+	 		
+	     }
+	     return null;
+	 }
+	 
+	 @RequestMapping("pwdSearch.co")
+	 public @ResponseBody HashMap<String, Object> PwdSearch(Member m, @RequestParam String pwdSearchId,@RequestParam String pwdSearchEmail) throws MessagingException, UnsupportedEncodingException{
+		
+		// System.out.println("연결되닝?!");
+
+		m.setMemberId(pwdSearchId);
+		m.setMemberEmail(pwdSearchEmail);
+		//System.out.println("아이디"+pwdSearchId);
+		//System.out.println("이메일"+pwdSearchEmail);
+		 
+		//임시 비밀번호 
+		String tempPassword = "";
+		for (int i = 0; i < 8; i++) {
+			int rndVal = (int) (Math.random() * 62);
+			if (rndVal < 10) {
+				tempPassword += rndVal;
+			} else if (rndVal > 35) {
+				tempPassword += (char) (rndVal + 61);
+			} else {
+				tempPassword += (char) (rndVal + 55);
+			}
+		}
+		//System.out.println("임시비밀번호 : " + tempPassword);
+		 
+		
+		 
+		String pwdSearch = ms.selectPwdSearch(m);
+		//System.out.println("null이 뜨는지 안뜨는지"+pwdSearch);
+		
+		if(pwdSearch!=null) {
+			//이메일로 랜덤 코드전송
+			HashMap<String, Object> hmap=new HashMap<String,Object>();
+	 		MailHandler sendMail = new MailHandler(mailSender);
+	 		sendMail.setSubject("[피자 제작소 : 임시 비밀번호]");
+	 		sendMail.setText(new StringBuffer().append("<h1>임시 비밀번호</h1>")
+	                 .append("임시 비밀번호는 ["+tempPassword+"] 입니다.")
+	                 .append("다시 로그인 해주세용!")
+	                 .toString());
+	 		sendMail.setFrom("yesols9003@gmail.com", "예솔쓰");
+	 		sendMail.setTo(pwdSearchEmail);
+	 		sendMail.send();
+	 		
+	 		hmap.put("sendMail", "성공");
+	 		
+	 		String encPassword2 = passwordEncoder.encode(tempPassword);
+	 		
+	 		//DB에 업데이트
+	 		m.setMemberPwd(encPassword2);
+	 		int result = ms.updatePwd(m);
+	 		
+	 		if(result>0) {
+	 			return hmap;
+	 		}else {
+	 			return null;
+	 		}
+		}
+			return null;
+	 }
 	
 	
 	

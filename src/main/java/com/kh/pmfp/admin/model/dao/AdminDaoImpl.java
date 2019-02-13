@@ -2,6 +2,7 @@ package com.kh.pmfp.admin.model.dao;
 
 import java.util.ArrayList;
 
+import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -12,20 +13,35 @@ import com.kh.pmfp.admin.model.exception.AdminSelectException;
 import com.kh.pmfp.admin.model.exception.AdminUpdateException;
 import com.kh.pmfp.admin.model.vo.AdminBoard;
 import com.kh.pmfp.admin.model.vo.AdminBoard2;
+import com.kh.pmfp.admin.model.vo.AdminMaterial;
 import com.kh.pmfp.admin.model.vo.AdminMember;
 import com.kh.pmfp.admin.model.vo.AdminOrder;
 import com.kh.pmfp.admin.model.vo.AdminSeller;
 import com.kh.pmfp.admin.model.vo.AdminSellerOrder;
 import com.kh.pmfp.admin.model.vo.AdminSellerOrderList;
+import com.kh.pmfp.common.model.vo.PageInfo;
 
 @Repository
 public class AdminDaoImpl implements AdminDao {
 
+	//회원 페이징 -카운트 조회용
+	@Override
+	public int selectUserCount(SqlSessionTemplate sqlSession, AdminMember member) throws AdminCountException {
+		int listCount=-1;
+		listCount=sqlSession.selectOne("Admin.selectUserCount", member);
+		if(listCount<0) {
+			throw new AdminCountException("회원 수 조회 실패");
+		}
+		return listCount;
+	}
+	
 	//회원 목록 조회용
 	@Override
-	public ArrayList<AdminMember> selectUserList(SqlSessionTemplate sqlSession) throws AdminSelectException {
+	public ArrayList<AdminMember> selectUserList(SqlSessionTemplate sqlSession, PageInfo pi) throws AdminSelectException {
 		ArrayList<AdminMember> userList=new ArrayList<AdminMember>();
-		userList=(ArrayList)sqlSession.selectList("Admin.selectMemberList");
+		int offset = (pi.getCurrentPage() -1) * pi.getLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getLimit());
+		userList=(ArrayList)sqlSession.selectList("Admin.selectMemberList", null, rowBounds);
 		if(userList==null) {
 			throw new AdminSelectException("회원 목록 조회 실패!");
 		}
@@ -47,6 +63,7 @@ public class AdminDaoImpl implements AdminDao {
 	@Override
 	public ArrayList<AdminOrder> selectOrderList(SqlSessionTemplate sqlSession, int num) throws AdminSelectException {
 		ArrayList<AdminOrder> orderList=new ArrayList<AdminOrder>();
+		
 		orderList=(ArrayList)sqlSession.selectList("Admin.selectUserOrderList", num);
 		if(orderList==null) {
 			throw new AdminSelectException("회원 주문목록 조회 실패!");
@@ -56,10 +73,11 @@ public class AdminDaoImpl implements AdminDao {
 
 	//업체 목록 조회용
 	@Override
-	public ArrayList<AdminSeller> selectSellerList(SqlSessionTemplate sqlSession) throws AdminSelectException {
+	public ArrayList<AdminSeller> selectSellerList(SqlSessionTemplate sqlSession, PageInfo pi) throws AdminSelectException {
 		ArrayList<AdminSeller> sellerList=new ArrayList<AdminSeller>();
-		
-		sellerList=(ArrayList)sqlSession.selectList("Admin.selectSellerList");
+		int offset = (pi.getCurrentPage() -1) * pi.getLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getLimit());
+		sellerList=(ArrayList)sqlSession.selectList("Admin.selectSellerList", null, rowBounds);
 		
 		if(sellerList==null) {
 			throw new AdminSelectException("지점 목록 조회 실패!");
@@ -351,12 +369,26 @@ public class AdminDaoImpl implements AdminDao {
 		return result;
 	}
 
+	//업체 주문 수 확인용
+	@Override
+	public int selectSellerOrderCount(SqlSessionTemplate sqlSession) throws AdminCountException {
+		int listCount=-1;
+		listCount=sqlSession.selectOne("Admin.selectSellerOrderCount");
+		if(listCount<0) {
+			throw new AdminCountException("업체 주문 수 조회 실패");
+		}
+		return listCount;
+	}
+
 	//업체 주문 목록 조회용
 	@Override
-	public ArrayList<AdminSellerOrderList> selectSellerOrderList(SqlSessionTemplate sqlSession)
+	public ArrayList<AdminSellerOrderList> selectSellerOrderList(SqlSessionTemplate sqlSession, PageInfo pi)
 			throws AdminSelectException {
 		ArrayList<AdminSellerOrderList> orderList=new ArrayList<AdminSellerOrderList>();
-		orderList=(ArrayList)sqlSession.selectList("Admin.selectSellerOrderList");
+		int offset = (pi.getCurrentPage() -1) * pi.getLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getLimit());
+		
+		orderList=(ArrayList)sqlSession.selectList("Admin.selectSellerOrderList", null, rowBounds);
 		
 		if(orderList==null) {
 			throw new AdminSelectException("업체 주문 목록 조회 실패");
@@ -376,7 +408,69 @@ public class AdminDaoImpl implements AdminDao {
 		}
 		return order;
 	}
+
+	//재료(토핑) 페이징- 게시글 수 확인용
+	@Override
+	public int selectMatCount(SqlSessionTemplate sqlSession) throws AdminCountException  {
+		int listCount=-1;
+		listCount=sqlSession.selectOne("Admin.selectMatCount");
+		
+		if(listCount<0) {
+			throw new AdminCountException("재료(토핑) 개수 조회 실패");
+		}
+		return listCount;
+	}
+
+	//재료 목록 조회용
+	@Override
+	public ArrayList<AdminMaterial> selectMaterialList(SqlSessionTemplate sqlSession, PageInfo pi)
+			throws AdminSelectException {
+		ArrayList<AdminMaterial> toppingList=new ArrayList<AdminMaterial>();
+		
+		int offset = (pi.getCurrentPage() -1) * pi.getLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getLimit());
+		
+		toppingList=(ArrayList)sqlSession.selectList("Admin.selectMaterialList", null, rowBounds);
+		
+		if(toppingList==null) {
+			throw new AdminSelectException("재료 목록 조회 실패");
+		}
+		return toppingList;
+	}
+
+	//재료 이미지 여부 확인
+	@Override
+	public int selectIfMaterial(SqlSessionTemplate sqlSession, int materialNo) throws AdminCountException {
+		int result=-1;
+		result=sqlSession.selectOne("Admin.selectIfMaterial", materialNo);
+		if(result<0) {
+			throw new AdminCountException("재료 이미지 확인 실패");
+		}
+		return result;
+	}
 	
+	//재료 상세보기용
+	@Override
+	public AdminMaterial selectMaterial(SqlSessionTemplate sqlSession, int materialNo) throws AdminSelectException {
+		AdminMaterial topping=new AdminMaterial();
+		topping=sqlSession.selectOne("Admin.selectMaterial", materialNo);
+		if(topping==null) {
+			throw new AdminSelectException("재료 상세조회 실패");
+		}
+		return topping;
+	}
+	
+	//재료 상세보기용
+	@Override
+	public AdminMaterial selectMaterialImg(SqlSessionTemplate sqlSession, int materialNo) throws AdminSelectException {
+		AdminMaterial topping=new AdminMaterial();
+		topping=sqlSession.selectOne("Admin.selectMaterialImg", materialNo);
+		if(topping==null) {
+			throw new AdminSelectException("재료 상세조회 실패");
+		}
+		return topping;
+	}
+
 
 
 

@@ -17,12 +17,13 @@ public class AdminOrder implements java.io.Serializable{
 	private int deliveryNo;
 	private int empNo;
 	private int comNo;
+	private String comName;
 	
 	public AdminOrder() {}
 
 	public AdminOrder(int orderNo, int memberNo, int orderMethod, String receiver, String orderTel, Date orderDate,
 			Date orderReserveTime, String orderPayno, int orderPayPrice, String orderStatus, int deliveryNo, int empNo,
-			int comNo) {
+			int comNo, String comName) {
 		super();
 		this.orderNo = orderNo;
 		this.memberNo = memberNo;
@@ -37,6 +38,7 @@ public class AdminOrder implements java.io.Serializable{
 		this.deliveryNo = deliveryNo;
 		this.empNo = empNo;
 		this.comNo = comNo;
+		this.comName = comName;
 	}
 
 	public int getOrderNo() {
@@ -143,16 +145,23 @@ public class AdminOrder implements java.io.Serializable{
 		this.comNo = comNo;
 	}
 
+	public String getComName() {
+		return comName;
+	}
+
+	public void setComName(String comName) {
+		this.comName = comName;
+	}
+
 	@Override
 	public String toString() {
 		return "AdminOrder [orderNo=" + orderNo + ", memberNo=" + memberNo + ", orderMethod=" + orderMethod
 				+ ", receiver=" + receiver + ", orderTel=" + orderTel + ", orderDate=" + orderDate
 				+ ", orderReserveTime=" + orderReserveTime + ", orderPayno=" + orderPayno + ", orderPayPrice="
 				+ orderPayPrice + ", orderStatus=" + orderStatus + ", deliveryNo=" + deliveryNo + ", empNo=" + empNo
-				+ ", comNo=" + comNo + "]";
+				+ ", comNo=" + comNo + ", comName=" + comName + "]";
 	}
 
-	
 	
 	
 }

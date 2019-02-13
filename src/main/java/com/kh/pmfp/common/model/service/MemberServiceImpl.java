@@ -86,6 +86,33 @@ public class MemberServiceImpl implements MemberService{
 		//return 0;
 	}
 
+	//아이디 찾기
+	@Override
+	public String selectIdSearch(Member m) {
+		
+		String idSearch = md.selectIdSearch(sqlSession,m);
+		
+		return idSearch;
+	}
+
+	//비밀번호 찾기
+	@Override
+	public String selectPwdSearch(Member m) {
+
+		String pwdSearch = md.selectPwdSearch(sqlSession,m);
+		
+		return pwdSearch;
+	}
+
+	//임시 비밀번호로 update
+	@Override
+	public int updatePwd(Member m) {
+
+		int result = md.updatePwd(sqlSession,m);
+		
+		return result;
+	}
+
 
 	
 

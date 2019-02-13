@@ -70,43 +70,168 @@
 	
 	<script>
 	 //line chart
-    var ctx = document.getElementById( "lineChart" );
-    ctx.height = 150;
-    var myChart = new Chart( ctx, {
-        type: 'line',
-        data: {
-            labels: [ "January", "February", "March", "April", "May", "June", "July" ],
-            datasets: [
-                {
-                    label: "지출",
-                    borderColor: "rgba(0,0,0,.09)",
-                    borderWidth: "1",
-                    backgroundColor: "rgba(0,0,0,.07)",
-                    data: [ 22, 44, 67, 43, 76, 45, 12 ]
-                            },
-                {
-                    label: "수입",
-                    borderColor: "rgba(0, 123, 255, 0.9)",
-                    borderWidth: "1",
-                    backgroundColor: "rgba(0, 123, 255, 0.5)",
-                    pointHighlightStroke: "rgba(26,179,148,1)",
-                    data: [ 16, 32, 18, 26, 42, 33, 44 ]
-                            }
-                        ]
-        },
-        options: {
-            responsive: true,
-            tooltips: {
-                mode: 'index',
-                intersect: false
-            },
-            hover: {
-                mode: 'nearest',
-                intersect: true
-            }
+	 
+	$(function(){
+		var listSize = "${fn:length(list)}";
+		var salesList = "${list}";
+		//console.log(salesList);
+		
+		var splitArr = salesList.split(',');
+		//console.log(typeof splitArr)
+		var categoryIndex = 3;
+		var plusIndex = 0;
+		var minusIndex = 0;
+		var splitArrPlusPrice = [];
+		var splitArrMinusPrice = [];
+		var splitArrPlusDate = [];
+		var splitArrMinusDate = [];
 
-        }
-    } );
+		for(var i = 0; i < (listSize); i++){
+			if(splitArr[categoryIndex] == " salesCateg=1"){
+				splitArrPlusDate[plusIndex] = splitArr[categoryIndex-1];
+				splitArrPlusPrice[plusIndex] = splitArr[categoryIndex+3];
+				plusIndex++;
+			}else{
+				splitArrMinusPrice[minusIndex] = splitArr[categoryIndex+3];
+				splitArrMinusDate[minusIndex] = splitArr[categoryIndex-1];
+				minusIndex++;
+			}
+			categoryIndex += 7;
+		}
+		
+		
+		
+		
+		for(var i = 0; i < splitArrPlusPrice.length ; i++){
+			splitArrPlusPrice[i] = splitArrPlusPrice[i].split('=')[1];
+		}
+		
+		for(var i = 0; i < splitArrPlusDate.length ; i++){
+			splitArrPlusDate[i] = splitArrPlusDate[i].split('=')[1];
+		}
+		
+		for(var i = 0; i < splitArrMinusPrice.length ; i++){
+			splitArrMinusPrice[i] = splitArrMinusPrice[i].split('=')[1];
+		}
+		
+		for(var i = 0; i < splitArrMinusDate.length ; i++){
+			splitArrMinusDate[i] = splitArrMinusDate[i].split('=')[1];
+		}
+		
+	
+		
+		for(var i = 0; i < splitArrPlusPrice.length ; i++){
+			splitArrPlusPrice[i] = splitArrPlusPrice[i].split("]")[0];
+		} 
+		
+		for(var i = 0; i < splitArrMinusPrice.length ; i++){
+			splitArrMinusPrice[i] = splitArrMinusPrice[i].split("]")[0];
+		} 
+		
+		
+		/* console.log("splitArrPlusPrice : " + splitArrPlusPrice);
+		console.log("splitArrPlusDate : " + splitArrPlusDate);
+		console.log("splitArrMinusPrice : " + splitArrMinusPrice);
+		console.log("splitArrMinusDate : " + splitArrMinusDate); */
+		
+		var basicDate = splitArrPlusDate;
+		splitArrPlusDate.sort();
+		var FirstSortDate = splitArrPlusDate[0];
+		var arrSize = splitArrPlusDate.length;
+		var LastSortDate = splitArrPlusDate[arrSize-1];
+		splitArrPlusDate = basicDate;
+		
+		
+		var basicDate2 = splitArrMinusDate;
+		splitArrMinusDate.sort();
+		var FirstSortDate2 = splitArrMinusDate[0];
+		var arrSize2 = splitArrMinusDate.length;
+		var LastSortDate2 = splitArrMinusDate[arrSize-1];
+		splitArrMinusDate = basicDate2;
+		
+		var firstDate;
+		var lastDate;
+		
+		if(FirstSortDate > FirstSortDate2){
+			firstDate=FirstSortDate2;
+		}else{
+			firstDate=FirstSortDate;
+		}
+		
+		if(LastSortDate > LastSortDate2){
+			lastDate=LastSortDate;
+		}else{
+			lastDate=LastSortDate2;
+		}
+		/* console.log("FirstSortDate : " + FirstSortDate);
+		console.log("FirstSortDate2 : " + FirstSortDate2);
+		
+		console.log("splitArrPlusDate : " + splitArrPlusDate);
+		console.log("splitArrMinusDate : " + splitArrMinusDate);
+		console.log("firstDate : " + firstDate);
+		console.log("lastDate : " + lastDate) */
+		
+		var daily = [];
+		var indexDate = firstDate.substring(0, 7);
+		console.log("indexDate : " + indexDate);
+		var intDate = parseInt(firstDate.substring(8, 10));
+		console.log("intDate : " + intDate);
+		var lastDateIndex = parseInt(lastDate.substring(8, 10));
+		console.log("lastDateIndex : " + lastDateIndex);
+		var k = 0;
+		while(true){
+			if(intDate != lastDateIndex){
+				daily[k] = indexDate + "-" + intDate;
+				intDate++;
+				k++;
+			}else{
+				daily[k] = indexDate + "-" +lastDateIndex;
+				break;
+			}
+		}
+		console.log("daily : " + daily);
+		
+		
+		var ctx = document.getElementById( "lineChart" );
+	    ctx.height = 150;
+	    var myChart = new Chart( ctx, {
+	        type: 'line',
+	        data: {
+	            labels: daily,
+	            datasets: [
+	                {
+	                    label: "지출",
+	                    borderColor: "rgba(0,0,0,.09)",
+	                    borderWidth: "1",
+	                    backgroundColor: "rgba(0,0,0,.07)",
+	                    data: splitArrMinusPrice
+	                            },
+	                {
+	                    label: "수입",
+	                    borderColor: "rgba(0, 123, 255, 0.9)",
+	                    borderWidth: "1",
+	                    backgroundColor: "rgba(0, 123, 255, 0.5)",
+	                    pointHighlightStroke: "rgba(26,179,148,1)",
+	                    data: splitArrPlusPrice
+	                            }
+	                        ]
+	        },
+	        options: {
+	            responsive: true,
+	            tooltips: {
+	                mode: 'index',
+	                intersect: false
+	            },
+	            hover: {
+	                mode: 'nearest',
+	                intersect: true
+	            }
+
+	        }
+	    } );
+		
+	});
+    
 
 	</script>
 	<script

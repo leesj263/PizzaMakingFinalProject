@@ -1,5 +1,11 @@
 package com.kh.pmfp.customer.controller;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -11,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.pmfp.customer.model.exception.OrderException;
 import com.kh.pmfp.customer.model.service.OrderService;
@@ -115,6 +122,45 @@ public class OrderConroller {
 		} catch (OrderException e) {
 			return null;
 		}
+	}
+	
+	//이미지 업로드
+	@RequestMapping(value="/pizzaMakingImgUpload.cor")
+	public @ResponseBody String pizzaMakingImgUpload(HttpServletRequest request,
+			@RequestParam String img) {
+		
+		//이미지 바이트 변환
+		String base64Image = img.split(",")[1];
+		byte[] imageBytes = javax.xml.bind.DatatypeConverter.parseBase64Binary(base64Image);
+		
+		//파일생성
+		String root = request.getSession().getServletContext().getRealPath("resources");
+		String filePath = root + "\\customer\\images\\myPizza";
+		long currentTime = System.currentTimeMillis();
+		SimpleDateFormat ft = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+		String randomNum = String.format("%07d",(int)(Math.random() * 1000000));
+		String fileName = ft.format(new java.util.Date(currentTime)) + randomNum + ".png";
+		
+		File file = new File(filePath, fileName);
+		BufferedOutputStream bos = null;
+		try {
+			bos = new BufferedOutputStream(new FileOutputStream(file));
+			
+			bos.write(imageBytes);
+			bos.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				bos.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		
+		
+		return "성공";
 	}
 	
 	//사이드 메뉴 페이지

@@ -13,12 +13,13 @@ import com.kh.pmfp.admin.model.exception.AdminInsertException;
 import com.kh.pmfp.admin.model.exception.AdminSelectException;
 import com.kh.pmfp.admin.model.exception.AdminUpdateException;
 import com.kh.pmfp.admin.model.vo.AdminBoard;
-import com.kh.pmfp.admin.model.vo.AdminBoard2;
+import com.kh.pmfp.admin.model.vo.AdminMaterial;
 import com.kh.pmfp.admin.model.vo.AdminMember;
 import com.kh.pmfp.admin.model.vo.AdminOrder;
 import com.kh.pmfp.admin.model.vo.AdminSeller;
 import com.kh.pmfp.admin.model.vo.AdminSellerOrder;
 import com.kh.pmfp.admin.model.vo.AdminSellerOrderList;
+import com.kh.pmfp.common.model.vo.PageInfo;
 
 @Service
 public class AdminServiceImpl implements AdminService {
@@ -28,11 +29,18 @@ public class AdminServiceImpl implements AdminService {
 	@Autowired
 	private AdminDao ad;
 
+	//회원 페이징 -카운트 조회용
+	@Override
+	public int selectUserCount(AdminMember member) throws AdminCountException {
+		int listCount=ad.selectUserCount(sqlSession, member);
+		return listCount;
+	}
+
 	//회원 목록 조회용
 	@Override
-	public ArrayList<AdminMember> selectUserList() throws AdminSelectException {
+	public ArrayList<AdminMember> selectUserList(PageInfo pi) throws AdminSelectException {
 		
-		ArrayList<AdminMember> userList=ad.selectUserList(sqlSession);
+		ArrayList<AdminMember> userList=ad.selectUserList(sqlSession, pi);
 		
 		return userList;
 	}
@@ -56,9 +64,8 @@ public class AdminServiceImpl implements AdminService {
 
 	//업체 목록 조회용
 	@Override
-	public ArrayList<AdminSeller> selectSellerList() throws AdminSelectException {
-		ArrayList<AdminSeller> sellerList=ad.selectSellerList(sqlSession);
-		
+	public ArrayList<AdminSeller> selectSellerList(PageInfo pi) throws AdminSelectException {
+		ArrayList<AdminSeller> sellerList=ad.selectSellerList(sqlSession, pi);
 		return sellerList;
 	}
 	
@@ -175,6 +182,7 @@ public class AdminServiceImpl implements AdminService {
 		return qna;
 	}
 
+	//Q&A 답변 선택
 	@Override
 	public AdminBoard selectAnswer(int num) throws AdminSelectException, AdminCountException {
 		AdminBoard answer=new AdminBoard();
@@ -236,6 +244,7 @@ public class AdminServiceImpl implements AdminService {
 		return result;
 	}
 
+	//faq 작성용
 	@Override
 	public int insertFaq(AdminBoard faq) throws AdminInsertException {
 		int result=ad.insertFaq(sqlSession, faq);
@@ -261,11 +270,18 @@ public class AdminServiceImpl implements AdminService {
 		return result;
 	}
 
+	//업체 주문 수 확인용
+	@Override
+	public int selectSellerOrderCount() throws AdminCountException {
+		int listCount=ad.selectSellerOrderCount(sqlSession);
+		return listCount;
+	}
+
 	//업체 주문 목록 조회용
 	@Override
-	public ArrayList<AdminSellerOrderList> selectSellerOrderList() throws AdminSelectException {
+	public ArrayList<AdminSellerOrderList> selectSellerOrderList(PageInfo pi) throws AdminSelectException {
 		ArrayList<AdminSellerOrderList> orderList=new ArrayList<AdminSellerOrderList>();
-		orderList=ad.selectSellerOrderList(sqlSession);
+		orderList=ad.selectSellerOrderList(sqlSession, pi);
 		return orderList;
 	}
 
@@ -277,6 +293,38 @@ public class AdminServiceImpl implements AdminService {
 		
 		return order;
 	}
+
+	//재료(토핑) 페이징- 게시글 수 확인용
+	@Override
+	public int selectMatCount() throws AdminCountException {
+		int listCount=ad.selectMatCount(sqlSession);
+		return listCount;
+	}
+
+	//재료 목록 조회용
+	@Override
+	public ArrayList<AdminMaterial> selectMaterialList(PageInfo pi) throws AdminSelectException {
+		ArrayList<AdminMaterial> toppingList=new ArrayList<AdminMaterial>();
+		toppingList=ad.selectMaterialList(sqlSession, pi);
+		return toppingList;
+	}
+
+	//재료 상세보기용
+	@Override
+	public AdminMaterial selectMaterial(int materialNo) throws AdminSelectException, AdminCountException {
+		AdminMaterial topping=new AdminMaterial();
+		int ifMaterial=-1;
+		ifMaterial=ad.selectIfMaterial(sqlSession, materialNo);
+		if(ifMaterial==0) {			
+			topping=ad.selectMaterial(sqlSession, materialNo);
+		}else if(ifMaterial>0) {
+			topping=ad.selectMaterialImg(sqlSession, materialNo);
+		}
+		
+		return topping;
+	}
+
+	
 
 	
 

@@ -55,7 +55,7 @@
 							<div class="col-lg-3">
 								<select id = "materialSelect"  style= "width : 150px; height : 30px; border-radius : 5px">
 									<c:forEach items = "${list}" var = "value" varStatus = "status">
-										<c:if test="${ value.materialNo  != 10}">
+										<c:if test="${ value.materialNo  != 9}">
 											<option value = "${ value.materialNo }" weight = "${ value.materialWeight }" buyPrice = "${ value.materialBuyPrice }">${ value.materialName }</option>
 										</c:if>
 									</c:forEach>

@@ -47,6 +47,7 @@
 		<result property="deliveryNo" column="DELIVERY_NO" />
 		<result property="empNo" column="EMP_NO" />
 		<result property="comNo" column="COM_NO" />
+		<result property="comName" column="COM_NAME"/>
 	</resultMap>
 
 	<resultMap type="com.kh.pmfp.admin.model.vo.AdminSeller" id="adminSellerResultSet">
@@ -144,6 +145,31 @@
 		<result property="rn" column="ROWNUM"/>
 	</resultMap>
 	
+	<resultMap type="com.kh.pmfp.admin.model.vo.AdminMaterial" id="adminMaterialResultSet">
+		<id property="mNo" column="MATERIAL_NO"/>
+		<result property="mCate" column="MATERIAL_CATEG"/>
+		<result property="mName" column="MATERIAL_NAME" />
+		<result property="mSize" column="MATERIAL_SIZE" />
+		<result property="mWeight" column="MATERIAL_WEIGHT" />
+		<result property="mBuyPrice" column="MATERIAL_BUYPRICE" />
+		<result property="mSellPrice" column="MATERIAL_SELLPRICE" />
+		<result property="mStatus" column="MATERIAL_STATUS" />
+		<result property="iNo" column="IMG_NO" />
+		<result property="iCate" column="IMG_CATEG" />
+		<result property="iOrigineName" column="IMG_ORIGINNAME" />
+		<result property="iChangeName" column="IMG_CHANGENAME" />
+		<result property="iFilePath" column="IMG_FILEPATH" />
+		<result property="iUDate" column="IMG_UPLOADDATE" />
+		<result property="iStatus" column="IMG_STATUS" />
+		<result property="rn" column="ROWNUM"/>
+	</resultMap>
+	
+	<select id="selectUserCount" resultType="_int" parameterType="AdminMember">
+		SELECT COUNT(*) 
+		FROM MEMBER M 
+		WHERE MEMBER_CATEG=#{memberCateg} AND MEMBER_STATUS='Y'
+	</select>
+	
 	<select id="selectMemberList" resultMap="adminMemberResultSet1">
 		SELECT ROWNUM, (SELECT COUNT(*)  
 					FROM ORDER_MAIN O 
@@ -175,10 +201,10 @@
 	</select>
 	
 	<select id="selectUserOrderList" resultMap="adminOrderResultSet" parameterType="_int">
-		SELECT OM.*
+		SELECT OM.*, C.COM_NAME
 		FROM ORDER_MAIN OM 
+		JOIN COMPANY C ON (C.COM_NO=OM.COM_NO)
 		WHERE OM.MEMBER_NO=#{num}
-		
 	</select>
 	
 	<select id="selectSellerList" resultMap="adminSellerResultSet">
@@ -205,12 +231,17 @@
 		AND C.COM_NO=#{num} 
 	</select>
 	
-
+	<select id="selectBoardCount" resultType="_int" parameterType="AdminBoard">
+		SELECT COUNT(*) 
+		FROM BOARD 
+		WHERE BOARD_TYPE=#{boardType} AND B.BOARD_LEVEL=1 AND BOARD_STATUS='Y' 
+	</select>
+	
 	<select id="selectNoticeList" resultMap="adminBoardResultSet">
 		SELECT B.*, M.MEMBER_NAME, M.MEMBER_NICKNAME, ROWNUM  
 		FROM BOARD B 
 		JOIN MEMBER M ON (B.MEMBER_NO=M.MEMBER_NO) 
-		WHERE B.BOARD_TYPE=4 AND B.BOARD_STATUS='Y'
+		WHERE B.BOARD_TYPE=4 AND B.BOARD_LEVEL=1 AND B.BOARD_STATUS='Y'
 		ORDER BY ROWNUM DESC
 	</select> 
 
@@ -224,14 +255,14 @@
 		SELECT B.*, M.MEMBER_NAME, M.MEMBER_NICKNAME, ROWNUM  
 		FROM BOARD B 
 		JOIN MEMBER M ON (B.MEMBER_NO=M.MEMBER_NO) 
-		WHERE B.BOARD_NO=#{num} AND B.BOARD_STATUS='Y'
+		WHERE B.BOARD_NO=#{num} AND B.BOARD_LEVEL=1 AND B.BOARD_STATUS='Y'
 	</select>
 	
 	<select id="selectFaqList" resultMap="adminBoardResultSet">
 		SELECT B.*, M.MEMBER_NAME, M.MEMBER_NICKNAME, ROWNUM  
 		FROM BOARD B 
 		JOIN MEMBER M ON (B.MEMBER_NO=M.MEMBER_NO) 
-		WHERE B.BOARD_TYPE=2 AND B.BOARD_STATUS='Y'
+		WHERE B.BOARD_TYPE=2 AND B.BOARD_LEVEL=1 AND B.BOARD_STATUS='Y'
 		ORDER BY ROWNUM DESC
 	</select>
 	
@@ -324,6 +355,14 @@
 		WHERE BOARD_NO=#{num}
 	</update>
 	
+	<select id="selectSellerOrderCount" resultType="_int">
+		SELECT COUNT(*) 
+		FROM 
+			(SELECT OM.COM_NO, OM.ORDER_MDATE, OM.ORDER_MSTATUS 
+			FROM ORDER_MATERIAL OM 
+			GROUP BY OM.COM_NO, OM.ORDER_MDATE, OM.ORDER_MSTATUS)
+	</select>
+	
 	<select id="selectSellerOrderList" resultMap="adminSellerOrderListResultSet">
 		SELECT ROWNUM, SOL.* 
 		FROM 
@@ -346,5 +385,34 @@
 		GROUP BY ROWNUM, OM.ORDER_MNO, OM.COM_NO, OM.ORDER_MDATE, OM.ORDER_CALCULATE, OM.ORDER_MSTATUS, OM.MATERIAL_NO,
 		M.MATERIAL_NAME, OM.MATERIAL_WEIGHT, M.MATERIAL_BUYPRICE, M.MATERIAL_WEIGHT, OM.MATERIAL_WEIGHT*M.MATERIAL_BUYPRICE
 		ORDER BY OM.MATERIAL_NO
+	</select>
+	
+	<select id="selectMaterialList" resultMap="adminMaterialResultSet">
+		SELECT M.*, ROWNUM FROM MATERIAL M 
+	</select>
+	
+	<select id="selectIfMaterial" resultType="_int" parameterType="_int">
+		SELECT COUNT(*) 
+		FROM IMAGE 
+		WHERE MATERIAL_NO=#{materialNo} AND IMG_STATUS='Y'
+	</select>
+	
+	<select id="selectMaterialImg" resultMap="adminMaterialResultSet" parameterType="_int">
+		SELECT M.*, I.IMG_NO, I.IMG_CATEG, I.IMG_ORIGINNAME, I.IMG_CHANGENAME, 
+		I.IMG_FILEPATH, I.IMG_UPLOADDATE, I.IMG_STATUS, ROWNUM 
+		FROM MATERIAL M 
+		JOIN IMAGE I ON (M.MATERIAL_NO=I.MATERIAL_NO) 
+		WHERE M.MATERIAL_NO=#{materialNo} AND M.MATERIAL_STATUS='Y'
+	</select>
+	
+	<select id="selectMaterial" resultMap="adminMaterialResultSet" parameterType="_int">
+		SELECT M.* 
+		FROM MATERIAL M 
+		WHERE M.MATERIAL_NO=#{materialNo} AND M.MATERIAL_STATUS='Y'
+	</select>
+	
+	<select id="selectMatCount" resultType="_int">
+		SELECT COUNT(*) 
+		FROM MATERIAL M 
 	</select>
 </mapper>
