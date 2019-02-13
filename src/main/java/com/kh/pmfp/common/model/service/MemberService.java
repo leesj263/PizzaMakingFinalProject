@@ -18,6 +18,15 @@ public interface MemberService {
 	//사업자 회원가입
 	int insertBusinessMember(Member m, Company c);
 
+	//아이디 찾기
+	String selectIdSearch(Member m);
+
+	//비밀번호 찾기
+	String selectPwdSearch(Member m);
+
+	//임시 비밀번호로 update
+	int updatePwd(Member m);
+
 
 
 	
