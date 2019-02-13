@@ -63,6 +63,26 @@ public class MemberDaoImpl implements MemberDao{
 		return sqlSession.insert("Member.insertBusinessMember", m);
 	}
 	
+	//아이디 찾기
+	@Override
+	public String selectIdSearch(SqlSessionTemplate sqlSession, Member m) {
+		
+		return sqlSession.selectOne("Member.selectIdSearch",m);
+	}
+
+	//비밀번호 찾기(DB에 id와 Email이 있는지 조회)
+	@Override
+	public String selectPwdSearch(SqlSessionTemplate sqlSession, Member m) {
+		
+		return sqlSession.selectOne("Member.selectPwdSearch",m);
+	}
+
+	@Override
+	public int updatePwd(SqlSessionTemplate sqlSession, Member m) {
+		
+		return sqlSession.update("Member.updatePwd",m);
+	}
+	
 	
 
 }

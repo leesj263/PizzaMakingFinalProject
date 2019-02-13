@@ -82,6 +82,28 @@
 				#{memberNickName},#{memberEmail},SYSDATE,DEFAULT,SEQ_COMNO.CURRVAL)
 	</insert>
 	
+	<!-- 아이디 찾기(조회) -->
+	<select id="selectIdSearch" resultType="java.lang.String" parameterType="Member">
+		SELECT MEMBER_ID
+		FROM MEMBER
+		WHERE MEMBER_NAME=#{memberName} AND MEMBER_EMAIL=#{memberEmail}
+	</select>
+	
+	<!-- 비밀번호 찾기(DB에 아이디와 이메일이 일치하는 정보가 있는지 조회) -->
+	<select id="selectPwdSearch" resultType="java.lang.String" parameterType="java.lang.String">
+		SELECT MEMBER_NAME
+		FROM MEMBER
+		WHERE MEMBER_ID=#{memberId} AND MEMBER_EMAIL=#{memberEmail}
+	</select>
+	
+	<!-- 임시비밀번호로 update -->
+	<update id="updatePwd" parameterType="Member">
+		UPDATE MEMBER
+		SET MEMBER_PWD=#{memberPwd}
+		WHERE MEMBER_ID=#{memberId}
+	</update>
+	
+	
 </mapper>
 
 

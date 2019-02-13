@@ -533,15 +533,15 @@ h1 {
 				</tr>
 				<tr>
 					<td colspan="2"><div class="ui input" style="width: 100%">
-							<input type="text" placeholder="아이디를 입력하세요" id="PwdSearchid" name="memberId">
+							<input type="text" placeholder="아이디를 입력하세요" id="pwdSearchId" name="memberId">
 						</div></td>
 				</tr>
 				<tr>
 					<td><div class="ui input">
-							<input type="text" placeholder="이메일을 입력하세요" id="PwdSearchEmail" name="memberEmail">
+							<input type="text" placeholder="이메일을 입력하세요" id="pwdSearchEmail" name="memberEmail">
 						</div></td>
 					<td align="center">
-						<div class="ui yellow basic button" style="width: 100%" onclick="return PwdSendBtn();">임시 비밀번호</div>
+						<div class="ui yellow basic button" style="width: 100%" onclick="return PwdSendBtn()">임시 비밀번호</div>
 					</td>
 				</tr>
 				<tr>
@@ -749,11 +749,11 @@ h1 {
 				icon : "success",
 				button : "확인",
 			});
-			console.log($('.ui.checkbox'));
+			//console.log($('.ui.checkbox'));
 		})
 
 		$('.ui.checkbox').checkbox();
-		console.log($('.ui.checkbox'));
+		//console.log($('.ui.checkbox'));
 		
 		
 
@@ -1003,12 +1003,53 @@ h1 {
 	<script>
 		//아이디 찾기
 		function idSendBtn(){
-			
+			var idSearchName = $("#idSearchName").val();
+		    var idSearchEmail =$("#idSearchEmail").val();
+		      
+		      //console.log(idSearchEmail);
+		       $.ajax({
+		         url:"idSearch.co",
+		         type:"post",
+		         data:{"idSearchName":idSearchName,
+		               "idSearchEmail":idSearchEmail},
+		         success:function(data){
+		        	 console.log("아이디 찾기 통신 서어공");
+		        	 if(data!=''){
+				         swal("이메일로 아이디 전송 하였습니다.");
+		        	 }else{
+		        		 swal("회원가입하신 이름과 아이디를 입력해주세요.");
+		        	 }
+		            //console.log(data);
+		         },error:function(data){
+		            console.log("아이디찾기 통신 실패");
+		         }
+		      });
+		     return false;
 		}
 		
 		//비밀번호 찾기(임시 비밀번호)
 		function PwdSendBtn(){
+			var pwdSearchId = $("#pwdSearchId").val();
+			var pwdSearchEmail = $("#pwdSearchEmail").val();
 			
+			$.ajax({
+				url:"pwdSearch.co",
+				type:"post",
+				data:{"pwdSearchId":pwdSearchId,
+					"pwdSearchEmail":pwdSearchEmail},
+				success:function(data){
+					console.log(data);
+					if(data!=''){
+						console.log("비밀번호 찾기 통신 썽꽁");
+						swal("임시 비밀번호를 전송하였습니다.");
+					}else{
+						swal("회원가입하신 아이디와 이메일을 입력해주세요.")
+					}
+				},error:function(data){
+					console.log("임시 비밀번호 통신 실패 ㅠ");
+				}
+			});
+			return false;
 		}
 	
 	</script>

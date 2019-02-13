@@ -29,4 +29,13 @@ public interface MemberDao {
 	//사업자 회원가입(Member)
 	int insertBusinessMember(SqlSessionTemplate sqlSession, Member m);
 
+	//아이디 찾기
+	String selectIdSearch(SqlSessionTemplate sqlSession, Member m);
+
+	//비밀번호 찾기
+	String selectPwdSearch(SqlSessionTemplate sqlSession, Member m);
+
+	//임시비밀번호로 update
+	int updatePwd(SqlSessionTemplate sqlSession, Member m);
+
 }
