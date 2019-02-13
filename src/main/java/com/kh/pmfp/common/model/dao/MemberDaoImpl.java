@@ -76,7 +76,8 @@ public class MemberDaoImpl implements MemberDao{
 		
 		return sqlSession.selectOne("Member.selectPwdSearch",m);
 	}
-
+	
+	//임시비밀번호로 update
 	@Override
 	public int updatePwd(SqlSessionTemplate sqlSession, Member m) {
 		

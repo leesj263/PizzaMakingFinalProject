@@ -88,6 +88,16 @@ h1 {
 				onclick="location.href='logout.co'">로그아웃</button>
 			<button class="mini ui yellow basic button" onclick="mypage();">마이페이지</button>
 		</c:if>
+		
+		<!-- 비회원일떄 -->
+		<c:if test="${!empty sessionScope.memberName}">
+			<h5 style="display: inline; color: white">
+				<c:out value="${sessionScope.memberName }님 환영합니다" />
+			</h5>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<button class="mini ui yellow basic button"
+				onclick="location.href='logout.co'">로그아웃</button>
+		</c:if>
+		
 		<%-- 
 		<c:if test="${!empty sessionScope.loginUser && sessionScope.loginUser.memberCateg==1}">
 			<button style="display:none;" id="memberCateg1">랄라</button>
@@ -96,16 +106,26 @@ h1 {
 		<c:if test="${!empty sessionScope.loginUser && sessionScope.loginUser.memberCateg==2}">
 			<button style="display:none;" id="memberCateg2">랄라</button>
 		</c:if> --%>
+		
 		<a href="#menu">메뉴</a>
 	</header>
 
 
 	<nav id="menu">
+		<!-- 회원일때 -->
 		<c:if test="${!empty sessionScope.loginUser}">
 			<h3 align="center">
 				<c:out value="${sessionScope.loginUser.memberName }님 환영합니다" />
 			</h3>
 		</c:if>
+		
+		<!-- 비회원일때 -->
+		<c:if test="${!empty sessionScope.memberName}">
+			<h3 align="center">
+				<c:out value="${sessionScope.memberName }님 환영합니다" />
+			</h3>
+		</c:if>
+		
 		<ul class="links">
 			<li><a href="main.t">홈</a></li>
 			<li><a href="pizzaMaking.cor">주문하기</a></li>
@@ -130,12 +150,13 @@ h1 {
 
 		</ul>
 		<br> <br> &nbsp;&nbsp;
-		<c:if test="${empty sessionScope.loginUser}">
+<%-- 		<c:if test="${empty sessionScope.loginUser}">
 			<button class="ui yellow basic button" onclick="login();" id="login">로그인</button>
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		<button class="ui yellow basic button" onclick="join();">회원가입</button>
 		</c:if>
 
+		
 		<c:if test="${!empty sessionScope.loginUser}">
 			<div align="center">
 
@@ -144,6 +165,45 @@ h1 {
 				<button class="mini ui yellow basic button" onclick="mypage();">마이페이지</button>
 			</div>
 		</c:if>
+		
+		
+		<c:if test="${!empty sessionScope.memberName}">
+			<div align="center">
+
+				<button class="mini ui yellow basic button"
+					onclick="location.href='logout.co'">로그아웃</button>
+			</div>
+		</c:if> --%>
+		<c:choose>
+		
+		<c:when test="${!empty sessionScope.memberName}">
+			<div align="center">
+
+				<button class="mini ui yellow basic button"
+					onclick="location.href='logout.co'">로그아웃</button>
+			</div>
+		</c:when>
+		
+		<c:when test="${empty sessionScope.loginUser}">
+			<button class="ui yellow basic button" onclick="login();" id="login">로그인</button>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<button class="ui yellow basic button" onclick="join();">회원가입</button>
+		</c:when>
+
+		
+		<c:when test="${!empty sessionScope.loginUser}">
+			<div align="center">
+
+				<button class="mini ui yellow basic button"
+					onclick="location.href='logout.co'">로그아웃</button>
+				<button class="mini ui yellow basic button" onclick="mypage();">마이페이지</button>
+			</div>
+		</c:when>
+		
+		</c:choose>
+		
+		
+		
 	</nav>
 
 	<!--------------------------------------회원가입=------------------------------------------------------->
@@ -406,6 +466,7 @@ h1 {
 	<!---------------------------------------------비회원 로그인------------------------------------------------>
 
 
+<form action="nonMemberlogin.co" method="post">
 	<div id="nonMemberloginDiv" class="hiddenCss">
 		<br>
 		<h1>nonMember-login</h1>
@@ -428,12 +489,12 @@ h1 {
 							<div class="field">
 								<div class="ui radio checkbox">
 									<input type="radio" name="agree" checked="" tabindex="0"
-										class="hidden"> <label>동의안함</label>
+										class="hidden" id="noAgree"> <label>동의안함</label>
 								</div>
 							</div>
 							<div class="field">
 								<div class="ui radio checkbox">
-									<input type="radio" name="agree" tabindex="0" class="hidden">
+									<input type="radio" name="agree" tabindex="0" class="hidden" id="agree">
 									<label>동의함</label>
 								</div>
 							</div>
@@ -442,23 +503,19 @@ h1 {
 						<table class="table">
 						<tr >
 						<td colspan="2"><div class="ui left icon input">
-								<input type="text" placeholder="이름" id="memberNonName"
+								<input type="text" placeholder="이름" id="noMemberName"
 									name="memberName" style="width: 350px"> <i class="user outline icon"></i>
 							</div></td>
-						<!--  <td rowspan="3">
-							<button class="ui yellow basic button"
-								style="width: 100%; height: 120px" type="submit" id="NonMemberloginBtn">비회원로그인</button>
-
-						</td>  -->
+						
 					</tr>
 					<tr>
 						<td><div class="ui left icon input">
-								<input type="text" placeholder="핸드폰 번호 입력하세요" name="memberPhone">
+								<input type="text" placeholder="핸드폰 번호 입력하세요" id="noMemberPhone" name="memberPhone">
 								<i class="heart outline icon"></i>
 							</div></td>
 						 <td>
-							<button class="ui yellow basic button"
-								style="width: 100%; height: 40px" type="submit" id="NonMemberloginBtn">인증번호 발송</button>
+							<div class="ui yellow basic button"
+								style="width: 100%; height: 40px" id="phoneCertificationSend" onclick="return phoneCertificationSend()">인증번호 발송</div>
 
 						</td>
 					</tr>
@@ -469,8 +526,8 @@ h1 {
 							</div></td>
 						
 						<td>
-							<button class="ui yellow basic button"
-								style="width: 100%; height: 40px" type="submit" id="nonMemberCertification">인증번호 확인</button>
+							<div class="ui yellow basic button"
+								style="width: 100%; height: 40px" id="nonMemberCertification" onclick="return CertificationCheckBtn()">인증번호 확인</div>
 
 						</td>
 					</tr>
@@ -499,7 +556,7 @@ h1 {
 			</table>
 		</div>
 	</div>
-
+</form>
 	<!---------------------------------------아이디/비밀번호 찾기---------------------------------------------->
 
 <form action="" method="post">
@@ -630,6 +687,8 @@ h1 {
 		/* $("#login").click(function(){
 			$("#memberCateg1").h
 		}); */
+		
+		
 		var idCheck = 1;
 		var CertificationSend =1;
 		var Certification =1;
@@ -667,7 +726,7 @@ h1 {
 			return false;
 		}
 		
-		//인증번호 발송 버튼
+		//회원가입-이메일 인증번호 발송 버튼
 		var chkRandomCode = 0;
 		function CertificationSendBtn(){
 			CertificationSend=2;
@@ -692,7 +751,7 @@ h1 {
 			success:function(data){
 				console.log(data);
 				if(data.sendMail == '성공'){
-				swal("인증번호 전송완료 ! 인증번호를 입력해주세요");					
+				swal("이메일인증번호 전송완료 ! 인증번호를 입력해주세요");					
 				}
 			},error:function(data){
 				console.log("통신실패");
@@ -705,7 +764,7 @@ h1 {
 			
 		}
 		
-		//인증확인 버튼
+		//회원가입-이메일 인증확인 버튼
 		function CertificationBtn(){
 			Certification=2;
 			if($("#JoinCertificationNum").val() == chkRandomCode){
@@ -718,6 +777,56 @@ h1 {
 			return false;
 		}	
 		
+		
+	</script>
+	
+<!----------------------- 비회원 로그인 script -------------------------------------->
+
+	<script>
+		var noMemberLoginCode=0;	//랜덤 인증번호 변수
+		//비회원 로그인-인증번호 보내기 버튼
+		function phoneCertificationSend(){
+			var noMemberName = $("#noMemberName").val();
+			var noMemberPhone = $("#noMemberPhone").val();
+			console.log(noMemberName);
+			console.log(noMemberPhone);
+			
+			//랜덤 코드 생성
+			var randomCode = Math.floor(Math.random() * 1000000)+100000;
+			if(randomCode>1000000){
+				randomCode = randomCode - 100000;
+			}
+			noMemberLoginCode = randomCode;
+			
+			$.ajax({
+				url:"noMemberLogin.co",
+				type:"post",
+				data:{"noMemberName":noMemberName,
+					"noMemberPhone":noMemberPhone,
+					"randomCode":randomCode},
+				success:function(data){
+					console.log("비회원 로그인 통신 성공");
+					swal("인증번호를 전송하였습니다!");
+				},error:function(data){
+					console.log("비회원 로그인 통신 실패");
+				}
+			});
+		}
+		
+		//비회원 로그인-인증번호 확인 버튼
+		function CertificationCheckBtn(){
+			var memberCertificationNumber = $("#memberCertificationNumber").val();
+			
+			if(memberCertificationNumber==noMemberLoginCode){
+				console.log("인증확인 되었습니당~!!");
+				swal("인증 완료!");
+			}else{
+				swal("인증번호를 확인해주세요");
+				return false;
+			}
+			return false;
+			
+		}
 		
 	</script>
 
@@ -733,16 +842,17 @@ h1 {
 			console.log($('.ui.checkbox'));
 		}) */
 		
-		$("#nonMemberCertification").click(function() {
+		//비회원 로그인-인증번호 확인버튼
+/* 		$("#nonMemberCertification").click(function() {
 			swal({
 				title : "인증 확인",
 				text : "인증이 확인되었습니다.",
 				icon : "success",
 				button : "확인",
 			});
-		})
+		}) */
 		
-		$("#NonMemberloginBtn").click(function() {
+/* 		$("#NonMemberloginBtn").click(function() {
 			swal({
 				title : "인증 번호 발송",
 				text : "인증 번호 발송되었습니다.",
@@ -750,7 +860,7 @@ h1 {
 				button : "확인",
 			});
 			//console.log($('.ui.checkbox'));
-		})
+		}) */
 
 		$('.ui.checkbox').checkbox();
 		//console.log($('.ui.checkbox'));
@@ -951,6 +1061,7 @@ h1 {
 	</script>
 	
 	<script>
+	//주소검색 -api
     function postNumSearch() {
         new daum.Postcode({
             oncomplete: function(data) {
@@ -1001,6 +1112,7 @@ h1 {
 </script>
 
 	<script>
+	/* ---------------------- 아이디 비밀번호 찾기 script -------------------------------------- */
 		//아이디 찾기
 		function idSendBtn(){
 			var idSearchName = $("#idSearchName").val();
@@ -1053,6 +1165,8 @@ h1 {
 		}
 	
 	</script>
+	
+
 	
 	
 
