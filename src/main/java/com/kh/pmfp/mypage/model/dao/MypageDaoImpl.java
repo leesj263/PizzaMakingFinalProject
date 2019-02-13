@@ -1,6 +1,7 @@
 package com.kh.pmfp.mypage.model.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import com.kh.pmfp.common.model.vo.PageInfo;
 import com.kh.pmfp.mypage.model.vo.Coupon;
 import com.kh.pmfp.mypage.model.vo.DelList;
+import com.kh.pmfp.mypage.model.vo.Location;
 import com.kh.pmfp.mypage.model.vo.MyWriting;
 import com.kh.pmfp.mypage.model.vo.OrderList;
 
@@ -135,6 +137,21 @@ public class MypageDaoImpl implements MypageDao{
 		}
 		
 		return listCount;
+	}
+
+	//위도, 경도 얻기
+	@Override
+	public ArrayList<Location> selectComLocation(SqlSessionTemplate sqlSession) {
+		
+		ArrayList<Location> list = (ArrayList) sqlSession.selectList("Mypage.selectComLoc");
+		
+		if(list == null) {
+			System.out.println("매장 위도경도 조회 실패");
+		}
+		
+		System.out.println("list : " + list);
+		
+		return list;
 	}
 
 	

@@ -25,7 +25,7 @@
 		  <a class="item" href="myPageCoupon.mp">
 		    쿠폰함
 		  </a>
-		  <a class="item" href="myPageQna.mp">
+		  <a class="item" href="myPageShare.mp">
 		    내 작성글
 		  </a>
 		  <a class="item" href="myPageMemModify.t">

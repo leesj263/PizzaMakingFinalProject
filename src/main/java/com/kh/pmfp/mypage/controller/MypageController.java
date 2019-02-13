@@ -1,9 +1,11 @@
 package com.kh.pmfp.mypage.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,14 +14,17 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
+import com.kh.pmfp.common.model.vo.CommonUtil;
 import com.kh.pmfp.common.model.vo.Member;
 import com.kh.pmfp.common.model.vo.PageInfo;
 import com.kh.pmfp.common.model.vo.Pagination;
 import com.kh.pmfp.mypage.model.service.MypageService;
 import com.kh.pmfp.mypage.model.vo.Coupon;
 import com.kh.pmfp.mypage.model.vo.DelList;
+import com.kh.pmfp.mypage.model.vo.Location;
 import com.kh.pmfp.mypage.model.vo.MyWriting;
 import com.kh.pmfp.mypage.model.vo.OrderList;
 
@@ -28,7 +33,7 @@ public class MypageController {
 	@Autowired
 	private MypageService mps;
 	
-	//마이페이지 메인 - 주문내역
+	//주문내역(마이페이지 메인)
 	@RequestMapping(value="/mypage.mp")
 	public String mypageMain(HttpServletRequest request, Model model) {
 		
@@ -85,6 +90,28 @@ public class MypageController {
 		model.addAttribute("delList", delList);
 		
 		return "mypage/deliList";
+	}
+	
+	//배송지 추가 팝업
+	@RequestMapping(value="myPageDelPopup.mp")
+	public String delPopup() {
+		
+		return "mypage/deliveryPopup";
+	}
+	
+	//위도, 경도 얻기
+	@RequestMapping(value="latlon.mp")
+	public @ResponseBody ArrayList<Location>latlon(@RequestParam String addr, HttpServletResponse response){
+		ArrayList<Location> list = mps.selectComLocation();
+		
+		System.out.println("addr : " + addr);
+		Float[] userAddrLatLon = CommonUtil.geoCoding(addr);
+		
+		System.out.println(addr +":" + userAddrLatLon[0] + ", " + userAddrLatLon[1]);
+		
+		
+		
+		return null;
 	}
 	
 	//쿠폰함 - 사용가능쿠폰
@@ -173,7 +200,6 @@ public class MypageController {
 		
 		return "mypage/qnaList";
 	}
-	
 	
 	
 	
