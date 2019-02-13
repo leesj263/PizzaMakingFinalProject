@@ -1,12 +1,14 @@
 package com.kh.pmfp.mypage.model.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.mybatis.spring.SqlSessionTemplate;
 
 import com.kh.pmfp.common.model.vo.PageInfo;
 import com.kh.pmfp.mypage.model.vo.Coupon;
 import com.kh.pmfp.mypage.model.vo.DelList;
+import com.kh.pmfp.mypage.model.vo.Location;
 import com.kh.pmfp.mypage.model.vo.MyWriting;
 import com.kh.pmfp.mypage.model.vo.OrderList;
 
@@ -35,6 +37,9 @@ public interface MypageDao {
 
 	//글 목록수 조회
 	int selectListCount(SqlSessionTemplate sqlSession, int memberNo, int boardType);
+
+	//위도, 경도 얻기
+	ArrayList<Location> selectComLocation(SqlSessionTemplate sqlSession);
 
 
 

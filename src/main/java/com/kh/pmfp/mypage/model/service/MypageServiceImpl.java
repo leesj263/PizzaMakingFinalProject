@@ -1,6 +1,7 @@
 package com.kh.pmfp.mypage.model.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import com.kh.pmfp.common.model.vo.PageInfo;
 import com.kh.pmfp.mypage.model.dao.MypageDao;
 import com.kh.pmfp.mypage.model.vo.Coupon;
 import com.kh.pmfp.mypage.model.vo.DelList;
+import com.kh.pmfp.mypage.model.vo.Location;
 import com.kh.pmfp.mypage.model.vo.MyWriting;
 import com.kh.pmfp.mypage.model.vo.OrderList;
 
@@ -77,6 +79,13 @@ public class MypageServiceImpl implements MypageService{
 	public int selectListCount(int memberNo, int boardType) {
 		int listCount = md.selectListCount(sqlSession, memberNo, boardType);
 		return listCount;
+	}
+
+	//위도, 경도 얻기
+	@Override
+	public ArrayList<Location> selectComLocation() {
+		ArrayList<Location> list = md.selectComLocation(sqlSession);
+		return list;
 	}
 
 	

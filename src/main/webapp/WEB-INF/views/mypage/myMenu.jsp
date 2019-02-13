@@ -32,7 +32,7 @@
 		  <a class="item" href="myPageCoupon.mp">
 		    쿠폰함
 		  </a>
-		  <a class="item" href="myPageQna.mp">
+		  <a class="item" href="myPageShare.mp">
 		    내 작성글
 		  </a>
 		  <a class="item" href="myPageMemModify.t">
@@ -130,15 +130,8 @@
 			var posL=( screenW-popW ) / 2;   // 띄울창의 가로 포지션 
 			var posT=( screenH-popH ) / 2;   // 띄울창의 세로 포지션 
 
-
-			
-			/* $("#pop").click(function(){
-				window.open("myPageMyMenuPop.t","","width=500,height=500");
-			}); */
-			
-			
 			$("#pop").click(function(){
-				 window.open('myPageMyMenuPop.t','','width='+ popW +',height='+ popH +',top='+ posT +',left='+ posL +',resizable=no,scrollbars=no')
+				 window.open('myPageMyMenuPop.t','','width='+ popW +',height='+ popH +',top='+ posT +',left='+ posL +',resizable=no,scrollbars=no');
 			
 			});
 			

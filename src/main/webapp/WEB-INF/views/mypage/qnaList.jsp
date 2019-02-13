@@ -8,6 +8,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
+
 <body>
 	
 	<%@ include file="/WEB-INF/views/main/menubar.jsp"%>
@@ -25,7 +26,7 @@
 		  <a class="item" href="myPageCoupon.mp">
 		    쿠폰함
 		  </a>
-		  <a class="item active" href="myPageQna.mp">
+		  <a class="item active" href="myPageShare.mp">
 		    내 작성글
 		  </a>
 		  <a class="item" href="myPageMemModify.t">
@@ -43,9 +44,9 @@
 	<div style="float: left; width:80%; padding:20px; margin-top: 50px;">
 	
 		<select class="ui dropdown" id="selectBox">
-		  <option value="qna">QnA</option>
-		  <option value="review">후기게시판</option>
 		  <option value="share">공유게시판</option>
+		  <option value="review">후기게시판</option>
+		  <option value="qna">QnA</option>
 		</select>
 		
 		<button class="ui button" id="findList">
@@ -139,9 +140,10 @@
 		</c:if>
 		
 		
-		
+		 
 		<!-- 페이징 버튼 영역 -->
 		<div id="pagingArea" align="center">
+			<!-- << : 맨앞으로 -->
 			<c:if test="${ pi.currentPage > 1}">
 				<c:url var="front" value="${ addr }">
 					<c:param name="currentPage" value="1"/>                       
@@ -149,8 +151,15 @@
 				<a href="${ front }"> &lt;&lt; </a> &nbsp;	
 			</c:if>
 
+			<!-- << : 한페이지 앞으로 -->
+			<c:if test="${ pi.currentPage > 1}">
+				<c:url var="Onefront" value="${ addr }">
+					<c:param name="currentPage" value="${ pi.currentPage -1 }"/>                       
+				</c:url>
+				<a href="${ Onefront }"> &nbsp; &lt; </a> &nbsp;	
+			</c:if>
 			
-			
+			<!-- 숫자 버튼 -->
 			<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
 				<c:if test="${ p eq pi.currentPage }">
 					<font color="black">&nbsp;<b>[${p}]</b>&nbsp;</font>
@@ -164,23 +173,68 @@
 				</c:if>
 			</c:forEach>
 			
+			<!-- > : 한페이지 뒤로 -->
+			<c:if test="${ pi.currentPage < pi.maxPage}">
+				<c:url var="OneBack" value="${ addr }">
+					<c:param name="currentPage" value="${ pi.currentPage +1 }"/>                       
+				</c:url>
+				<a href="${ OneBack }"> &nbsp; &gt; </a> &nbsp;	
+			</c:if>
+
+			<!-- >> : 맨뒤로 -->
+			<c:if test="${ pi.currentPage < pi.maxPage }">
+				<c:url var="Back" value="${ addr }">
+					<c:param name="currentPage" value="${pi.maxPage}"/>
+				</c:url>
+				<a href="${ Back }">&gt;&gt;</a>
+			</c:if>
+		</div>
+	 
+	 
+	 <%-- 
+	 시멘틱 UI
+	 <div class="ui pagination menu" id="paging">
+			<!-- << : 맨앞으로 -->
+			<c:if test="${ pi.currentPage > 1}">
+				<c:url var="front" value="${ addr }">
+					<c:param name="currentPage" value="1"/>                       
+				</c:url>
+				<a href="${ front }" class="item"> &lt;&lt; </a> &nbsp;	
+			</c:if>
+
 			
-			
-			
+			<!-- 숫자 버튼 -->
+			<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
+				<c:if test="${ p eq pi.currentPage }">
+					<a class="active item">${p}</a>
+				</c:if>
+				
+				<c:if test = "${ p ne pi.currentPage }">
+					<c:url var="btnList" value="${ addr }">
+						<c:param name="currentPage" value="${ p }"/>
+					</c:url>
+					<a href="${ btnList }" class="item">&nbsp;${p}&nbsp;</a>
+				</c:if>
+			</c:forEach>
 			
 
-
-			
+			<!-- >> : 맨뒤로 -->
 			<c:if test="${ pi.currentPage < pi.maxPage }">
 				<c:url var="back" value="${ addr }">
 					<c:param name="currentPage" value="${pi.maxPage}"/>
 				</c:url>
-				<a href="${ back }">&gt;&gt;</a>
+				<a href="${ back }" class="item">&gt;&gt;</a>
 			</c:if>
-			
-			
-		</div>
-	
+		</div> 
+		
+		--%>
+	 
+	 
+	 
+	 
+	 
+	 
+	 
 	
 </div>
 </body>

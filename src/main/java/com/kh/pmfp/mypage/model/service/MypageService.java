@@ -1,10 +1,12 @@
 package com.kh.pmfp.mypage.model.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.kh.pmfp.common.model.vo.PageInfo;
 import com.kh.pmfp.mypage.model.vo.Coupon;
 import com.kh.pmfp.mypage.model.vo.DelList;
+import com.kh.pmfp.mypage.model.vo.Location;
 import com.kh.pmfp.mypage.model.vo.MyWriting;
 import com.kh.pmfp.mypage.model.vo.OrderList;
 
@@ -33,5 +35,8 @@ public interface MypageService {
 	
 	//글 목록수 조회
 	int selectListCount(int memberNo, int boardType);
+
+	//위도, 경도 얻기
+	ArrayList<Location> selectComLocation();
 
 }

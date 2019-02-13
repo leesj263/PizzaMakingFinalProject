@@ -24,7 +24,7 @@
 		  <a class="item" href="myPageCoupon.mp">
 		    쿠폰함
 		  </a>
-		  <a class="item" href="myPageQna.mp">
+		  <a class="item" href="myPageShare.mp">
 		    내 작성글
 		  </a>
 		  <a class="item" href="myPageMemModify.t">
@@ -67,14 +67,27 @@
 		  </tbody>
 		</table>
 		
-		<button class="ui yellow button">추가</button>
+		<button class="ui yellow button" id="pop">추가</button>
 		<button class="ui yellow button">삭제</button>
-		
-		
-		
+
 	</div>
 	
-	
+	<script>
+			var screenW = screen.availWidth; // 스크린 가로사이즈
+			var screenH = screen.availHeight; // 스크린 세로사이즈
+			
+			var popW = 550;  //팝업 가로사이즈
+			var popH = 240;  //팝업 세로사이즈
+			
+			var posL=( screenW-popW ) / 2;   // 띄울창의 가로 포지션 
+			var posT=( screenH-popH ) / 2;   // 띄울창의 세로 포지션 
+
+			$("#pop").click(function(){
+				 window.open('myPageDelPopup.mp','','width='+ popW +',height='+ popH +',top='+ posT +',left='+ posL +',resizable=no,scrollbars=no');
+			
+			});
+			
+		</script>
 	
 
 	
