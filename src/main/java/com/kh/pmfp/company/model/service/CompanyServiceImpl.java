@@ -11,6 +11,7 @@ import com.kh.pmfp.company.model.exception.FailInsertEmployeeInfo;
 import com.kh.pmfp.company.model.exception.FailInsertOrderStock;
 import com.kh.pmfp.company.model.exception.FailSelectAdminMessage;
 import com.kh.pmfp.company.model.exception.FailSelectCompanyReview;
+import com.kh.pmfp.company.model.exception.FailSelectCompanySales;
 import com.kh.pmfp.company.model.exception.FailSelectDeliveryMan;
 import com.kh.pmfp.company.model.exception.FailSelectEmployeeList;
 import com.kh.pmfp.company.model.exception.FailSelectOrder;
@@ -25,6 +26,7 @@ import com.kh.pmfp.company.model.vo.CompanyMaterial;
 import com.kh.pmfp.company.model.vo.CompanyOrder;
 import com.kh.pmfp.company.model.vo.CompanyOrderStock;
 import com.kh.pmfp.company.model.vo.CompanyRemainMaterial;
+import com.kh.pmfp.company.model.vo.CompanySales;
 
 @Component
 public class CompanyServiceImpl implements CompanyService{
@@ -243,6 +245,15 @@ public class CompanyServiceImpl implements CompanyService{
 		// TODO Auto-generated method stub
 		ArrayList<CompanyRemainMaterial> list = new ArrayList<CompanyRemainMaterial>();
 		list = cd.selectAllMaterialList(sqlSession, comNo);
+		
+		return list;
+	}
+
+	@Override
+	public ArrayList<CompanySales> selectAllCompanySales(int comNo) throws FailSelectCompanySales {
+		// TODO Auto-generated method stub
+		ArrayList<CompanySales> list = new ArrayList<CompanySales>();
+		list = cd.selectAllCompanySales(sqlSession, comNo);
 		
 		return list;
 	}

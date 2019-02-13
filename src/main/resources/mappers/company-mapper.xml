@@ -105,6 +105,17 @@
 		<result property="stockWeight" column="STOCK_WEIGHT" />
 		<result property="materialName" column="MATERIAL_NAME" />
 	</resultMap>
+	
+	<resultMap type="com.kh.pmfp.company.model.vo.CompanySales"
+		id="companySalesResultSet">
+		<id property="salesNo" column="SALES_NO" />
+		<result property="comNo" column="COM_NO" />
+		<result property="salesInputdate" column="SALES_INPUTDATE" />
+		<result property="salesCateg" column="SALES_CATEG" />
+		<result property="expenseNo" column="EXPENSE_NO" />
+		<result property="orderNo" column="ORDER_NO" />
+		<result property="salesPrice" column="SALES_PRICE" />
+	</resultMap>
 
 	<select id="selectAdminMessage"
 		resultMap="companyBoardResultSet">
@@ -346,7 +357,7 @@
 	<select id="orderStrok" resultMap="companyMaterialResultSet">
 		SELECT MATERIAL_NO, MATERIAL_NAME , MATERIAL_SIZE, MATERIAL_WEIGHT, MATERIAL_BUYPRICE, MATERIAL_SELLPRICE, MATERIAL_STATUS
 		FROM MATERIAL
-		WHERE MOD(MATERIAL_NO, 2) = 0
+		WHERE MOD(MATERIAL_NO, 2) = 1
 		AND MATERIAL_STATUS = 'Y'
 	</select>
 	
@@ -366,6 +377,20 @@
 		INSERT INTO EXPENSE
 		VALUES(SEQ_EXPNO.NEXTVAL, 2, #{materialPrice}, NULL , SEQ_ODMATNO.CURRVAL)
 	</insert>
+	
+	<update id="applyStockAndUpdateStockList">
+		UPDATE STOCK 
+		SET STOCK_WEIGHT  = (SELECT STOCK_WEIGHT FROM STOCK WHERE MATERIAL_NO = #{materialNo}) + #{materialWeight} 
+		WHERE MATERIAL_NO = #{materialNo} 
+		AND COM_NO = #{comNo}
+	</update>
+	
+	
+	<insert id="applyStockAndInsertSales">
+		INSERT INTO SALES 
+		VALUES(SEQ_SALESNO.NEXTVAL, #{comNo}, SYSDATE, 0, SEQ_EXPNO.CURRVAL, NULL, #{materialPrice})
+	</insert>
+	
 	
 	<select id="selectOrderStockList" resultMap="companyOrderStockResultSet">
 		SELECT OM.ORDER_MNO, OM.COM_NO, OM.MATERIAL_NO, OM.ORDER_MDATE, OM.ORDER_MSTATUS, OM.ORDER_CALCULATE, 
@@ -404,6 +429,13 @@
 		ON(S.MATERIAL_NO = M.MATERIAL_NO)
 		WHERE COM_NO = #{comNo}
 	</select>
+	
+	<select id="selectAllCompanySales" resultMap="companySalesResultSet" parameterType="_int">
+		SELECT SALES_NO, COM_NO, SALES_INPUTDATE, SALES_CATEG, EXPENSE_NO, ORDER_NO, SALES_PRICE
+		FROM SALES
+		WHERE COM_NO = #{comNo}
+	</select>
+	
 	
 </mapper>
 

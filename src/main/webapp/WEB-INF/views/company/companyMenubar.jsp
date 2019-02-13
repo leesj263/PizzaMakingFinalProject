@@ -138,7 +138,7 @@
                             <li><i class="menu-icon fa fa-paper-plane"></i><a href="orderWaiting.com">주문신청 내역</a></li>
                             <li><i class="menu-icon fa fa-paper-plane"></i><a href="selectEmployeeList.com">업체 직원 관리</a></li>
                             <li><i class="menu-icon fa fa-paper-plane"></i><a href="selectAllMaterialList.com">업체 재고관리</a></li>
-                            <li><i class="menu-icon fa fa-paper-plane"></i><a href="movePage.com?movePage=companySales">업체 매출관리</a></li>
+                            <li><i class="menu-icon fa fa-paper-plane"></i><a href="selectAllCompanySales.com">업체 매출관리</a></li>
                             <li><i class="menu-icon fa fa-paper-plane"></i><a href="selectCompanyReview.com">업체 후기 작성</a></li>
                         </ul>
                     </li>

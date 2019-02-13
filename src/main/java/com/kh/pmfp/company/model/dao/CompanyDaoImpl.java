@@ -2,6 +2,7 @@ package com.kh.pmfp.company.model.dao;
 
 import java.util.ArrayList;
 
+import org.apache.ibatis.session.SqlSession;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -9,6 +10,7 @@ import com.kh.pmfp.company.model.exception.FailInsertEmployeeInfo;
 import com.kh.pmfp.company.model.exception.FailInsertOrderStock;
 import com.kh.pmfp.company.model.exception.FailSelectAdminMessage;
 import com.kh.pmfp.company.model.exception.FailSelectCompanyReview;
+import com.kh.pmfp.company.model.exception.FailSelectCompanySales;
 import com.kh.pmfp.company.model.exception.FailSelectDeliveryMan;
 import com.kh.pmfp.company.model.exception.FailSelectEmployeeList;
 import com.kh.pmfp.company.model.exception.FailSelectOrder;
@@ -23,6 +25,7 @@ import com.kh.pmfp.company.model.vo.CompanyMaterial;
 import com.kh.pmfp.company.model.vo.CompanyOrder;
 import com.kh.pmfp.company.model.vo.CompanyOrderStock;
 import com.kh.pmfp.company.model.vo.CompanyRemainMaterial;
+import com.kh.pmfp.company.model.vo.CompanySales;
 
 @Repository
 public class CompanyDaoImpl implements CompanyDao{
@@ -289,12 +292,16 @@ public class CompanyDaoImpl implements CompanyDao{
 	public int applyStock(SqlSessionTemplate sqlSession, ArrayList<CompanyOrderStock> list) throws FailInsertOrderStock {
 		// TODO Auto-generated method stub
 		int result = 0;
+		int resultupdate = 0;
 		
 		for(int i = 0; i < list.size(); i++) {
 			result += sqlSession.insert("Company.applyStock", list.get(i));
 			result += sqlSession.insert("Company.applyStockAndAddExpense", list.get(i));
+			resultupdate += sqlSession.update("Company.applyStockAndUpdateStockList", list.get(i));
+			result += sqlSession.insert("Company.applyStockAndInsertSales", list.get(i));
+
 		}
-		
+		System.out.println("resultupdate : " + resultupdate );
 		
 		if(result <= 0 ) {
 			throw new FailInsertOrderStock("재고 정보 삽입 실패!");
@@ -347,6 +354,19 @@ public class CompanyDaoImpl implements CompanyDao{
 		
 		if(list == null) {
 			throw new FailSelectOrderStock("재고 조회 실패!");
+		}
+		
+		return list;
+	}
+
+	@Override
+	public ArrayList<CompanySales> selectAllCompanySales(SqlSessionTemplate sqlSession, int comNo) throws FailSelectCompanySales {
+		// TODO Auto-generated method stub
+		ArrayList<CompanySales> list = new ArrayList<CompanySales>();
+		list = (ArrayList)sqlSession.selectList("Company.selectAllCompanySales", comNo);
+		
+		if(list == null) {
+			throw new FailSelectCompanySales("업체 매출 조회 실패!");
 		}
 		
 		return list;
