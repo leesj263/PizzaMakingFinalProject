@@ -17,13 +17,13 @@ public class Board implements Serializable {
 	private String boardStatus;
 	private String boardAnswer;
 	private int boardComNo;
-	   
-	public Board() {}
+	private int rownum;
 	
+	public Board() {}
 
 	public Board(int boardNo, int boardType, int boardCateg, String boardTitle, String boardContent, int boardCount,
 			int memberNo, Date boardDate, int boardLevel, int boardRefNo, String boardStatus, String boardAnswer,
-			int boardComNo) {
+			int boardComNo, int rownum) {
 		super();
 		this.boardNo = boardNo;
 		this.boardType = boardType;
@@ -38,6 +38,7 @@ public class Board implements Serializable {
 		this.boardStatus = boardStatus;
 		this.boardAnswer = boardAnswer;
 		this.boardComNo = boardComNo;
+		this.rownum = rownum;
 	}
 
 	public int getBoardNo() {
@@ -144,15 +145,24 @@ public class Board implements Serializable {
 		this.boardComNo = boardComNo;
 	}
 
+	public int getRownum() {
+		return rownum;
+	}
+
+	public void setRownum(int rownum) {
+		this.rownum = rownum;
+	}
+
 	@Override
 	public String toString() {
 		return "Board [boardNo=" + boardNo + ", boardType=" + boardType + ", boardCateg=" + boardCateg + ", boardTitle="
 				+ boardTitle + ", boardContent=" + boardContent + ", boardCount=" + boardCount + ", memberNo="
 				+ memberNo + ", boardDate=" + boardDate + ", boardLevel=" + boardLevel + ", boardRefNo=" + boardRefNo
-				+ ", boardStatus=" + boardStatus + ", boardAnswer=" + boardAnswer + ", boardComNo=" + boardComNo + "]";
+				+ ", boardStatus=" + boardStatus + ", boardAnswer=" + boardAnswer + ", boardComNo=" + boardComNo
+				+ ", rownum=" + rownum + "]";
 	}
 	
-	
+
 	
 
 }

@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -44,15 +46,16 @@
 
 
 	<div align="center">
-		<div class="ui basic buttons">
+		<!-- <div class="ui basic buttons">
 			<div class="ui button">
 				<a href="../customer/faq/faqPayOrder.jsp">인터넷주문</a>
 			</div>
-			
+
 			<div class="ui button">결제/쿠폰</div>
 			<div class="ui button">회원정보</div>
 			<div class="ui button">기타</div>
-		</div>
+		</div> -->
+		
 	</div>
 
 
@@ -63,8 +66,27 @@
 		<tr>
 			<td colspan="" height="1" bgcolor="f4f4f4"></td>
 		</tr>
-
-		<tr align="center">
+		<c:forEach items="${faqOrder}" var ="faq">
+			<tr align="center">
+			<td width="10" height="23">
+			<h1>Q${faq.rownum} 
+			<%-- <c:choose>
+			<c:when test="${faq.boardCateg==1}">결제</c:when>
+			<c:when test="${faq.boardCateg==2}">주문</c:when>
+			<c:when test="${faq.boardCateg==3}">공유/후기/질문답변</c:when>
+			<c:otherwise>이벤트</c:otherwise>
+			</c:choose> --%>
+			</h1></td>
+			<td width="370" align="left" style="CURSOR: hand"
+				onClick="clickblock(${faq.rownum})"><h3>${faq.boardTitle}</h3></td>
+		</tr>
+		<tr id="block${faq.rownum}" style="display: none">
+			<td></td>
+			<td bgcolor="F7F7F7"><h4>- ${faq.boardContent}</h4></td>
+		</tr>
+		<tr></tr>
+		</c:forEach>
+		<!-- <tr align="center">
 			<td width="5" height="23"><h1>Q1</h1></td>
 			<td width="370" align="left" style="CURSOR: hand"
 				onClick="clickblock(1)"><h3>온라인 상에서 주문취소를 할 수 없나요?</h3></td>
@@ -198,7 +220,7 @@
 					주문시간이 달라질 수 있습니다.)</h4></td>
 		</tr>
 
-
+ -->
 
 
 	</table>
