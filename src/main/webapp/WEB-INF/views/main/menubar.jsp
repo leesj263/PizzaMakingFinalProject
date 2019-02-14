@@ -48,8 +48,19 @@
 	opacity: 1;
 	visibility: hidden;
 	border-radius: 5px; /*둥글겡*/
-	z-index: 500;
+	z-index: 5000;
 }
+
+	.customModal{
+		position: fixed;
+		top: 0;
+		width: 100%;
+		height: 100%;
+		background: black;
+		opacity: 0.5;
+		z-index: 1000;
+		display:none;
+	}
 
 h1 {
 	text-align: center;
@@ -72,6 +83,12 @@ h1 {
 
 <body>
 
+	
+	<div class="customModal" id="allClose" onclick="return AllcloseBtn()">
+		<!-- 배경 어두워지면서 클릭하면 배경 모든 창 닫기  -->
+	</div>
+
+
 	<c:set var="contextPath"
 		value="${pageContext.servletContext.contextPath }" scope="application" />
 
@@ -90,9 +107,9 @@ h1 {
 		</c:if>
 		
 		<!-- 비회원일떄 -->
-		<c:if test="${!empty sessionScope.memberName}">
+		<c:if test="${!empty sessionScope.noUserLogin.memberName}">
 			<h5 style="display: inline; color: white">
-				<c:out value="${sessionScope.memberName }님 환영합니다" />
+				<c:out value="${sessionScope.noUserLogin.memberName }님 환영합니다" />
 			</h5>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<button class="mini ui yellow basic button"
 				onclick="location.href='logout.co'">로그아웃</button>
@@ -120,9 +137,9 @@ h1 {
 		</c:if>
 		
 		<!-- 비회원일때 -->
-		<c:if test="${!empty sessionScope.memberName}">
+		<c:if test="${!empty sessionScope.noUserLogin.memberName}">
 			<h3 align="center">
-				<c:out value="${sessionScope.memberName }님 환영합니다" />
+				<c:out value="${sessionScope.noUserLogin.memberName }님 환영합니다" />
 			</h3>
 		</c:if>
 		
@@ -176,7 +193,7 @@ h1 {
 		</c:if> --%>
 		<c:choose>
 		
-		<c:when test="${!empty sessionScope.memberName}">
+		<c:when test="${!empty sessionScope.noUserLogin}">
 			<div align="center">
 
 				<button class="mini ui yellow basic button"
@@ -376,12 +393,10 @@ h1 {
 						<button class="ui yellow button" onclick="return CreateAccount()"
 							style="width: 100%">계정만들기</button>
 
-
 					</TD>
 					
 					<TD align="center">
-						<button class="ui yellow button" onclick="closeBtn();"
-							style="width: 100%">닫기</button>
+						<button class="ui yellow button" onclick="return AllcloseBtn()" style="width: 100%">닫기</button>
 
 					</TD>
 				</tr>
@@ -407,13 +422,13 @@ h1 {
 							</div></td>
 						<td rowspan="2">
 							<button class="ui yellow basic button"
-								style="width: 100%; height: 78px" type="submit" id="loginBtn">로그인</button>
+								style="width: 100%; height: 78px" id="loginBtn" onclick="return memberLoginBtn()">로그인</button>
 
 						</td>
 					</tr>
 					<tr>
 						<td><div class="ui left icon input">
-								<input type="password" placeholder="비밀번호" name="memberPwd">
+								<input type="password" placeholder="비밀번호" name="memberPwd" id="memberPwdLogin">
 								<i class="heart outline icon"></i>
 							</div></td>
 					</tr>
@@ -642,17 +657,20 @@ h1 {
 	  .dropdown()
 	;
 	
-		var joindiv = document.all.joindiv;
-		var loginDiv = document.all.loginDiv;
-		var idPwdSearchDiv = document.all.idPwdSearchDiv;
-		var nonMemberloginDiv = document.all.nonMemberloginDiv;
-
+		var joindiv = document.all.joindiv;						//회원가입
+		var loginDiv = document.all.loginDiv;					//로그인
+		var idPwdSearchDiv = document.all.idPwdSearchDiv;		//아이디비밀번호찾기
+		var nonMemberloginDiv = document.all.nonMemberloginDiv;	//비회원 로그인
+	
+		
 		function join() {
 			joindiv.style.visibility = "visible";
 			loginDiv.style = "hide";
 			nonMemberloginDiv.style = "hide";
 			$('#menu').removeClass('visible'); //메뉴바들어가기
 			console.log("회원가입");
+			$("#allClose").show();				//배경 어두워지면서 클릭하면 배경 모든 창 닫기 
+			
 		}
 
 		function login() {
@@ -662,20 +680,18 @@ h1 {
 			nonMemberloginDiv.style = "hide";
 			$('#memberId').focus();
 			$('#menu').removeClass('visible');
+			$("#allClose").show();				//배경 어두워지면서 클릭하면 배경 모든 창 닫기 
 			console.log("로그인");
 		}
 
-		function closeBtn() {
-			loginDiv.style = "hide";
-			joindiv.style = "hide";
-			$('#menu').removeClass('visible'); //메뉴바들어가기
-		}
 
 		function idPwdSearch() {
 			idPwdSearchDiv.style.visibility = "visible";
 			loginDiv.style = "hide";
 			joindiv.style = "hide";
+			nonMemberloginDiv.style = "hide";
 			$('#menu').removeClass('visible');
+			$("#allClose").show();				//배경 어두워지면서 클릭하면 배경 모든 창 닫기 
 		}
 
 		function nonMember() {
@@ -683,10 +699,45 @@ h1 {
 			idPwdSearchDiv.style = "hide";
 			loginDiv.style = "hide";
 			joindiv.style = "hide";
+			$('#menu').removeClass('visible');
+			$("#allClose").show();				//배경 어두워지면서 클릭하면 배경 모든 창 닫기 
 		}
+		
+		//모든 창 닫기
+		function AllcloseBtn() {
+			loginDiv.style = "hide";
+			joindiv.style = "hide";
+			idPwdSearchDiv.style = "hide";
+			nonMemberloginDiv.style="hide";
+			$('#menu').removeClass('visible'); //메뉴바들어가기
+			$("#allClose").hide();				//배경 어두워지는거 풀기
+			return false;
+		} 
+
+		
 		/* $("#login").click(function(){
 			$("#memberCateg1").h
 		}); */
+		
+		//회원 로그인 버튼 클릭시 
+		function memberLoginBtn(){
+			console.log("를룰");
+			var memberIdLogin = $("#memberIdLogin").val();
+			var memberPwdLogin = $("#memberPwdLogin").val();
+			
+			console.log(memberIdLogin);
+			console.log(memberPwdLogin);
+			
+		 	if(memberIdLogin==""){
+		 		swal("아이디를 입력해주세요");
+				return false;
+			}
+			if(memberPwdLogin==""){
+				swal("비밀번호를 입력해주세요");
+				return false;
+			}
+			return true; 
+		}
 		
 		
 		var idCheck = 1;
