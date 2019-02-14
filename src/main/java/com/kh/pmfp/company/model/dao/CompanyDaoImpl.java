@@ -1,6 +1,7 @@
 package com.kh.pmfp.company.model.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.apache.ibatis.session.SqlSession;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -26,6 +27,7 @@ import com.kh.pmfp.company.model.vo.CompanyOrder;
 import com.kh.pmfp.company.model.vo.CompanyOrderStock;
 import com.kh.pmfp.company.model.vo.CompanyRemainMaterial;
 import com.kh.pmfp.company.model.vo.CompanySales;
+import com.kh.pmfp.company.model.vo.CompanySalesList;
 
 @Repository
 public class CompanyDaoImpl implements CompanyDao{
@@ -371,7 +373,26 @@ public class CompanyDaoImpl implements CompanyDao{
 		
 		return list;
 	}
-
+	
+	@Override
+	public HashMap<String, ArrayList<CompanySalesList>> selectCompanySalesList(SqlSessionTemplate sqlSession, int comNo) throws FailSelectCompanySales {
+		// TODO Auto-generated method stub
+		ArrayList<CompanySalesList> inComeList = new ArrayList<CompanySalesList>();
+		inComeList = (ArrayList)sqlSession.selectList("Company.selectCompanySalesIncomeList", comNo);
+		ArrayList<CompanySalesList> outComeList = new ArrayList<CompanySalesList>();
+		outComeList = (ArrayList)sqlSession.selectList("Company.selectCompanySalesOutcomeList", comNo);
+		
+		if(inComeList == null || outComeList == null) {
+			throw new FailSelectCompanySales("업체 매출 조회 실패!");
+		}
+		
+		HashMap<String, ArrayList<CompanySalesList>> hmap = new HashMap<String, ArrayList<CompanySalesList>>();
+		hmap.put("inComeList", inComeList);
+		hmap.put("outComeList", outComeList);
+		
+		return hmap;
+	}
+	
 	
 
 }

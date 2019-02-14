@@ -1,6 +1,7 @@
 package com.kh.pmfp.company.model.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.kh.pmfp.company.model.exception.FailInsertEmployeeInfo;
 import com.kh.pmfp.company.model.exception.FailInsertOrderStock;
@@ -22,6 +23,7 @@ import com.kh.pmfp.company.model.vo.CompanyOrder;
 import com.kh.pmfp.company.model.vo.CompanyOrderStock;
 import com.kh.pmfp.company.model.vo.CompanyRemainMaterial;
 import com.kh.pmfp.company.model.vo.CompanySales;
+import com.kh.pmfp.company.model.vo.CompanySalesList;
 
 public interface CompanyService {
 
@@ -76,5 +78,7 @@ public interface CompanyService {
 	ArrayList<CompanyRemainMaterial> selectAllMaterialList(int comNo) throws FailSelectOrderStock;
 
 	ArrayList<CompanySales> selectAllCompanySales(int comNo) throws FailSelectCompanySales;
+
+	HashMap<String, ArrayList<CompanySalesList>> selectCompanySalesList(int comNo) throws FailSelectCompanySales;
 
 }
