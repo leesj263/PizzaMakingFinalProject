@@ -122,6 +122,30 @@ public class OrderConroller {
 			data.put("basicMenuList", basicMenuList);
 			//----------------------------------------------------------------------------------------------
 			
+			//내 레시피 ----------------------------------------------------------------------------------------------
+			if(request.getSession().getAttribute("loginUser") != null) {
+				int memberNo = ((Member)request.getSession().getAttribute("loginUser")).getMemberNo();
+				ArrayList<MyPizza> mpList = os.selectMyPizzaList(memberNo);
+				
+				HashMap<Integer, ArrayList<MyPizza>> mpMap = new HashMap<Integer, ArrayList<MyPizza>>();
+				for(int i=0; i<mpList.size(); i++) {
+					mpMap.put(mpList.get(i).getMypizzaNo(), null);
+				}
+				for(Integer key : mpMap.keySet()) {
+					ArrayList<MyPizza> mps = new ArrayList<MyPizza>();
+					for(int i=0; i<mpList.size(); i++) {
+						if(mpList.get(i).getMypizzaNo() == key) {
+							mps.add(mpList.get(i));
+						}
+					}
+					mpMap.put(key, mps);
+				}
+				
+				//System.out.println(mpMap);
+				data.put("mpMap", mpMap);
+			}
+			
+			//----------------------------------------------------------------------------------------------
 			return data;
 		} catch (OrderException e) {
 			return null;
@@ -167,7 +191,7 @@ public class OrderConroller {
 	}
 	
 	//레시피 저장
-	@RequestMapping(value="/saveRecipe.cor")
+	@RequestMapping(value="/saveRecipe.cor", produces="application/text; charset=utf8")
 	public @ResponseBody String saveRecipe(HttpServletRequest request,
 			@RequestParam(value="pizzaName", required=false) String pizzaName,
 			@RequestParam(value="dough", required=false) String dough,
@@ -176,7 +200,6 @@ public class OrderConroller {
 			@RequestParam(value="sauce", required=false) String sauce,
 			@RequestParam(value="toppings[]", required=false) List<String> toppings,
 			@RequestParam(value="img", required=false) String img) {
-		
 		/*System.out.println(pizzaName);
 		System.out.println(dough);
 		System.out.println(size);
@@ -232,12 +255,13 @@ public class OrderConroller {
 		} catch (IOException e) {
 			e.printStackTrace();
 			if(file.exists()) file.delete();
-			return "fileError";
+			return "이미지 생성 실패!";
 		} finally {
 			try {
 				if(bos != null) bos.close();
 			} catch (IOException e) {
 				e.printStackTrace();
+				return "이미지 생성 실패!";
 			}
 		}
 		
@@ -247,9 +271,14 @@ public class OrderConroller {
 		image.setImgChangename(fileName);
 		
 		//INSERT
-		//int result = os.insertRecipe(oi, otList, mp, image);
-		
-		return "success";
+		try {
+			int result = os.insertRecipe(oi, otList, mp, image);
+			
+			return "complete";
+		} catch (OrderException e) {
+			if(file.exists()) file.delete();
+			return e.getMessage();
+		}
 	}
 	
 	//사이드 메뉴 페이지

@@ -19,6 +19,8 @@ public interface OrderService {
 
 	ArrayList<BasicTopping> selectBasicToppingList() throws OrderException;
 
-	int insertRecipe(OrderItem oi, ArrayList<OrderTopping> otList, MyPizza mp, Image image);
+	int insertRecipe(OrderItem oi, ArrayList<OrderTopping> otList, MyPizza mp, Image image) throws OrderException;
+
+	ArrayList<MyPizza> selectMyPizzaList(int memberNo) throws OrderException;
 
 }
