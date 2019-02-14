@@ -574,20 +574,22 @@
 		
 		//옵션 & 토핑 세팅 초기화
 		function toppingReset(){
-			for(var i=0; i<setTime.length; i++) {
-				clearTimeout(setTime[i]);
+			if(confirm("초기화하시겠습니까?")) {
+				for(var i=0; i<setTime.length; i++) {
+					clearTimeout(setTime[i]);
+				}
+				setTime = [];
+				$("#pizzaName").val("내 피자");
+				
+				$("#toppings").empty();
+				$(".topping-table tbody td").empty();
+				$('.ui.dropdown').dropdown('restore defaults');
+				$.removeCookie("pizzaSetting");
+				$.removeCookie("pizzaSettingTopping");
+				pizzaSetting = null;
+				pizzaSettingTopping = null;
+				priceCalc();
 			}
-			setTime = [];
-			$("#pizzaName").val("내 피자");
-			
-			$("#toppings").empty();
-			$(".topping-table tbody td").empty();
-			$('.ui.dropdown').dropdown('restore defaults');
-			$.removeCookie("pizzaSetting");
-			$.removeCookie("pizzaSettingTopping");
-			pizzaSetting = null;
-			pizzaSettingTopping = null;
-			priceCalc();
 		}
 		
 		//피자 이름 변경시
@@ -1197,6 +1199,7 @@
 				cartNo++;
 				
 				cartLoad();
+				alert("장바구니에 담았습니다!");
 			} else {
 				alert("옵션을 선택하세요!\nex) 도우, 사이즈, 엣지, 소스, 토핑 최소 1개 이상");
 			}
@@ -1339,67 +1342,68 @@
 		//레시피 -----------------------------------------------------------------------------------------------------------
 		//레시피 저장
 		function recipeSave(){
-			if(pizzaSetting != null && pizzaSettingTopping != null){
-				$("#recipeModalLoader").show();
-				$("#recipeModalComplete").hide();
-				$("#recipeModalComplete").off();
-				$("#recipeSaveModal").modal('setting', 'closable', false).modal("show");
-				//이미지 애니메이션 제거
-				$("#doughImg").removeClass('scale-down-center');
-			    $("#doughSauceImg").removeClass('scale-up-center');
-			    $(".doughToppingImg").removeClass('scale-up-center');
-			    $(".doughToppingImg").removeClass('scale-down-center');
-			    
-			    html2canvas(document.getElementById("toppings")).then(function(canvas) {
-			    	//재료정보
-					var toppings = [];
-					for(var materialNo in pizzaSettingTopping){
-						toppings.push(pizzaSettingTopping[materialNo].topping.materialNo+":"+pizzaSettingTopping[materialNo].amount);
-					}
-					var setting = {
-							pizzaName: pizzaSetting.pizzaName,
-							dough: pizzaSetting.dough.materialNo,
-							size: pizzaSetting.size,
-							edge: pizzaSetting.edge.materialNo,
-							sauce: pizzaSetting.sauce.materialNo,
-							toppings: toppings,
-							img: canvas.toDataURL("image/png")
-					};
-			    	
-					$.ajax({
-						url: "saveRecipe.cor",
-						type: "POST",
-						data: setting,
-						success: function(data){
-							//alert(data);
-							if(data != null){
-								mpMap = data;
-								$("#myPizzaMenuDiv .menu").empty();
-								for(var mypizzaNo in data) {
-									$("#myPizzaMenuDiv .menu").append($("<div class='item' onclick='selectMyPizzaMenu("+data[mypizzaNo][0].mypizzaNo+")'>").text(data[mypizzaNo][0].mypizzaName));
+			if(confirm("저장하시겠습니까?")){
+				if(pizzaSetting != null && pizzaSettingTopping != null){
+					$("#recipeModalLoader").show();
+					$("#recipeModalComplete").hide();
+					$("#recipeModalComplete").off();
+					$("#recipeSaveModal").modal('setting', 'closable', false).modal("show");
+					//이미지 애니메이션 제거
+					$("#doughImg").removeClass('scale-down-center');
+				    $("#doughSauceImg").removeClass('scale-up-center');
+				    $(".doughToppingImg").removeClass('scale-up-center');
+				    $(".doughToppingImg").removeClass('scale-down-center');
+				    
+				    html2canvas(document.getElementById("toppings")).then(function(canvas) {
+				    	//재료정보
+						var toppings = [];
+						for(var materialNo in pizzaSettingTopping){
+							toppings.push(pizzaSettingTopping[materialNo].topping.materialNo+":"+pizzaSettingTopping[materialNo].amount);
+						}
+						var setting = {
+								pizzaName: pizzaSetting.pizzaName,
+								dough: pizzaSetting.dough.materialNo,
+								size: pizzaSetting.size,
+								edge: pizzaSetting.edge.materialNo,
+								sauce: pizzaSetting.sauce.materialNo,
+								toppings: toppings,
+								img: canvas.toDataURL("image/png")
+						};
+				    	
+						$.ajax({
+							url: "saveRecipe.cor",
+							type: "POST",
+							data: setting,
+							success: function(data){
+								//alert(data);
+								if(data != null){
+									mpMap = data;
+									$("#myPizzaMenuDiv .menu").empty();
+									for(var mypizzaNo in data) {
+										$("#myPizzaMenuDiv .menu").append($("<div class='item' onclick='selectMyPizzaMenu("+data[mypizzaNo][0].mypizzaNo+")'>").text(data[mypizzaNo][0].mypizzaName));
+									}
+									
+									$("#recipeModalLoader").hide();
+									$("#recipeModalComplete").show();
+									$("#recipeModalComplete").click(function(){
+										$("#recipeSaveModal").modal("hide");
+									});
+									$("#recipeSaveModal").modal('setting', 'closable', true);
+								} else {
+									$("#recipeSaveModal").modal('setting', 'closable', true).modal("hide");
+									alert("레시피 저장 실패!");
 								}
 								
-								$("#recipeModalLoader").hide();
-								$("#recipeModalComplete").show();
-								$("#recipeModalComplete").click(function(){
-									$("#recipeSaveModal").modal("hide");
-								});
-								$("#recipeSaveModal").modal('setting', 'closable', true);
-							} else {
+							}, error: function(data){
 								$("#recipeSaveModal").modal('setting', 'closable', true).modal("hide");
 								alert("레시피 저장 실패!");
 							}
-							
-						}, error: function(data){
-							$("#recipeSaveModal").modal('setting', 'closable', true).modal("hide");
-							alert("레시피 저장 실패!");
-						}
+						});
 					});
-				});
-			} else {
-				alert("옵션을 선택하세요!\nex) 도우, 사이즈, 엣지, 소스, 토핑 최소 1개 이상");
+				} else {
+					alert("옵션을 선택하세요!\nex) 도우, 사이즈, 엣지, 소스, 토핑 최소 1개 이상");
+				}
 			}
-			
 		}
 		
 		//내 레시피 선택
