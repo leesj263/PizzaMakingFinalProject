@@ -23,17 +23,19 @@
 		<br>
 		<br>
 		<div class="tableArea">
-			<form action="insertQna.bo" method="post">
+			<form action="writeQna.bo" method="post">
 				<table align="center">
 					<tr>
 						<td><b>분야</b></td>
 						<td>
-							<select name="category">
-								<option value="10">결제 </option>
-								<option value="20">주문</option>
-								<option value="30">공유 / 후기 / 질문답변</option>
-								<option value="70">이벤트</option>
+							<select name="category" onChange="showCategory(this.options[this.selectedIndex].value);">
+								<option value="1" selected>결제 </option>
+								<option value="2">주문</option>
+								<option value="3">공유 / 후기 / 질문답변</option>
+								<option value="4">이벤트</option>
 							</select>
+							<!-- <select name="boardCate" style="display: none;">
+										</select> -->
 						</td>
 					</tr>
 					<tr></tr>
@@ -41,7 +43,7 @@
 					<tr>
 						<td><b>제목</b></td>
 						<td colspan="3">
-							<input type="text" size="60" name="title" placeholder="제목을 입력해주세요">
+							<input type="text" size="60" name="boardTitle" placeholder="제목을 입력해주세요">
 						</td>
 					</tr>
 					<tr></tr>
@@ -49,9 +51,11 @@
 					<tr>
 						<td><b>내용</b></td>
 						<td>
-							<input type="textarea" name="content" cols="100" rows="25" style="resize:none;" placeholder="내용을 입력해주세요"></textarea>
+							<input type="textarea" name="content" cols="100" rows="100" style="resize:none;" placeholder="내용을 입력해주세요"></textarea>
 						</td>
 					</tr>
+					<tr></tr>
+					<tr></tr>
 					<tr>
 						<td><b>파일첨부</b></td>
 						<td colspan="3">
