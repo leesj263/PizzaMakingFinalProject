@@ -62,6 +62,22 @@
 		FROM BASIC_TOPPING
 	</select>
 	
+	<!-- 레시피 저장 -->
+	<!-- SEQ_ODITNO.NEXTVAL -->
+	<insert id="insertRecipeOrderItem" parameterType="com.kh.pmfp.customer.model.vo.OrderItem">
+		INSERT INTO ORDER_ITEM(ORDER_INO,ORDER_NO,ORDER_ICATEG,ORDER_ISIZE)
+	    VALUES(#{orderIno},0,0,#{orderIsize})
+	</insert>
+	<insert id="insertRecipeOrderTopping" parameterType="com.kh.pmfp.customer.model.vo.OrderTopping">
+		INSERT INTO ORDER_TOPPING(ORDER_INO,MATERIAL_NO,ORDER_TCOUNT)
+    	VALUES(#{orderIno},#{materialNo},#{orderTcount})
+	</insert>
+	<insert id="insertRecipeMyPizza" parameterType="com.kh.pmfp.customer.model.vo.MyPizza">
+		INSERT INTO MY_PIZZA(MYPIZZA_NO,ORDER_INO,MEMBER_NO,MYPIZZA_NAME)
+    	VALUES(SEQ_MYPZNO.NEXTVAL,#{orderIno},#{memberNo},#{mypizzaName})
+	</insert>
+	
+	
 </mapper>
 
 

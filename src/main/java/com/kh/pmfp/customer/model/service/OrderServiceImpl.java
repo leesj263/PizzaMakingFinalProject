@@ -10,7 +10,11 @@ import com.kh.pmfp.customer.model.dao.OrderDao;
 import com.kh.pmfp.customer.model.exception.OrderException;
 import com.kh.pmfp.customer.model.vo.BasicMenu;
 import com.kh.pmfp.customer.model.vo.BasicTopping;
+import com.kh.pmfp.customer.model.vo.Image;
 import com.kh.pmfp.customer.model.vo.MaterialImage;
+import com.kh.pmfp.customer.model.vo.MyPizza;
+import com.kh.pmfp.customer.model.vo.OrderItem;
+import com.kh.pmfp.customer.model.vo.OrderTopping;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -35,6 +39,13 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public ArrayList<BasicTopping> selectBasicToppingList() throws OrderException {
 		return od.selectBasicToppingList(sqlSession);
+	}
+
+	//레시피 저장
+	@Override
+	public int insertRecipe(OrderItem oi, ArrayList<OrderTopping> otList, MyPizza mp, Image image) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }
