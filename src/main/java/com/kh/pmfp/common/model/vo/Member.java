@@ -15,11 +15,13 @@ public class Member implements Serializable{
 	private Date memberEnroll;
 	private String memberStatus;
 	private int comNo;
+	private String memberPhone;
 	
 	public Member() {}
 
 	public Member(int memberNo, int memberCateg, String memberId, String memberPwd, String memberName,
-			String memberNickName, String memberEmail, Date memberEnroll, String memberStatus, int comNo) {
+			String memberNickName, String memberEmail, Date memberEnroll, String memberStatus, int comNo,
+			String memberPhone) {
 		super();
 		this.memberNo = memberNo;
 		this.memberCateg = memberCateg;
@@ -31,6 +33,7 @@ public class Member implements Serializable{
 		this.memberEnroll = memberEnroll;
 		this.memberStatus = memberStatus;
 		this.comNo = comNo;
+		this.memberPhone = memberPhone;
 	}
 
 	public int getMemberNo() {
@@ -113,12 +116,20 @@ public class Member implements Serializable{
 		this.comNo = comNo;
 	}
 
+	public String getMemberPhone() {
+		return memberPhone;
+	}
+
+	public void setMemberPhone(String memberPhone) {
+		this.memberPhone = memberPhone;
+	}
+
 	@Override
 	public String toString() {
 		return "Member [memberNo=" + memberNo + ", memberCateg=" + memberCateg + ", memberId=" + memberId
 				+ ", memberPwd=" + memberPwd + ", memberName=" + memberName + ", memberNickName=" + memberNickName
 				+ ", memberEmail=" + memberEmail + ", memberEnroll=" + memberEnroll + ", memberStatus=" + memberStatus
-				+ ", comNo=" + comNo + "]";
+				+ ", comNo=" + comNo + ", memberPhone=" + memberPhone + "]";
 	}
 
 	

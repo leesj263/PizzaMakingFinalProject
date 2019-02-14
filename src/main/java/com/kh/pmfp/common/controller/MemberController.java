@@ -27,7 +27,7 @@ import com.kh.pmfp.common.model.vo.MailHandler;
 import com.kh.pmfp.common.model.vo.Member;
 import com.kh.pmfp.company.controller.Coolsms;
 
-@SessionAttributes("loginUser")
+@SessionAttributes({"loginUser","noUserLogin"})
 @Controller
 public class MemberController {
 	
@@ -39,7 +39,7 @@ public class MemberController {
 	private JavaMailSender mailSender;
 	
 	
-	//로그인!-암호화 처리 전
+	//로그인
 	@RequestMapping(value="login.co",method=RequestMethod.POST)
 	public String loginCheck(Member m,HttpServletRequest request,HttpServletResponse response) {
 		
@@ -69,6 +69,11 @@ public class MemberController {
 	@RequestMapping("goMain.co")
 	public String goMain() {
 		return "main/main";
+	}
+	
+	@RequestMapping("allClose.co")
+	public String allClose() {
+		return "goMain.co";
 	}
 	
 	@RequestMapping("logout.co")
@@ -318,8 +323,12 @@ public class MemberController {
 	public String nonMemberlogin(@RequestParam String memberName, 
 			@RequestParam String memberPhone,HttpServletRequest request,HttpServletResponse response) {
 		
-		request.getSession().setAttribute("memberName", memberName);
-		request.getSession().setAttribute("memberPhone", memberPhone);
+		Member noUserLogin = new Member();
+		
+		noUserLogin.setMemberName(memberName);
+		noUserLogin.setMemberPhone(memberPhone);
+		
+		request.getSession().setAttribute("noUserLogin", noUserLogin);
 		
 		
 		return "redirect:goMain.co";
