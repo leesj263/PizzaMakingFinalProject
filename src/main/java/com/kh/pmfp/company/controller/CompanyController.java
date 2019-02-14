@@ -29,6 +29,7 @@ import com.kh.pmfp.company.model.exception.FailUpdateOrderStatus;
 import com.kh.pmfp.company.model.exception.FaileDetailMessage;
 import com.kh.pmfp.company.model.service.CompanyService;
 import com.kh.pmfp.company.model.vo.CompanyBoard;
+import com.kh.pmfp.company.model.vo.CompanyCalendar;
 import com.kh.pmfp.company.model.vo.CompanyEmployee;
 import com.kh.pmfp.company.model.vo.CompanyMaterial;
 import com.kh.pmfp.company.model.vo.CompanyOrder;
@@ -648,6 +649,19 @@ public class CompanyController {
 		
 	}
 	
+	
+	@RequestMapping("calendarDetail.com")
+	public String calendarDetail(HttpServletRequest request, HttpServletResponse response, String id) {
+		ArrayList<CompanyCalendar> list = new ArrayList<CompanyCalendar>();
+		
+		System.out.println("id : " + id);
+		java.sql.Date date = java.sql.Date.valueOf(id);
+		System.out.println("date : " + date);
+		//list = cs.calendarDetail();
+		
+		
+		return "";
+	}
 	
 	
 }

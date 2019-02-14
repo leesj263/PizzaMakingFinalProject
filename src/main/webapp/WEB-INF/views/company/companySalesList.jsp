@@ -1,6 +1,8 @@
 <!doctype html>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
@@ -14,10 +16,18 @@
 <title>Sufee Admin - HTML5 Admin Template</title>
 <meta name="description" content="Sufee Admin - HTML5 Admin Template">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="https://code.jquery.com/jquery-3.3.1.js"
+	integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+	crossorigin="anonymous"></script>
 <style>
-	td{
-		font-size : 0.9em;
-	}
+td {
+	font-size: 0.9em;
+}
+
+.col-lg-4{
+	position : relative;
+	left : 65%;
+}
 </style>
 </head>
 <body>
@@ -39,68 +49,32 @@
 						style="table-layout: fixed; word-wrap: break-word;">
 						<thead>
 							<tr>
-								<th style = "width : 6%">번호</th>
-								<th style = "width : 11%">날짜</th>
-								<th style = "width : 12%">카테고리</th>
-								<th style = "width : 24%">판매, 구매물품</th>
-								<th style = "width : 25%">가격</th>
+								<th style="width: 6%">번호</th>
+								<th style="width: 11%">날짜</th>
+								<th style="width: 7%">카테고리</th>
+								<th style="width: 60%">판매, 구매물품</th>
+								<th>가격</th>
 							</tr>
 						</thead>
 						<tbody>
-							<tr class="adminMessageTr" style="cursor: pointer;">
-								<td>1</td>
-								<td>minkyu112</td>
-								<td>010-9972-5512</td>
-								<td>방배3동 고가도로 212가길 18 301호</td>
-								<td>치즈 20g, 새우 80g, 토마토소스</td>
-								<td>21,000원</td>
-								<td>19.01.17 19:03</td>
-							</tr>
-							<tr class="adminMessageTr" style="cursor: pointer;">
-								<td>2</td>
-								<td>tjnwn123</td>
-								<td>010-6751-7715</td>
-								<td>사당1동 남부순환로 212가길 18 502호</td>
-								<td>불고기 50g, 치즈 80g, 토마토소스</td>
-								<td>18,000원</td>
-								<td>19.01.17 19:01</td>
-							</tr>
-							<tr class="adminMessageTr" style="cursor: pointer;">
-								<td>3</td>
-								<td>pizzaMan551</td>
-								<td>010-2491-9905</td>
-								<td>동작 2동 사이도로 117나길 5 5동 201호</td>
-								<td>치즈 10g, 페페로니 180g, 데리야끼소스</td>
-								<td>25,000원</td>
-								<td>19.01.17 18:53</td>
-							</tr>
-							<tr class="adminMessageTr" style="cursor: pointer;">
-								<td>4</td>
-								<td>qikkzam1</td>
-								<td>010-8132-5512</td>
-								<td>방배3동 고가도로 212가길 18 301호</td>
-								<td>치즈 20g, 새우 80g, 토마토소스</td>
-								<td>19,000원</td>
-								<td>19.01.16 19:03</td>
-							</tr>
-							<tr class="adminMessageTr" style="cursor: pointer;">
-								<td>5</td>
-								<td>jgcjww3</td>
-								<td>010-8811-7715</td>
-								<td>사당1동 남부순환로 212가길 18 502호</td>
-								<td>불고기 50g, 치즈 80g, 토마토소스</td>
-								<td>12,000원</td>
-								<td>19.01.16 19:01</td>
-							</tr>
-							<tr class="adminMessageTr" style="cursor: pointer;">
-								<td>6</td>
-								<td>2sfxrrr551</td>
-								<td>010-3391-9905</td>
-								<td>동작 2동 사이도로 117나길 5 5동 201호</td>
-								<td>치즈 10g, 페페로니 180g, 데리야끼소스</td>
-								<td>25,000원</td>
-								<td>19.01.16 18:53</td>
-							</tr>
+							<c:forEach items="${inComeList}" var="value">
+								<tr class="adminMessageTr" style="cursor: pointer;">
+									<td>${ value.salesNo }</td>
+									<td>${ value.salesInputdate }</td>
+									<td>수익</td>
+									<td>${ value.addTopping }</td>
+									<td>${ value.salesPrice }원</td>
+								</tr>
+							</c:forEach>
+							<c:forEach items="${outComeList}" var="value">
+								<tr class="adminMessageTr" style="cursor: pointer;">
+									<td>${ value.salesNo }</td>
+									<td>${ value.salesInputdate }</td>
+									<td>지출</td>
+									<td>${ value.materialName }(${ value.materialWeight }KG)</td>
+									<td>${ value.salesPrice }원</td>
+								</tr>
+							</c:forEach>
 						</tbody>
 					</table>
 
@@ -111,28 +85,63 @@
 				</div>
 			</div>
 		</div>
+<%-- 
+<div class="modal fade" id="smallmodal" tabindex="-1" role="dialog"
+		aria-labelledby="smallmodalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-sm" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="smallmodalLabel">스마트폰 번호 입력</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<form method="post" id="smsForm">
+						번호입력 : <input type="text" name="from" style="border-radius: 5px" />
+						<input type = "hidden" name="text" value = '
+						[피자학교]업체 매출 내역안내
+						안녕하세요, 점주님의 매출 내역을 안내해드립니다!
+						▣지출품목
+						<c:forEach items="${outComeList}" var="value">
+							◆  ${ value.salesInputdate }, ${ value.materialName }(${ value.materialWeight }KG),${ value.salesPrice }원, 	
+						</c:forEach>
+						▣수익품목
+						<c:forEach items="${inComeList}" var="value">
+							◆${ value.salesInputdate }, ${ value.addTopping }, ${ value.salesPrice }원, 	
+						</c:forEach>'/>
+						<!-- 명세서 내역 입력  -->
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-dismiss="modal">취소</button>
+					<button type="button" class="btn btn-primary"
+						onclick="sendSMS('sendExampleMsg2.com')" value="전송하기">전송</button>
+				</div>
+			</div>
+		</div>
+	</div>
 
-
+ --%>
 
 
 		<div class="content mt-3">
 
-			<div class="col-lg-8" style="background: lightgray;">
+		<%-- 	<div class="col-lg-8" style="background: lightgray;">
 				<img
 					src="${contextPath }/resources/companyCss/images/Smartphone-Message-icon.png"
 					style="width: 50px; height: 50px">
 				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 				'매출 내역 받기' 클릭시 내역이 스마트폰으로 전송됩니다!
-			</div>
+			</div> --%>
 			<div class="col-lg-4">
 				<div align="right">
-					<button
-						onclick="location.href = 'movePage.com?movePage=companySales'"
-						type="button" class="btn btn-primary" style="width: 150px">매출
-						내역 받기</button>
-					<button
-						onclick="selectAllCompanySales.com"
-						type="button" class="btn btn-secondary" style="width: 150px">돌아가기</button>
+					<!-- <button  type="button" class="btn btn-primary" style="width: 150px" data-toggle="modal" data-target="#smallmodal">매출
+						내역 받기</button> -->
+					<button onclick="location.href='selectAllCompanySales.com'" type="button"
+						class="btn btn-secondary" style="width: 150px">돌아가기</button>
 				</div>
 			</div>
 
@@ -142,7 +151,14 @@
 
 
 	</div>
-
+<!-- 	<script>
+	 function sendSMS(pageName){
+			//전송해야되는 명세서 내용을 text에 담아 전송
+			
+	    	$("#smsForm").attr("action", pageName);
+	    	$("#smsForm").submit();
+	    }
+  </script> -->
 
 	<script
 		src="${contextPath }/resources/companyCss/vendors/datatables.net/js/jquery.dataTables.min.js"></script>
