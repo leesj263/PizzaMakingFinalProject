@@ -10,21 +10,7 @@
 <script src="/pmfp/resources/customer/js/common.js"></script>
 <link rel="stylesheet" href="/pmfp/resources/customer/css/pizzaMaking.css">
 <style>
-	.customModal{
-		position: fixed;
-		top: 0;
-		width: 100%;
-		height: 100%;
-		background: black;
-		opacity: 0;
-		z-index: 1000;
-	}
-	.cartTable tbody tr td:not(:nth-child(2)){
-		text-align: center;
-	}
-	.cartTable tbody tr td{
-		height: 80px;
-	}
+
 </style>
 </head>
 <body>
@@ -72,7 +58,7 @@
 					<i class="edit icon"></i>
 				</button>
 				
-				<button class="ui blue button" style="margin-left: 20px;">
+				<button class="ui blue button" onclick="recipeSave();" style="margin-left: 20px;">
 					레시피 저장
 				</button>
 				<button class="ui black button" onclick="toppingReset();">
@@ -463,8 +449,8 @@
 		//공통 -----------------------------------------------------------------------------------------------------------
 		//피자 세팅
 		function pizzaSettingFunc(){
-			//console.log(pizzaSetting);
-			//console.log(pizzaSettingTopping);
+			console.log(pizzaSetting);
+			console.log(pizzaSettingTopping);
 			if(pizzaSetting){
 				if(pizzaSetting.pizzaName) $("#pizzaName").val(pizzaSetting.pizzaName);
 				if(pizzaSetting.dough){
@@ -1253,7 +1239,9 @@
 			
 			$.cookie.raw = true;
 			$.removeCookie("cartNo"+cart);
+			$.removeCookie("cartNoList");
 			$.cookie("cartNo"+cart, JSON.stringify(cartList[cart]), {expires: 1});
+			$.cookie("cartNoList", JSON.stringify(cartNoList), {expires: 1});
 			
 			$(btn).parent().parent().children().eq(2).find(".amount").text(cartList[cart].amount);
 			$(btn).parent().parent().children().eq(3).text(numComma(price*cartList[cart].amount));
@@ -1269,7 +1257,9 @@
 				
 				$.cookie.raw = true;
 				$.removeCookie("cartNo"+cart);
+				$.removeCookie("cartNoList");
 				$.cookie("cartNo"+cart, JSON.stringify(cartList[cart]), {expires: 1});
+				$.cookie("cartNoList", JSON.stringify(cartNoList), {expires: 1});
 				
 				$(btn).parent().parent().children().eq(2).find(".amount").text(cartList[cart].amount);
 				$(btn).parent().parent().children().eq(3).text(numComma(price*cartList[cart].amount));
@@ -1294,10 +1284,47 @@
 				$("#cartTotalPrice").text("0 원")
 			}
 		}
-		
 		//-----------------------------------------------------------------------------------------------------------
 		
 		
+		//레시피 -----------------------------------------------------------------------------------------------------------
+		//레시피 저장
+		function recipeSave(){
+			//이미지 애니메이션 제거
+			$("#doughImg").removeClass('scale-down-center');
+		    $("#doughSauceImg").removeClass('scale-up-center');
+		    $(".doughToppingImg").removeClass('scale-up-center');
+		    $(".doughToppingImg").removeClass('scale-down-center');
+		    
+		    html2canvas(document.getElementById("toppings")).then(function(canvas) {
+		    	//재료정보
+				var toppings = [];
+				for(var materialNo in pizzaSettingTopping){
+					toppings.push(pizzaSettingTopping[materialNo].topping.materialNo+","+pizzaSettingTopping[materialNo].amount);
+				}
+				var setting = {
+						pizzaName: pizzaSetting.pizzaName,
+						dough: pizzaSetting.dough.materialNo,
+						size: pizzaSetting.size,
+						edge: pizzaSetting.edge.materialNo,
+						sauce: pizzaSetting.sauce.materialNo,
+						toppings: toppings,
+						img: canvas.toDataURL("image/png")
+				};
+		    	
+				$.ajax({
+					url: "saveRecipe.cor",
+					type: "POST",
+					data: setting,
+					success: function(data){
+						console.log("우왕");
+					}, error: function(data){
+						console.log("레시피 저장 실패!");
+					}
+				});
+			});
+		}
+		//-----------------------------------------------------------------------------------------------------------
 		
 	</script>
 </body>

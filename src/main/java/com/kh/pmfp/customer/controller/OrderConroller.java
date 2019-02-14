@@ -2,12 +2,12 @@ package com.kh.pmfp.customer.controller;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -17,13 +17,17 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 
+import com.kh.pmfp.common.model.vo.Member;
 import com.kh.pmfp.customer.model.exception.OrderException;
 import com.kh.pmfp.customer.model.service.OrderService;
 import com.kh.pmfp.customer.model.vo.BasicMenu;
 import com.kh.pmfp.customer.model.vo.BasicTopping;
+import com.kh.pmfp.customer.model.vo.Image;
 import com.kh.pmfp.customer.model.vo.MaterialImage;
+import com.kh.pmfp.customer.model.vo.MyPizza;
+import com.kh.pmfp.customer.model.vo.OrderItem;
+import com.kh.pmfp.customer.model.vo.OrderTopping;
 
 @Controller
 public class OrderConroller {
@@ -124,16 +128,15 @@ public class OrderConroller {
 		}
 	}
 	
-	//이미지 업로드
+	//이미지 파일 생성
 	@RequestMapping(value="/pizzaMakingImgUpload.cor")
 	public @ResponseBody String pizzaMakingImgUpload(HttpServletRequest request,
 			@RequestParam String img) {
 		
-		//이미지 바이트 변환
+		//이미지 파일 생성
 		String base64Image = img.split(",")[1];
 		byte[] imageBytes = javax.xml.bind.DatatypeConverter.parseBase64Binary(base64Image);
 		
-		//파일생성
 		String root = request.getSession().getServletContext().getRealPath("resources");
 		String filePath = root + "\\customer\\images\\myPizza";
 		long currentTime = System.currentTimeMillis();
@@ -150,17 +153,103 @@ public class OrderConroller {
 			bos.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
+			if(file.exists()) file.delete();
+			return "fileError";
 		} finally {
 			try {
-				bos.close();
+				if(bos != null) bos.close();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
 		
+		return "complete";
+	}
+	
+	//레시피 저장
+	@RequestMapping(value="/saveRecipe.cor")
+	public @ResponseBody String saveRecipe(HttpServletRequest request,
+			@RequestParam(value="pizzaName", required=false) String pizzaName,
+			@RequestParam(value="dough", required=false) String dough,
+			@RequestParam(value="size", required=false) String size,
+			@RequestParam(value="edge", required=false) String edge,
+			@RequestParam(value="sauce", required=false) String sauce,
+			@RequestParam(value="toppings[]", required=false) List<String> toppings,
+			@RequestParam(value="img", required=false) String img) {
 		
+		/*System.out.println(pizzaName);
+		System.out.println(dough);
+		System.out.println(size);
+		System.out.println(edge);
+		System.out.println(sauce);
+		System.out.println(toppings);
+		System.out.println(img);*/
+		//비로그인 시
+		if(request.getSession().getAttribute("loginUser") == null) return "loginError";
 		
-		return "성공";
+		//객체 생성
+		int memberNo = ((Member)request.getSession().getAttribute("loginUser")).getMemberNo();
+		OrderItem oi = new OrderItem();
+		oi.setOrderIsize(size);
+		
+		ArrayList<OrderTopping> otList = new ArrayList<OrderTopping>();
+		otList.add(new OrderTopping(Integer.parseInt(dough), 1));
+		otList.add(new OrderTopping(Integer.parseInt(edge), 1));
+		otList.add(new OrderTopping(Integer.parseInt(sauce), 1));
+		
+		for(int i=0; i<toppings.size(); i++){
+			String[] tmp = toppings.get(i).split(",");
+			
+			OrderTopping ot = new OrderTopping();
+			ot.setMaterialNo(Integer.parseInt(tmp[0]));
+			ot.setOrderTcount(Integer.parseInt(tmp[1]));
+			
+			otList.add(ot);
+		}
+		
+		MyPizza mp = new MyPizza();
+		mp.setMemberNo(memberNo);
+		mp.setMypizzaName(pizzaName);
+		
+		//이미지 파일 생성
+		String base64Image = img.split(",")[1];
+		byte[] imageBytes = javax.xml.bind.DatatypeConverter.parseBase64Binary(base64Image);
+		
+		String root = request.getSession().getServletContext().getRealPath("resources");
+		String filePath = root + "\\customer\\images\\myPizza";
+		long currentTime = System.currentTimeMillis();
+		SimpleDateFormat ft = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+		String randomNum = String.format("%07d",(int)(Math.random() * 1000000));
+		String fileName = ft.format(new java.util.Date(currentTime)) + randomNum + ".png";
+		
+		File file = new File(filePath, fileName);
+		BufferedOutputStream bos = null;
+		try {
+			bos = new BufferedOutputStream(new FileOutputStream(file));
+			
+			bos.write(imageBytes);
+			bos.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
+			if(file.exists()) file.delete();
+			return "fileError";
+		} finally {
+			try {
+				if(bos != null) bos.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		Image image = new Image();
+		image.setImgFilepath(filePath);
+		image.setImgOriginname(pizzaName + ".png");
+		image.setImgChangename(fileName);
+		
+		//INSERT
+		//int result = os.insertRecipe(oi, otList, mp, image);
+		
+		return "success";
 	}
 	
 	//사이드 메뉴 페이지
@@ -169,7 +258,7 @@ public class OrderConroller {
 		return "customer/order/sideMenu";
 	}
 	//주문 페이지
-	@RequestMapping(value="order.cor")
+	@RequestMapping(value="/order.cor")
 	public String order() {
 		return "customer/order/order";
 	}
