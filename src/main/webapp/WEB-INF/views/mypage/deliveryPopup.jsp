@@ -120,6 +120,8 @@
 				
                 //사용자가 입력한 주소의 위도/경도 구하기
                 latlonVal = latlon(roadAddr);
+                console.log("뭐지 "+latlonVal);
+                
  		
             }
 
@@ -167,19 +169,24 @@
     	var roadAddress = $("#roadAddress").val();
     	var jibunAddress = $("#jibunAddress").val();
 
+    	console.log(postcode);
+    	console.log(roadAddress);
+    	console.log(jibunAddress);
     	
     	jQuery.ajax({
     		url:"comLatLon.mp",
-    		data:{userAddr:latlonVal},
+    		data:{latlonVal:latlonVal},
     		type:'POST',
-    		success:function(finalDeliveryLoc){
+    		async:false,
+    		success:function(data){
+    			console.log("finalDeliveryLoc :  " + data);
     			var addr = $("#roadAddress").val() + "+" + $("#detailAddress").val();
     			
     			var deliName = $("#deliveryName").val();
 
     			window.close();
     			
-    			opener.location.href="deliveryAdd.mp?finalDeliveryLoc=" + finalDeliveryLoc + "&addr=" + addr + "&deliName=" + deliName;
+    			opener.location.href="deliveryAdd.mp?finalDeliveryLoc=" + data + "&addr=" + addr + "&deliName=" + deliName;
 
     		},
     		error:function(data){
@@ -194,6 +201,9 @@
 
 
 </div>
+
+
+
 </body>
 
 
