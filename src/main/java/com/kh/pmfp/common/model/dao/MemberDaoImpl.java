@@ -83,6 +83,13 @@ public class MemberDaoImpl implements MemberDao{
 		
 		return sqlSession.update("Member.updatePwd",m);
 	}
+
+	//마이페이지-회원정보 수정
+	@Override
+	public int updateModifyMember(SqlSessionTemplate sqlSession, Member m) {
+		
+		return sqlSession.update("Member.updateModifyMember",m);
+	}
 	
 	
 

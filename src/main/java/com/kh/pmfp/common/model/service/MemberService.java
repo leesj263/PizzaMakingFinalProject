@@ -27,6 +27,9 @@ public interface MemberService {
 	//임시 비밀번호로 update
 	int updatePwd(Member m);
 
+	//마이페이지-회원정보 수정
+	int updateModifyMember(Member m);
+
 
 
 	
