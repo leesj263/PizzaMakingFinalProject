@@ -38,4 +38,7 @@ public interface MemberDao {
 	//임시비밀번호로 update
 	int updatePwd(SqlSessionTemplate sqlSession, Member m);
 
+	//마이페이지-회원정보 수정
+	int updateModifyMember(SqlSessionTemplate sqlSession, Member m);
+
 }

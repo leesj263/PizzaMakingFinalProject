@@ -113,6 +113,15 @@ public class MemberServiceImpl implements MemberService{
 		return result;
 	}
 
+	//마이페이지-회원정보 수정
+	@Override
+	public int updateModifyMember(Member m) {
+
+		int result = md.updateModifyMember(sqlSession,m);
+		
+		return result;
+	}
+
 
 	
 

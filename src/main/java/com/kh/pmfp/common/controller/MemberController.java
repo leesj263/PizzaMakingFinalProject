@@ -334,6 +334,56 @@ public class MemberController {
 		return "redirect:goMain.co";
 	}
 	
+	//마이페이지-이메일 인증
+	@RequestMapping("modifySendMail.co")
+	public @ResponseBody HashMap<String, Object> modifySendMail(@RequestParam String modifyMemberName,
+									@RequestParam String modifyMemberEmail,@RequestParam String randomCode) throws MessagingException, UnsupportedEncodingException{
+		
+		System.out.println(modifyMemberEmail+modifyMemberName+randomCode);
+		
+		HashMap<String, Object> hmap = new HashMap<String,Object>();
+		MailHandler sendMail = new MailHandler(mailSender);
+		sendMail.setSubject("[피자 제작소 이메일 인증 발송]");
+		sendMail.setText(new StringBuffer().append("<h1>인증번호</h1>")
+                .append("["+randomCode+"]")
+                .toString());
+		sendMail.setFrom("yesols9003@gmail.com", "예솔쓰");
+		sendMail.setTo(modifyMemberEmail);
+		sendMail.send();
+		
+		hmap.put("sendMail", "성공");
+		return hmap;
+	}
+	
+	//마이페이지 -회원정보 수정
+	@RequestMapping("modifyMember.co")
+	public String modifyMember(Member m,HttpServletRequest request) {
+		
+		
+	
+		String encPassword = passwordEncoder.encode(m.getMemberPwd());
+		m.setMemberPwd(encPassword);
+		
+		int result = ms.updateModifyMember(m);
+
+		
+		
+		if(result>0) {
+			
+			Member loginUser = (Member)request.getSession().getAttribute("loginUser");
+			loginUser.setMemberName(m.getMemberName());
+			loginUser.setMemberPwd(m.getMemberPwd());
+			loginUser.setMemberEmail(m.getMemberEmail());
+			loginUser.setMemberNickName(m.getMemberNickName());
+			request.getSession().setAttribute("loginUser", loginUser);
+			
+			return "redirect:goMain.co";
+		}else {
+			return "common/errorPage";
+		}
+		
+		//return result;
+	}
 	
 	
 	
