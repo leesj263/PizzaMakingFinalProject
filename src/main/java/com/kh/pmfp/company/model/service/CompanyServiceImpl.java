@@ -1,6 +1,7 @@
 package com.kh.pmfp.company.model.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,7 @@ import com.kh.pmfp.company.model.vo.CompanyOrder;
 import com.kh.pmfp.company.model.vo.CompanyOrderStock;
 import com.kh.pmfp.company.model.vo.CompanyRemainMaterial;
 import com.kh.pmfp.company.model.vo.CompanySales;
+import com.kh.pmfp.company.model.vo.CompanySalesList;
 
 @Component
 public class CompanyServiceImpl implements CompanyService{
@@ -257,6 +259,15 @@ public class CompanyServiceImpl implements CompanyService{
 		
 		return list;
 	}
-
+	
+	@Override
+	public HashMap<String, ArrayList<CompanySalesList>> selectCompanySalesList(int comNo) throws FailSelectCompanySales {
+		// TODO Auto-generated method stub
+		HashMap<String, ArrayList<CompanySalesList>> hmap = new HashMap<String, ArrayList<CompanySalesList>>();
+		hmap = cd.selectCompanySalesList(sqlSession, comNo);
+		
+		return hmap;
+	}
+	
 	
 }

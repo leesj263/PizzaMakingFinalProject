@@ -106,6 +106,7 @@
 		<result property="materialName" column="MATERIAL_NAME" />
 	</resultMap>
 	
+	
 	<resultMap type="com.kh.pmfp.company.model.vo.CompanySales"
 		id="companySalesResultSet">
 		<id property="salesNo" column="SALES_NO" />
@@ -115,6 +116,21 @@
 		<result property="expenseNo" column="EXPENSE_NO" />
 		<result property="orderNo" column="ORDER_NO" />
 		<result property="salesPrice" column="SALES_PRICE" />
+	</resultMap>
+	
+	<resultMap type="com.kh.pmfp.company.model.vo.CompanySalesList"
+		id="companySalesListResultSet">
+		<id property="salesNo" column="SALES_NO" />
+		<result property="comNo" column="COM_NO" />
+		<result property="salesInputdate" column="SALES_INPUTDATE" />
+		<result property="salesCateg" column="SALES_CATEG" />
+		<result property="expenseNo" column="EXPENSE_NO" />
+		<result property="orderNo" column="ORDER_NO" />
+		<result property="salesPrice" column="SALES_PRICE" />
+		<result property="materialWeight" column="MATERIAL_WEIGHT" />
+		<result property="materialPrice" column="MATERIAL_PRICE" />
+		<result property="materialName" column="MATERIAL_NAME" />
+		<result property="addTopping" column="ADDTOPPING" />
 	</resultMap>
 
 	<select id="selectAdminMessage"
@@ -435,6 +451,40 @@
 		FROM SALES
 		WHERE COM_NO = #{comNo}
 	</select>
+	
+	
+	<select id="selectCompanySalesIncomeList" resultMap="companySalesListResultSet" parameterType="_int">
+		SELECT  S.SALES_NO, S.COM_NO, S.SALES_INPUTDATE, S.SALES_CATEG, S.EXPENSE_NO, S.ORDER_NO, S.SALES_PRICE, LISTAGG(CAST(M.MATERIAL_NAME || 'x' ||
+		M.MATERIAL_WEIGHT || 'g' AS VARCHAR(300)) , ', ') WITHIN GROUP(ORDER
+		BY M.MATERIAL_NAME) ADDTOPPING
+		FROM ORDER_MAIN OM
+		JOIN SALES S
+		ON(S.ORDER_NO = OM.ORDER_NO)
+		JOIN ORDER_ITEM OI
+		ON(OI.ORDER_NO = OM.ORDER_NO)
+		JOIN ORDER_TOPPING OT
+		ON(OT.ORDER_INO = OI.ORDER_INO)
+		JOIN MATERIAL M
+		ON(M.MATERIAL_NO = OT.MATERIAL_NO)
+		WHERE S.COM_NO = #{comNo}
+		GROUP BY S.SALES_NO, S.COM_NO, S.SALES_INPUTDATE, S.SALES_CATEG, S.EXPENSE_NO, S.ORDER_NO, S.SALES_PRICE
+	</select>
+	
+	<select id="selectCompanySalesOutcomeList" resultMap="companySalesListResultSet" parameterType="_int">
+		SELECT S.SALES_NO, S.COM_NO, S.SALES_INPUTDATE, S.SALES_CATEG, S.EXPENSE_NO, S.ORDER_NO, S.SALES_PRICE, OM.MATERIAL_WEIGHT, OM.MATERIAL_PRICE, M.MATERIAL_NAME
+		FROM SALES S
+		JOIN EXPENSE E
+		ON(E.EXPENSE_NO = S.EXPENSE_NO)
+		JOIN ORDER_MATERIAL OM
+		ON(E.ORDEREXPENSE_NO = OM.ORDER_MNO)
+		JOIN MATERIAL M
+		ON(OM.MATERIAL_NO = M.MATERIAL_NO)
+		WHERE S.COM_NO = #{comNo}
+	</select>
+	
+	
+	
+	
 	
 	
 </mapper>

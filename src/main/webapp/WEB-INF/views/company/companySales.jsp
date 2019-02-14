@@ -20,14 +20,14 @@
 	integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
 	crossorigin="anonymous"></script>
 <style>
-	.col-lg-8{
+	.col-lg-10{
 		position : relative;
-		left : 15%
+		left : 7%
 	}
 	
 	#salesListBtn{
 		position : relative;
-		left : 68%
+		left : 72%
 	}
 </style>
 
@@ -47,7 +47,7 @@
 
 
 
-					<div class="col-lg-8">
+					<div class="col-lg-10">
 						<div class="card">
 							<div class="card-body">
 								<h4 class="mb-3">매출관리</h4>
@@ -61,7 +61,7 @@
 
 				</div>
 				<!-- .animated -->
-				<button id = "salesListBtn" onclick = "location.href = 'movePage.com?movePage=companySalesList'" type="button" class="btn btn-primary" style = "width : 150px">매출 내역</button>
+				<button id = "salesListBtn" onclick = "location.href='selectCompanySalesList.com'" type="button" class="btn btn-primary" style = "width : 150px">매출 내역</button>
 			</div>
 			<!-- .content -->
 		</div>
@@ -99,7 +99,10 @@
 			categoryIndex += 7;
 		}
 		
-		
+		console.log("splitArrPlusPrice : " + splitArrPlusPrice);
+		console.log("splitArrPlusDate : " + splitArrPlusDate);
+		console.log("splitArrMinusPrice : " + splitArrMinusPrice);
+		console.log("splitArrMinusDate : " + splitArrMinusDate);
 		
 		
 		for(var i = 0; i < splitArrPlusPrice.length ; i++){
@@ -129,12 +132,17 @@
 		} 
 		
 		
-		/* console.log("splitArrPlusPrice : " + splitArrPlusPrice);
+	 	console.log("splitArrPlusPrice : " + splitArrPlusPrice);
 		console.log("splitArrPlusDate : " + splitArrPlusDate);
 		console.log("splitArrMinusPrice : " + splitArrMinusPrice);
-		console.log("splitArrMinusDate : " + splitArrMinusDate); */
+		console.log("splitArrMinusDate : " + splitArrMinusDate);
 		
-		var basicDate = splitArrPlusDate;
+		
+		
+		
+
+		var basicDate = [];
+		basicDate = JSON.parse(JSON.stringify(splitArrPlusDate));
 		splitArrPlusDate.sort();
 		var FirstSortDate = splitArrPlusDate[0];
 		var arrSize = splitArrPlusDate.length;
@@ -142,11 +150,12 @@
 		splitArrPlusDate = basicDate;
 		
 		
-		var basicDate2 = splitArrMinusDate;
+		var basicDate2 = [];
+		basicDate2 =JSON.parse(JSON.stringify(splitArrMinusDate));
 		splitArrMinusDate.sort();
 		var FirstSortDate2 = splitArrMinusDate[0];
 		var arrSize2 = splitArrMinusDate.length;
-		var LastSortDate2 = splitArrMinusDate[arrSize-1];
+		var LastSortDate2 = splitArrMinusDate[arrSize2-1];
 		splitArrMinusDate = basicDate2;
 		
 		var firstDate;
@@ -163,33 +172,103 @@
 		}else{
 			lastDate=LastSortDate2;
 		}
-		/* console.log("FirstSortDate : " + FirstSortDate);
-		console.log("FirstSortDate2 : " + FirstSortDate2);
 		
-		console.log("splitArrPlusDate : " + splitArrPlusDate);
-		console.log("splitArrMinusDate : " + splitArrMinusDate);
-		console.log("firstDate : " + firstDate);
-		console.log("lastDate : " + lastDate) */
+	
 		
 		var daily = [];
-		var indexDate = firstDate.substring(0, 7);
-		console.log("indexDate : " + indexDate);
-		var intDate = parseInt(firstDate.substring(8, 10));
-		console.log("intDate : " + intDate);
-		var lastDateIndex = parseInt(lastDate.substring(8, 10));
-		console.log("lastDateIndex : " + lastDateIndex);
+		var yearDate = parseInt(firstDate.substring(0, 4));
+		var monthDateStart = parseInt(firstDate.substring(5, 7));
+		var monthDateFinish = parseInt(lastDate.substring(5, 7));
+		var dayDateStart = parseInt(firstDate.substring(8, 10));
+		var dayDateFinish = parseInt(lastDate.substring(8, 10));
 		var k = 0;
+		
+		console.log("monthDateStart : " + monthDateStart);
+		console.log("monthDateFinish : " + monthDateFinish);
+		console.log("dayDateStart : " + dayDateStart);
+		console.log("dayDateFinish : " + dayDateFinish);
+		
+		var monthLastDay = ( new Date( 2019, monthDateStart, 0) ).getDate();
+		console.log("monthLastDay : " + monthLastDay);
+		
 		while(true){
-			if(intDate != lastDateIndex){
-				daily[k] = indexDate + "-" + intDate;
-				intDate++;
-				k++;
-			}else{
-				daily[k] = indexDate + "-" +lastDateIndex;
+			if(monthDateStart != monthDateFinish){
+				while(true){
+					var monthLastDay = ( new Date( 2019, monthDateStart, 0) ).getDate();
+					daily[k] = yearDate + "-" + monthDateStart + "-" + dayDateStart;
+					dayDateStart++;
+					k++;
+					if(dayDateStart == (monthLastDay+1)){
+						dayDateStart = 1;
+						break;
+					}
+				}
+			}
+			
+			
+			if(monthDateStart == monthDateFinish){
+				for(var i = 0; i < dayDateFinish ; i++){
+					daily[k] = yearDate + "-" + monthDateStart + "-" + dayDateStart;
+					dayDateStart++;
+					k++;
+				}
 				break;
+			} 
+			monthDateStart++;
+		}
+		
+		console.log("daily : " + daily);
+
+		console.log("splitArrPlusPrice : " + splitArrPlusPrice);
+		console.log("splitArrMinusPrice : " + splitArrMinusPrice);
+		
+		var dailyPrice = [];
+		var fixPlusDate = [];
+		var fixMinusDate = [];
+		var fixPlusPrice = [];
+		var fixMinusPrice = [];
+		
+		for(var i = 0; i < daily.length ; i++){
+			fixPlusPrice[i] = 0;
+			fixMinusPrice[i] = 0;
+		}
+		
+		
+		for(var i = 0; i< basicDate.length ; i++){
+			fixPlusDate[i] = basicDate[i].substring(0,4) + "-" + parseInt(basicDate[i].substring(5,7)) + "-" + parseInt(basicDate[i].substring(8,10));
+		}
+		
+		for(var i = 0; i< basicDate2.length ; i++){
+			fixMinusDate[i] = basicDate2[i].substring(0,4) + "-" + parseInt(basicDate2[i].substring(5,7)) + "-" + parseInt(basicDate2[i].substring(8,10));
+		}
+		
+		
+		
+		for(var i = 0; i < daily.length ; i++){
+			for(var j = 0; j < fixPlusDate.length; j++){
+				if(daily[i] == fixPlusDate[j]){
+					fixPlusPrice[i] += parseInt(splitArrPlusPrice[j]);
+				}else{
+					fixPlusPrice[i] += 0;
+				}
+			}
+			
+			for(var j = 0; j < fixMinusDate.length; j++){
+				if(daily[i] == fixMinusDate[j]){
+					fixMinusPrice[i] += parseInt(splitArrMinusPrice[j]);
+				}else{
+					fixMinusPrice[i] += 0;
+				}
 			}
 		}
-		console.log("daily : " + daily);
+		
+		
+		console.log("fixPlusDate : " + fixPlusDate);
+		console.log("fixMinusDate : " + fixMinusDate);
+		
+		
+		console.log("fixPlusPrice : " + fixPlusPrice);
+		console.log("fixMinusPrice : " + fixMinusPrice);
 		
 		
 		var ctx = document.getElementById( "lineChart" );
@@ -204,7 +283,7 @@
 	                    borderColor: "rgba(0,0,0,.09)",
 	                    borderWidth: "1",
 	                    backgroundColor: "rgba(0,0,0,.07)",
-	                    data: splitArrMinusPrice
+	                    data: fixMinusPrice
 	                            },
 	                {
 	                    label: "수입",
@@ -212,7 +291,7 @@
 	                    borderWidth: "1",
 	                    backgroundColor: "rgba(0, 123, 255, 0.5)",
 	                    pointHighlightStroke: "rgba(26,179,148,1)",
-	                    data: splitArrPlusPrice
+	                    data: fixPlusPrice
 	                            }
 	                        ]
 	        },
@@ -234,6 +313,7 @@
     
 
 	</script>
+	
 	<script
 		src="${contextPath }/resources/companyCss/vendors/chart.js/dist/Chart.bundle.min.js"></script>
 	<%-- <script

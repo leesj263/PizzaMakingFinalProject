@@ -1,6 +1,7 @@
 package com.kh.pmfp.company.model.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.mybatis.spring.SqlSessionTemplate;
 
@@ -24,6 +25,7 @@ import com.kh.pmfp.company.model.vo.CompanyOrder;
 import com.kh.pmfp.company.model.vo.CompanyOrderStock;
 import com.kh.pmfp.company.model.vo.CompanyRemainMaterial;
 import com.kh.pmfp.company.model.vo.CompanySales;
+import com.kh.pmfp.company.model.vo.CompanySalesList;
 
 
 public interface CompanyDao {
@@ -79,5 +81,7 @@ public interface CompanyDao {
 	ArrayList<CompanyRemainMaterial> selectAllMaterialList(SqlSessionTemplate sqlSession, int comNo) throws FailSelectOrderStock;
 
 	ArrayList<CompanySales> selectAllCompanySales(SqlSessionTemplate sqlSession, int comNo) throws FailSelectCompanySales;
+
+	HashMap<String, ArrayList<CompanySalesList>> selectCompanySalesList(SqlSessionTemplate sqlSession, int comNo) throws FailSelectCompanySales;
 
 }

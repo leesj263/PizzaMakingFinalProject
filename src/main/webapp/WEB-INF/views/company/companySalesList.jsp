@@ -40,12 +40,10 @@
 						<thead>
 							<tr>
 								<th style = "width : 6%">번호</th>
-								<th style = "width : 11%">주문고객</th>
-								<th style = "width : 12%">고객번호</th>
-								<th style = "width : 24%">주소</th>
-								<th style = "width : 25%">추가토핑</th>
-								<th style = "width : 10%">가격</th>
-								<th>주문시간</th>
+								<th style = "width : 11%">날짜</th>
+								<th style = "width : 12%">카테고리</th>
+								<th style = "width : 24%">판매, 구매물품</th>
+								<th style = "width : 25%">가격</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -133,7 +131,7 @@
 						type="button" class="btn btn-primary" style="width: 150px">매출
 						내역 받기</button>
 					<button
-						onclick="location.href = 'movePage.com?movePage=companySales'"
+						onclick="selectAllCompanySales.com"
 						type="button" class="btn btn-secondary" style="width: 150px">돌아가기</button>
 				</div>
 			</div>

@@ -35,6 +35,7 @@ import com.kh.pmfp.company.model.vo.CompanyOrder;
 import com.kh.pmfp.company.model.vo.CompanyOrderStock;
 import com.kh.pmfp.company.model.vo.CompanyRemainMaterial;
 import com.kh.pmfp.company.model.vo.CompanySales;
+import com.kh.pmfp.company.model.vo.CompanySalesList;
 
 import net.sf.json.JSONObject;
 
@@ -611,6 +612,7 @@ public class CompanyController {
 		try {
 			list = cs.selectAllCompanySales(2);
 			request.setAttribute("list", list);
+			System.out.println("매출 리스트 : " + list);
 			return "company/companySales";
 			
 			
@@ -620,6 +622,32 @@ public class CompanyController {
 		}
 
 	}
+	
+	
+	@RequestMapping("selectCompanySalesList.com")
+	public String selectCompanySalesList(HttpServletRequest request, HttpServletResponse response) {
+
+		HashMap<String, ArrayList<CompanySalesList>> hmap = new HashMap<String, ArrayList<CompanySalesList>>();
+		//임의로 회사번호 입력
+		try {
+			hmap = cs.selectCompanySalesList(2);
+			ArrayList<CompanySalesList> inComeList = hmap.get("inComeList");
+			ArrayList<CompanySalesList> outComeList = hmap.get("outComeList");
+			request.setAttribute("inComeList", inComeList);
+			request.setAttribute("outComeList", outComeList);
+			System.out.println("inComeList : " + inComeList);
+			System.out.println("outComeList : " + outComeList);
+			return "company/companySalesList";
+			
+		} catch (FailSelectCompanySales e) {
+			request.setAttribute("msg", e.getMessage());
+			return "common/errorPage";
+		}
+		
+		
+		
+	}
+	
 	
 	
 }
