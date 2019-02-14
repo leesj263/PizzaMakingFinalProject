@@ -227,7 +227,7 @@
 .topping-table tbody tr td:nth-child(2){
 	padding-left: 20px !important;
 }
-.customModal{
+.overlayModal{
 	position: fixed;
 	top: 0;
 	width: 100%;

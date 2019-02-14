@@ -41,6 +41,15 @@
 		<result property="basicTcount" column="BASIC_TCOUNT" />
 	</resultMap>
 	
+	<resultMap type="com.kh.pmfp.customer.model.vo.MyPizza"
+		id="myPizzaListResultSet">
+		<result property="mypizzaNo" column="MYPIZZA_NO" />
+		<result property="mypizzaName" column="MYPIZZA_NAME" />
+		<result property="materialNo" column="MATERIAL_NO" />
+		<result property="materialCateg" column="MATERIAL_CATEG" />
+		<result property="orderTcount" column="ORDER_TCOUNT" />
+	</resultMap>
+	
 	<!-- 재료 전체 리스트 가져오기 -->
 	<select id="selectMateList" resultMap="materialResultSet">
 		SELECT *
@@ -63,7 +72,12 @@
 	</select>
 	
 	<!-- 레시피 저장 -->
-	<!-- SEQ_ODITNO.NEXTVAL -->
+	<select id="selectOrderIno" resultType="_int">
+		SELECT SEQ_ODITNO.NEXTVAL FROM DUAL
+	</select>
+	<select id="selectMypizzaNo" resultType="_int">
+		SELECT SEQ_MYPZNO.NEXTVAL FROM DUAL
+	</select>
 	<insert id="insertRecipeOrderItem" parameterType="com.kh.pmfp.customer.model.vo.OrderItem">
 		INSERT INTO ORDER_ITEM(ORDER_INO,ORDER_NO,ORDER_ICATEG,ORDER_ISIZE)
 	    VALUES(#{orderIno},0,0,#{orderIsize})
@@ -74,9 +88,22 @@
 	</insert>
 	<insert id="insertRecipeMyPizza" parameterType="com.kh.pmfp.customer.model.vo.MyPizza">
 		INSERT INTO MY_PIZZA(MYPIZZA_NO,ORDER_INO,MEMBER_NO,MYPIZZA_NAME)
-    	VALUES(SEQ_MYPZNO.NEXTVAL,#{orderIno},#{memberNo},#{mypizzaName})
+    	VALUES(#{mypizzaNo},#{orderIno},#{memberNo},#{mypizzaName})
+	</insert>
+	<insert id="insertRecipeImage" parameterType="com.kh.pmfp.customer.model.vo.Image">
+		INSERT INTO IMAGE(IMG_NO,IMG_CATEG,IMG_ORIGINNAME,IMG_CHANGENAME,IMG_FILEPATH,IMG_UPLOADDATE,IMG_STATUS,BOARD_NO,MATERIAL_NO,MYPIZZA_NO,EVENT_NO,BASIC_NO)
+    	VALUES(SEQ_IMGNO.NEXTVAL,4,#{imgOriginname},#{imgChangename},#{imgFilepath},SYSDATE,'Y',null,null,#{mypizzaNo},null,null)
 	</insert>
 	
+	<select id="selectMyPizzaList" resultMap="myPizzaListResultSet" parameterType="_int">
+		SELECT MP.MYPIZZA_NO, MP.MYPIZZA_NAME,
+		    OT.MATERIAL_NO, OT.ORDER_TCOUNT,
+		    MA.MATERIAL_CATEG
+		FROM MY_PIZZA MP
+		JOIN ORDER_TOPPING OT ON (MP.ORDER_INO = OT.ORDER_INO
+		    AND MP.MEMBER_NO = #{memberNo})
+		JOIN MATERIAL MA ON (OT.MATERIAL_NO = MA.MATERIAL_NO)
+	</select>
 	
 </mapper>
 

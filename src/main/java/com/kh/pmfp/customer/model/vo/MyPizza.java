@@ -7,15 +7,22 @@ public class MyPizza implements Serializable {
 	private int orderIno;
 	private int memberNo;
 	private String mypizzaName;
+	private int materialNo;
+	private int materialCateg;
+	private int orderTcount;
 	
 	public MyPizza() {}
 
-	public MyPizza(int mypizzaNo, int orderIno, int memberNo, String mypizzaName) {
+	public MyPizza(int mypizzaNo, int orderIno, int memberNo, String mypizzaName, int materialNo, int materialCateg,
+			int orderTcount) {
 		super();
 		this.mypizzaNo = mypizzaNo;
 		this.orderIno = orderIno;
 		this.memberNo = memberNo;
 		this.mypizzaName = mypizzaName;
+		this.materialNo = materialNo;
+		this.materialCateg = materialCateg;
+		this.orderTcount = orderTcount;
 	}
 
 	public int getMypizzaNo() {
@@ -50,11 +57,36 @@ public class MyPizza implements Serializable {
 		this.mypizzaName = mypizzaName;
 	}
 
+	public int getMaterialNo() {
+		return materialNo;
+	}
+
+	public void setMaterialNo(int materialNo) {
+		this.materialNo = materialNo;
+	}
+
+	public int getMaterialCateg() {
+		return materialCateg;
+	}
+
+	public void setMaterialCateg(int materialCateg) {
+		this.materialCateg = materialCateg;
+	}
+
+	public int getOrderTcount() {
+		return orderTcount;
+	}
+
+	public void setOrderTcount(int orderTcount) {
+		this.orderTcount = orderTcount;
+	}
+
 	@Override
 	public String toString() {
 		return "MyPizza [mypizzaNo=" + mypizzaNo + ", orderIno=" + orderIno + ", memberNo=" + memberNo
-				+ ", mypizzaName=" + mypizzaName + "]";
+				+ ", mypizzaName=" + mypizzaName + ", materialNo=" + materialNo + ", materialCateg=" + materialCateg
+				+ ", orderTcount=" + orderTcount + "]";
 	}
-	
+
 	
 }

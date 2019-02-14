@@ -43,9 +43,33 @@ public class OrderServiceImpl implements OrderService {
 
 	//레시피 저장
 	@Override
-	public int insertRecipe(OrderItem oi, ArrayList<OrderTopping> otList, MyPizza mp, Image image) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int insertRecipe(OrderItem oi, ArrayList<OrderTopping> otList, MyPizza mp, Image image) throws OrderException {
+		int result = 0;
+		
+		//ORDER_INO, MYPIZZA_NO setting
+		int orderIno = od.selectOrderIno(sqlSession);
+		int mypizzaNo = od.selectMypizzaNo(sqlSession);
+		oi.setOrderIno(orderIno);
+		for(int i=0; i<otList.size(); i++) otList.get(i).setOrderIno(orderIno);
+		mp.setOrderIno(orderIno);
+		mp.setMypizzaNo(mypizzaNo);
+		image.setMypizzaNo(mypizzaNo);
+		
+		//INSERT
+		int result1 = od.insertRecipe(sqlSession, oi);
+		int result2 = 0;
+		for(int i=0; i<otList.size(); i++) result2 += od.insertRecipe(sqlSession, otList.get(i));
+		int result3 = od.insertRecipe(sqlSession, mp);
+		int result4 = od.insertRecipe(sqlSession, image);
+		
+		if(result1 == 1 && result2 == otList.size() && result3 == 1 && result4 == 1) result = 1;
+		
+		return result;
 	}
-
+	
+	//내 레시피 가져오기
+	@Override
+	public ArrayList<MyPizza> selectMyPizzaList(int memberNo) throws OrderException {
+		return od.selectMyPizzaList(sqlSession, memberNo);
+	}
 }

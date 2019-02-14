@@ -10,7 +10,9 @@
 <script src="/pmfp/resources/customer/js/common.js"></script>
 <link rel="stylesheet" href="/pmfp/resources/customer/css/pizzaMaking.css">
 <style>
-
+	#recipeModalComplete:hover{
+		cursor: default;
+	}
 </style>
 </head>
 <body>
@@ -45,12 +47,11 @@
 				    </div>
 				</div>
 				
-				<div class="ui icon floating labeled dropdown green button no-action" style="margin-left: 20px;">
+				<div class="ui icon floating labeled dropdown green button no-action" id="myPizzaMenuDiv" style="margin-left: 20px;">
 					<i class="dropdown icon"></i>
 					<span class="text">내 레시피</span>
 					<div class="menu">
-						<div class="item">겁나 맛있음</div>
-						<div class="item">끝내주게 맛있음</div>
+						<!-- myPizzaMenu -->
 				    </div>
 				</div>
 				
@@ -291,12 +292,23 @@
 		</div>
 	</div>
 	
+	<!-- 레시피 저장 모달 -->
+	<div class="ui tiny basic modal" id="recipeSaveModal">
+		<div class="ui massive text loader" id="recipeModalLoader">저장중...</div>
+		<div class="ui massive black button" id="recipeModalComplete" style="width: 100%; height: 200px; background-color: transparent;">
+			<i class="huge check icon" style="margin-left: 40px;"></i><br><br>
+			<div>저장완료</div>
+		</div>
+	</div>
+	
 	<!-- 로딩 -->
-	<div class="customModal fade-in" id="loadingModal">
+	<div class="overlayModal fade-in" id="loadingModal">
 		<div class="ui active massive text loader"><font color="white">Loading</font></div>
 	</div>
 	
-	<button onclick="imgSave();">이미지 저장</button>
+	
+	
+	
 	
 	<script src="/pmfp/resources/main/assets/js/semantic/semantic.min.js"></script>
 	<script src="/pmfp/resources/customer/js/jquery.cookie-1.4.1.min.js"></script>
@@ -310,6 +322,7 @@
 		var basicMenuList;
 		var toppingList;
 		var sizeList;
+		var mpMap;
 		var pizzaSetting;
 		var pizzaSettingTopping;
 		var cartNo = 0;
@@ -356,7 +369,18 @@
 					//엣지 리스트
 					for(var i=0; i<edgeList.length; i++) $("#doughEdgeDiv .menu").append($("<div class='item'>").text(edgeList[i]));
 					
-
+					//내 레시피
+					if(data["mpMap"] != null){
+						mpMap = data["mpMap"];
+						console.log(mpMap);
+						
+						for(var mypizzaNo in mpMap) {
+							$("#myPizzaMenuDiv .menu").append($("<div class='item' onclick='selectMyPizzaMenu("+mpMap[mypizzaNo][0].mypizzaNo+")'>").text(mpMap[mypizzaNo][0].mypizzaName));
+						}
+					} else {
+						$("#myPizzaMenuDiv .menu").append($("<div class='item'>").text("없음"));
+					}
+					
 					
 					$("#toppings").empty();
 					$(".topping-table tbody td").empty();
@@ -449,8 +473,8 @@
 		//공통 -----------------------------------------------------------------------------------------------------------
 		//피자 세팅
 		function pizzaSettingFunc(){
-			console.log(pizzaSetting);
-			console.log(pizzaSettingTopping);
+			//console.log(pizzaSetting);
+			//console.log(pizzaSettingTopping);
 			if(pizzaSetting){
 				if(pizzaSetting.pizzaName) $("#pizzaName").val(pizzaSetting.pizzaName);
 				if(pizzaSetting.dough){
@@ -1290,6 +1314,10 @@
 		//레시피 -----------------------------------------------------------------------------------------------------------
 		//레시피 저장
 		function recipeSave(){
+			$("#recipeModalLoader").show();
+			$("#recipeModalComplete").hide();
+			$("#recipeModalComplete").off();
+			$("#recipeSaveModal").modal('setting', 'closable', false).modal("show");
 			//이미지 애니메이션 제거
 			$("#doughImg").removeClass('scale-down-center');
 		    $("#doughSauceImg").removeClass('scale-up-center');
@@ -1317,12 +1345,30 @@
 					type: "POST",
 					data: setting,
 					success: function(data){
-						console.log("우왕");
+						//alert(data);
+						if(data == "complete"){
+							$("#recipeModalLoader").hide();
+							$("#recipeModalComplete").show();
+							$("#recipeModalComplete").click(function(){
+								$("#recipeSaveModal").modal("hide");
+							});
+							$("#recipeSaveModal").modal('setting', 'closable', true);
+						} else {
+							$("#recipeSaveModal").modal('setting', 'closable', true).modal("hide");
+							alert("레시피 저장 실패!");
+						}
+						
 					}, error: function(data){
-						console.log("레시피 저장 실패!");
+						$("#recipeSaveModal").modal('setting', 'closable', true).modal("hide");
+						alert("레시피 저장 실패!");
 					}
 				});
 			});
+		}
+		
+		//내 레시피 선택
+		function selectMyPizzaMenu(){
+			
 		}
 		//-----------------------------------------------------------------------------------------------------------
 		
