@@ -83,33 +83,6 @@
 								</c:choose>
 							</tr>
 						</c:forEach>
-						<!-- <tr>
-							<td><input type="checkbox"></td>
-							<th scope="row">3</th>
-							<td>2019-01-26</td>
-							<td>인천송도점</td>
-							<td>피자 도우 50개 외 5건</td>
-							<td>수령대기중</td>
-							<td>미정산</td>
-						</tr>
-						<tr>
-							<td><input type="checkbox"></td>
-							<th scope="row">2</th>
-							<td>2019-01-25</td>
-							<td>고덕점</td>
-							<td>피자치즈 50봉 외 8건</td>
-							<td>수령완료</td>
-							<td>미정산</td>
-						</tr>
-						<tr>
-							<td><input type="checkbox"></td>
-							<th scope="row">1</th>
-							<td>2019-01-25</td>
-							<td>왕십리점</td>
-							<td>피자 박스 1000개 외 12건</td>
-							<td>수령완료</td>
-							<td>미정산</td>
-						</tr> -->
 					</tbody>
 				</table>
 				<div class="col-md-2"></div>

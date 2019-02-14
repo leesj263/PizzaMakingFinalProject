@@ -9,6 +9,7 @@ import com.kh.pmfp.admin.model.exception.AdminSelectException;
 import com.kh.pmfp.admin.model.exception.AdminUpdateException;
 import com.kh.pmfp.admin.model.vo.AdminBoard;
 import com.kh.pmfp.admin.model.vo.AdminBoard2;
+import com.kh.pmfp.admin.model.vo.AdminCalculateList;
 import com.kh.pmfp.admin.model.vo.AdminMaterial;
 import com.kh.pmfp.admin.model.vo.AdminMember;
 import com.kh.pmfp.admin.model.vo.AdminOrder;
@@ -41,8 +42,17 @@ public interface AdminService {
 	//업체 상세조회용
 	AdminSeller selectSeller(int num) throws AdminSelectException;
 
+	//업체별 주문횟수 카운트용
+	int selectEachSellerOrderCount(int num) throws AdminCountException;
+	
+	//업체 상세보기 - 업체 주문 조회용
+	ArrayList<AdminSellerOrderList> selectEachSellerOrderList(int num, PageInfo pi) throws AdminSelectException;
+
+	//공지사항 글 수
+	int selectNoticeCount() throws AdminCountException;
+
 	//공지사항 목록 조회용
-	ArrayList<AdminBoard> selectNoticeList() throws AdminSelectException;
+	ArrayList<AdminBoard> selectNoticeList(PageInfo pi) throws AdminSelectException;
 
 	//공지사항 상세보기용
 	AdminBoard selectNotice(int num) throws AdminSelectException, AdminCountException;
@@ -50,14 +60,23 @@ public interface AdminService {
 	//faq 목록 조회용
 	ArrayList<AdminBoard> selectFaqList() throws AdminSelectException;
 
+	//QNA 글수
+	int selectQnaCount() throws AdminCountException;
+	
 	//qna 목록 조회용
-	ArrayList<AdminBoard> selectQnaList() throws AdminSelectException;
+	ArrayList<AdminBoard> selectQnaList(PageInfo pi) throws AdminSelectException;
+
+	//Qna 답변대기중 글수
+	int selectQnaWaitCount() throws AdminCountException;
 
 	//qna 답변 대기 목록 조회용
-	ArrayList<AdminBoard> selectQnaWaitList() throws AdminSelectException;
+	ArrayList<AdminBoard> selectQnaWaitList(PageInfo pi) throws AdminSelectException;
 
+	//Qna 답변완료 글수
+	int selectQnaCompleteCount() throws AdminCountException;
+	
 	//qna 답변 완료 목록 조회용
-	ArrayList<AdminBoard> selectQnaCompleteList() throws AdminSelectException;
+	ArrayList<AdminBoard> selectQnaCompleteList(PageInfo pi) throws AdminSelectException;
 
 	//faq 상세보기용
 	AdminBoard selectFaq(int num) throws AdminSelectException, AdminCountException;
@@ -133,6 +152,16 @@ public interface AdminService {
 
 	//주문 상세보기 용
 	ArrayList<AdminOrderMenu> selectOrderMenu(int orderNo) throws AdminSelectException;
+
+	//정산 목록 전체 수
+	int selectCalculateCount() throws AdminCountException;
+
+	//정산 목록 조회용
+	ArrayList<AdminCalculateList> selectCalculateList(PageInfo pi) throws AdminSelectException;
+
+
+
+	
 
 
 	

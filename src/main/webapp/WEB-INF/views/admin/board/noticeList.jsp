@@ -24,6 +24,7 @@
 				<table class="table table-striped col-md-8" id="noticeList">
 					<thead>
 						<tr>
+							<th></th>
 							<th scope="col">글번호</th>
 							<th scope="col">분류</th>
 							<th scope="col">제목</th>
@@ -33,7 +34,8 @@
 					</thead>
 					<tbody>
 						<c:forEach items="${noticeList }" var="notice">
-							<tr onclick="location.href='noticeDetail.ad?num=${notice.boardNo}'">
+							<tr>
+								<td><input type="hidden" name="boardNo" value="${notice.boardNo }"></td>
 								<th scope="row">${notice.rn }</th>
 								<c:choose>
 									<c:when test="${notice.boardCate==1 }">
@@ -54,29 +56,7 @@
 								<td>${notice.boardCount }</td>
 							</tr>
 						</c:forEach>
-						<!-- 
-						<tr>
-							<th scope="row">3</th>
-							<td>[업체][공지]</td>
-							<td>점주님들 새해 복 많이 받으세요</td>
-							<td>2019-01-02</td>
-							<td>117</td>
-						</tr>
-						<tr>
-							<th scope="row">2</th>
-							<td>[고객][이벤트]</td>
-							<td>2019년 1월 룰렛 이벤트 안내</td>
-							<td>2019-01-02</td>
-							<td>305</td>
-						</tr>
-						<tr>
-							<th scope="row">1</th>
-							<td>[업체][공지]</td>
-							<td>셀프 피자 제작소 공지사항입니다.</td>
-							<td>2019-01-20</td>
-							<td>15</td>
-						</tr>
-						-->
+						
 					</tbody>
 				</table>
 				<div class="col-md-2"></div>
@@ -105,13 +85,48 @@
 	<!-- 페이징 영역 -->
 	<div class="dataTables_paginate paging_simple_numbers col-md-4" id="bootstrap-data-table_paginate">
 		<ul class="pagination">
-			<li class="paginate_button page-item previous disabled" id="bootstrap-data-table_previous"><a href="#" aria-controls="bootstrap-data-table" data-dt-idx="0" tabindex="0" class="page-link"><i class="ti-angle-left"></i></a></li>
-			<li class="paginate_button page-item active"><a href="#" aria-controls="bootstrap-data-table" data-dt-idx="1" tabindex="0" class="page-link">1</a></li>
-			<li class="paginate_button page-item "><a href="#" aria-controls="bootstrap-data-table" data-dt-idx="2" tabindex="0" class="page-link">2</a></li>
-			<li class="paginate_button page-item "><a href="#" aria-controls="bootstrap-data-table" data-dt-idx="3" tabindex="0" class="page-link">3</a></li>
-			<li class="paginate_button page-item "><a href="#" aria-controls="bootstrap-data-table" data-dt-idx="4" tabindex="0" class="page-link">4</a></li>
-			<li class="paginate_button page-item "><a href="#" aria-controls="bootstrap-data-table" data-dt-idx="5" tabindex="0" class="page-link">5</a></li>
-			<li class="paginate_button page-item next" id="bootstrap-data-table_next"><a href="#" aria-controls="bootstrap-data-table" data-dt-idx="7" tabindex="0" class="page-link"><i class="ti-angle-right"></i></a></li>
+			<c:if test="${pi.currentPage >1}">
+				<c:url var="btnList" value="${ addr }">
+					<c:param name="currentPage" value="${pi.currentPage-1}"/>
+				</c:url>
+				<li class="paginate_button page-item previous" id="bootstrap-data-table_previous">
+					<a href="${btnList }" aria-controls="bootstrap-data-table" data-dt-idx="0" tabindex="0" class="page-link"><i class="ti-angle-left"></i></a>
+				</li>
+			</c:if>
+			<c:if test="${pi.currentPage==1 }">
+				<li class="paginate_button page-item previous disabled" id="bootstrap-data-table_previous">
+					<a href="#" aria-controls="bootstrap-data-table" data-dt-idx="0" tabindex="0" class="page-link"><i class="ti-angle-left"></i></a>
+				</li>
+			</c:if>
+		<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
+			<c:if test="${ p eq pi.currentPage }">
+				<li class="paginate_button page-item active disabled">
+					<a href="#" aria-controls="bootstrap-data-table" data-dt-idx="${p }" tabindex="0" class="page-link">${p }</a>
+				</li>
+			</c:if>
+				
+			<c:if test = "${ p ne pi.currentPage }">
+				<c:url var="btnList" value="${ addr }">
+					<c:param name="currentPage" value="${ p }"/>
+				</c:url>
+				<li class="paginate_button page-item">
+					<a href="${btnList }" aria-controls="bootstrap-data-table" data-dt-idx="${p }" tabindex="0" class="page-link">${p }</a>
+				</li>
+			</c:if>
+		</c:forEach>
+			<c:if test="${pi.currentPage <pi.maxPage}">
+				<c:url var="btnList" value="${ addr }">
+					<c:param name="currentPage" value="${pi.currentPage+1}"/>
+				</c:url>
+				<li class="paginate_button page-item next" id="bootstrap-data-table_next">
+					<a href="${btnList }" aria-controls="bootstrap-data-table" data-dt-idx="7" tabindex="0" class="page-link"><i class="ti-angle-right"></i></a>
+				</li>
+			</c:if>
+			<c:if test="${pi.currentPage>=pi.maxPage }">
+				<li class="paginate_button page-item next disabled" id="bootstrap-data-table_next">
+					<a href="#" aria-controls="bootstrap-data-table" data-dt-idx="7" tabindex="0" class="page-link"><i class="ti-angle-right"></i></a>
+				</li>
+			</c:if>
 		</ul>
 	</div>
 	<div class="col-md-1"></div>
@@ -168,12 +183,11 @@
 			}).mouseout(function(){
 				$(this).parent().css({"color":"#212529"});
 			}).click(function(){
-				var num=$(this).parent().children().eq(0).text();
+				var num=$(this).parent().children().children().eq(0).val();
 				console.log(num);
-				location.href="admin.ad?admin=board/noticeDetail";
+				location.href="noticeDetail.ad?num="+num;
 			});
 		})
 	</script>
-	</div>
 </section>
 <jsp:include page="../common/footer.jsp"/>

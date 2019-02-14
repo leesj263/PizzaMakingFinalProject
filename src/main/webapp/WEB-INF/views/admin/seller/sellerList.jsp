@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <jsp:include page="../common/header.jsp"/>
@@ -13,8 +12,6 @@
 </style>
 <section>
 	<div class="right-panel">
-		<p>sellerList.jsp</p>
-		
 		<div class="card">
 			<div class="card-header col-md-12">
 				<h3 class="menu-title">업체목록</h3>
@@ -57,27 +54,6 @@
 								</c:choose>
 							</tr>
 						</c:forEach>
-						<!-- <tr>
-							<th scope="row">1</th>
-							<td>Mark</td>
-							<td>강남점</td>
-							<td>2018-12-12</td>
-							<td>영업중</td>
-						</tr>
-						<tr>
-							<th scope="row">2</th>
-							<td>Jacob</td>
-							<td>선릉점</td>
-							<td>2018-12-06</td>
-							<td>영업중</td>
-						</tr>
-						<tr>
-							<th scope="row">3</th>
-							<td>Larry</td>
-							<td>해운대점</td>
-							<td>2019-01-20</td>
-							<td>개점준비중</td>
-						</tr> -->
 					</tbody>
 				</table>
 				<div class="col-md-2"></div>

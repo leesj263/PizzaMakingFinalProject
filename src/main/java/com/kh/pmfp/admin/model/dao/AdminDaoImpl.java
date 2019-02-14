@@ -13,6 +13,7 @@ import com.kh.pmfp.admin.model.exception.AdminSelectException;
 import com.kh.pmfp.admin.model.exception.AdminUpdateException;
 import com.kh.pmfp.admin.model.vo.AdminBoard;
 import com.kh.pmfp.admin.model.vo.AdminBoard2;
+import com.kh.pmfp.admin.model.vo.AdminCalculateList;
 import com.kh.pmfp.admin.model.vo.AdminMaterial;
 import com.kh.pmfp.admin.model.vo.AdminMember;
 import com.kh.pmfp.admin.model.vo.AdminOrder;
@@ -113,11 +114,47 @@ public class AdminDaoImpl implements AdminDao {
 		return seller;
 	}
 
+	//업체별 주문횟수 카운트용
+	@Override
+	public int selectEachSellerOrderCount(SqlSessionTemplate sqlSession, int num) throws AdminCountException{
+		int result=-1;
+		result=sqlSession.selectOne("Admin.selectEachSellerOrderCount", num);
+		if(result<0) {
+			throw new AdminCountException("업체 주문횟수 조회 실패");
+		}
+		return result;
+	}
+	
+	//업체 상세보기 - 업체 주문 조회용
+	@Override
+	public ArrayList<AdminSellerOrderList> selectEachSellerOrderList(SqlSessionTemplate sqlSession, int num,
+			PageInfo pi) throws AdminSelectException {
+		int offset = (pi.getCurrentPage() -1) * pi.getLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getLimit());
+		ArrayList<AdminSellerOrderList> orderList=new ArrayList<AdminSellerOrderList>();
+		orderList=(ArrayList)sqlSession.selectList("Admin.selectEachSellerOrderList", num, rowBounds);
+		
+		return orderList;
+	}
+	
+	//공지사항 글수
+	@Override
+	public int selectNoticeCount(SqlSessionTemplate sqlSession) throws AdminCountException {
+		int result=-1;
+		result=sqlSession.selectOne("Admin.selectNoticeCount");
+		if(result<0) {
+			throw new AdminCountException("공지사항 글 수 조회 실패");
+		}
+		return result;
+	}
+
 	//공지사항 목록 조회용
 	@Override
-	public ArrayList<AdminBoard> selectNoticeList(SqlSessionTemplate sqlSession) throws AdminSelectException {
+	public ArrayList<AdminBoard> selectNoticeList(SqlSessionTemplate sqlSession, PageInfo pi) throws AdminSelectException {
+		int offset = (pi.getCurrentPage() -1) * pi.getLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getLimit());
 		ArrayList<AdminBoard> noticeList=new ArrayList<AdminBoard>();
-		noticeList=(ArrayList)sqlSession.selectList("Admin.selectNoticeList");
+		noticeList=(ArrayList)sqlSession.selectList("Admin.selectNoticeList", null, rowBounds);
 		
 		if(noticeList==null) {
 			throw new AdminSelectException("공지사항 목록 조회 실패");
@@ -164,11 +201,24 @@ public class AdminDaoImpl implements AdminDao {
 		return faqList;
 	}
 
+	//QNA 글수
+	@Override
+	public int selectQnaCount(SqlSessionTemplate sqlSession) throws AdminCountException {
+		int result=-1;
+		result=sqlSession.selectOne("Admin.selectQnaCount");
+		if(result<0) {
+			throw new AdminCountException("Q&A 글 수 조회 실패");
+		}
+		return result;
+	}
+
 	//qna 목록 조회용
 	@Override
-	public ArrayList<AdminBoard> selectQnaList(SqlSessionTemplate sqlSession) throws AdminSelectException {
+	public ArrayList<AdminBoard> selectQnaList(SqlSessionTemplate sqlSession, PageInfo pi) throws AdminSelectException {
 		ArrayList<AdminBoard> qnaList=new ArrayList<AdminBoard>();
-		qnaList=(ArrayList)sqlSession.selectList("Admin.selectQnaList");
+		int offset = (pi.getCurrentPage() -1) * pi.getLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getLimit());
+		qnaList=(ArrayList)sqlSession.selectList("Admin.selectQnaList", null, rowBounds);
 		
 		if(qnaList==null) {
 			throw new AdminSelectException("Q&A 목록 조회 실패");
@@ -177,11 +227,24 @@ public class AdminDaoImpl implements AdminDao {
 		return qnaList;
 	}
 
+	//Qna 답변대기중 글수
+	@Override
+	public int selectQnaWaitCount(SqlSessionTemplate sqlSession) throws AdminCountException {
+		int result=-1;
+		result=sqlSession.selectOne("Admin.selectQnaWaitCount");
+		if(result<0) {
+			throw new AdminCountException("Q&A 답변 대기 글 수 조회 실패");
+		}
+		return result;
+	}
+
 	//qna 답변 대기 목록 조회용
 	@Override
-	public ArrayList<AdminBoard> selectQnaWaitList(SqlSessionTemplate sqlSession) throws AdminSelectException {
+	public ArrayList<AdminBoard> selectQnaWaitList(SqlSessionTemplate sqlSession, PageInfo pi) throws AdminSelectException {
 		ArrayList<AdminBoard> qnaWaitList=new ArrayList<AdminBoard>();
-		qnaWaitList=(ArrayList)sqlSession.selectList("Admin.selectQnaWaitList");
+		int offset = (pi.getCurrentPage() -1) * pi.getLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getLimit());
+		qnaWaitList=(ArrayList)sqlSession.selectList("Admin.selectQnaWaitList", null, rowBounds);
 		
 		if(qnaWaitList==null) {
 			throw new AdminSelectException("Q&A 답변 대기 목록 조회 실패");
@@ -190,11 +253,23 @@ public class AdminDaoImpl implements AdminDao {
 		return qnaWaitList;
 	}
 
+	//Qna 답변완료 글수
+	@Override
+	public int selectQnaCompleteCount(SqlSessionTemplate sqlSession) throws AdminCountException {
+		int result=-1;
+		result=sqlSession.selectOne("Admin.selectQnaCompleteCount");
+		if(result<0) {
+			throw new AdminCountException("Q&A 답변 완료 글 수 조회 실패");
+		}
+		return result;
+	}
 	//qna 답변 완료 목록 조회용
 	@Override
-	public ArrayList<AdminBoard> selectQnaCompleteList(SqlSessionTemplate sqlSession) throws AdminSelectException {
+	public ArrayList<AdminBoard> selectQnaCompleteList(SqlSessionTemplate sqlSession, PageInfo pi) throws AdminSelectException {
 		ArrayList<AdminBoard> qnaCompleteList=new ArrayList<AdminBoard>();
-		qnaCompleteList=(ArrayList)sqlSession.selectList("Admin.selectQnaCompleteList");
+		int offset = (pi.getCurrentPage() -1) * pi.getLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getLimit());
+		qnaCompleteList=(ArrayList)sqlSession.selectList("Admin.selectQnaCompleteList", null, rowBounds);
 		
 		if(qnaCompleteList==null) {
 			throw new AdminSelectException("Q&A 답변 완료 목록 조회 실패");
@@ -390,7 +465,6 @@ public class AdminDaoImpl implements AdminDao {
 		RowBounds rowBounds = new RowBounds(offset, pi.getLimit());
 		
 		orderList=(ArrayList)sqlSession.selectList("Admin.selectSellerOrderList", null, rowBounds);
-		
 		if(orderList==null) {
 			throw new AdminSelectException("업체 주문 목록 조회 실패");
 		}
@@ -554,6 +628,30 @@ public class AdminDaoImpl implements AdminDao {
 		return menuList;
 	}
 
+	//정산 목록 전체 수
+	@Override
+	public int selectCalculateCount(SqlSessionTemplate sqlSession) throws AdminCountException {
+		int result=-1;
+		result=sqlSession.selectOne("Admin.selectCalculateCount");
+		if(result<0) {
+			throw new AdminCountException("정산 목록 수 조회 실패");
+		}
+		return result;
+	}
 
+	//정산 목록 조회용
+	@Override
+	public ArrayList<AdminCalculateList> selectCalculateList(SqlSessionTemplate sqlSession, PageInfo pi)
+			throws AdminSelectException {
+		ArrayList<AdminCalculateList> calList=new ArrayList<AdminCalculateList>();
+		int offset=pi.getLimit()*(pi.getCurrentPage()-1);
+		RowBounds rowBounds=new RowBounds(offset, pi.getLimit());
+		calList=(ArrayList)sqlSession.selectList("Admin.selectCalculateList", null, rowBounds);
+		
+		return calList;
+	}
+
+	
+	
 
 }

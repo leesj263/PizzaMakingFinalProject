@@ -178,6 +178,19 @@
 		<result property="menu" column="MENU" />
 	</resultMap>
 	
+	<resultMap type="com.kh.pmfp.admin.model.vo.AdminCalculateList" id="adminCalculateListResultSet">
+		<id property="orderExpNo" column="ORDEREXPENSE_NO"/>
+		<result property="orderExpMonth" column="ORDEREXPENSE_MONTH"/>
+		<result property="comNo" column="COM_NO" />
+		<result property="comName" column="COM_NAME" />
+		<result property="orderCStatus" column="ORDER_CALCULATE" />
+		<result property="price" column="PRICE" />
+		<result property="times" column="TIMES" />
+		<result property="orderList" column="ORDERLIST" />
+		<result property="dateList" column="DATELIST" />
+		<result property="rn" column="ROWNUM" />
+	</resultMap>
+	
 	<select id="selectUserCount" resultType="_int" parameterType="AdminMember">
 		SELECT COUNT(*) 
 		FROM MEMBER M 
@@ -265,6 +278,10 @@
 		WHERE BOARD_NO=#{num} AND BOARD_STATUS='Y' 
 	</update>
 	
+	<select id="selectNoticeCount" resultType="_int">
+		SELECT COUNT(*) FROM BOARD WHERE BOARD_TYPE=2 AND BOARD_LEVEL=1 AND BOARD_STATUS='Y'
+	</select>
+	
 	<select id="selectNotice" resultMap="adminBoardResultSet" parameterType="_int">
 		SELECT B.*, M.MEMBER_NAME, M.MEMBER_NICKNAME, ROWNUM  
 		FROM BOARD B 
@@ -280,6 +297,10 @@
 		ORDER BY ROWNUM DESC
 	</select>
 	
+	<select id="selectQnaCount" resultType="_int">
+		SELECT COUNT(*) FROM BOARD WHERE BOARD_TYPE=3 AND BOARD_LEVEL=1 AND BOARD_STATUS='Y'
+	</select>
+	
 	<select id="selectQnaList" resultMap="adminBoardResultSet">
 		SELECT B.*, M.MEMBER_NAME, M.MEMBER_NICKNAME, ROWNUM  
 		FROM BOARD B 
@@ -288,12 +309,22 @@
 		ORDER BY ROWNUM DESC
 	</select>
 	
+	<select id="selectQnaWaitCount" resultType="_int">
+		SELECT COUNT(*) FROM BOARD 
+		WHERE BOARD_TYPE=3 AND BOARD_LEVEL=1 AND BOARD_STATUS='Y' AND BOARD_ANSWER='N'
+	</select>
+	
 	<select id="selectQnaWaitList" resultMap="adminBoardResultSet">
 		SELECT B.*, M.MEMBER_NAME, M.MEMBER_NICKNAME, ROWNUM  
 		FROM BOARD B 
 		JOIN MEMBER M ON (B.MEMBER_NO=M.MEMBER_NO) 
 		WHERE B.BOARD_TYPE=3 AND B.BOARD_LEVEL=1 AND B.BOARD_ANSWER='N' AND B.BOARD_STATUS='Y'
 		ORDER BY ROWNUM DESC
+	</select>
+	
+	<select id="selectQnaCompleteCount" resultType="_int">
+		SELECT COUNT(*) FROM BOARD 
+		WHERE BOARD_TYPE=3 AND BOARD_LEVEL=1 AND BOARD_STATUS='Y' AND BOARD_ANSWER='Y'
 	</select>
 	
 	<select id="selectQnaCompleteList" resultMap="adminBoardResultSet">
@@ -385,6 +416,29 @@
 			FROM ORDER_MATERIAL OM 
 			JOIN MATERIAL M ON(M.MATERIAL_NO = OM.MATERIAL_NO) 
 			JOIN COMPANY C ON (C.COM_NO=OM.COM_NO) 
+			GROUP BY OM.COM_NO,C.COM_NAME, OM.ORDER_MDATE, OM.ORDER_CALCULATE, OM.ORDEREXPENSE_NO, OM.ORDER_MSTATUS
+			ORDER BY OM.ORDER_MDATE DESC) SOL
+		ORDER BY ROWNUM
+	</select>
+	
+	<select id="selectEachSellerOrderCount" resultType="_int" parameterType="_int">
+		SELECT COUNT(*) 
+		FROM 
+		(SELECT OM.COM_NO, OM.ORDER_MDATE, OM.ORDER_MSTATUS 
+		FROM ORDER_MATERIAL OM 
+		WHERE OM.COM_NO=#{num} 
+		GROUP BY OM.COM_NO, OM.ORDER_MDATE, OM.ORDER_MSTATUS)
+	</select>
+	
+	<select id="selectEachSellerOrderList" resultMap="adminSellerOrderListResultSet" parameterType="_int">
+		SELECT ROWNUM, SOL.* 
+		FROM 
+			(SELECT OM.COM_NO, C.COM_NAME, OM.ORDEREXPENSE_NO, OM.ORDER_MDATE, OM.ORDER_MSTATUS, 
+			(MIN(M.MATERIAL_NAME) || ' 외 ' || (COUNT(1) - 1)|| '건') AS ORDERLIST, OM.ORDER_CALCULATE
+			FROM ORDER_MATERIAL OM 
+			JOIN MATERIAL M ON(M.MATERIAL_NO = OM.MATERIAL_NO) 
+			JOIN COMPANY C ON (C.COM_NO=OM.COM_NO) 
+            WHERE OM.COM_NO=#{num} 
 			GROUP BY OM.COM_NO,C.COM_NAME, OM.ORDER_MDATE, OM.ORDER_CALCULATE, OM.ORDEREXPENSE_NO, OM.ORDER_MSTATUS
 			ORDER BY OM.ORDER_MDATE DESC) SOL
 		ORDER BY ROWNUM
@@ -490,5 +544,37 @@
 		WHERE OI.ORDER_NO=#{orderNo} 
 		GROUP BY OI.ORDER_INO, OI.ORDER_NO,  OI.ORDER_ICATEG, OI.ORDER_ISIZE, OT.ORDER_TCOUNT) MN
 		ORDER BY ROWNUM ASC
+	</select>
+	
+	<select id="selectCalculateCount" resultType="_int">
+		SELECT COUNT(*) 
+		FROM (
+			SELECT SOL.ORDEREXPENSE_NO, SOL.COM_NO, SOL.ORDER_CALCULATE
+			FROM 
+				(SELECT OM.COM_NO, OM.ORDEREXPENSE_NO, OM.ORDER_MDATE, OM.ORDER_MSTATUS, OM.ORDER_CALCULATE
+				FROM ORDER_MATERIAL OM 
+				GROUP BY OM.COM_NO, OM.ORDER_MDATE, OM.ORDER_CALCULATE, OM.ORDEREXPENSE_NO, OM.ORDER_MSTATUS
+				ORDER BY OM.ORDER_MDATE DESC) SOL
+			GROUP BY SOL.ORDEREXPENSE_NO, SOL.COM_NO, SOL.ORDER_CALCULATE)
+	</select>
+	
+	<select id="selectCalculateList" resultMap="adminCalculateListResultSet">
+		SELECT ROWNUM, E.* 
+		FROM 
+			(SELECT SOL.ORDEREXPENSE_NO, SOL.ORDEREXPENSE_MONTH, SOL.COM_NO, SOL.COM_NAME, 
+			SOL.ORDER_CALCULATE, SUM(SOL.PRICE) PRICE, COUNT(SOL.COM_NO) TIMES, 
+			LISTAGG(CAST(SOL.ORDERLIST AS VARCHAR(300)) , ', ') WITHIN GROUP (ORDER BY SOL.ORDER_MDATE) ORDERLIST,
+			LISTAGG(CAST(SOL.ORDER_MDATE AS VARCHAR(300)) , ', ') WITHIN GROUP (ORDER BY SOL.ORDER_MDATE) DATELIST
+			FROM 
+				(SELECT OM.COM_NO, C.COM_NAME, OM.ORDEREXPENSE_NO, OE.ORDEREXPENSE_MONTH, OM.ORDER_MDATE, OM.ORDER_MSTATUS, 
+				(MIN(M.MATERIAL_NAME) || ' 외 ' || (COUNT(1) - 1)|| '건') AS ORDERLIST, OM.ORDER_CALCULATE, SUM(OM.MATERIAL_PRICE)PRICE
+				FROM ORDER_MATERIAL OM 
+				JOIN MATERIAL M ON(M.MATERIAL_NO = OM.MATERIAL_NO) 
+				JOIN COMPANY C ON (C.COM_NO=OM.COM_NO) 
+    			JOIN ORDER_EXPENSE OE ON (OE.ORDEREXPENSE_NO=OM.ORDEREXPENSE_NO) 
+				GROUP BY OM.COM_NO,C.COM_NAME, OM.ORDER_MDATE, OM.ORDER_CALCULATE, OM.ORDEREXPENSE_NO, OM.ORDER_MSTATUS, OE.ORDEREXPENSE_MONTH
+				ORDER BY OM.ORDER_MDATE DESC) SOL
+			GROUP BY SOL.ORDEREXPENSE_NO,SOL.ORDEREXPENSE_MONTH, SOL.COM_NO, SOL.COM_NAME, SOL.ORDER_CALCULATE
+			ORDER BY SOL.ORDEREXPENSE_NO DESC) E
 	</select>
 </mapper>

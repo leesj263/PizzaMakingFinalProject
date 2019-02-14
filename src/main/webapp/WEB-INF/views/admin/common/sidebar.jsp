@@ -85,7 +85,7 @@
 					</a>
 					<ul class="sub-menu children dropdown-menu">
 						<li><i class="menu-icon fa fa-line-chart"></i><a href="orderList.ad">Order List</a></li>
-						<li><i class="menu-icon fa fa-line-chart"></i><a href="admin.ad?admin=sales/calculateList">Calculate List</a></li>
+						<li><i class="menu-icon fa fa-line-chart"></i><a href="calculateList.ad">Calculate List</a></li>
 					</ul>
 				</li>
 				
