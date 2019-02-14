@@ -1,5 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <jsp:include page="../common/header.jsp"/>
 <style>
 	#orderDetail{
@@ -19,10 +20,20 @@
 					<div class="col-md-2"></div>
 					<div class="col-md-4">
 						<ul class="member-ul">
-							<li class="member-li"><span>주문 번호</span><p>2019012600010051</p></li>
-							<li class="member-li"><span>주문 상태</span><p>제조중</p></li>
-							<li class="member-li"><span>결제</span>
-								<p>카카오페이<!--  &nbsp; &nbsp;<button class="btn btn-sm btn-outline-warning">결제정보</button> --></p>	
+							<li class="member-li"><span>주문 번호</span><p>${fn:replace(order.orderDate, "-", "")}-00${order.comNo}-00${order.orderNo }</p></li>
+							<li class="member-li"><span>주문 상태</span>
+								<p>
+									<c:choose>
+										<c:when test="${order.orderStatus==1 }">주문완료</c:when>
+										<c:when test="${order.orderStatus==2 }">제조중</c:when>
+										<c:when test="${order.orderStatus==3 }">배달중</c:when>
+										<c:when test="${order.orderStatus==4 }">배달완료</c:when>
+										<c:otherwise>주문거절</c:otherwise>
+									</c:choose>
+								</p>
+							</li>
+							<li class="member-li"><span>결제번호</span>
+								<p>카카오페이  ${order.orderPayno}<!--  &nbsp; &nbsp;<button class="btn btn-sm btn-outline-warning">결제정보</button> --></p>	
 							</li>
 							<li class="member-li"><span></span></li>
 							<li class="member-li"><span>주문 내역</span></li>
@@ -30,9 +41,9 @@
 					</div>
 					<div class="col-md-4">
 						<ul class="member-ul">
-							<li class="member-li"><span>주문 일자</span><p>2019-01-26 15:04</p></li>
-							<li class="member-li"><span>주문 지점</span><p>강남점</p></li>
-							<li class="member-li"><span>주문자</span><p>asdfqds</p></li>
+							<li class="member-li"><span>주문 일자</span><p>${order.orderSDate }</p></li>
+							<li class="member-li"><span>주문 지점</span><p>${order.comName }</p></li>
+							<li class="member-li"><span>주문자</span><p>${order.memberName }</p></li>
 							<li class="member-li"><span></span></li>
 							<li class="member-li"><span></span></li>
 						</ul>
@@ -40,50 +51,29 @@
 					<div class="col-sm-1"></div>
 				</div>
 				<div class="row">
-					<div class="col-md-1"></div>
-					<div class="col-md-9">
+					<div class="col-md-2"></div>
+					<div class="col-md-8">
 						<table class="table table-striped" id="orderDetail">
 							<thead>
 								<tr>
-									<th scope="col">주문번호</th>
+									<th scope="col" style="width:70px">번호</th>
 									<th scope="col">주문 항목</th>
-									<th scope="col">수량(개/팩)</th>
-									<th scope="col">단가</th>
+									<th scope="col" style="width:70px">수량</th>
 									<th scope="col">금액</th>
 								</tr>
 							</thead>
 							<tbody>
+								<c:forEach items="${menuList }" var="menu">
+									<tr>
+										<td>${menu.rn}</td>
+										<td>${menu.menu }</td>
+										<td>${menu.tCount}</td>
+										<td>${menu.price }</td>
+									</tr>
+								</c:forEach>
 								<tr>
-									<th scope="row">1</th>
-									<td>기본 도우 L</td>
-									<td>1</td>
-									<td>12,000</td>
-									<td>12,000</td>
-								</tr>
-								<tr>
-									<th scope="row">2</th>
-									<td>치즈 L</td>
-									<td>3</td>
-									<td>3,000</td>
-									<td>9,000</td>
-								</tr>
-								<tr>
-									<th scope="row">3</th>
-									<td>새우 L</td>
-									<td>2</td>
-									<td>3,000</td>
-									<td>6,000</td>
-								</tr>
-								<tr>
-									<th scope="row">4</th>
-									<td>페퍼로니 S</td>
-									<td>1</td>
-									<td>1,500</td>
-									<td>1,500</td>
-								</tr>
-								<tr>
-									<th colspan="3">총 액</th>
-									<td colspan="2">28,500</td>
+									<th colspan="2">총 액</th>
+									<td colspan="2">${total }</td>
 								</tr>
 							</tbody>
 						</table>
@@ -92,7 +82,7 @@
 				</div>
 				<div>
 					<div class="col-md-2"></div>
-					<div class="col-md-4"><button class="btn btn-outline-warning" onclick="location.href='admin.ad?admin=sales/orderList'">목록으로</button></div>
+					<div class="col-md-4"><button class="btn btn-outline-warning" onclick="location.href='orderList.ad'">목록으로</button></div>
 					<div class="col-md-6"></div>
 				</div>
 			</div>

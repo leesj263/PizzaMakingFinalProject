@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <link rel="apple-touch-icon"href="${contextPath }/resources/admin/images/apple-icon.png">
@@ -85,7 +84,7 @@
 						<i class="menu-icon fa fa-tasks"></i>Sales
 					</a>
 					<ul class="sub-menu children dropdown-menu">
-						<li><i class="menu-icon fa fa-line-chart"></i><a href="admin.ad?admin=sales/orderList">Order List</a></li>
+						<li><i class="menu-icon fa fa-line-chart"></i><a href="orderList.ad">Order List</a></li>
 						<li><i class="menu-icon fa fa-line-chart"></i><a href="admin.ad?admin=sales/calculateList">Calculate List</a></li>
 					</ul>
 				</li>
@@ -107,7 +106,7 @@
 					<i class="menu-icon fa fa-area-chart"></i>Menu</a>
 					<ul class="sub-menu children dropdown-menu">
 						<li><i class="menu-icon fa fa-map-o"></i><a href="toppingList.ad">Topping List</a></li>
-						<li><i class="menu-icon fa fa-street-view"></i><a href="admin.ad?admin=sales/menu/addTopping">Add Topping</a></li>
+						<!-- <li><i class="menu-icon fa fa-street-view"></i><a href="admin.ad?admin=sales/menu/addTopping">Add Topping</a></li> -->
 					</ul>
 				</li>
 				

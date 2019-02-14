@@ -61,7 +61,7 @@
 										<th><button class="btn btn-sm btn-outline-secondary" disabled>답변완료</button></th>
 									</c:when>
 									<c:when test="${qna.boardAnswer=='N' }">
-										<th><button class="btn btn-sm btn-outline-warning" onclick="location.href='admin.ad?admin=board/qnaDetail'">답변하기</button></th>
+										<th><button class="btn btn-sm btn-outline-warning" onclick="location.href='qnaDetail.ad?num=${qna.boardNo}'">답변하기</button></th>
 									</c:when>
 								</c:choose>
 							</tr>

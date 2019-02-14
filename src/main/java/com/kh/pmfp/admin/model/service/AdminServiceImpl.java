@@ -16,6 +16,7 @@ import com.kh.pmfp.admin.model.vo.AdminBoard;
 import com.kh.pmfp.admin.model.vo.AdminMaterial;
 import com.kh.pmfp.admin.model.vo.AdminMember;
 import com.kh.pmfp.admin.model.vo.AdminOrder;
+import com.kh.pmfp.admin.model.vo.AdminOrderMenu;
 import com.kh.pmfp.admin.model.vo.AdminSeller;
 import com.kh.pmfp.admin.model.vo.AdminSellerOrder;
 import com.kh.pmfp.admin.model.vo.AdminSellerOrderList;
@@ -322,6 +323,59 @@ public class AdminServiceImpl implements AdminService {
 		}
 		
 		return topping;
+	}
+
+	//토핑 수정용
+	@Override
+	public int updateMaterial(AdminMaterial topping) throws AdminUpdateException {
+		int result=ad.updateMaterial(sqlSession, topping);
+		System.out.println("service"+result);
+		return result;
+	}
+
+	//토핑 판매중지용
+	@Override
+	public int deleteMaterial(int materialNo) throws AdminDeleteException {
+		int result=ad.deleteMaterial(sqlSession, materialNo);
+		return result;
+	}
+
+	//토핑 재판매용
+	@Override
+	public int resellMaterial(int materialNo) throws AdminUpdateException {
+		int result=ad.resellMaterial(sqlSession, materialNo);
+		return result;
+	}
+
+	//주문 수 카운트용
+	@Override
+	public int selectOrderCount() throws AdminCountException {
+		int result=ad.selectOrderCount(sqlSession);
+		return result;
+	}
+
+	//주문 목록 조회용
+	@Override
+	public ArrayList<AdminOrder> selectOrderList(PageInfo pi) throws AdminSelectException {
+		ArrayList<AdminOrder> orderList=new ArrayList<AdminOrder>();
+		orderList=ad.selectOrderList(sqlSession, pi);
+		return orderList;
+	}
+
+	//주문 상세보기 용
+	@Override
+	public AdminOrder selectOrder(int orderNo) throws AdminSelectException {
+		AdminOrder order=new AdminOrder();
+		order=ad.selectOrder(sqlSession, orderNo);
+		return order;
+	}
+
+	//주문 상세보기 용
+	@Override
+	public ArrayList<AdminOrderMenu> selectOrderMenu(int orderNo) throws AdminSelectException {
+		ArrayList<AdminOrderMenu> menuList=new ArrayList<AdminOrderMenu>();
+		menuList=ad.selectOrderMenu(sqlSession, orderNo);
+		return menuList;
 	}
 
 	
