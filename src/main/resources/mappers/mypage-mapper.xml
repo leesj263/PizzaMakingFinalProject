@@ -20,6 +20,13 @@
 		<result property="delName" column="DELIVERY_NAME"/>
 	</resultMap>
 	
+	<!-- <resultMap type="com.kh.pmfp.mypage.model.vo.DelList" id="mypageDelResultSet2">
+		<result property="memberNo" column="MEMBER_NO"/>
+		<result property="comNo" column="COM_NO"/>
+		<result property="delAddr" column="DELIVERY_ADDRESS"/>
+		<result property="delName" column="DELIVERY_NAME"/>
+	</resultMap> -->
+	
 	<resultMap type="com.kh.pmfp.mypage.model.vo.Coupon" id="mypagePCouponResultSet">
 		<id property="issueNo" column="ISSUE_NO"/>
 		<result property="couponName" column="COUPON_NAME"/>
@@ -46,6 +53,8 @@
 	</resultMap>
 	
 	<resultMap type="com.kh.pmfp.mypage.model.vo.Location" id="mypageLocResultSet">
+		<result property="comNo" column="COM_NO"/>
+		<result property="comNum" column="COM_NUM"/>
 		<result property="comName" column="COM_NAME"/>
 		<result property="lat" column="LAT"/>
 		<result property="lon" column="LON"/>
@@ -126,13 +135,13 @@
 	</select>
 	
 	<select id="selectComLoc" resultMap="mypageLocResultSet">
-		select com_name, lat, lon 
+		select com_no, com_name, lat, lon 
 		from company
 		order by com_no
 	</select>
 	
 	<insert id="insertUserDelAddr" parameterType="DelList">
-		INSERT INTO DELIVERY VALUES(SEQ_DNO.NEXTVAL, #{memberNo}, #{comName},#{delAddr},#{delName})
+		INSERT INTO DELIVERY VALUES(SEQ_DNO.NEXTVAL, #{memberNo}, #{comNo},#{delAddr},#{delName})
 	</insert>
 	
 	

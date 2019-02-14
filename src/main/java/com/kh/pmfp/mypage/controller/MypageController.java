@@ -1,7 +1,14 @@
 package com.kh.pmfp.mypage.controller;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.kh.pmfp.common.model.vo.CommonUtils;
 import com.kh.pmfp.common.model.vo.Distance;
 import com.kh.pmfp.common.model.vo.Member;
 import com.kh.pmfp.common.model.vo.PageInfo;
@@ -22,6 +30,7 @@ import com.kh.pmfp.common.model.vo.Pagination;
 import com.kh.pmfp.mypage.model.service.MypageService;
 import com.kh.pmfp.mypage.model.vo.Coupon;
 import com.kh.pmfp.mypage.model.vo.DelList;
+import com.kh.pmfp.mypage.model.vo.DistanceLoc;
 import com.kh.pmfp.mypage.model.vo.Location;
 import com.kh.pmfp.mypage.model.vo.MyWriting;
 import com.kh.pmfp.mypage.model.vo.OrderList;
@@ -97,35 +106,69 @@ public class MypageController {
 		return "mypage/deliveryPopup";
 	}
 	
-	
-	@RequestMapping(value="comLatLon.mp", produces="application/text;charset=utf8")
-	public @ResponseBody int comLatLon(@RequestParam String userAddr, HttpServletResponse response){
-		System.out.println("userAddr : " + userAddr);
-		String[] userAddrList = userAddr.split(",");
+	//@RequestMapping(value="comLatLon.mp", produces="application/text;charset=utf8")
+	@RequestMapping(value="comLatLon.mp")
+	public @ResponseBody int comLatLon(@RequestParam String latlonVal, HttpServletResponse response){
+		System.out.println("latlonVal : " + latlonVal);
+		String[] latlonValArr = latlonVal.split(",");
 		//double[] arr = new double[2];
 		//arr[0] = Double.parseDouble(userAddrList[0]);
 		//arr[1] = Double.parseDouble(userAddrList[1]);
-		double userLat = Double.parseDouble(userAddrList[0]);
-		double userLon = Double.parseDouble(userAddrList[1]);
+		System.out.println("double lat :" + latlonValArr[0]);
+		System.out.println("double lon :" + latlonValArr[1]);
+		
+		double userLat = Double.parseDouble(latlonValArr[0]);
+		double userLon = Double.parseDouble(latlonValArr[1]);
 		
 		//지점 전체의 위도, 경도 얻기
 		ArrayList<Location> list = mps.selectComLocation();
 		
-		int finalDeliveryLoc = 0;
-		ArrayList<Double> locDistanceArr = new ArrayList<>();
+		//String finalDeliveryLoc = "";
+		//int finalDeliveryLoc = 0;
+		
+		ArrayList<DistanceLoc> locDistanceArr = new ArrayList<>();
+		
 		
 		//가까운곳 배정
 		for(int i=0;i<list.size();i++) {
-			double locDictance = new Distance().distance(list.get(i).getLat(), list.get(i).getLon(), userLat, userLon);
+			new Distance();
+			double locDistance = Distance.distance(list.get(i).getLat(), list.get(i).getLon(), userLat, userLon);
 			
-			locDistanceArr.add(locDictance);
-			Collections.sort(locDistanceArr);
+			//System.out.println(list.get(i).getComName()+ " locDistance : " + locDistance);
 			
-			if(locDistanceArr.get(i) < 3) {
-				finalDeliveryLoc = list.get(i).getComNo();
-			}
+			locDistanceArr.add(new DistanceLoc(locDistance, list.get(i).getComNo()));
+			System.out.println("흠 : " + locDistanceArr);
+			//locDistanceArr.add(locDistance);
 		}
-		return finalDeliveryLoc;
+		
+		Collections.sort(locDistanceArr);
+		
+		for(DistanceLoc d : locDistanceArr) {
+			System.out.println(d.getLocDistance());
+		}
+		
+
+		if(locDistanceArr.get(0).getLocDistance() < 3) {
+			System.out.println("insert작업");
+			System.out.println(locDistanceArr.get(0).getComNo());
+			
+			return locDistanceArr.get(0).getComNo();
+			
+		}else {
+			try {
+				PrintWriter out = response.getWriter();
+				out.println("<script>alert('배달 가능한 매장이 없습니다.')");
+				out.flush();
+				
+				
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			return 0;
+		}
+		
+		
+		
 	}
 	
 	
@@ -136,15 +179,25 @@ public class MypageController {
 		Member loginUser = (Member)session.getAttribute("loginUser");
 		int memberNo = loginUser.getMemberNo();
 		
+		System.out.println("memberNo : " + memberNo);
+		System.out.println("finalDeliveryLoc : " + finalDeliveryLoc);
+		System.out.println("addr : " + addr);
+		System.out.println("deliName : " + deliName);
+		
 		int result = mps.insertUserDelAddr(memberNo, finalDeliveryLoc, addr, deliName);
 		
 		if(result>0) {
 			return "redirect:mypage/deliList";
 		}else {
-			model.addAttribute("msg", "배송지 추가 실패");
-			return "common/errorPage";
+			//model.addAttribute("msg", "배송지 추가 실패");
+			//return "common/errorPage";
 		}
+		return null;
 	}
+	
+	
+	
+	
 	
 	
 	

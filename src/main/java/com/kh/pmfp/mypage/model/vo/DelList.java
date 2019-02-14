@@ -6,15 +6,25 @@ public class DelList implements java.io.Serializable{
 	private String comName;
 	private String delAddr;
 	private String delName;
+	private int comNo;
 	
 	public DelList() {}
 
-	public DelList(int delNo, String delName, String delAddr, String comName, int memberNo) {
+	public DelList(int delNo, String delName, String delAddr, String comName, int memberNo, int comNo) {
 		super();
 		this.delNo = delNo;
 		this.delName = delName;
 		this.delAddr = delAddr;
 		this.comName = comName;
+		this.memberNo = memberNo;
+		this.comNo = comNo;
+	}
+	
+	public DelList(String delName, String delAddr, int comNo, int memberNo) {
+		super();
+		this.delName = delName;
+		this.delAddr = delAddr;
+		this.comNo = comNo;
 		this.memberNo = memberNo;
 	}
 	
@@ -66,11 +76,22 @@ public class DelList implements java.io.Serializable{
 		this.memberNo = memberNo;
 	}
 
+	public int getComNo() {
+		return comNo;
+	}
+
+	public void setComNo(int comNo) {
+		this.comNo = comNo;
+	}
+
 	@Override
 	public String toString() {
-		return "DelList [delNo=" + delNo + ", delName=" + delName + ", delAddr=" + delAddr + ", comName=" + comName
-				+ ", memberNo=" + memberNo + "]";
+		return "DelList [delNo=" + delNo + ", memberNo=" + memberNo + ", comName=" + comName + ", delAddr=" + delAddr
+				+ ", delName=" + delName + ", comNo=" + comNo + "]";
 	}
+	
+	
+
 
 	
 	
