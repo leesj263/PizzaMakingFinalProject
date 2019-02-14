@@ -38,8 +38,12 @@ public interface MypageDao {
 	//글 목록수 조회
 	int selectListCount(SqlSessionTemplate sqlSession, int memberNo, int boardType);
 
-	//위도, 경도 얻기
+	//지점 전체의 위도/경도 얻기
 	ArrayList<Location> selectComLocation(SqlSessionTemplate sqlSession);
+
+	//배송지 추가
+	int insertUserDelAddr(SqlSessionTemplate sqlSession, int memberNo, String finalDeliveryLoc, String addr,
+			String deliName);
 
 
 

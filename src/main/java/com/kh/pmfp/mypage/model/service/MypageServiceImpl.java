@@ -81,11 +81,18 @@ public class MypageServiceImpl implements MypageService{
 		return listCount;
 	}
 
-	//위도, 경도 얻기
+	//지점 전체의 위도/경도 얻기
 	@Override
 	public ArrayList<Location> selectComLocation() {
 		ArrayList<Location> list = md.selectComLocation(sqlSession);
 		return list;
+	}
+
+	//배송지 추가
+	@Override
+	public int insertUserDelAddr(int memberNo, String finalDeliveryLoc, String addr, String deliName) {
+		int result = md.insertUserDelAddr(sqlSession, memberNo, finalDeliveryLoc, addr, deliName);
+		return result;
 	}
 
 	

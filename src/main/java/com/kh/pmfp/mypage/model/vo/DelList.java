@@ -17,6 +17,14 @@ public class DelList implements java.io.Serializable{
 		this.comName = comName;
 		this.memberNo = memberNo;
 	}
+	
+	public DelList(String delName, String delAddr, String comName, int memberNo) {
+		super();
+		this.delName = delName;
+		this.delAddr = delAddr;
+		this.comName = comName;
+		this.memberNo = memberNo;
+	}
 
 	public int getDelNo() {
 		return delNo;

@@ -36,7 +36,10 @@ public interface MypageService {
 	//글 목록수 조회
 	int selectListCount(int memberNo, int boardType);
 
-	//위도, 경도 얻기
+	//지점 전체의 위도/경도 얻기
 	ArrayList<Location> selectComLocation();
+
+	//배송지 추가
+	int insertUserDelAddr(int memberNo, String finalDeliveryLoc, String addr, String deliName);
 
 }

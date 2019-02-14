@@ -1,9 +1,8 @@
 package com.kh.pmfp.mypage.controller;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collections;
 
-import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -15,9 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.SessionAttributes;
 
-import com.kh.pmfp.common.model.vo.CommonUtil;
+import com.kh.pmfp.common.model.vo.Distance;
 import com.kh.pmfp.common.model.vo.Member;
 import com.kh.pmfp.common.model.vo.PageInfo;
 import com.kh.pmfp.common.model.vo.Pagination;
@@ -99,20 +97,56 @@ public class MypageController {
 		return "mypage/deliveryPopup";
 	}
 	
-	//위도, 경도 얻기
-	@RequestMapping(value="latlon.mp")
-	public @ResponseBody ArrayList<Location>latlon(@RequestParam String addr, HttpServletResponse response){
+	
+	@RequestMapping(value="comLatLon.mp", produces="application/text;charset=utf8")
+	public @ResponseBody int comLatLon(@RequestParam String userAddr, HttpServletResponse response){
+		System.out.println("userAddr : " + userAddr);
+		String[] userAddrList = userAddr.split(",");
+		//double[] arr = new double[2];
+		//arr[0] = Double.parseDouble(userAddrList[0]);
+		//arr[1] = Double.parseDouble(userAddrList[1]);
+		double userLat = Double.parseDouble(userAddrList[0]);
+		double userLon = Double.parseDouble(userAddrList[1]);
+		
+		//지점 전체의 위도, 경도 얻기
 		ArrayList<Location> list = mps.selectComLocation();
 		
-		System.out.println("addr : " + addr);
-		Float[] userAddrLatLon = CommonUtil.geoCoding(addr);
+		int finalDeliveryLoc = 0;
+		ArrayList<Double> locDistanceArr = new ArrayList<>();
 		
-		System.out.println(addr +":" + userAddrLatLon[0] + ", " + userAddrLatLon[1]);
-		
-		
-		
-		return null;
+		//가까운곳 배정
+		for(int i=0;i<list.size();i++) {
+			double locDictance = new Distance().distance(list.get(i).getLat(), list.get(i).getLon(), userLat, userLon);
+			
+			locDistanceArr.add(locDictance);
+			Collections.sort(locDistanceArr);
+			
+			if(locDistanceArr.get(i) < 3) {
+				finalDeliveryLoc = list.get(i).getComNo();
+			}
+		}
+		return finalDeliveryLoc;
 	}
+	
+	
+	//배송지 추가
+	@RequestMapping(value="deliveryAdd.mp")
+	public String deliveryAdd(HttpServletRequest request, String finalDeliveryLoc, String addr, String deliName ,Model model) {
+		HttpSession session = request.getSession();
+		Member loginUser = (Member)session.getAttribute("loginUser");
+		int memberNo = loginUser.getMemberNo();
+		
+		int result = mps.insertUserDelAddr(memberNo, finalDeliveryLoc, addr, deliName);
+		
+		if(result>0) {
+			return "redirect:mypage/deliList";
+		}else {
+			model.addAttribute("msg", "배송지 추가 실패");
+			return "common/errorPage";
+		}
+	}
+	
+	
 	
 	//쿠폰함 - 사용가능쿠폰
 	@RequestMapping(value="myPageCoupon.mp")
