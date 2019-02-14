@@ -191,8 +191,8 @@ public class OrderConroller {
 	}
 	
 	//레시피 저장
-	@RequestMapping(value="/saveRecipe.cor", produces="application/text; charset=utf8")
-	public @ResponseBody String saveRecipe(HttpServletRequest request,
+	@RequestMapping(value="/saveRecipe.cor")
+	public @ResponseBody HashMap<Integer, ArrayList<MyPizza>> saveRecipe(HttpServletRequest request,
 			@RequestParam(value="pizzaName", required=false) String pizzaName,
 			@RequestParam(value="dough", required=false) String dough,
 			@RequestParam(value="size", required=false) String size,
@@ -208,7 +208,7 @@ public class OrderConroller {
 		System.out.println(toppings);
 		System.out.println(img);*/
 		//비로그인 시
-		if(request.getSession().getAttribute("loginUser") == null) return "loginError";
+		if(request.getSession().getAttribute("loginUser") == null) return null;
 		
 		//객체 생성
 		int memberNo = ((Member)request.getSession().getAttribute("loginUser")).getMemberNo();
@@ -221,7 +221,7 @@ public class OrderConroller {
 		otList.add(new OrderTopping(Integer.parseInt(sauce), 1));
 		
 		for(int i=0; i<toppings.size(); i++){
-			String[] tmp = toppings.get(i).split(",");
+			String[] tmp = toppings.get(i).split(":");
 			
 			OrderTopping ot = new OrderTopping();
 			ot.setMaterialNo(Integer.parseInt(tmp[0]));
@@ -255,13 +255,11 @@ public class OrderConroller {
 		} catch (IOException e) {
 			e.printStackTrace();
 			if(file.exists()) file.delete();
-			return "이미지 생성 실패!";
 		} finally {
 			try {
 				if(bos != null) bos.close();
 			} catch (IOException e) {
 				e.printStackTrace();
-				return "이미지 생성 실패!";
 			}
 		}
 		
@@ -274,10 +272,30 @@ public class OrderConroller {
 		try {
 			int result = os.insertRecipe(oi, otList, mp, image);
 			
-			return "complete";
+			if(result > 0) {
+				ArrayList<MyPizza> mpList = os.selectMyPizzaList(memberNo);
+				
+				HashMap<Integer, ArrayList<MyPizza>> mpMap = new HashMap<Integer, ArrayList<MyPizza>>();
+				for(int i=0; i<mpList.size(); i++) {
+					mpMap.put(mpList.get(i).getMypizzaNo(), null);
+				}
+				for(Integer key : mpMap.keySet()) {
+					ArrayList<MyPizza> mps = new ArrayList<MyPizza>();
+					for(int i=0; i<mpList.size(); i++) {
+						if(mpList.get(i).getMypizzaNo() == key) {
+							mps.add(mpList.get(i));
+						}
+					}
+					mpMap.put(key, mps);
+				}
+				return mpMap;
+			} else {
+				if(file.exists()) file.delete();
+				return null;
+			}
 		} catch (OrderException e) {
 			if(file.exists()) file.delete();
-			return e.getMessage();
+			return null;
 		}
 	}
 	
