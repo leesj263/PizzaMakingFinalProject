@@ -139,7 +139,7 @@ public class MypageDaoImpl implements MypageDao{
 		return listCount;
 	}
 
-	//위도, 경도 얻기
+	//지점 전체의 위도/경도 얻기
 	@Override
 	public ArrayList<Location> selectComLocation(SqlSessionTemplate sqlSession) {
 		
@@ -154,9 +154,15 @@ public class MypageDaoImpl implements MypageDao{
 		return list;
 	}
 
-	
-	
-	
+	//배송지 추가
+	@Override
+	public int insertUserDelAddr(SqlSessionTemplate sqlSession, int memberNo, String finalDeliveryLoc, String addr, String deliName) {
+		DelList del = new DelList(deliName, addr, finalDeliveryLoc, memberNo);
+
+		return sqlSession.insert("Mypage.insertUserDelAddr", del);
+	}
+
+
 	
 	
 	

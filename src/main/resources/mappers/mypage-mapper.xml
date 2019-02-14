@@ -47,8 +47,8 @@
 	
 	<resultMap type="com.kh.pmfp.mypage.model.vo.Location" id="mypageLocResultSet">
 		<result property="comName" column="COM_NAME"/>
-		<result property="lon" column="LON"/>
 		<result property="lat" column="LAT"/>
+		<result property="lon" column="LON"/>
 	</resultMap>
 
 
@@ -126,9 +126,14 @@
 	</select>
 	
 	<select id="selectComLoc" resultMap="mypageLocResultSet">
-		select com_name, lon, lat 
+		select com_name, lat, lon 
 		from company
+		order by com_no
 	</select>
+	
+	<insert id="insertUserDelAddr" parameterType="DelList">
+		INSERT INTO DELIVERY VALUES(SEQ_DNO.NEXTVAL, #{memberNo}, #{comName},#{delAddr},#{delName})
+	</insert>
 	
 	
 </mapper>

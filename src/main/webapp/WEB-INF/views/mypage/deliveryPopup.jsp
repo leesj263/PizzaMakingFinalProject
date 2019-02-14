@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -26,38 +28,28 @@
 
 <div id="all">
 
-<!-- 
-<input type="text" id="sample4_postcode" placeholder="우편번호">
-<input type="button" onclick="sample4_execDaumPostcode()" value="우편번호 찾기"><br>
-<input type="text" id="sample4_roadAddress" placeholder="도로명주소">
-<input type="text" id="sample4_jibunAddress" placeholder="지번주소">
-<span id="guide" style="color:#999;display:none"></span>
-<input type="text" id="sample4_detailAddress" placeholder="상세주소">
-<input type="text" id="sample4_extraAddress" placeholder="참고항목">
- -->
- 
 <div class="ui mini input">
-  <input type="text" id="sample4_postcode" placeholder="우편번호">
+  <input type="text" id="postcode" placeholder="우편번호">
 </div>
 
 <button class="mini ui black basic button" onclick="sample4_execDaumPostcode()">우편번호 찾기</button><br>
 
 <div class="ui mini input">
-  <input type="text" id="sample4_roadAddress" placeholder="도로명주소" style="width: 250px;">
+  <input type="text" id="roadAddress" placeholder="도로명주소" style="width: 250px;">
 </div>
 
 <div class="ui mini input">
-  <input type="text" id="sample4_jibunAddress" placeholder="지번주소" style="width: 250px;">
+  <input type="text" id="jibunAddress" placeholder="지번주소" style="width: 250px;">
 </div>
 
 <span id="guide" style="color:#999;display:none"></span>
 
 <div class="ui mini input">
-  <input type="text" id="sample4_extraAddress" placeholder="참고항목" style="width: 250px;">
+  <input type="text" id="extraAddress" placeholder="참고항목" style="width: 250px;">
 </div>
 
 <br><br><div class="ui mini input">
-<input type="text" id="sample4_detailAddress" style="width: 230px;" placeholder="상세주소">
+<input type="text" id="detailAddress" style="width: 230px;" placeholder="상세주소">
 </div>
 
 <br><div class="ui mini input">
@@ -65,13 +57,16 @@
 </div>
 
 <br><br>
-<button class="fluid ui button">등록하기</button>
+<button class="fluid ui button" onclick="addAddr()">등록하기</button>
 
 
-<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
+<!-- <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script> -->
+<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js?autoload=false"></script>
 <script>
-    //본 예제에서는 도로명 주소 표기 방식에 대한 법령에 따라, 내려오는 데이터를 조합하여 올바른 주소를 구성하는 방법을 설명합니다.
+	var latlonVal;
+
     function sample4_execDaumPostcode() {
+    	 daum.postcode.load(function(){
         new daum.Postcode({
             oncomplete: function(data) {
                 // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
@@ -96,15 +91,15 @@
                 }
 
                 // 우편번호와 주소 정보를 해당 필드에 넣는다.
-                document.getElementById('sample4_postcode').value = data.zonecode;
-                document.getElementById("sample4_roadAddress").value = roadAddr;
-                document.getElementById("sample4_jibunAddress").value = data.jibunAddress;
+                document.getElementById('postcode').value = data.zonecode;
+                document.getElementById("roadAddress").value = roadAddr;
+                document.getElementById("jibunAddress").value = data.jibunAddress;
                 
                 // 참고항목 문자열이 있을 경우 해당 필드에 넣는다.
                 if(roadAddr !== ''){
-                    document.getElementById("sample4_extraAddress").value = extraRoadAddr;
+                    document.getElementById("extraAddress").value = extraRoadAddr;
                 } else {
-                    document.getElementById("sample4_extraAddress").value = '';
+                    document.getElementById("extraAddress").value = '';
                 }
 
                 var guideTextBox = document.getElementById("guide");
@@ -122,24 +117,73 @@
                     guideTextBox.innerHTML = '';
                     guideTextBox.style.display = 'none';
                 }
-                
-                
-                latlon(roadAddr);
- 
+				
+                //사용자가 입력한 주소의 위도/경도 구하기
+                latlonVal = latlon(roadAddr);
+ 		
             }
-        
-        
+
         }).open();
         
+    })
+    };
+    
+    
+  
+    //사용자가 입력한 주소 위/경도로 변환
+    function latlon(value) {
+        var geocode = "https://maps.googleapis.com/maps/api/geocode/json?address="+value+"&key=AIzaSyCbicS4cErqcGQUcYybf3OWZAZZWZRP5Lk";
+        var tag = "";
+        jQuery.ajax({
+            url: geocode,
+            type: 'POST',
+            async:false,
+           	success: function(myJSONResult){
+	            if(myJSONResult.status == 'OK') {
+	                
+	                var i;
+	                for (i = 0; i < myJSONResult.results.length; i++) {
+	                  tag += myJSONResult.results[i].geometry.location.lat+",";
+	                  tag += myJSONResult.results[i].geometry.location.lng;
+	                }
+	                
+	
+	            }else{
+	            	console.log(myJSONResult);
+	            }
+	            }
+        }); 
+        return tag;
     }
     
     
-    function latlon(value){
-    	$.ajax({
-    		url:"latlon.mp",
-    		type:"POST",
-    		data:{addr:value},
-    		success:function(data){
+ 
+    
+    
+    
+    //등록하기 버튼
+    function addAddr(){
+    	var postcode = $("#postcode").val();
+    	var roadAddress = $("#roadAddress").val();
+    	var jibunAddress = $("#jibunAddress").val();
+
+    	
+    	jQuery.ajax({
+    		url:"comLatLon.mp",
+    		data:{userAddr:latlonVal},
+    		type:'POST',
+    		success:function(finalDeliveryLoc){
+    			var addr = $("#roadAddress").val() + "+" + $("#detailAddress").val();
+    			
+    			var deliName = $("#deliveryName").val();
+
+    			window.close();
+    			
+    			opener.location.href="deliveryAdd.mp?finalDeliveryLoc=" + finalDeliveryLoc + "&addr=" + addr + "&deliName=" + deliName;
+
+    		},
+    		error:function(data){
+    			console.log("실패");
     			console.log(data);
     		}
     	});
