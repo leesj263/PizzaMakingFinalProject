@@ -22,6 +22,9 @@
     <title>Sufee Admin - HTML5 Admin Template</title>
     <meta name="description" content="Sufee Admin - HTML5 Admin Template">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://code.jquery.com/jquery-3.3.1.js"
+	integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+	crossorigin="anonymous"></script>
 <style>
 	#calendar td:hover{
 		background : lightgray !important; 
@@ -30,7 +33,20 @@
 	.adminMessageTr:hover{
 		background : lightgray !important; 
 	}
+	td {
+		table-layout: fixed;
+		
+
+	}
+	table{
+		table-layout: fixed;
+
+ 	  
+	}
 </style>
+<script>
+	idDate = "";
+</script>
 </head>
 
 <body>
@@ -118,7 +134,7 @@
         </div><!-- .content -->
         
         
-        
+        <button onclick = "test()">test</button>
         <div class="content mt-3" >
             <div class="animated fadeIn">
                 <div class="row">
@@ -159,7 +175,8 @@
     </div><!-- /#right-panel -->
 	
 	
-	
+
+
     <!-- Right Panel -->
 
 <script type="text/javascript">
@@ -198,7 +215,10 @@
             //innerHTML : js 언어를 HTML의 권장 표준 언어로 바꾼다
             //new를 찍지 않아서 month는 +1을 더해줘야 한다. 
              tbCalendarYM.innerHTML = today.getFullYear() + "년 " + (today.getMonth() + 1) + "월"; 
- 
+             idDate = today.getFullYear() + "-" + (today.getMonth() + 1);
+             //각 날짜 테이블 구분용 아이디(20190205 처럼 날짜로 구분)
+             
+             
              /*while은 이번달이 끝나면 다음달로 넘겨주는 역할*/
             while (tbCalendar.rows.length > 2) {
             //열을 지워줌
@@ -222,18 +242,18 @@
              //1일부터 마지막 일까지 돌림
                   cell = row.insertCell();//열 한칸한칸 계속 만들어주는 역할
                   cell.innerHTML =  
-                  "<table width = '100%'>"+
-                 	 "<tr>"+
-                  		"<td rowspan = '4'>"+ i +"</td>"+
+                  "<table width = '100%' height = '100%' onclick = 'calendarTd(this)' id = '"+ idDate + "-" + i + "'>"+
+                 	 "<tr >"+
+                  		"<td  rowspan = '4' width = '15%'>"+ i +"</td>"+
                  	 "</tr>"+
                  	 "<tr>"+
-                 		 "<td align = 'right'></td>"+
+                 		 "<td  align = 'right' id = '1'></td>"+
                  	 "</tr>"+
                  	 "<tr>"+
-	            		 "<td align = 'right'></td>"+
+	            		 "<td  align = 'right' id = '2'></td>"+
 	            	 "</tr>"+
 	            	 "<tr>"+
-		         		 "<td align = 'right'></td>"+
+		         		 "<td  align = 'right' id = '3'></td>"+
 		         	 "</tr>"+
                   "</table>";
                   //cell.style.background = "lightgray";//셀을 1부터 마지막 day까지 HTML 문법에 넣어줌
@@ -242,18 +262,18 @@
                   //1주일이 7일 이므로 일요일 구하기
                   //월화수목금토일을 7로 나눴을때 나머지가 1이면 cnt가 1번째에 위치함을 의미한다
                 cell.innerHTML = 
-                "<table width = '100%'>"+
-	            	 "<tr>"+
-	             		"<td rowspan = '4'>"+ "<font color=#F79DC2>" + i +"</td>"+
+                "<table width = '100%' height = '100%' onclick = 'calendarTd(this)' id = '"+ idDate + "-" + cnt + "'>"+
+	            	 "<tr >"+
+	             		"<td  rowspan = '4' width = '15%'>"+ "<font color=#F79DC2>" + i +"</td>"+
 	            	 "</tr>"+
 	            	 "<tr>"+
-	            		 "<td align = 'right'></td>"+
+	            		 "<td  align = 'right' id = '1'></td>"+
 	            	 "</tr>"+
 	            	 "<tr>"+
-	           		 	"<td align = 'right'></td>"+
+	           		 	"<td  align = 'right'  id = '2'></td>"+
 		           	 "</tr>"+
 		           	 "<tr>"+
-		         		 "<td align = 'right'></td>"+
+		         		 "<td  align = 'right' id = '3'></td>"+
 		         	 "</tr>"+
 	             "</table>";
                 //1번째의 cell에만 색칠
@@ -261,18 +281,18 @@
               if (cnt%7 == 0){/* 1주일이 7일 이므로 토요일 구하기*/
                   //월화수목금토일을 7로 나눴을때 나머지가 0이면 cnt가 7번째에 위치함을 의미한다
                   cell.innerHTML = 
-                  "<table width = '100%'>"+
-	              	 "<tr>"+
-	               		"<td rowspan = '4'>"+ "<font color=skyblue>" + i +"</td>"+
+                  "<table width = '100%' height = '100%' onclick = 'calendarTd(this)' id = '"+ idDate + "-" + cnt + "'>"+
+	              	 "<tr >"+
+	               		"<td  rowspan = '4' width = '15%'>"+ "<font color=skyblue>" + i +"</td>"+
 	              	 "</tr>"+
 	              	 "<tr>"+
-	              		 "<td align = 'right'></td>"+
+	              		 "<td  align = 'right'  id = '1'></td>"+
 	              	 "</tr>"+
 	              	 "<tr>"+
-		            		 "<td align = 'right'></td>"+
+		            	"<td   align = 'right'  id = '2'></td>"+
 	            	 "</tr>"+
 	            	 "<tr>"+
-		         		 "<td align = 'right'></td>"+
+		         		 "<td  align = 'right' id = '3'></td>"+
 		         	 "</tr>"+
 	               "</table>";
                   //7번째의 cell에만 색칠
@@ -311,11 +331,22 @@
     buildCalendar();//
 	</script>
 	
-<!-- 	<script>
-		window.onload = function () {
-		 	console.log("${adminMessage}");
-		};
-	</script> -->
+	
+	<script>
+		function test(){
+			$("#2019-2-5 #1").css({"font-size" : "0.5em", "padding" : "0px", "margin" : "0px", "border" : "0"}).text("제대로 들가나?");
+			$("#2019-2-5 #2").css({"font-size" : "0.5em", "padding" : "0px", "margin" : "0px", "border" : "0"}).text("제대로 들가나?");
+			$("#2019-2-5 #3").css({"font-size" : "0.5em", "padding" : "0px", "margin" : "0px", "border" : "0"}).text("제대로 들가나?");
+			
+		}
+			
+		function calendarTd(btn){
+			console.log($(btn).attr("id"));
+			
+			location.href = "calendarDetail.com?id="+$(btn).attr("id");
+		}
+		
+	</script>
 	
 	
  	<script src="${contextPath }/resources/companyCss/vendors/datatables.net/js/jquery.dataTables.min.js"></script>

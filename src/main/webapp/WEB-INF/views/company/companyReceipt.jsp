@@ -129,12 +129,9 @@
 						(국민은행  936801-01-883641 김미정)
 						▣결제예정품목
 						<c:forEach items="${list}" var="value">
-							◆재료명 : ${ value.materialName }, 
-							◆주문중량 : ${ value.materialWeight }KG, 
-							◆주문자 : 황민규, 
+							◆재료 : ${ value.materialName }(${ value.materialWeight }KG), 
 							◆주문일자 : ${ value.orderMDate }, 
 							◆재료 가격  : ${ value.materialPrice }, 
-							
 						</c:forEach>'/>
 						<!-- 명세서 내역 입력  -->
 					</form>
