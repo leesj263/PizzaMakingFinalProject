@@ -35,7 +35,7 @@
 								</p>
 							</li>
 							<li class="member-li"><span>제목</span>
-								<p>쿠폰 사용 후 주문 취소를 했는데...
+								<p>${qna.boardTitle }
 									<input type="hidden" name="boardNo" value="${qna.boardNo }">
 								</p>
 							</li>

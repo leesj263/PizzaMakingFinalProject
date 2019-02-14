@@ -6,10 +6,13 @@ public class AdminOrder implements java.io.Serializable{
 	
 	private int orderNo;
 	private int memberNo;
+	private String memberName;
+	private String memberId;
 	private int orderMethod;
 	private String receiver;
 	private String orderTel;
 	private Date orderDate;
+	private String orderSDate;
 	private Date orderReserveTime;
 	private String orderPayno;
 	private int orderPayPrice;
@@ -21,16 +24,19 @@ public class AdminOrder implements java.io.Serializable{
 	
 	public AdminOrder() {}
 
-	public AdminOrder(int orderNo, int memberNo, int orderMethod, String receiver, String orderTel, Date orderDate,
-			Date orderReserveTime, String orderPayno, int orderPayPrice, String orderStatus, int deliveryNo, int empNo,
-			int comNo, String comName) {
+	public AdminOrder(int orderNo, int memberNo, String memberName, String memberId, int orderMethod, String receiver,
+			String orderTel, Date orderDate, String orderSDate, Date orderReserveTime, String orderPayno,
+			int orderPayPrice, String orderStatus, int deliveryNo, int empNo, int comNo, String comName) {
 		super();
 		this.orderNo = orderNo;
 		this.memberNo = memberNo;
+		this.memberName = memberName;
+		this.memberId = memberId;
 		this.orderMethod = orderMethod;
 		this.receiver = receiver;
 		this.orderTel = orderTel;
 		this.orderDate = orderDate;
+		this.orderSDate = orderSDate;
 		this.orderReserveTime = orderReserveTime;
 		this.orderPayno = orderPayno;
 		this.orderPayPrice = orderPayPrice;
@@ -55,6 +61,22 @@ public class AdminOrder implements java.io.Serializable{
 
 	public void setMemberNo(int memberNo) {
 		this.memberNo = memberNo;
+	}
+
+	public String getMemberName() {
+		return memberName;
+	}
+
+	public void setMemberName(String memberName) {
+		this.memberName = memberName;
+	}
+
+	public String getMemberId() {
+		return memberId;
+	}
+
+	public void setMemberId(String memberId) {
+		this.memberId = memberId;
 	}
 
 	public int getOrderMethod() {
@@ -87,6 +109,14 @@ public class AdminOrder implements java.io.Serializable{
 
 	public void setOrderDate(Date orderDate) {
 		this.orderDate = orderDate;
+	}
+
+	public String getOrderSDate() {
+		return orderSDate;
+	}
+
+	public void setOrderSDate(String orderSDate) {
+		this.orderSDate = orderSDate;
 	}
 
 	public Date getOrderReserveTime() {
@@ -155,13 +185,13 @@ public class AdminOrder implements java.io.Serializable{
 
 	@Override
 	public String toString() {
-		return "AdminOrder [orderNo=" + orderNo + ", memberNo=" + memberNo + ", orderMethod=" + orderMethod
-				+ ", receiver=" + receiver + ", orderTel=" + orderTel + ", orderDate=" + orderDate
-				+ ", orderReserveTime=" + orderReserveTime + ", orderPayno=" + orderPayno + ", orderPayPrice="
-				+ orderPayPrice + ", orderStatus=" + orderStatus + ", deliveryNo=" + deliveryNo + ", empNo=" + empNo
-				+ ", comNo=" + comNo + ", comName=" + comName + "]";
+		return "AdminOrder [orderNo=" + orderNo + ", memberNo=" + memberNo + ", memberName=" + memberName
+				+ ", memberId=" + memberId + ", orderMethod=" + orderMethod + ", receiver=" + receiver + ", orderTel="
+				+ orderTel + ", orderDate=" + orderDate + ", orderSDate=" + orderSDate + ", orderReserveTime="
+				+ orderReserveTime + ", orderPayno=" + orderPayno + ", orderPayPrice=" + orderPayPrice
+				+ ", orderStatus=" + orderStatus + ", deliveryNo=" + deliveryNo + ", empNo=" + empNo + ", comNo="
+				+ comNo + ", comName=" + comName + "]";
 	}
 
-	
 	
 }

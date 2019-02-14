@@ -16,6 +16,7 @@ import com.kh.pmfp.admin.model.vo.AdminBoard2;
 import com.kh.pmfp.admin.model.vo.AdminMaterial;
 import com.kh.pmfp.admin.model.vo.AdminMember;
 import com.kh.pmfp.admin.model.vo.AdminOrder;
+import com.kh.pmfp.admin.model.vo.AdminOrderMenu;
 import com.kh.pmfp.admin.model.vo.AdminSeller;
 import com.kh.pmfp.admin.model.vo.AdminSellerOrder;
 import com.kh.pmfp.admin.model.vo.AdminSellerOrderList;
@@ -471,7 +472,87 @@ public class AdminDaoImpl implements AdminDao {
 		return topping;
 	}
 
+	//토핑 수정용
+	@Override
+	public int updateMaterial(SqlSessionTemplate sqlSession, AdminMaterial topping) throws AdminUpdateException {
+		int result=0;
+		System.out.println("dao");
+		result=sqlSession.update("Admin.updateMaterial", topping);
+		
+		if(result<=0) {
+			throw new AdminUpdateException("재료 수정 실패");
+		}
+		return result;
+	}
+	
+	//토핑 판매중지용
+	@Override
+	public int deleteMaterial(SqlSessionTemplate sqlSession, int materialNo) throws AdminDeleteException {
+		int result=0;
+		result=sqlSession.update("Admin.deleteMaterial", materialNo);
+		if(result<=0) {
+			throw new AdminDeleteException("토핑 삭제 실패");
+		}
+		return result;
+	}
 
+	//토핑 재판매용
+	@Override
+	public int resellMaterial(SqlSessionTemplate sqlSession, int materialNo)  throws AdminUpdateException {
+		int result=0;
+		result=sqlSession.update("Admin.resellMaterial", materialNo);
+		if(result<=0) {
+			throw new AdminUpdateException("토핑 재판매변경 실패");
+		}
+		return result;
+	}
+
+	//주문 수 카운트용
+	@Override
+	public int selectOrderCount(SqlSessionTemplate sqlSession) throws AdminCountException {
+		int result=-1;
+		result=sqlSession.selectOne("Admin.selectOrderCount");
+		if(result<0) {
+			throw new AdminCountException("주문 수 카운트 실패");
+		}
+		return result;
+	}
+
+	//주문 목록 조회용
+	@Override
+	public ArrayList<AdminOrder> selectOrderList(SqlSessionTemplate sqlSession, PageInfo pi) throws AdminSelectException {
+		ArrayList<AdminOrder> orderList=new ArrayList<AdminOrder>();
+		int offset = (pi.getCurrentPage() -1) * pi.getLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getLimit());
+		orderList=(ArrayList)sqlSession.selectList("Admin.selectOrderList", null, rowBounds);
+		if(orderList==null) {
+			throw new AdminSelectException("주문 목록 조회 실패");
+		}
+		return orderList;
+	}
+
+	//주문 상세보기 용
+	@Override
+	public AdminOrder selectOrder(SqlSessionTemplate sqlSession, int orderNo) throws AdminSelectException {
+		AdminOrder order=new AdminOrder();
+		order=sqlSession.selectOne("Admin.selectOrder", orderNo);
+		if(order==null) {
+			throw new AdminSelectException("주문 상세 조회 실패");
+		}
+		return order;
+	}
+
+	//주문 상세보기 용
+	@Override
+	public ArrayList<AdminOrderMenu> selectOrderMenu(SqlSessionTemplate sqlSession, int orderNo)
+			throws AdminSelectException {
+		ArrayList<AdminOrderMenu> menuList=new ArrayList<AdminOrderMenu>();
+		menuList=(ArrayList)sqlSession.selectList("Admin.selectOrderMenu", orderNo);
+		if(menuList==null) {
+			throw new AdminSelectException("주문 메뉴 조회 실패");
+		}
+		return menuList;
+	}
 
 
 

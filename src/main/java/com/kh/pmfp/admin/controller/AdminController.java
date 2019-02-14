@@ -24,6 +24,7 @@ import com.kh.pmfp.admin.model.vo.AdminBoard2;
 import com.kh.pmfp.admin.model.vo.AdminMaterial;
 import com.kh.pmfp.admin.model.vo.AdminMember;
 import com.kh.pmfp.admin.model.vo.AdminOrder;
+import com.kh.pmfp.admin.model.vo.AdminOrderMenu;
 import com.kh.pmfp.admin.model.vo.AdminSeller;
 import com.kh.pmfp.admin.model.vo.AdminSellerOrder;
 import com.kh.pmfp.admin.model.vo.AdminSellerOrderList;
@@ -58,7 +59,10 @@ public class AdminController {
 			request.setAttribute("pi", pi);
 			
 			return "admin/user/userList";
-		} catch (AdminSelectException | AdminCountException e) {
+		} catch (AdminSelectException e) {
+			request.setAttribute("msg", e.getMessage());
+			return "common/errorPage";
+		} catch (AdminCountException e) {
 			request.setAttribute("msg", e.getMessage());
 			return "common/errorPage";
 		}
@@ -101,11 +105,13 @@ public class AdminController {
 			request.setAttribute("sellerList", sellerList);
 			request.setAttribute("pi", pi);
 			return "admin/seller/sellerList";
-		} catch (AdminSelectException | AdminCountException e) {
+		} catch (AdminSelectException e) {
 			request.setAttribute("msg", e.getMessage());
-			
 			return "common/errorPage";
-		}	
+		} catch (AdminCountException e) {
+			request.setAttribute("msg", e.getMessage());
+			return "common/errorPage";
+		}
 	}
 	
 	//승인 대기 목록 조회용
@@ -120,7 +126,6 @@ public class AdminController {
 			return "admin/seller/waitSeller";
 		} catch (AdminSelectException e) {
 			request.setAttribute("msg", e.getMessage());
-			
 			return "common/errorPage";
 		}	
 	}
@@ -548,6 +553,7 @@ public class AdminController {
 		
 	}
 		
+	//재료 목록 조회용
 	@RequestMapping("toppingList.ad")
 	public String toppingList(@RequestParam(value="currentPage", required=false, defaultValue="1")int currentPage, HttpServletRequest request) {
 		try {
@@ -561,7 +567,10 @@ public class AdminController {
 			request.setAttribute("pi", pi);
 			
 			return "admin/sales/menu/toppingList";
-		} catch (AdminCountException | AdminSelectException e) {
+		} catch (AdminCountException e) {
+			request.setAttribute("msg", e.getMessage());
+			return "common/errorPage";
+		} catch (AdminSelectException e) {
 			request.setAttribute("msg", e.getMessage());
 			return "common/errorPage";
 		}
@@ -576,13 +585,16 @@ public class AdminController {
 			System.out.println("조회 토핑 : "+topping);
 			request.setAttribute("topping", topping);
 			return "admin/sales/menu/toppingDetail";
-		} catch (AdminSelectException | AdminCountException e) {
+		} catch (AdminCountException e) {
 			request.setAttribute("msg", e.getMessage());
-			
+			return "common/errorPage";
+		} catch (AdminSelectException e) {
+			request.setAttribute("msg", e.getMessage());
 			return "common/errorPage";
 		}
 	}
 	
+	//토핑 수정 페이지 이동용
 	@RequestMapping(value="modToppingView.ad", method=RequestMethod.GET)
 	public String modToppingView(@RequestParam int materialNo, HttpServletRequest request) {
 		AdminMaterial topping=new AdminMaterial();
@@ -591,9 +603,101 @@ public class AdminController {
 			System.out.println("수정 토핑 : "+topping);
 			request.setAttribute("topping", topping);
 			return "admin/sales/menu/modTopping";
-		} catch (AdminSelectException | AdminCountException e) {
+		} catch (AdminCountException e) {
 			request.setAttribute("msg", e.getMessage());
+			return "common/errorPage";
+		} catch (AdminSelectException e) {
+			request.setAttribute("msg", e.getMessage());
+			return "common/errorPage";
+		}
+	}
+	
+	//토핑 수정용
+	@RequestMapping("modTopping.ad")
+	public String modTopping(@ModelAttribute AdminMaterial topping, HttpServletRequest request, RedirectAttributes redirectAttributes) {
+		System.out.println("수정할 토핑 : "+topping);
+		
+		try {
+			int result=as.updateMaterial(topping);
+			redirectAttributes.addAttribute("materialNo", topping.getmNo());
+			return "redirect:toppingDetail.ad";
+		} catch (AdminUpdateException e) {
+			request.setAttribute("msg", e.getMessage());
+			return "common/errorPage";
+		}
+	}
+	
+	//토핑 판매중지용
+	@RequestMapping("deleteTopping.ad")
+	public String delTopping(@RequestParam int materialNo, HttpServletRequest request, RedirectAttributes redirectAttributes) {
+		System.out.println("삭제할 토핑 번호 : "+materialNo);
+		try {
+			int result=as.deleteMaterial(materialNo);
 			
+			redirectAttributes.addAttribute("materialNo", materialNo);
+			return "redirect:toppingDetail.ad";
+		} catch (AdminDeleteException e) {
+			request.setAttribute("msg", e.getMessage());
+			return "common/errorPage";
+		}
+	}
+	
+	//토핑 재판매용
+	@RequestMapping("resellTopping.ad")
+	public String resellTopping(@RequestParam int materialNo, HttpServletRequest request, RedirectAttributes redirectAttributes) {
+		System.out.println("재판매할 토핑 : "+materialNo);
+		try {
+			int result=as.resellMaterial(materialNo);
+			redirectAttributes.addAttribute("materialNo", materialNo);
+			return "redirect:toppingDetail.ad";
+		} catch (AdminUpdateException e) {
+			request.setAttribute("msg", e.getMessage());
+			return "common/errorPage";
+		}
+	}
+	
+	//주문 목록 조회용
+	@RequestMapping("orderList.ad")
+	public String orderList(@RequestParam(value="currentPage", required=false, defaultValue="1")int currentPage, HttpServletRequest request) {
+		
+		try {
+			int listCount = as.selectOrderCount();
+			PageInfo pi=Pagination.getPageInfo(currentPage, listCount);
+			ArrayList<AdminOrder> orderList=new ArrayList<AdminOrder>();
+			orderList=as.selectOrderList(pi);
+			System.out.println("주문 목록 : "+orderList);
+			request.setAttribute("orderList", orderList);
+			request.setAttribute("pi", pi);
+			return "admin/sales/orderList";
+		} catch (AdminCountException e) {
+			request.setAttribute("msg", e.getMessage());
+			return "common/errorPage";
+		} catch (AdminSelectException e) {
+			request.setAttribute("msg", e.getMessage());
+			return "common/errorPage";
+		}
+	}
+	
+	//주문 상세보기 용
+	@RequestMapping(value="orderDetail.ad", method=RequestMethod.GET)
+	public String orderDetail(@RequestParam int orderNo, HttpServletRequest request) {
+		AdminOrder order=new AdminOrder();
+		ArrayList<AdminOrderMenu> menuList=new ArrayList<AdminOrderMenu>();
+		int total=0;
+		try {
+			order=as.selectOrder(orderNo);
+			menuList=as.selectOrderMenu(orderNo);
+			for(int i=0;i<menuList.size();i++) {
+				total+=menuList.get(i).getPrice();
+			}
+			System.out.println("조회 주문 : "+order);
+			System.out.println("주문 메뉴 : "+menuList);
+			request.setAttribute("order", order);
+			request.setAttribute("menuList", menuList);
+			request.setAttribute("total", total);
+			return "admin/sales/orderDetail";
+		} catch (AdminSelectException e) {
+			request.setAttribute("msg", e.getMessage());
 			return "common/errorPage";
 		}
 	}

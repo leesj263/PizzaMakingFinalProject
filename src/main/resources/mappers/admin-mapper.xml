@@ -36,10 +36,13 @@
 	<resultMap type="com.kh.pmfp.admin.model.vo.AdminOrder" id="adminOrderResultSet">
 		<id property="orderNo" column="ORDER_NO"/>
 		<result property="memberNo" column="MEMBER_NO"/>
+		<result property="memberName" column="MEMBER_NAME"/>
+		<result property="memberId" column="MEMBER_ID"/>
 		<result property="orderMethod" column="ORDER_METHOD" />
 		<result property="receiver" column="ORDER_RECEIVER" />
 		<result property="orderTel" column="ORDER_RTEL" />
 		<result property="orderDate" column="ORDER_DATE" />
+		<result property="orderSDate" column="ORDER_SDATE"/>
 		<result property="orderReserveTime" column="ORDER_RESERVETIME" />
 		<result property="orderPayno" column="ORDER_PAYNO" />
 		<result property="orderPayPrice" column="ORDER_PAYPRICE" />
@@ -162,6 +165,17 @@
 		<result property="iUDate" column="IMG_UPLOADDATE" />
 		<result property="iStatus" column="IMG_STATUS" />
 		<result property="rn" column="ROWNUM"/>
+	</resultMap>
+	
+	<resultMap type="com.kh.pmfp.admin.model.vo.AdminOrderMenu" id="adminMenuResultSet">
+		<id property="orderNo" column="ORDER_NO"/>
+		<result property="rn" column="ROWNUM"/>
+		<result property="orderIno" column="ORDER_INO" />
+		<result property="orderICate" column="ORDER_ICATEG" />
+		<result property="orderSize" column="ORDER_ISIZE" />
+		<result property="price" column="PRICE" />
+		<result property="tCount" column="ORDER_TCOUNT" />
+		<result property="menu" column="MENU" />
 	</resultMap>
 	
 	<select id="selectUserCount" resultType="_int" parameterType="AdminMember">
@@ -402,17 +416,79 @@
 		I.IMG_FILEPATH, I.IMG_UPLOADDATE, I.IMG_STATUS, ROWNUM 
 		FROM MATERIAL M 
 		JOIN IMAGE I ON (M.MATERIAL_NO=I.MATERIAL_NO) 
-		WHERE M.MATERIAL_NO=#{materialNo} AND M.MATERIAL_STATUS='Y'
+		WHERE M.MATERIAL_NO=#{materialNo}
 	</select>
 	
 	<select id="selectMaterial" resultMap="adminMaterialResultSet" parameterType="_int">
 		SELECT M.* 
 		FROM MATERIAL M 
-		WHERE M.MATERIAL_NO=#{materialNo} AND M.MATERIAL_STATUS='Y'
+		WHERE M.MATERIAL_NO=#{materialNo}
 	</select>
 	
 	<select id="selectMatCount" resultType="_int">
 		SELECT COUNT(*) 
 		FROM MATERIAL M 
+	</select>
+	
+	<update id="updateMaterial" parameterType="AdminMaterial">
+		UPDATE MATERIAL SET MATERIAL_NAME=#{mName}, MATERIAL_SIZE=#{mSize}, MATERIAL_WEIGHT=#{mWeight}, 
+		MATERIAL_CATEG=#{mCate}, MATERIAL_BUYPRICE=#{mBuyPrice}, MATERIAL_SELLPRICE=#{mSellPrice}, MATERIAL_STATUS=#{mStatus} 
+		WHERE MATERIAL_NO=#{mNo}
+	</update>
+	
+	<update id="deleteMaterial" parameterType="_int">
+		UPDATE MATERIAL SET MATERIAL_STATUS='N' 
+		WHERE MATERIAL_NO=#{materialNo}
+	</update>
+	
+	<update id="resellMaterial" parameterType="_int">
+		UPDATE MATERIAL SET MATERIAL_STATUS='Y' 
+		WHERE MATERIAL_NO=#{materialNo}
+	</update>
+	
+	<select id="selectOrderCount" resultType="_int">
+		SELECT COUNT(*) FROM ORDER_MAIN WHERE ORDER_NO > 0 
+	</select>
+	
+	<select id="selectOrderList" resultMap="adminOrderResultSet">
+		SELECT OM.ORDER_NO, OM.MEMBER_NO, MM.MEMBER_NAME, MM.MEMBER_ID, OM.ORDER_METHOD, 
+		OM.ORDER_RECEIVER, OM.ORDER_DATE, TO_CHAR(OM.ORDER_DATE, 'RR/MM/DD HH24:MI:SS') ORDER_SDATE, 
+		OM.ORDER_PAYNO, OM.ORDER_PAYPRICE, OM.ORDER_STATUS, OM.COM_NO, CO.COM_NAME
+		FROM ORDER_MAIN OM 
+		JOIN MEMBER MM ON (MM.MEMBER_NO=OM.MEMBER_NO) 
+		JOIN COMPANY CO ON (OM.COM_NO=CO.COM_NO) 
+		WHERE OM.ORDER_NO>0
+		GROUP BY OM.ORDER_NO, OM.MEMBER_NO, MM.MEMBER_NAME, MM.MEMBER_ID, OM.ORDER_METHOD, 
+		OM.ORDER_RECEIVER, OM.ORDER_DATE, OM.ORDER_PAYNO, OM.ORDER_PAYPRICE, OM.ORDER_STATUS, 
+		OM.COM_NO, CO.COM_NAME
+		ORDER BY OM.ORDER_NO DESC
+	</select>
+	
+	<select id="selectOrder" resultMap="adminOrderResultSet" parameterType="_int">
+		SELECT OM.ORDER_NO, OM.MEMBER_NO, MM.MEMBER_NAME, MM.MEMBER_ID, OM.ORDER_METHOD, 
+		OM.ORDER_RECEIVER, OM.ORDER_DATE, TO_CHAR(OM.ORDER_DATE, 'RR/MM/DD HH24:MI:SS') ORDER_SDATE, 
+		OM.ORDER_PAYNO, OM.ORDER_PAYPRICE, OM.ORDER_STATUS, OM.COM_NO, CO.COM_NAME
+		FROM ORDER_MAIN OM 
+		JOIN MEMBER MM ON (MM.MEMBER_NO=OM.MEMBER_NO) 
+		JOIN COMPANY CO ON (OM.COM_NO=CO.COM_NO) 
+		WHERE OM.ORDER_NO=#{orderNo}
+		GROUP BY OM.ORDER_NO, OM.MEMBER_NO, MM.MEMBER_NAME, MM.MEMBER_ID, OM.ORDER_METHOD, 
+		OM.ORDER_RECEIVER, OM.ORDER_DATE, OM.ORDER_PAYNO, OM.ORDER_PAYPRICE, OM.ORDER_STATUS, 
+		OM.COM_NO, CO.COM_NAME
+		ORDER BY OM.ORDER_NO DESC
+	</select>
+	
+	<select id="selectOrderMenu" resultMap="adminMenuResultSet" parameterType="_int">
+		SELECT ROWNUM, MN.* FROM 
+		(SELECT OI.ORDER_INO, OI.ORDER_NO, OI.ORDER_ICATEG, OI.ORDER_ISIZE, SUM(M.MATERIAL_SELLPRICE*ORDER_TCOUNT) PRICE, OT.ORDER_TCOUNT, 
+		LISTAGG(CAST(M.MATERIAL_NAME||M.MATERIAL_SIZE||'／'||OT.ORDER_TCOUNT||'' AS VARCHAR(300)) , ', ')
+		WITHIN GROUP (ORDER BY M.MATERIAL_NAME) MENU
+		FROM ORDER_ITEM OI 
+		JOIN ORDER_MAIN OM ON (OM.ORDER_NO=OI.ORDER_NO)
+		JOIN ORDER_TOPPING OT ON (OI.ORDER_INO=OT.ORDER_INO) 
+		JOIN MATERIAL M ON (OT.MATERIAL_NO=M.MATERIAL_NO) 
+		WHERE OI.ORDER_NO=#{orderNo} 
+		GROUP BY OI.ORDER_INO, OI.ORDER_NO,  OI.ORDER_ICATEG, OI.ORDER_ISIZE, OT.ORDER_TCOUNT) MN
+		ORDER BY ROWNUM ASC
 	</select>
 </mapper>

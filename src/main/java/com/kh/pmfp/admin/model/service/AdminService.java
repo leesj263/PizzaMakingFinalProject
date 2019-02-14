@@ -12,6 +12,7 @@ import com.kh.pmfp.admin.model.vo.AdminBoard2;
 import com.kh.pmfp.admin.model.vo.AdminMaterial;
 import com.kh.pmfp.admin.model.vo.AdminMember;
 import com.kh.pmfp.admin.model.vo.AdminOrder;
+import com.kh.pmfp.admin.model.vo.AdminOrderMenu;
 import com.kh.pmfp.admin.model.vo.AdminSeller;
 import com.kh.pmfp.admin.model.vo.AdminSellerOrder;
 import com.kh.pmfp.admin.model.vo.AdminSellerOrderList;
@@ -111,6 +112,27 @@ public interface AdminService {
 
 	//재료 상세보기용
 	AdminMaterial selectMaterial(int materialNo) throws AdminSelectException, AdminCountException;
+
+	//토핑 수정용
+	int updateMaterial(AdminMaterial topping) throws AdminUpdateException;
+
+	//토핑 판매중지용
+	int deleteMaterial(int materialNo) throws AdminDeleteException;
+
+	//토핑 재판매용
+	int resellMaterial(int materialNo) throws AdminUpdateException;
+
+	//주문 수 카운트용
+	int selectOrderCount() throws AdminCountException;
+
+	//주문 목록 조회용
+	ArrayList<AdminOrder> selectOrderList(PageInfo pi) throws AdminSelectException;
+
+	//주문 상세보기 용
+	AdminOrder selectOrder(int orderNo) throws AdminSelectException;
+
+	//주문 상세보기 용
+	ArrayList<AdminOrderMenu> selectOrderMenu(int orderNo) throws AdminSelectException;
 
 
 	
