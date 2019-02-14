@@ -30,6 +30,7 @@
 				<table class="table table-striped col-md-8" id="qnaList">
 					<thead>
 						<tr>
+							<th></th>
 							<th scope="col"></th>
 							<th scope="col">분류</th>
 							<th scope="col">제목</th>
@@ -38,8 +39,8 @@
 					</thead>
 					<tbody>
 						<c:forEach items="${qnaCompleteList }" var="qna">
-							<tr onclick="location.href='admin.ad?admin=board/qnaDetail'">
-							<!-- onclick="location.href='qnaDetail.ad?num=${qna.boardNo}'" -->
+							<tr>
+								<td><input type="hidden" name="boardNo" value="${qna.boardNo }"></td>
 								<th scope="row">${qna.rn }</th>
 								<c:choose>
 									<c:when test="${qna.boardCate==1 }">
@@ -66,28 +67,13 @@
 								</c:choose>
 							</tr>
 						</c:forEach>
-						<!-- <tr>
-							<td>[주문]</td>
-							<td>주변 매장이 없는데 멀리 배달 안되나요</td>
-							<td><button class="btn btn-sm btn-outline-warning" onclick="location.href="admin.ad?admin=board/qnaDetail";">답변하기</button></td>
-						</tr>
-						<tr>
-							<td>[이벤트]</td>
-							<td>베스트 토핑 됐는데 쿠폰 언제 주나요?</td>
-							<td><button class="btn btn-sm btn-outline-warning" onclick="location.href="admin.ad?admin=board/qnaDetail";">답변하기</button></td>
-						</tr>
-						<tr>
-							<td>[쿠폰]</td>
-							<td>쿠폰 사용 후 주문을 취소했는데...</td>
-							<td><button class="btn btn-sm btn-outline-secondary" disabled>답변완료</button></td>
-						</tr> -->
 					</tbody>
 				</table>
 				<div class="col-md-2"></div>
 			</div>
 		</div>
 	</div>
-	<div class="col-md-4"></div>
+	<div class="col-md-5"></div>
 	<!-- <div class="col-md-1"><button class="btn btn-outline-warning">작성</button></div> -->
 	<!-- 검색 영역 -->
 	<!-- <div class="form-inline col-md-5">
@@ -107,13 +93,48 @@
 	<!-- 페이징 영역 -->
 	<div class="dataTables_paginate paging_simple_numbers col-md-4" id="bootstrap-data-table_paginate">
 		<ul class="pagination">
-			<li class="paginate_button page-item previous disabled" id="bootstrap-data-table_previous"><a href="#" aria-controls="bootstrap-data-table" data-dt-idx="0" tabindex="0" class="page-link"><i class="ti-angle-left"></i></a></li>
-			<li class="paginate_button page-item active"><a href="#" aria-controls="bootstrap-data-table" data-dt-idx="1" tabindex="0" class="page-link">1</a></li>
-			<li class="paginate_button page-item "><a href="#" aria-controls="bootstrap-data-table" data-dt-idx="2" tabindex="0" class="page-link">2</a></li>
-			<li class="paginate_button page-item "><a href="#" aria-controls="bootstrap-data-table" data-dt-idx="3" tabindex="0" class="page-link">3</a></li>
-			<li class="paginate_button page-item "><a href="#" aria-controls="bootstrap-data-table" data-dt-idx="4" tabindex="0" class="page-link">4</a></li>
-			<li class="paginate_button page-item "><a href="#" aria-controls="bootstrap-data-table" data-dt-idx="5" tabindex="0" class="page-link">5</a></li>
-			<li class="paginate_button page-item next" id="bootstrap-data-table_next"><a href="#" aria-controls="bootstrap-data-table" data-dt-idx="7" tabindex="0" class="page-link"><i class="ti-angle-right"></i></a></li>
+			<c:if test="${pi.currentPage >1}">
+				<c:url var="btnList" value="${ addr }">
+					<c:param name="currentPage" value="${pi.currentPage-1}"/>
+				</c:url>
+				<li class="paginate_button page-item previous" id="bootstrap-data-table_previous">
+					<a href="${btnList }" aria-controls="bootstrap-data-table" data-dt-idx="0" tabindex="0" class="page-link"><i class="ti-angle-left"></i></a>
+				</li>
+			</c:if>
+			<c:if test="${pi.currentPage==1 }">
+				<li class="paginate_button page-item previous disabled" id="bootstrap-data-table_previous">
+					<a href="#" aria-controls="bootstrap-data-table" data-dt-idx="0" tabindex="0" class="page-link"><i class="ti-angle-left"></i></a>
+				</li>
+			</c:if>
+		<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
+			<c:if test="${ p eq pi.currentPage }">
+				<li class="paginate_button page-item active disabled">
+					<a href="#" aria-controls="bootstrap-data-table" data-dt-idx="${p }" tabindex="0" class="page-link">${p }</a>
+				</li>
+			</c:if>
+				
+			<c:if test = "${ p ne pi.currentPage }">
+				<c:url var="btnList" value="${ addr }">
+					<c:param name="currentPage" value="${ p }"/>
+				</c:url>
+				<li class="paginate_button page-item">
+					<a href="${btnList }" aria-controls="bootstrap-data-table" data-dt-idx="${p }" tabindex="0" class="page-link">${p }</a>
+				</li>
+			</c:if>
+		</c:forEach>
+			<c:if test="${pi.currentPage <pi.maxPage}">
+				<c:url var="btnList" value="${ addr }">
+					<c:param name="currentPage" value="${pi.currentPage+1}"/>
+				</c:url>
+				<li class="paginate_button page-item next" id="bootstrap-data-table_next">
+					<a href="${btnList }" aria-controls="bootstrap-data-table" data-dt-idx="7" tabindex="0" class="page-link"><i class="ti-angle-right"></i></a>
+				</li>
+			</c:if>
+			<c:if test="${pi.currentPage>=pi.maxPage }">
+				<li class="paginate_button page-item next disabled" id="bootstrap-data-table_next">
+					<a href="#" aria-controls="bootstrap-data-table" data-dt-idx="7" tabindex="0" class="page-link"><i class="ti-angle-right"></i></a>
+				</li>
+			</c:if>
 		</ul>
 	</div>
 	<div class="col-md-4"></div>
@@ -149,9 +170,9 @@
 			}).mouseout(function(){
 				$(this).parent().css({"color":"#212529"});
 			}).click(function(){
-				var num=$(this).parent().children().eq(0).text();
+				var num=$(this).parent().children().children().eq(0).val();
 				console.log(num);
-				location.href="admin.ad?admin=board/qnaDetail";
+				location.href="qnaDetail.ad?num="+num;
 			});
 		})
 	</script>	

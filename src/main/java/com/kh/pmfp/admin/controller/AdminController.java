@@ -21,6 +21,7 @@ import com.kh.pmfp.admin.model.exception.AdminUpdateException;
 import com.kh.pmfp.admin.model.service.AdminService;
 import com.kh.pmfp.admin.model.vo.AdminBoard;
 import com.kh.pmfp.admin.model.vo.AdminBoard2;
+import com.kh.pmfp.admin.model.vo.AdminCalculateList;
 import com.kh.pmfp.admin.model.vo.AdminMaterial;
 import com.kh.pmfp.admin.model.vo.AdminMember;
 import com.kh.pmfp.admin.model.vo.AdminOrder;
@@ -30,6 +31,7 @@ import com.kh.pmfp.admin.model.vo.AdminSellerOrder;
 import com.kh.pmfp.admin.model.vo.AdminSellerOrderList;
 import com.kh.pmfp.common.model.vo.PageInfo;
 import com.kh.pmfp.common.model.vo.Pagination;
+import com.kh.pmfp.common.model.vo.Pagination5;
 
 @Controller
 public class AdminController {
@@ -132,22 +134,27 @@ public class AdminController {
 	
 	//업체 상세 조회용
 	@RequestMapping(value="sellerDetail.ad", method=RequestMethod.GET)
-	public String sellerDetail(int num, HttpServletRequest request, HttpServletResponse response) {
+	public String sellerDetail(@RequestParam(value="currentPage", required=false, defaultValue="1")int currentPage, int num, HttpServletRequest request, HttpServletResponse response) {
 		System.out.println("업체 번호 : "+num);
 		AdminSeller seller=new AdminSeller();
-		//ArrayList<AdminOrder> orderList=new ArrayList<AdminOrder>();
+		ArrayList<AdminSellerOrderList> orderList=new ArrayList<AdminSellerOrderList>();
 		
 		try {
+			int listCount=as.selectEachSellerOrderCount(num);
+			PageInfo pi=Pagination5.getPageInfo(currentPage, listCount);
 			seller=as.selectSeller(num);
-			//orderList=as.selectSellerOrder(num);
+			orderList=as.selectEachSellerOrderList(num, pi);
 			System.out.println("조회 업체 : "+seller);
-			//System.out.println("주문 목록 : "+orderList);
+			System.out.println("주문 목록 : "+orderList);
 			
 			request.setAttribute("seller", seller);
-			//request.setAttribute("orderList", orderList);
-			
+			request.setAttribute("orderList", orderList);
+			request.setAttribute("pi", pi);
 			return "admin/seller/sellerDetail";
 		} catch (AdminSelectException e) {
+			request.setAttribute("msg", e.getMessage());
+			return "common/errorPage";
+		} catch (AdminCountException e) {
 			request.setAttribute("msg", e.getMessage());
 			return "common/errorPage";
 		}
@@ -166,9 +173,11 @@ public class AdminController {
 			request.setAttribute("pi", pi);
 			request.setAttribute("orderList", orderList);
 			return "admin/seller/sellerOrder";
-		} catch (AdminSelectException | AdminCountException e) {
+		} catch (AdminSelectException e) {
 			request.setAttribute("msg", e.getMessage());
-			
+			return "common/errorPage";
+		} catch (AdminCountException e) {
+			request.setAttribute("msg", e.getMessage());
 			return "common/errorPage";
 		}
 		
@@ -206,18 +215,22 @@ public class AdminController {
 	
 	//공지사항 목록 조회용
 	@RequestMapping("noticeList.ad")
-	public String selectNoticeList(HttpServletRequest request, HttpServletResponse response) {
+	public String selectNoticeList(@RequestParam(value="currentPage", required=false, defaultValue="1")int currentPage, HttpServletRequest request, HttpServletResponse response) {
 		ArrayList<AdminBoard> noticeList=new ArrayList<AdminBoard>();
 		
 		try {
-			noticeList=as.selectNoticeList();
+			int listCount=as.selectNoticeCount();
+			PageInfo pi=Pagination.getPageInfo(currentPage, listCount);
+			noticeList=as.selectNoticeList(pi);
 			System.out.println("공지사항 목록 : "+noticeList);
 			request.setAttribute("noticeList", noticeList);
-			
+			request.setAttribute("pi", pi);
 			return "admin/board/noticeList";
 		} catch (AdminSelectException e) {
 			request.setAttribute("msg", e.getMessage());
-			
+			return "common/errorPage";
+		} catch (AdminCountException e) {
+			request.setAttribute("msg", e.getMessage());
 			return "common/errorPage";
 		}
 	}
@@ -272,54 +285,66 @@ public class AdminController {
 	
 	//qna 목록 조회용
 	@RequestMapping("qnaList.ad")
-	public String qnaList(HttpServletRequest request, HttpServletResponse response) {
+	public String qnaList(@RequestParam(value="currentPage", required=false, defaultValue="1")int currentPage, HttpServletRequest request, HttpServletResponse response) {
 		ArrayList<AdminBoard> qnaList=new ArrayList<AdminBoard>();
 		
 		try {
-			qnaList=as.selectQnaList();
+			int listCount=as.selectQnaCount();
+			PageInfo pi=Pagination.getPageInfo(currentPage, listCount);
+			qnaList=as.selectQnaList(pi);
 			System.out.println("Q&A목록 : "+qnaList);
 			request.setAttribute("qnaList", qnaList);
-			
+			request.setAttribute("pi", pi);
 			return "admin/board/qnaList";
 		} catch (AdminSelectException e) {
 			request.setAttribute("msg", e.getMessage());
-			
+			return "common/errorPage";
+		} catch (AdminCountException e) {
+			request.setAttribute("msg", e.getMessage());
 			return "common/errorPage";
 		}
 	}
 	
 	//qna 답변 대기 목록 조회용
 	@RequestMapping("qnaWaitList.ad")
-	public String qnaWaitList(HttpServletRequest request, HttpServletResponse response) {
+	public String qnaWaitList(@RequestParam(value="currentPage", required=false, defaultValue="1")int currentPage, HttpServletRequest request, HttpServletResponse response) {
 		ArrayList<AdminBoard> qnaWaitList=new ArrayList<AdminBoard>();
 		
 		try {
-			qnaWaitList=as.selectQnaWaitList();
+			int listCount=as.selectQnaWaitCount();
+			PageInfo pi=Pagination.getPageInfo(currentPage, listCount);
+			qnaWaitList=as.selectQnaWaitList(pi);
 			System.out.println("Q&A 답변 대기 목록 : "+qnaWaitList);
 			request.setAttribute("qnaWaitList", qnaWaitList);
-			
+			request.setAttribute("pi", pi);
 			return "admin/board/qnaWaitList";
 		} catch (AdminSelectException e) {
 			request.setAttribute("msg", e.getMessage());
-			
+			return "common/errorPage";
+		} catch (AdminCountException e) {
+			request.setAttribute("msg", e.getMessage());
 			return "common/errorPage";
 		}
 	}
 	
 	//qna 답변 완료 목록 조회용
 	@RequestMapping("qnaCompleteList.ad")
-	public String qnaCompleteList(HttpServletRequest request, HttpServletResponse response) {
+	public String qnaCompleteList(@RequestParam(value="currentPage", required=false, defaultValue="1")int currentPage, HttpServletRequest request, HttpServletResponse response) {
 		ArrayList<AdminBoard> qnaCompleteList=new ArrayList<AdminBoard>();
 		
 		try {
-			qnaCompleteList=as.selectQnaCompleteList();
+			int listCount=as.selectQnaCompleteCount();
+			PageInfo pi=Pagination.getPageInfo(currentPage, listCount);
+			qnaCompleteList=as.selectQnaCompleteList(pi);
 			System.out.println("Q&A 답변 완료 목록 : "+qnaCompleteList);
 			request.setAttribute("qnaCompleteList", qnaCompleteList);
-			
+			request.setAttribute("pi", pi);
 			return "admin/board/qnaCompleteList";
 		} catch (AdminSelectException e) {
 			request.setAttribute("msg", e.getMessage());
-			
+			return "common/errorPage";
+		} catch (AdminCountException e) {
+			request.setAttribute("msg", e.getMessage());
 			return "common/errorPage";
 		}
 	}
@@ -338,11 +363,9 @@ public class AdminController {
 			return "admin/board/faqDetail";
 		} catch (AdminSelectException e) {
 			request.setAttribute("msg", e.getMessage());
-			
 			return "common/errorPage";
 		} catch (AdminCountException e) {
 			request.setAttribute("msg", e.getMessage());
-			
 			return "common/errorPage";
 		}
 
@@ -696,6 +719,28 @@ public class AdminController {
 			request.setAttribute("menuList", menuList);
 			request.setAttribute("total", total);
 			return "admin/sales/orderDetail";
+		} catch (AdminSelectException e) {
+			request.setAttribute("msg", e.getMessage());
+			return "common/errorPage";
+		}
+	}
+	
+	//정산 목록 조회용
+	@RequestMapping("calculateList.ad")
+	public String calculateList(@RequestParam(value="currentPage", required=false, defaultValue="1")int currentPage, HttpServletRequest request) {
+		ArrayList<AdminCalculateList>	calList=new ArrayList<AdminCalculateList>();
+		try {
+			int listCount = as.selectCalculateCount();
+			PageInfo pi=Pagination.getPageInfo(currentPage, listCount);
+			calList=as.selectCalculateList(pi);
+			System.out.println("정산 목록 : "+calList);
+			
+			request.setAttribute("pi", pi);
+			request.setAttribute("calList", calList);
+			return "admin/sales/calculateList";
+		} catch (AdminCountException e) {
+			request.setAttribute("msg", e.getMessage());
+			return "common/errorPage";
 		} catch (AdminSelectException e) {
 			request.setAttribute("msg", e.getMessage());
 			return "common/errorPage";

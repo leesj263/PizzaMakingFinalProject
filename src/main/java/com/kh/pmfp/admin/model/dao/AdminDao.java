@@ -11,6 +11,7 @@ import com.kh.pmfp.admin.model.exception.AdminSelectException;
 import com.kh.pmfp.admin.model.exception.AdminUpdateException;
 import com.kh.pmfp.admin.model.vo.AdminBoard;
 import com.kh.pmfp.admin.model.vo.AdminBoard2;
+import com.kh.pmfp.admin.model.vo.AdminCalculateList;
 import com.kh.pmfp.admin.model.vo.AdminMaterial;
 import com.kh.pmfp.admin.model.vo.AdminMember;
 import com.kh.pmfp.admin.model.vo.AdminOrder;
@@ -43,8 +44,14 @@ public interface AdminDao {
 	//업체 상세조회용
 	AdminSeller selectSeller(SqlSessionTemplate sqlSession, int num) throws AdminSelectException;
 
+	//업체별 주문횟수 카운트용
+	int selectEachSellerOrderCount(SqlSessionTemplate sqlSession, int num) throws AdminCountException;
+
+	//업체 상세보기 - 업체 주문 조회용
+	ArrayList<AdminSellerOrderList> selectEachSellerOrderList(SqlSessionTemplate sqlSession, int num, PageInfo pi) throws AdminSelectException;
+
 	//공지사항 목록 조회용
-	ArrayList<AdminBoard> selectNoticeList(SqlSessionTemplate sqlSession) throws AdminSelectException;
+	ArrayList<AdminBoard> selectNoticeList(SqlSessionTemplate sqlSession, PageInfo pi) throws AdminSelectException;
 
 	//공지사항 상세보기용
 	AdminBoard selectNotice(SqlSessionTemplate sqlSession, int num) throws AdminSelectException;
@@ -52,17 +59,29 @@ public interface AdminDao {
 	//조회수 증가용
 	int updateBCount(SqlSessionTemplate sqlSession, int num) throws AdminCountException;
 
+	//공지사항 글 수
+	int selectNoticeCount(SqlSessionTemplate sqlSession) throws AdminCountException;
+
 	//faq 목록 조회용
 	ArrayList<AdminBoard> selectFaqList(SqlSessionTemplate sqlSession) throws AdminSelectException;
 
-	//qna 목록 조회용
-	ArrayList<AdminBoard> selectQnaList(SqlSessionTemplate sqlSession) throws AdminSelectException;
+	//QNA 글수
+	int selectQnaCount(SqlSessionTemplate sqlSession) throws AdminCountException;
 
+	//qna 목록 조회용
+	ArrayList<AdminBoard> selectQnaList(SqlSessionTemplate sqlSession, PageInfo pi) throws AdminSelectException;
+	
+	//Qna 답변대기중 글수
+	int selectQnaWaitCount(SqlSessionTemplate sqlSession) throws AdminCountException;
+	
 	//qna 답변 대기 목록 조회용
-	ArrayList<AdminBoard> selectQnaWaitList(SqlSessionTemplate sqlSession) throws AdminSelectException;
+	ArrayList<AdminBoard> selectQnaWaitList(SqlSessionTemplate sqlSession, PageInfo pi) throws AdminSelectException;
+
+	//Qna 답변완료 글수
+	int selectQnaCompleteCount(SqlSessionTemplate sqlSession) throws AdminCountException;
 
 	//qna 답변 완료 목록 조회용
-	ArrayList<AdminBoard> selectQnaCompleteList(SqlSessionTemplate sqlSession) throws AdminSelectException;
+	ArrayList<AdminBoard> selectQnaCompleteList(SqlSessionTemplate sqlSession, PageInfo pi) throws AdminSelectException;
 
 	//faq 상세보기용
 	AdminBoard selectFaq(SqlSessionTemplate sqlSession, int num) throws AdminSelectException;
@@ -148,6 +167,13 @@ public interface AdminDao {
 	//주문 상세보기 용
 	ArrayList<AdminOrderMenu> selectOrderMenu(SqlSessionTemplate sqlSession, int orderNo) throws AdminSelectException;
 
+	//정산 목록 전체 수
+	int selectCalculateCount(SqlSessionTemplate sqlSession) throws AdminCountException;
+
+	//정산 목록 조회용
+	ArrayList<AdminCalculateList> selectCalculateList(SqlSessionTemplate sqlSession, PageInfo pi) throws AdminSelectException;
+
+	
 
 
 

@@ -53,30 +53,6 @@
 								</td>
 							</tr>
 						</c:forEach>
-						<!-- <tr>
-							<th scope="row">3</th>
-							<td>2019-01-26 15:06</td>
-							<td>28,500</td>
-							<td>asdfqds</td>
-							<td>강남점</td>
-							<td>결제완료</td>
-						</tr>
-						<tr>
-							<th scope="row">2</th>
-							<td>2019-01-26 15:04</td>
-							<td>26,000</td>
-							<td>qjdsdj</td>
-							<td>고덕점</td>
-							<td>제조중</td>
-						</tr>
-						<tr>
-							<th scope="row">1</th>
-							<td>2019-01-26 15:04</td>
-							<td>31,500</td>
-							<td>kghnmn</td>
-							<td>왕십리점</td>
-							<td>배달완료</td>
-						</tr> -->
 					</tbody>
 				</table>
 				<div class="col-md-2"></div>

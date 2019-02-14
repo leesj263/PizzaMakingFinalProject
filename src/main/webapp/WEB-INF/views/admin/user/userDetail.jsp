@@ -50,6 +50,7 @@
 						<c:if test="${orderList.size() > 0 }">
 						<thead>
 							<tr>
+								<th></th>
 								<th scope="col">주문번호</th>
 								<th scope="col">주문일자</th>
 								<th scope="col">주문지점</th>
@@ -60,7 +61,8 @@
 						<tbody>
 							<c:forEach items="${orderList}" var="o">
 								<tr>
-									<th scope="row">${o.orderNo }</th>
+									<td><input type="hidden" name="orderNo" value="${o.orderNo }">
+									<td scope="row">${fn:replace(o.orderDate, "-", "")}-00${o.comNo}-00${o.orderNo }</td>
 									<td>${o.orderDate }</td>
 									<td>${o.comName}</td>
 									<td>${o.orderPayPrice}</td>
@@ -83,27 +85,6 @@
 									</c:choose>
 								</tr>
 							</c:forEach>
-							<!-- <tr>
-								<th scope="row">1</th>
-								<td>2018-12-12</td>
-								<td>Mark</td>
-								<td>Otto</td>
-								<td>10000</td>
-							</tr>
-							<tr>
-								<th scope="row">2</th>
-								<td>2018-12-06</td>
-								<td>Jacob</td>
-								<td>Thornton</td>
-								<td>3</td>
-							</tr>
-							<tr>
-								<th scope="row">3</th>
-								<td>2019-01-20</td>
-								<td>Larry</td>
-								<td>the Bird</td>
-								<td>15</td>
-							</tr> -->
 						</tbody>
 						</c:if>
 						<c:if test="${orderList.size()==0 }">
@@ -149,9 +130,9 @@
 			}).mouseout(function() {
 				$(this).parent().css({"color" : "#212529"});
 			}).click(function() {
-				var num = $(this).parent().children().eq(0).text();
+				var num = $(this).parent().children().children().eq(0).val();
 				console.log(num);
-				location.href="admin.ad?admin=sales/orderDetail";
+				location.href="orderDetail.ad?orderNo="+num;
 			});
 			$("#bootstrap-data-table-export_length").empty();
 			$("#bootstrap-data-table-export_filter").empty();

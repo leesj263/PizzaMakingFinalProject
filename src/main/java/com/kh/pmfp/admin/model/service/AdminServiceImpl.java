@@ -13,6 +13,7 @@ import com.kh.pmfp.admin.model.exception.AdminInsertException;
 import com.kh.pmfp.admin.model.exception.AdminSelectException;
 import com.kh.pmfp.admin.model.exception.AdminUpdateException;
 import com.kh.pmfp.admin.model.vo.AdminBoard;
+import com.kh.pmfp.admin.model.vo.AdminCalculateList;
 import com.kh.pmfp.admin.model.vo.AdminMaterial;
 import com.kh.pmfp.admin.model.vo.AdminMember;
 import com.kh.pmfp.admin.model.vo.AdminOrder;
@@ -86,12 +87,36 @@ public class AdminServiceImpl implements AdminService {
 		
 		return seller;
 	}
+	
+	//업체별 주문횟수 카운트용
+	@Override
+	public int selectEachSellerOrderCount(int num) throws AdminCountException {
+		int result=0;
+		result=ad.selectEachSellerOrderCount(sqlSession, num);
+		return result;
+	}
+	
+	//업체 상세보기 - 업체 주문 조회용
+	@Override
+	public ArrayList<AdminSellerOrderList> selectEachSellerOrderList(int num, PageInfo pi) throws AdminSelectException {
+		ArrayList<AdminSellerOrderList> orderList=new ArrayList<AdminSellerOrderList>();
+		orderList=ad.selectEachSellerOrderList(sqlSession, num, pi);
+		return orderList;
+	}
+	//공지사항 글 수
+	@Override
+	public int selectNoticeCount() throws AdminCountException {
+		int result=0;
+		result=ad.selectNoticeCount(sqlSession);
+		return result;
+	}
+	
 
 	//공지사항 목록 조회용
 	@Override
-	public ArrayList<AdminBoard> selectNoticeList() throws AdminSelectException {
+	public ArrayList<AdminBoard> selectNoticeList(PageInfo pi) throws AdminSelectException {
 		ArrayList<AdminBoard> noticeList=new ArrayList<AdminBoard>();
-		noticeList=ad.selectNoticeList(sqlSession);
+		noticeList=ad.selectNoticeList(sqlSession, pi);
 		
 		return noticeList;
 	}
@@ -121,30 +146,54 @@ public class AdminServiceImpl implements AdminService {
 		
 		return faqList;
 	}
+	
+	//QNA 글수
+	@Override
+	public int selectQnaCount() throws AdminCountException {
+		int result=0;
+		result=ad.selectQnaCount(sqlSession);
+		return result;
+	}
 
 	//qna 목록 조회용
 	@Override
-	public ArrayList<AdminBoard> selectQnaList() throws AdminSelectException {
+	public ArrayList<AdminBoard> selectQnaList(PageInfo pi) throws AdminSelectException {
 		ArrayList<AdminBoard> qnaList=new ArrayList<AdminBoard>();
-		qnaList=ad.selectQnaList(sqlSession);
+		qnaList=ad.selectQnaList(sqlSession, pi);
 		
 		return qnaList;
+	}
+	
+	//Qna 답변대기중 글수
+	@Override
+	public int selectQnaWaitCount() throws AdminCountException {
+		int result=0;
+		result=ad.selectQnaWaitCount(sqlSession);
+		return result;
 	}
 
 	//qna 답변 대기 목록 조회용
 	@Override
-	public ArrayList<AdminBoard> selectQnaWaitList() throws AdminSelectException {
+	public ArrayList<AdminBoard> selectQnaWaitList(PageInfo pi) throws AdminSelectException {
 		ArrayList<AdminBoard> qnaWaitList=new ArrayList<AdminBoard>();
-		qnaWaitList=ad.selectQnaWaitList(sqlSession);
+		qnaWaitList=ad.selectQnaWaitList(sqlSession, pi);
 		
 		return qnaWaitList;
 	}
 
+	//Qna 답변완료 글수
+	@Override
+	public int selectQnaCompleteCount() throws AdminCountException {
+		int result=0;
+		result=ad.selectQnaCompleteCount(sqlSession);
+		return result;
+	}
+
 	//qna 답변 완료 목록 조회용
 	@Override
-	public ArrayList<AdminBoard> selectQnaCompleteList() throws AdminSelectException {
+	public ArrayList<AdminBoard> selectQnaCompleteList(PageInfo pi) throws AdminSelectException {
 		ArrayList<AdminBoard> qnaCompleteList=new ArrayList<AdminBoard>();
-		qnaCompleteList=ad.selectQnaCompleteList(sqlSession);
+		qnaCompleteList=ad.selectQnaCompleteList(sqlSession, pi);
 		
 		return qnaCompleteList;
 	}
@@ -378,8 +427,22 @@ public class AdminServiceImpl implements AdminService {
 		return menuList;
 	}
 
-	
+	//정산 목록 전체 수
+	@Override
+	public int selectCalculateCount() throws AdminCountException {
+		int result=ad.selectCalculateCount(sqlSession);
+		return result;
+	}
 
+	//정산 목록 조회용
+	@Override
+	public ArrayList<AdminCalculateList> selectCalculateList(PageInfo pi) throws AdminSelectException {
+		ArrayList<AdminCalculateList>	calList=new ArrayList<AdminCalculateList>();
+		calList=ad.selectCalculateList(sqlSession, pi);
+		return calList;
+	}
+
+	
 	
 
 }
