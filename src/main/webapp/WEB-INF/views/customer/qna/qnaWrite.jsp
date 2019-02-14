@@ -23,16 +23,16 @@
 		<br>
 		<br>
 		<div class="tableArea">
-			<form action="insertQna.b" method="post">
+			<form action="insertQna.bo" method="post">
 				<table align="center">
 					<tr>
 						<td><b>분야</b></td>
 						<td>
 							<select name="category">
-								<option value="10">결제 및 주문</option>
-								<option value="20">회원가입</option>
-								<option value="30">e-쿠폰</option>
-								<option value="70">기타</option>
+								<option value="10">결제 </option>
+								<option value="20">주문</option>
+								<option value="30">공유 / 후기 / 질문답변</option>
+								<option value="70">이벤트</option>
 							</select>
 						</td>
 					</tr>

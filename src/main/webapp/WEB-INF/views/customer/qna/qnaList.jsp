@@ -25,23 +25,24 @@
 		<div class="container">
 		 		
 		 <div class="row" style="postion:static;">
-		 	<table class="table table-striped"  border:1px; solid #dddddd">
+		 	<table class="table table-striped"  id="qnaList">
 		 		<thead>
-						<th style="width: 3% background-color:#eeeeee; text-align: center;">번호</th>
-						<th style="width: 20% background-color:#eeeeee; text-align: center;">제목</th>
-						<th style="width: 5% background-color:#eeeeee; text-align: center;">작성자</th>
-						<th style="width: 5% background-color:#eeeeee; text-align: center;">작성일</th>
-						<th style="width: 3% background-color:#eeeeee; text-align: center;">조회수</th>
+						<th scope="col">글번호</th>
+							<th scope="col">분류</th>
+							<th scope="col">제목</th>
+							<th scope="col">작성자</th>
+							<th scope="col">작성일</th>
+							<th scope="col">조회수</th>
 					</tr>		 		
 		 		</thead>
 		 		<tbody align="center"> 				
-			<c:forEach var="b" items="${ list }">
+			<c:forEach var="qna" items="${ qnaList }">
 				<tr>
-					<td>${ b.bid }</td>
-					<td>${ b.bTitle }</td>
-					<td>${ b.userName }</td>
-					<td>${ b.bCount }</td>
-					<td>${ b.createDate }</td>
+					<td>${ qna.bid }</td>
+					<td>${ qna.bTitle }</td>
+					<td>${ qna.userName }</td>
+					<td>${ qna.bCount }</td>
+					<td>${ qna.createDate }</td>
 				</tr>
 			</c:forEach>
 		</tbody>>		 	
@@ -74,7 +75,7 @@
       <a class="dropdown-item" href="#">제목+내용</a>    
     </div>
     &nbsp;
-    <button class="ui yellow button">글쓰기</button>
+   <div class="col-md-1"><button class="btn btn-outline-warning" onclick="location.href='noticeWriteView.ad'">글 작성</button></div>
     
   </div>
   
