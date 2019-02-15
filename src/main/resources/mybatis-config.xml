@@ -39,5 +39,6 @@
 		<mapper resource="mappers/mypage-mapper.xml"/>
 		<mapper resource="mappers/customerOrder-mapper.xml"/>
 		<mapper resource="mappers/board-mapper.xml"/>
+		<mapper resource="mappers/adminCoupon-mapper.xml"/>
 	</mappers>
 </configuration>
