@@ -385,6 +385,26 @@ public class MemberController {
 		//return result;
 	}
 	
+	@RequestMapping("leaveMember.co")
+	public String leaveMember(Member m,HttpServletRequest request,SessionStatus status) {
+		Member loginUser = (Member) request.getSession().getAttribute("loginUser");
+		
+		String deleteId = loginUser.getMemberId();
+		//System.out.println(loginUser.getMemberId());
+		
+		int result = ms.deleteMember(deleteId);
+		
+		if(result>0) {
+			status.setComplete();
+			return "redirect:goMain.co";
+		}else {
+			return "common/errorPage";
+		}
+		
+		
+		//return "";
+	}
+	
 	
 	
 	

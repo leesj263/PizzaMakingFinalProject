@@ -113,7 +113,12 @@
         WHERE MEMBER_ID=#{memberId}
 	</update>
 	
-	
+	<!-- 마이페이지-회원탈퇴 -->
+	<update id="deleteMember" parameterType="java.lang.String">
+		UPDATE MEMBER
+		SET MEMBER_STATUS='N'
+		WHERE MEMBER_ID=#{deleteId}
+	</update>
 	
 	
 </mapper>

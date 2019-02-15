@@ -30,6 +30,9 @@ public interface MemberService {
 	//마이페이지-회원정보 수정
 	int updateModifyMember(Member m);
 
+	//마이페이지-회원탈퇴
+	int deleteMember(String deleteId);
+
 
 
 	

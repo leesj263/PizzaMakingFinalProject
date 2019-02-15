@@ -90,6 +90,13 @@ public class MemberDaoImpl implements MemberDao{
 		
 		return sqlSession.update("Member.updateModifyMember",m);
 	}
+
+	//마이페이지-회원 탈퇴
+	@Override
+	public int deleteMember(SqlSessionTemplate sqlSession, String deleteId) {
+		
+		return sqlSession.update("Member.deleteMember",deleteId);
+	}
 	
 	
 

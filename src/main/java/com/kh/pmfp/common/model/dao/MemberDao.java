@@ -41,4 +41,7 @@ public interface MemberDao {
 	//마이페이지-회원정보 수정
 	int updateModifyMember(SqlSessionTemplate sqlSession, Member m);
 
+	//마이페이지-회원 탈퇴
+	int deleteMember(SqlSessionTemplate sqlSession, String deleteId);
+
 }

@@ -48,7 +48,7 @@
 	opacity: 1;
 	visibility: hidden;
 	border-radius: 5px; /*둥글겡*/
-	z-index: 5000;
+	z-index: 5000; 
 }
 
 	.customModal{

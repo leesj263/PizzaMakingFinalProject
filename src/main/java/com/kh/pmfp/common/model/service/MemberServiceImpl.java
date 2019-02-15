@@ -122,6 +122,15 @@ public class MemberServiceImpl implements MemberService{
 		return result;
 	}
 
+	//마이페이지-회원탈퇴
+	@Override
+	public int deleteMember(String deleteId) {
+		
+		int result = md.deleteMember(sqlSession,deleteId);
+		
+		return result;
+	}
+
 
 	
 
