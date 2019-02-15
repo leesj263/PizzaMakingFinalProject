@@ -11,6 +11,7 @@ import com.kh.pmfp.admin.model.exception.AdminSelectException;
 import com.kh.pmfp.admin.model.exception.AdminUpdateException;
 import com.kh.pmfp.admin.model.vo.AdminBoard;
 import com.kh.pmfp.admin.model.vo.AdminBoard2;
+import com.kh.pmfp.admin.model.vo.AdminCalculate;
 import com.kh.pmfp.admin.model.vo.AdminCalculateList;
 import com.kh.pmfp.admin.model.vo.AdminMaterial;
 import com.kh.pmfp.admin.model.vo.AdminMember;
@@ -172,6 +173,9 @@ public interface AdminDao {
 
 	//정산 목록 조회용
 	ArrayList<AdminCalculateList> selectCalculateList(SqlSessionTemplate sqlSession, PageInfo pi) throws AdminSelectException;
+
+	//정산 상세조회용
+	ArrayList<AdminCalculate> selectCalculate(SqlSessionTemplate sqlSession, AdminCalculateList cal) throws AdminSelectException;
 
 	
 

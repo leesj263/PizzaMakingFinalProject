@@ -1,5 +1,7 @@
 package com.kh.pmfp.admin.controller;
 
+import static org.hamcrest.CoreMatchers.instanceOf;
+
 import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.pmfp.admin.model.exception.AdminCountException;
@@ -21,6 +24,7 @@ import com.kh.pmfp.admin.model.exception.AdminUpdateException;
 import com.kh.pmfp.admin.model.service.AdminService;
 import com.kh.pmfp.admin.model.vo.AdminBoard;
 import com.kh.pmfp.admin.model.vo.AdminBoard2;
+import com.kh.pmfp.admin.model.vo.AdminCalculate;
 import com.kh.pmfp.admin.model.vo.AdminCalculateList;
 import com.kh.pmfp.admin.model.vo.AdminMaterial;
 import com.kh.pmfp.admin.model.vo.AdminMember;
@@ -31,6 +35,7 @@ import com.kh.pmfp.admin.model.vo.AdminSellerOrder;
 import com.kh.pmfp.admin.model.vo.AdminSellerOrderList;
 import com.kh.pmfp.common.model.vo.PageInfo;
 import com.kh.pmfp.common.model.vo.Pagination;
+import com.kh.pmfp.common.model.vo.Pagination20;
 import com.kh.pmfp.common.model.vo.Pagination5;
 
 @Controller
@@ -745,5 +750,57 @@ public class AdminController {
 			request.setAttribute("msg", e.getMessage());
 			return "common/errorPage";
 		}
+	}
+	
+	//정산 상세조회용
+	@RequestMapping(value="calculateDetail.ad", method=RequestMethod.GET)
+	public String calculateDetail(@RequestParam(value="currentPage", required=false, defaultValue="1")int currentPage, @ModelAttribute AdminCalculateList cal, HttpServletRequest request) {
+		System.out.println(cal);
+		AdminSeller seller=new AdminSeller();
+		ArrayList<AdminCalculate> calList=new ArrayList<AdminCalculate>();
+		int total=0;
+		try {
+			seller=as.selectSeller(cal.getComNo());
+			calList=as.selectCalculate(cal);
+			for(int i=0;i<calList.size();i++) {
+				if(calList.get(i).getOrderCStatus().equals("N")) {total+=calList.get(i).getPrice();}
+			}
+			request.setAttribute("seller", seller);
+			request.setAttribute("calList", calList);
+			request.setAttribute("calOne", calList.get(0));
+			request.setAttribute("total", total);
+			return "admin/sales/calculateDetail";
+		} catch (AdminSelectException e) {
+			request.setAttribute("msg", e.getMessage());
+			return "common/errorPage";
+		}
+	}
+	
+	//정산 완료 처리용 - 상세보기에서 ajax
+	@RequestMapping(value="updateCalculate.ad", method=RequestMethod.GET)
+	@ResponseBody
+	public String updateCalculate(@ModelAttribute AdminCalculate cal, HttpServletRequest request, RedirectAttributes redirectAttributes) {
+		System.out.println(cal);
+		//int result=as.updateCalculate(cal);
+		return "성공";
+		
+	}
+	
+	//정산 완료 처리용 - 정산목록에서 버튼 > ajax
+	@RequestMapping(value="updateCalculateList.ad", method=RequestMethod.GET)
+	@ResponseBody
+	public String updateCalculateList(@ModelAttribute AdminCalculate cal, HttpServletRequest request) {
+		System.out.println(cal);
+		return "성공";
+		
+	}
+	
+	//정산 완료 처리용 - 정산목록에서 체크박스 ajax
+	@RequestMapping(value="updateSelectCalList.ad", method=RequestMethod.GET)
+	@ResponseBody
+	public String updateSelectCalList(@RequestParam(value="orderExpNo") String orderExpNo, @RequestParam(value="comNo") String comNo, HttpServletRequest request) {
+		System.out.println(orderExpNo);
+		System.out.println(comNo);
+		return "성공";
 	}
 }

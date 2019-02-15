@@ -23,6 +23,7 @@
 		<typeAlias type="com.kh.pmfp.admin.model.vo.AdminMaterial" alias="AdminMaterial"/>
 		<typeAlias type="com.kh.pmfp.admin.model.vo.AdminOrderMenu" alias="AdminOrderMenu"/>
 		<typeAlias type="com.kh.pmfp.admin.model.vo.AdminCalculateList" alias="AdminCalculateList"/>
+		<typeAlias type="com.kh.pmfp.admin.model.vo.AdminCalculate" alias="AdminCalculate"/>
 		<typeAlias type="com.kh.pmfp.mypage.model.vo.OrderList" alias="OrderList"/>
 		<typeAlias type="com.kh.pmfp.mypage.model.vo.DelList" alias="DelList"/>
 		<typeAlias type="com.kh.pmfp.mypage.model.vo.Coupon" alias="Coupon"/>

@@ -23,7 +23,8 @@
 						<div class="card">
 							<div class="card-body">
 								<div class="mx-auto d-block">
-									<img class="rounded-circle mx-auto d-block" src="${topping.iFilePath }${topping.iChangeName}" alt="${topping.mName }">
+									<%-- <img class="rounded-circle mx-auto d-block" src="${topping.iFilePath }${topping.iChangeName}" alt="${topping.mName }"> --%>
+									<img class="rounded-circle mx-auto d-block" src="${topping.iFilePath.substring(41) }/${topping.iChangeName}" alt="${topping.mName }">
 									<h5 class="text-sm-center mt-2 mb-1">${topping.mName }</h5>
 									<!-- <div class="location text-sm-center"><i class="fa fa-map-marker"></i> California, United States</div> -->
 								</div>

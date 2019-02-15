@@ -9,6 +9,7 @@ import com.kh.pmfp.admin.model.exception.AdminSelectException;
 import com.kh.pmfp.admin.model.exception.AdminUpdateException;
 import com.kh.pmfp.admin.model.vo.AdminBoard;
 import com.kh.pmfp.admin.model.vo.AdminBoard2;
+import com.kh.pmfp.admin.model.vo.AdminCalculate;
 import com.kh.pmfp.admin.model.vo.AdminCalculateList;
 import com.kh.pmfp.admin.model.vo.AdminMaterial;
 import com.kh.pmfp.admin.model.vo.AdminMember;
@@ -158,6 +159,12 @@ public interface AdminService {
 
 	//정산 목록 조회용
 	ArrayList<AdminCalculateList> selectCalculateList(PageInfo pi) throws AdminSelectException;
+
+	//정산 상세 조회용
+	ArrayList<AdminCalculate> selectCalculate(AdminCalculateList cal) throws AdminSelectException;
+
+	//정산 완료 처리용 - 상세보기에서 ajax
+	int updateCalculate(AdminCalculate cal) throws AdminSelectException;
 
 
 
