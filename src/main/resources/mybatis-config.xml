@@ -15,6 +15,7 @@
 		<typeAlias type="com.kh.pmfp.company.model.vo.CompanyOrderStock" alias="CompanyOrderStock"/> 
 		<typeAlias type="com.kh.pmfp.company.model.vo.CompanyRemainMaterial" alias="CompanyRemainMaterial"/>   
 		<typeAlias type="com.kh.pmfp.company.model.vo.CompanySales" alias="CompanySales"/>
+		<typeAlias type="com.kh.pmfp.company.model.vo.CompanyCalendar" alias="CompanyCalendar"/>
 		<typeAlias type="com.kh.pmfp.admin.model.vo.AdminMember" alias="AdminMember"/>
 		<typeAlias type="com.kh.pmfp.admin.model.vo.AdminOrder" alias="AdminOrder"/>
 		<typeAlias type="com.kh.pmfp.admin.model.vo.AdminSeller" alias="AdminSeller"/>

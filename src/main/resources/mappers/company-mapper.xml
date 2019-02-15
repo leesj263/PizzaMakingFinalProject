@@ -132,6 +132,16 @@
 		<result property="materialName" column="MATERIAL_NAME" />
 		<result property="addTopping" column="ADDTOPPING" />
 	</resultMap>
+	
+	<resultMap type="com.kh.pmfp.company.model.vo.CompanyCalendar"
+		id="companyCalendarResultSet">
+		<id property="calendarNo" column="CALENDAR_NO" />
+		<result property="calendarCateg" column="CALENDAR_CATEG" />
+		<result property="calendarContent" column="CALENDAR_CONTENT" />
+		<result property="calendarDate" column="CALENDAR_DATE" />
+		<result property="memberNo" column="MEMBER_NO" />
+
+	</resultMap>
 
 	<select id="selectAdminMessage"
 		resultMap="companyBoardResultSet">
@@ -482,10 +492,35 @@
 		WHERE S.COM_NO = #{comNo}
 	</select>
 	
+	<select id="calendarDetail" resultMap="companyCalendarResultSet" parameterType="java.sql.Date">
+		SELECT CALENDAR_NO, CALENDAR_CATEG, CALENDAR_CONTENT, CALENDAR_DATE, MEMBER_NO
+		FROM CALENDAR
+		WHERE CALENDAR_DATE = #{date}
+	</select>
+	
+	<insert id="insertCalendarData">
+		INSERT INTO CALENDAR 
+		VALUES(SEQ_CALNO.NEXTVAL, #{calendarCateg}+1, #{calendarContent}, #{calendarDate}, #{memberNo})
+	</insert>
 	
 	
+	<select id="selectdeleteRow" resultMap="companyCalendarResultSet">
+		SELECT CALENDAR_NO, CALENDAR_CATEG, CALENDAR_CONTENT, CALENDAR_DATE, MEMBER_NO
+		FROM CALENDAR
+		WHERE CALENDAR_NO = #{calendarNo}
+	</select>
 	
+	<delete id="deleteCalendarData">
+		DELETE FROM CALENDAR
+		WHERE CALENDAR_NO = #{calendarNo}
+	</delete>
 	
+	<update id="deleteAfterUpdateCalendar">
+		UPDATE CALENDAR
+		SET  CALENDAR_CATEG = CALENDAR_CATEG - 1
+		WHERE CALENDAR_CATEG > #{calendarCateg}
+		AND CALENDAR_DATE =  #{calendarDate}
+	</update>
 	
 </mapper>
 

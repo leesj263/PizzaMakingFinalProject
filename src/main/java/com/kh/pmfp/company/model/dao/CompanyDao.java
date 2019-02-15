@@ -1,13 +1,16 @@
 package com.kh.pmfp.company.model.dao;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.mybatis.spring.SqlSessionTemplate;
 
+import com.kh.pmfp.company.model.exception.FailChangeCalendarDate;
 import com.kh.pmfp.company.model.exception.FailInsertEmployeeInfo;
 import com.kh.pmfp.company.model.exception.FailInsertOrderStock;
 import com.kh.pmfp.company.model.exception.FailSelectAdminMessage;
+import com.kh.pmfp.company.model.exception.FailSelectCalendar;
 import com.kh.pmfp.company.model.exception.FailSelectCompanyReview;
 import com.kh.pmfp.company.model.exception.FailSelectCompanySales;
 import com.kh.pmfp.company.model.exception.FailSelectDeliveryMan;
@@ -19,6 +22,7 @@ import com.kh.pmfp.company.model.exception.FailUpdateEmployeeInfo;
 import com.kh.pmfp.company.model.exception.FailUpdateOrderStatus;
 import com.kh.pmfp.company.model.exception.FaileDetailMessage;
 import com.kh.pmfp.company.model.vo.CompanyBoard;
+import com.kh.pmfp.company.model.vo.CompanyCalendar;
 import com.kh.pmfp.company.model.vo.CompanyEmployee;
 import com.kh.pmfp.company.model.vo.CompanyMaterial;
 import com.kh.pmfp.company.model.vo.CompanyOrder;
@@ -83,5 +87,13 @@ public interface CompanyDao {
 	ArrayList<CompanySales> selectAllCompanySales(SqlSessionTemplate sqlSession, int comNo) throws FailSelectCompanySales;
 
 	HashMap<String, ArrayList<CompanySalesList>> selectCompanySalesList(SqlSessionTemplate sqlSession, int comNo) throws FailSelectCompanySales;
+
+	ArrayList<CompanyCalendar> calendarDetail(SqlSessionTemplate sqlSession, Date date) throws FailSelectCalendar;
+
+	int insertCalendarData(SqlSessionTemplate sqlSession, CompanyCalendar cc) throws FailChangeCalendarDate;
+
+	int deleteCalendarData(SqlSessionTemplate sqlSession, CompanyCalendar cc) throws FailChangeCalendarDate;
+
+	ArrayList<CompanyCalendar> selectMemberCalendar(SqlSessionTemplate sqlSession, int memberNo) throws FailSelectCalendar;
 
 }
