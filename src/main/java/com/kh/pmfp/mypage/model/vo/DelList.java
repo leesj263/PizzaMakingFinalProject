@@ -20,7 +20,7 @@ public class DelList implements java.io.Serializable{
 		this.comNo = comNo;
 	}
 	
-	public DelList(String delName, String delAddr, int comNo, int memberNo) {
+	public DelList(int memberNo, int comNo, String delAddr , String delName) {
 		super();
 		this.delName = delName;
 		this.delAddr = delAddr;

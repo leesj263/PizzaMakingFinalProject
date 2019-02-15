@@ -54,8 +54,8 @@
 	
 	
 	<div style="float: left; width:80%; padding:20px; margin-top: 50px;">
-		
-		<a class="ui grey tag label">주문자 정보</a>
+	
+		<a class="ui grey tag label">주문정보</a>
 		<table class="ui celled table" style="width:500px;">
 		<thead>
 		</thead>
@@ -67,6 +67,10 @@
 		    <tr>
 		      <td class="tableHead">주문일시</td>
 		      <td> 2019-01-08 15:30</td>
+		    </tr>
+		    <tr>
+		      <td class="tableHead">주문자명</td>
+ 			  <td>010-0044-9966</td>
 		    </tr>
 		    <tr>
 		      <td class="tableHead">휴대폰번호</td>

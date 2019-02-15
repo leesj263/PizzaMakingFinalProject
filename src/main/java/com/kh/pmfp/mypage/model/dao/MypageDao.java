@@ -42,7 +42,7 @@ public interface MypageDao {
 	ArrayList<Location> selectComLocation(SqlSessionTemplate sqlSession);
 
 	//배송지 추가
-	int insertUserDelAddr(SqlSessionTemplate sqlSession, int memberNo, String finalDeliveryLoc, String addr,
+	int insertUserDelAddr(SqlSessionTemplate sqlSession, int memberNo, int finalDeliveryLoc, String addr,
 			String deliName);
 
 
