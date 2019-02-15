@@ -10,9 +10,7 @@
 <script src="/pmfp/resources/customer/js/common.js"></script>
 <link rel="stylesheet" href="/pmfp/resources/customer/css/pizzaMaking.css">
 <style>
-	#recipeModalComplete:hover{
-		cursor: default;
-	}
+
 </style>
 </head>
 <body>
@@ -238,7 +236,7 @@
 		</div>
 		
 		<div class="ui container center aligned">
-			<button class="ui blue button" style="width: 150px;" onclick="location.href='order.cor'">
+			<button class="ui blue button" style="width: 150px;" onclick="orderBtn();">
 				주문하기
 			</button>
 		</div>
@@ -1256,6 +1254,19 @@
 						$cartTable.append($tr);
 					}
 				}
+				for(var cart in cartList){
+					if(cartList[cart].categ == 2){
+						var $tr = $("<tr>");
+						$tr.append($("<td>").append($("<div class='mini-button' onclick='delCart(this, "+cart+")'>").text("×")));
+						$tr.append($("<td>").html(cartList[cart].pizzaName));
+						$tr.append($("<td>").append($("<span class='amount'>").text(cartList[cart].amount))
+								.append($("<div class='mini-button' onclick='cartAmountPlus("+cart+", this);'>").text("＋"))
+								.append($("<div class='mini-button' onclick='cartAmountMinus("+cart+", this);'>").text("－")));
+						$tr.append($("<td>").text(numComma(mateMap[cartList[cart].toppings[0].topping].materialSellprice)));
+						
+						$cartTable.append($tr);
+					}
+				}
 				cartTotalCalc();
 			}
 		}
@@ -1342,8 +1353,8 @@
 		//레시피 -----------------------------------------------------------------------------------------------------------
 		//레시피 저장
 		function recipeSave(){
-			if(confirm("저장하시겠습니까?")){
-				if(pizzaSetting != null && pizzaSettingTopping != null){
+			if(pizzaSetting != null && pizzaSettingTopping != null){
+				if(confirm("저장하시겠습니까?")){
 					$("#recipeModalLoader").show();
 					$("#recipeModalComplete").hide();
 					$("#recipeModalComplete").off();
@@ -1400,9 +1411,9 @@
 							}
 						});
 					});
-				} else {
-					alert("옵션을 선택하세요!\nex) 도우, 사이즈, 엣지, 소스, 토핑 최소 1개 이상");
 				}
+			} else {
+				alert("옵션을 선택하세요!\nex) 도우, 사이즈, 엣지, 소스, 토핑 최소 1개 이상");
 			}
 		}
 		
@@ -1456,6 +1467,19 @@
 		}
 		//-----------------------------------------------------------------------------------------------------------
 		
+		function orderBtn(){
+			var totalPrice = Number($("#cartTotalPrice").text().replace(" 원", "").replace(/,/g, ""));
+			//console.log(totalPrice);
+			if($.cookie("cartNoList")){
+				if(totalPrice > 5000){
+					location.href='order.cor';
+				} else {
+					alert("5000원 이상부터 주문이 가능합니다.");
+				}
+			} else {
+				alert("장바구니에 상품이 담겨있지 않습니다.");
+			}
+		}
 	</script>
 </body>
 </html>

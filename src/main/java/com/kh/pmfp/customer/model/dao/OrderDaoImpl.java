@@ -83,5 +83,13 @@ public class OrderDaoImpl implements OrderDao {
 		return mpList;
 	}
 
+	//사이드 메뉴 가져오기
+	@Override
+	public ArrayList<MaterialImage> selectSideList(SqlSessionTemplate sqlSession) throws OrderException {
+		ArrayList<MaterialImage> sideList = (ArrayList)sqlSession.selectList("CustomerOrder.selectSideList");
+		if(sideList == null) throw new OrderException("사이드 메뉴 목록 가져오기 오류 발생!");
+		return sideList;
+	}
+
 
 }

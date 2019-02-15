@@ -7,7 +7,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
+<script src="/pmfp/resources/customer/js/common.js"></script>
 <style>
 .content-box {
 	width: 1200px;
@@ -16,7 +16,12 @@
 	margin-right: auto;
 	margin-bottom: 50px;
 }
-
+.cartTable tbody tr td:not(:nth-child(2)){
+	text-align: center;
+}
+.cartTable tbody tr td{
+	height: 80px;
+}
 div.radio label:hover {
 	cursor: pointer;
 }
@@ -136,21 +141,18 @@ div.radio label:hover {
 					<button class="ui brown button" onclick="location.href='pizzaMaking.cor'">메뉴 변경하기</button>
 				</div>
 			</div>
-			<table class="ui celled table">
+			<table class="ui fixed table cartTable" id="cartTable">
 				<thead>
 					<tr>
-						<th>주문제품</th>
-						<th>수량</th>
-						<th>가격</th>
+						<th style="width: 1%; text-align: center;"></th>
+						<th style="width: 79%">주문제품</th>
+						<th style="width: 9%; text-align: center;">수량</th>
+						<th style="width: 16%; text-align: center;">가격</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr>
-						<td>토핑 설정 이름(default: 내맘대로 피자1), 사이즈: L, 도우: 나폴리, 엣지: 치즈 크러스트,
-							소스: 토마토 소스<br> - 올리브(60g) 5개, 페퍼로니(8piece) 5개, 치즈(150g) 5개
-						</td>
-						<td>1</td>
-						<td>20,000</td>
+						<tr><td colspan='4'>상품이 없습니다.</td></tr>
 					</tr>
 				</tbody>
 			</table>
@@ -342,8 +344,87 @@ div.radio label:hover {
 
 	
 	<script src="/pmfp/resources/main/assets/js/semantic/semantic.min.js"></script>
+	<script src="/pmfp/resources/customer/js/jquery.cookie-1.4.1.min.js"></script>
 	<script>
+		var mateMap;
+		var cartNo = 0;
+		var cartNoList = [];
+		var cartList = {};
+		$(function(){
+			$.ajax({
+				url: "mateList.cor",
+				success: function(data){
+					mateMap = data;
+					cartLoad();
+				}, error: function(data){
+					console.log("데이터 불러오기 실패");
+				}
+			});
+		});
 		
+		//장바구니 불러오기
+		function cartLoad(){
+			if($.cookie("cartNoList")) {
+				
+				cartNoList = $.parseJSON($.cookie("cartNoList"));
+				cartNo = cartNoList[cartNoList.length-1] + 1;
+				
+				if(cartNoList.length> 0){
+					for(var i=0; i<cartNoList.length; i++){
+						cartList[cartNoList[i]] = $.parseJSON($.cookie("cartNo"+cartNoList[i]));
+					}
+				}
+				//console.log(cartList);
+				
+				var $cartTable = $("#cartTable tbody");
+				$cartTable.empty();
+				
+				for(var cart in cartList){
+					if(cartList[cart].categ == 1){
+						var price = 0;
+						var orderProductBasic = "- 도우: " + mateMap[cartList[cart].dough].materialName
+								+ ", 사이즈: " + cartList[cart].size
+								+ ", 엣지: " + mateMap[cartList[cart].edge].materialName
+								+ ", 소스: " + mateMap[cartList[cart].sauce].materialName;
+						
+						price += mateMap[cartList[cart].dough].materialSellprice
+							+ mateMap[cartList[cart].edge].materialSellprice
+							+ mateMap[cartList[cart].sauce].materialSellprice;
+						
+						var orderProductTopping = "- ";
+						for(var i=0; i<cartList[cart].toppings.length; i++){
+							orderProductTopping += mateMap[cartList[cart].toppings[i].materialNo].materialName
+									+  "(" + mateMap[cartList[cart].toppings[i].materialNo].materialWeight + "g) "
+									+ cartList[cart].toppings[i].amount + "개";
+							if(i < cartList[cart].toppings.length - 1) orderProductTopping += ", ";
+							
+							price += mateMap[cartList[cart].toppings[i].materialNo].materialSellprice * cartList[cart].toppings[i].amount;
+						}
+						price *= cartList[cart].amount;
+						
+						var $tr = $("<tr>");
+						$tr.append($("<td>"));
+						$tr.append($("<td>").html(cartList[cart].pizzaName + "<br>" + orderProductBasic + "<br>" + orderProductTopping));
+						$tr.append($("<td>").append($("<span class='amount'>").text(cartList[cart].amount)));
+						$tr.append($("<td>").text(numComma(price)));
+						
+						$cartTable.append($tr);
+					}
+				}
+				for(var cart in cartList){
+					if(cartList[cart].categ == 2){
+						var $tr = $("<tr>");
+						$tr.append($("<td>"));
+						$tr.append($("<td>").html(cartList[cart].pizzaName));
+						$tr.append($("<td>").append($("<span class='amount'>").text(cartList[cart].amount)));
+						$tr.append($("<td>").text(numComma(mateMap[cartList[cart].toppings[0].topping].materialSellprice)));
+						
+						$cartTable.append($tr);
+					}
+				}
+			}
+		}
+	
 		function orderMethodSel(val) {
 			$("#oaTopLeft").empty();
 			$("#oaTopRight").empty();

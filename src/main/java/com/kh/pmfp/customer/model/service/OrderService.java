@@ -23,4 +23,6 @@ public interface OrderService {
 
 	ArrayList<MyPizza> selectMyPizzaList(int memberNo) throws OrderException;
 
+	ArrayList<MaterialImage> selectSideList() throws OrderException;
+
 }

@@ -35,4 +35,6 @@ public interface OrderDao {
 
 	ArrayList<MyPizza> selectMyPizzaList(SqlSessionTemplate sqlSession, int memberNo) throws OrderException;
 
+	ArrayList<MaterialImage> selectSideList(SqlSessionTemplate sqlSession) throws OrderException;
+
 }

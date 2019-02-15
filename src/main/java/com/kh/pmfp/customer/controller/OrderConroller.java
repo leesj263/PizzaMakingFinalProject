@@ -301,9 +301,42 @@ public class OrderConroller {
 	
 	//사이드 메뉴 페이지
 	@RequestMapping(value="/sideMenu.cor")
-	public String sideMenu() {
+	public String sideMenu(Model model) {
+		try {
+			ArrayList<MaterialImage> sideList = os.selectSideList();
+			//System.out.println(sideList);
+			
+			model.addAttribute("sideList", sideList);
+			
+		} catch (OrderException e) {
+			e.printStackTrace();
+		}
+		
 		return "customer/order/sideMenu";
 	}
+	
+	//사이드 메뉴 장바구니 불러오기
+	@RequestMapping(value="/mateList.cor")
+	public @ResponseBody HashMap<Integer, MaterialImage> mateList() {
+		try {
+			ArrayList<MaterialImage> mateList = os.selectMateList();
+			
+			//메뉴 리스트 작성
+			HashMap<Integer, MaterialImage> mateMap = new HashMap<Integer, MaterialImage>();
+			
+			for(MaterialImage mate : mateList) {
+				mateMap.put(mate.getMaterialNo(), mate);
+			}
+			
+			return mateMap;
+			
+		} catch (OrderException e) {
+			e.printStackTrace();
+			
+			return null;
+		}
+	}
+	
 	//주문 페이지
 	@RequestMapping(value="/order.cor")
 	public String order() {
