@@ -74,6 +74,8 @@
 		<result property="comLoc" column="COM_LOCATION"/>
 		<result property="comPark" column="COM_PARKING"/>
 		<result property="comConfirm" column="COM_CONFIRM"/>
+		<result property="comLat" column="LAT"/>
+		<result property="comLon" column="LON"/>
 		<result property="rn" column="ROWNUM"/>
 	</resultMap>
 	
@@ -188,6 +190,19 @@
 		<result property="times" column="TIMES" />
 		<result property="orderList" column="ORDERLIST" />
 		<result property="dateList" column="DATELIST" />
+		<result property="rn" column="ROWNUM" />
+	</resultMap>
+	
+	<resultMap type="com.kh.pmfp.admin.model.vo.AdminCalculate" id="adminCalculateResultSet">
+		<id property="orderExpNo" column="ORDEREXPENSE_NO"/>
+		<result property="orderExpMonth" column="ORDEREXPENSE_MONTH"/>
+		<result property="comNo" column="COM_NO" />
+		<result property="comName" column="COM_NAME" />
+		<result property="orderMStatus" column="ORDER_MSTATUS" />
+		<result property="price" column="PRICE" />
+		<result property="orderCStatus" column="ORDER_CALCULATE" />
+		<result property="orderList" column="ORDERLIST" />
+		<result property="orderMDate" column="ORDER_MDATE" />
 		<result property="rn" column="ROWNUM" />
 	</resultMap>
 	
@@ -533,16 +548,17 @@
 	</select>
 	
 	<select id="selectOrderMenu" resultMap="adminMenuResultSet" parameterType="_int">
-		SELECT ROWNUM, MN.* FROM 
-		(SELECT OI.ORDER_INO, OI.ORDER_NO, OI.ORDER_ICATEG, OI.ORDER_ISIZE, SUM(M.MATERIAL_SELLPRICE*ORDER_TCOUNT) PRICE, OT.ORDER_TCOUNT, 
-		LISTAGG(CAST(M.MATERIAL_NAME||M.MATERIAL_SIZE||'／'||OT.ORDER_TCOUNT||'' AS VARCHAR(300)) , ', ')
-		WITHIN GROUP (ORDER BY M.MATERIAL_NAME) MENU
-		FROM ORDER_ITEM OI 
-		JOIN ORDER_MAIN OM ON (OM.ORDER_NO=OI.ORDER_NO)
-		JOIN ORDER_TOPPING OT ON (OI.ORDER_INO=OT.ORDER_INO) 
-		JOIN MATERIAL M ON (OT.MATERIAL_NO=M.MATERIAL_NO) 
-		WHERE OI.ORDER_NO=#{orderNo} 
-		GROUP BY OI.ORDER_INO, OI.ORDER_NO,  OI.ORDER_ICATEG, OI.ORDER_ISIZE, OT.ORDER_TCOUNT) MN
+		SELECT ROWNUM, MN.* 
+		FROM 
+			(SELECT OI.ORDER_INO, OI.ORDER_NO, OI.ORDER_ICATEG, OI.ORDER_ISIZE, SUM(M.MATERIAL_SELLPRICE*ORDER_TCOUNT) PRICE, OT.ORDER_TCOUNT, 
+			LISTAGG(CAST(M.MATERIAL_NAME||M.MATERIAL_SIZE||'／'||OT.ORDER_TCOUNT||'' AS VARCHAR(300)) , ', ')
+			WITHIN GROUP (ORDER BY M.MATERIAL_NAME) MENU
+			FROM ORDER_ITEM OI 
+			JOIN ORDER_MAIN OM ON (OM.ORDER_NO=OI.ORDER_NO)
+			JOIN ORDER_TOPPING OT ON (OI.ORDER_INO=OT.ORDER_INO) 
+			JOIN MATERIAL M ON (OT.MATERIAL_NO=M.MATERIAL_NO) 
+			WHERE OI.ORDER_NO=#{orderNo} 
+			GROUP BY OI.ORDER_INO, OI.ORDER_NO,  OI.ORDER_ICATEG, OI.ORDER_ISIZE, OT.ORDER_TCOUNT) MN
 		ORDER BY ROWNUM ASC
 	</select>
 	
@@ -577,4 +593,23 @@
 			GROUP BY SOL.ORDEREXPENSE_NO,SOL.ORDEREXPENSE_MONTH, SOL.COM_NO, SOL.COM_NAME, SOL.ORDER_CALCULATE
 			ORDER BY SOL.ORDEREXPENSE_NO DESC) E
 	</select>
+	
+	<select id="selectCalculate" resultMap="adminCalculateResultSet" parameterType="AdminCalculate">
+		SELECT ROWNUM, SOL.* 
+		FROM 
+	    	(SELECT OM.COM_NO, C.COM_NAME, OM.ORDEREXPENSE_NO, OE.ORDEREXPENSE_MONTH, OM.ORDER_MDATE, OM.ORDER_MSTATUS,  
+	    	(MIN(M.MATERIAL_NAME) || ' 외 ' || (COUNT(1) - 1)|| '건') AS ORDERLIST, OM.ORDER_CALCULATE, SUM(OM.MATERIAL_PRICE) PRICE
+	   		FROM ORDER_MATERIAL OM 
+			JOIN MATERIAL M ON(M.MATERIAL_NO = OM.MATERIAL_NO) 
+			JOIN COMPANY C ON (C.COM_NO=OM.COM_NO) 
+			JOIN ORDER_EXPENSE OE ON (OM.ORDEREXPENSE_NO=OE.ORDEREXPENSE_NO) 
+			GROUP BY OM.COM_NO,C.COM_NAME, OM.ORDER_MDATE, OM.ORDER_CALCULATE, OM.ORDEREXPENSE_NO, OE.ORDEREXPENSE_MONTH, OM.ORDER_MSTATUS
+			ORDER BY OM.ORDER_MDATE ASC) SOL
+		WHERE SOL.COM_NO=#{comNo} AND SOL.ORDEREXPENSE_NO=#{orderExpNo} 
+		ORDER BY ROWNUM
+	</select>
+	
+	<update id="updateCalculate" parameterType="AdminCalculate">
+		UPDATE ORDER_MATERIAL SET ORDER_CALCULATE='Y' WHERE COM_NO=#{comNo} AND ORDEREXPENSE_NO=#{orderExpNo}
+	</update>
 </mapper>

@@ -13,6 +13,7 @@ import com.kh.pmfp.admin.model.exception.AdminInsertException;
 import com.kh.pmfp.admin.model.exception.AdminSelectException;
 import com.kh.pmfp.admin.model.exception.AdminUpdateException;
 import com.kh.pmfp.admin.model.vo.AdminBoard;
+import com.kh.pmfp.admin.model.vo.AdminCalculate;
 import com.kh.pmfp.admin.model.vo.AdminCalculateList;
 import com.kh.pmfp.admin.model.vo.AdminMaterial;
 import com.kh.pmfp.admin.model.vo.AdminMember;
@@ -440,6 +441,20 @@ public class AdminServiceImpl implements AdminService {
 		ArrayList<AdminCalculateList>	calList=new ArrayList<AdminCalculateList>();
 		calList=ad.selectCalculateList(sqlSession, pi);
 		return calList;
+	}
+
+	//정산 상세조회용
+	@Override
+	public ArrayList<AdminCalculate> selectCalculate(AdminCalculateList cal) throws AdminSelectException {
+		ArrayList<AdminCalculate> calList=new ArrayList<AdminCalculate>();
+		calList=ad.selectCalculate(sqlSession, cal);
+		return calList;
+	}
+
+	@Override
+	public int updateCalculate(AdminCalculate cal) throws AdminSelectException {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 	

@@ -82,7 +82,7 @@
 					<input type="hidden" name="boardRefNo" value="${qna.boardNo }">
 					<input type="hidden" name="boardType" value="${qna.boardType }">
 					<input type="hidden" name="boardCate" value="${qna.boardCate }">
-					<textarea cols="85" rows="4" id="answerContent" name="boardContent"></textarea>
+					<textarea class="form-control" cols="85" rows="4" id="answerContent" name="boardContent"></textarea>
 				</form>
 				</c:if>
 				<div class="col-md-3"></div>

@@ -61,24 +61,16 @@
 								<td>${order.orderList }</td>
 								<c:choose>
 									<c:when test="${order.orderMStatus ==1}">
-										<td>주문 완료
-										<button class="btn btn-sm btn-outline-warning" type="button" onclick="orderMStatus();">배송완료</button></td>
+										<td>주문 완료</td>
+										<th><button class="btn btn-sm btn-outline-warning" type="button" onclick="orderMStatus();">배송완료</button></th>
 									</c:when>
 									<c:when test="${order.orderMStatus ==2}">
-										<td>배송 완료
-										<button class="btn btn-sm btn-outline-warning" disabled type="button"onclick="orderMStatus();">수령 대기중</button></td>
+										<td>배송 완료</td>
+										<th><button class="btn btn-sm btn-outline-warning" disabled type="button"onclick="orderMStatus();">수령 대기중</button></th>
 									</c:when>
 									<c:otherwise>
 										<td>수령 완료</td>
-									</c:otherwise>
-								</c:choose>
-								<c:choose>
-									<c:when test="${order.orderCal=='N' }">
-										<td>미정산
-										<button class="btn btn-sm btn-outline-warning" type="button" onclik="orderCal();">정산완료</button></td>
-									</c:when>
-									<c:otherwise>
-										<td>정산완료</td>
+										<th></th>
 									</c:otherwise>
 								</c:choose>
 							</tr>
@@ -139,7 +131,7 @@
 	<div class="col-md-4"></div>
 		<script>
 		$(function(){
-			$("#bootstrap-data-table-export").find("td").mouseenter(function(){
+			$("#sellerOrder").find("td").mouseenter(function(){
 				$(this).parent().css({"color":"#9d9d9d","cursor":"pointer"});
 			}).mouseout(function(){
 				$(this).parent().css({"color":"#212529"});

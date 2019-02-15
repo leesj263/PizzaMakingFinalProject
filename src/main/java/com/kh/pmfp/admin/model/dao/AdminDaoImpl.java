@@ -13,6 +13,7 @@ import com.kh.pmfp.admin.model.exception.AdminSelectException;
 import com.kh.pmfp.admin.model.exception.AdminUpdateException;
 import com.kh.pmfp.admin.model.vo.AdminBoard;
 import com.kh.pmfp.admin.model.vo.AdminBoard2;
+import com.kh.pmfp.admin.model.vo.AdminCalculate;
 import com.kh.pmfp.admin.model.vo.AdminCalculateList;
 import com.kh.pmfp.admin.model.vo.AdminMaterial;
 import com.kh.pmfp.admin.model.vo.AdminMember;
@@ -648,6 +649,17 @@ public class AdminDaoImpl implements AdminDao {
 		RowBounds rowBounds=new RowBounds(offset, pi.getLimit());
 		calList=(ArrayList)sqlSession.selectList("Admin.selectCalculateList", null, rowBounds);
 		
+		return calList;
+	}
+	
+	//정산 상세조회용
+	@Override
+	public ArrayList<AdminCalculate> selectCalculate(SqlSessionTemplate sqlSession, AdminCalculateList cal) throws AdminSelectException {
+		ArrayList<AdminCalculate> calList=new ArrayList<AdminCalculate>();
+		calList=(ArrayList)sqlSession.selectList("Admin.selectCalculate", cal);
+		if(calList==null) {
+			throw new AdminSelectException("정산 상세조회 실패");
+		}
 		return calList;
 	}
 

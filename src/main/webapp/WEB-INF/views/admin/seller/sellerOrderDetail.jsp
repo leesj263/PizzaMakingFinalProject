@@ -5,7 +5,7 @@
 <style>
 	#orderList{
 		text-align:center;
-		width:600px;
+		width:700px;
 	}
 </style>
 <section>
@@ -100,38 +100,8 @@
 										<td>${om.price }</td>
 									</tr>
 								</c:forEach>
-								<!-- <tr>
-									<th scope="row">1</th>
-									<td>도우 </td>
-									<td>50 (개/팩)</td>
-									<td>1,000</td>
-									<td>50,000</td>
-								</tr>
-								<tr>
-									<th scope="row">2</th>
-									<td>포장 박스</td>
-									<td>300(개/팩)</td>
-									<td>200</td>
-									<td>60,000</td>
-								</tr>
-								<tr>
-									<th scope="row">3</th>
-									<td>치즈 300g </td>
-									<td>50 (개/팩)</td>
-									<td>2,000</td>
-									<td>100,000</td>
-								</tr>
-								<tr>
-									<th scope="row">4</th>
-									<td>새우 100g</td>
-									<td>50(개/팩)</td>
-									<td>1,800</td>
-									<td>90,000</td>
-								</tr> -->
 								<tr>
 									<th colspan="3">총 액</th>
-								<!-- 	<th></th>
-									<th></th> -->
 									<th colspan="3">${total }</th>
 								</tr>
 							</tbody>

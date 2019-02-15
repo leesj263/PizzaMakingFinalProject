@@ -24,6 +24,8 @@ public class AdminSeller implements java.io.Serializable{
 	private String comLoc;
 	private String comPark;
 	private String comConfirm;
+	private double comLat;
+	private double comLon;
 	private int rn;
 	
 	public AdminSeller() {}
@@ -31,7 +33,7 @@ public class AdminSeller implements java.io.Serializable{
 	public AdminSeller(int memberNo, int memberCateg, String memberId, String memberPwd, String memberName,
 			String memberNickName, String memberEmail, Date memberEnroll, String memberStatus, int comNo,
 			String comName, String comAddress, String comTel, String comLisenseNo, String comStatus, Date comDate,
-			String salesTime, String comLoc, String comPark, String comConfirm, int rn) {
+			String salesTime, String comLoc, String comPark, String comConfirm, double comLat, double comLon, int rn) {
 		super();
 		this.memberNo = memberNo;
 		this.memberCateg = memberCateg;
@@ -53,6 +55,8 @@ public class AdminSeller implements java.io.Serializable{
 		this.comLoc = comLoc;
 		this.comPark = comPark;
 		this.comConfirm = comConfirm;
+		this.comLat = comLat;
+		this.comLon = comLon;
 		this.rn = rn;
 	}
 
@@ -216,6 +220,22 @@ public class AdminSeller implements java.io.Serializable{
 		this.comConfirm = comConfirm;
 	}
 
+	public double getComLat() {
+		return comLat;
+	}
+
+	public void setComLat(double comLat) {
+		this.comLat = comLat;
+	}
+
+	public double getComLon() {
+		return comLon;
+	}
+
+	public void setComLon(double comLon) {
+		this.comLon = comLon;
+	}
+
 	public int getRn() {
 		return rn;
 	}
@@ -232,7 +252,7 @@ public class AdminSeller implements java.io.Serializable{
 				+ ", comNo=" + comNo + ", comName=" + comName + ", comAddress=" + comAddress + ", comTel=" + comTel
 				+ ", comLisenseNo=" + comLisenseNo + ", comStatus=" + comStatus + ", comDate=" + comDate
 				+ ", salesTime=" + salesTime + ", comLoc=" + comLoc + ", comPark=" + comPark + ", comConfirm="
-				+ comConfirm + ", rn=" + rn + "]";
+				+ comConfirm + ", comLat=" + comLat + ", comLon=" + comLon + ", rn=" + rn + "]";
 	}
 
 	
