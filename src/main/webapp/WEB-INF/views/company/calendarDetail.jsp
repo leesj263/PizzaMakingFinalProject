@@ -25,6 +25,13 @@
 <script src="https://code.jquery.com/jquery-3.3.1.js"
 	integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
 	crossorigin="anonymous"></script>
+	
+<style>
+	.col-lg-8{
+		position : relative;
+		left : 15%;
+	}
+</style>
 </head>
 <body>
 
@@ -35,34 +42,99 @@
 	<div id="right-panel" class="right-panel">
 
 		<jsp:include page="companyHeader.jsp"></jsp:include>
-
-		<div class="col-lg-6">
+		
+	<!-- 	
+		 -->
+		
+		
+		<div class="col-lg-8">
 			<div class="card">
 				<div class="card-header">
-					<strong>Validation states</strong> with optional icons<em>(deprecated)</em>
+					<strong>${ date }</strong> - 일정목록</em>
 				</div>
 				<div class="card-body card-block">
+				<c:forEach items = "${list}" var = "value">
 					<div class="has-success form-group">
-						<label for="inputSuccess2i" class=" form-control-label">Input
-							with success</label><input type="text" id="inputSuccess2i"
-							class="form-control-success form-control">
+							<label for="inputSuccess2i" class=" form-control-label" >등록된 일정 : &nbsp;&nbsp;</label><span>
+							${value.calendarContent }</span><br>
+							<button style = "position : relative; top : 5px" type="button" class="btn btn-danger" id = "${value.calendarNo}" onclick = "deleteCalendar(this)">삭제</button> 
+							<button style = "position : relative; top : 5px" type="button" class="btn btn-warning">수정</button>
 					</div>
+					<br>
+				</c:forEach>
+				
 					<div class="has-warning form-group">
-						<label for="inputWarning2i" class=" form-control-label">Input
-							with warning</label><input type="text" id="inputWarning2i"
+						<label  for="inputWarning2i" class=" form-control-label">일정 등록 : &nbsp;&nbsp;</label><input style = "width : 100%;" type="text" id="inputWarning2i"
 							class="form-control-warning form-control">
+							<button style = "position : relative; top : 5px" type="button" class="btn btn-primary" onclick = "insertCalendar()">등록</button>
 					</div>
-					<div class="has-danger has-feedback form-group">
-						<label for="inputError2i" class=" form-control-label">Input
-							with error</label><input type="text" id="inputError2i"
-							class="form-control-danger form-control">
-					</div>
+					
+
 				</div>
+						<button type="button" class="btn btn-secondary" onclick = "location.href = 'goMain.com'"><i class="fa fa-mail-reply"></i>돌아가기</button>
+				
 			</div>
+			
 		</div>
-
 	</div>
-
+<script>
+	function insertCalendar(){
+		var text = $("input[type='text']").val();
+		var date = "${date}";
+		var list = "${list}";
+		var listSize = "${fn:length(list)}";
+		console.log("text : " + text);
+		console.log("date : " + date);
+		console.log("listSize : " + listSize);
+		//memberCode로 회사별 달력을 구분함, 임의로 memberNo를 100으로 입력
+		var memberNo = 100;
+		
+		$.ajax({
+			url : "insertCalendarData.com",
+			data : {text : text,
+				date : date,
+				listSize : listSize,
+				memberNo : memberNo},
+			type : "get",
+			success : function(data){
+				location.href = "calendarDetail.com?id="+date;
+				console.log(date);
+			},
+			error : function(data){
+				console.log(date);
+			}
+		});
+	}
+	
+	
+	function deleteCalendar(btn){
+		var date = "${date}";
+		console.log("date : " + date);
+		var list = "${list}";
+		var listSize = "${fn:length(list)}";
+		console.log("listSize : " + listSize);
+		var calendarNo = $(btn).attr("id");
+		console.log("calendarNo : " + calendarNo);
+		
+		$.ajax({
+			url : "deleteCalendarData.com",
+			data : {
+				date : date,
+				listSize : listSize,
+				calendarNo : calendarNo
+			},
+			type : "get",
+			success : function(data){
+				location.href = "calendarDetail.com?id="+date;
+				console.log(data);
+			},
+			error : function(data){
+				console.log(data);
+			}
+		});
+		
+	}
+</script>
 	<script
 		src="${contextPath }/resources/companyCss/vendors/jquery-validation/dist/jquery.validate.min.js"></script>
 	<script

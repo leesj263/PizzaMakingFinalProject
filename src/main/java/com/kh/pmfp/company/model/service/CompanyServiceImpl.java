@@ -1,5 +1,6 @@
 package com.kh.pmfp.company.model.service;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -8,9 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.kh.pmfp.company.model.dao.CompanyDao;
+import com.kh.pmfp.company.model.exception.FailChangeCalendarDate;
 import com.kh.pmfp.company.model.exception.FailInsertEmployeeInfo;
 import com.kh.pmfp.company.model.exception.FailInsertOrderStock;
 import com.kh.pmfp.company.model.exception.FailSelectAdminMessage;
+import com.kh.pmfp.company.model.exception.FailSelectCalendar;
 import com.kh.pmfp.company.model.exception.FailSelectCompanyReview;
 import com.kh.pmfp.company.model.exception.FailSelectCompanySales;
 import com.kh.pmfp.company.model.exception.FailSelectDeliveryMan;
@@ -22,6 +25,7 @@ import com.kh.pmfp.company.model.exception.FailUpdateEmployeeInfo;
 import com.kh.pmfp.company.model.exception.FailUpdateOrderStatus;
 import com.kh.pmfp.company.model.exception.FaileDetailMessage;
 import com.kh.pmfp.company.model.vo.CompanyBoard;
+import com.kh.pmfp.company.model.vo.CompanyCalendar;
 import com.kh.pmfp.company.model.vo.CompanyEmployee;
 import com.kh.pmfp.company.model.vo.CompanyMaterial;
 import com.kh.pmfp.company.model.vo.CompanyOrder;
@@ -267,6 +271,39 @@ public class CompanyServiceImpl implements CompanyService{
 		hmap = cd.selectCompanySalesList(sqlSession, comNo);
 		
 		return hmap;
+	}
+
+	@Override
+	public ArrayList<CompanyCalendar> calendarDetail(Date date) throws FailSelectCalendar {
+		// TODO Auto-generated method stub
+		ArrayList<CompanyCalendar> list = new ArrayList<CompanyCalendar>();
+		list = cd.calendarDetail(sqlSession, date);
+		return list;
+	}
+
+	@Override
+	public int insertCalendarData(CompanyCalendar cc) throws FailChangeCalendarDate {
+		// TODO Auto-generated method stub
+		int result = cd.insertCalendarData(sqlSession, cc);
+
+		return result;
+	}
+
+	@Override
+	public int deleteCalendarData(CompanyCalendar cc) throws FailChangeCalendarDate {
+		// TODO Auto-generated method stub
+		int result = cd.deleteCalendarData(sqlSession, cc);
+		
+		return result;
+	}
+
+	@Override
+	public ArrayList<CompanyCalendar> selectMemberCalendar(int memberNo) throws FailSelectCalendar {
+		// TODO Auto-generated method stub
+		ArrayList<CompanyCalendar> list = new ArrayList<CompanyCalendar>();
+		list = cd.selectMemberCalendar(sqlSession, memberNo);
+		
+		return list;
 	}
 	
 	

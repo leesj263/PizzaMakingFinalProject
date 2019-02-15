@@ -1,5 +1,6 @@
 package com.kh.pmfp.company.model.dao;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -7,9 +8,11 @@ import org.apache.ibatis.session.SqlSession;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.kh.pmfp.company.model.exception.FailChangeCalendarDate;
 import com.kh.pmfp.company.model.exception.FailInsertEmployeeInfo;
 import com.kh.pmfp.company.model.exception.FailInsertOrderStock;
 import com.kh.pmfp.company.model.exception.FailSelectAdminMessage;
+import com.kh.pmfp.company.model.exception.FailSelectCalendar;
 import com.kh.pmfp.company.model.exception.FailSelectCompanyReview;
 import com.kh.pmfp.company.model.exception.FailSelectCompanySales;
 import com.kh.pmfp.company.model.exception.FailSelectDeliveryMan;
@@ -21,6 +24,7 @@ import com.kh.pmfp.company.model.exception.FailUpdateEmployeeInfo;
 import com.kh.pmfp.company.model.exception.FailUpdateOrderStatus;
 import com.kh.pmfp.company.model.exception.FaileDetailMessage;
 import com.kh.pmfp.company.model.vo.CompanyBoard;
+import com.kh.pmfp.company.model.vo.CompanyCalendar;
 import com.kh.pmfp.company.model.vo.CompanyEmployee;
 import com.kh.pmfp.company.model.vo.CompanyMaterial;
 import com.kh.pmfp.company.model.vo.CompanyOrder;
@@ -391,6 +395,67 @@ public class CompanyDaoImpl implements CompanyDao{
 		hmap.put("outComeList", outComeList);
 		
 		return hmap;
+	}
+
+	@Override
+	public ArrayList<CompanyCalendar> calendarDetail(SqlSessionTemplate sqlSession, Date date) throws FailSelectCalendar {
+		// TODO Auto-generated method stub
+		ArrayList<CompanyCalendar> list = new ArrayList<CompanyCalendar>();
+		list = (ArrayList)sqlSession.selectList("Company.calendarDetail", date);
+		
+		if(list == null) {
+			throw new FailSelectCalendar("달력 조회 실패!");
+		}
+		
+		return list;
+	}
+
+	@Override
+	public int insertCalendarData(SqlSessionTemplate sqlSession, CompanyCalendar cc) throws FailChangeCalendarDate {
+		// TODO Auto-generated method stub
+		int result = sqlSession.insert("Company.insertCalendarData", cc);
+		
+		if(result <=0) {
+			throw new  FailChangeCalendarDate("달력 값 변경 실패!");
+		}
+		
+		return result;
+	}
+
+	@Override
+	public int deleteCalendarData(SqlSessionTemplate sqlSession, CompanyCalendar cc) throws FailChangeCalendarDate {
+		// TODO Auto-generated method stub
+		//먼저 지울것의 정보 조회
+		//지울 행의 Categ를 알아옴
+		int result = 0;
+		CompanyCalendar deleteRow = sqlSession.selectOne("Company.selectdeleteRow", cc);
+		System.out.println("deleteRow : " + deleteRow);
+		//행 지우기
+		int resultA = sqlSession.delete("Company.deleteCalendarData", cc);
+		System.out.println("resultA : " + resultA);
+		
+		int resultB = sqlSession.update("Company.deleteAfterUpdateCalendar", deleteRow);
+		System.out.println("resultB : " + resultB);
+		result = resultA + resultB;
+		//지운 행과 같은 날짜면서 Categ가 지울행보다 큰애들  Categ를 -1씩수행 
+		if(result <=0) {
+			throw new  FailChangeCalendarDate("달력 값 변경 실패!");
+		}
+		System.out.println("result : " + result);
+		return result;
+	}
+
+	@Override
+	public ArrayList<CompanyCalendar> selectMemberCalendar(SqlSessionTemplate sqlSession, int memberNo) throws FailSelectCalendar {
+		// TODO Auto-generated method stub
+		ArrayList<CompanyCalendar> list = new ArrayList<CompanyCalendar>();
+		list = (ArrayList)sqlSession.selectList("Company.selectMemberCalendar", memberNo);
+		
+		if(list == null) {
+			throw new FailSelectCalendar("달력 조회 실패!");
+		}
+		
+		return list;
 	}
 	
 	

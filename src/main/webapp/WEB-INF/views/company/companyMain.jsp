@@ -132,9 +132,13 @@
                 </div>
             </div><!-- .animated -->
         </div><!-- .content -->
-        
-        
-        <button onclick = "test()">test</button>
+
+
+<button onclick = "test()">테스트용</button>
+
+
+
+
         <div class="content mt-3" >
             <div class="animated fadeIn">
                 <div class="row">
@@ -329,16 +333,33 @@
     </script>
     <script language="javascript" type="text/javascript">
     buildCalendar();//
+   	
+   
 	</script>
 	
 	
 	<script>
 		function test(){
-			$("#2019-2-5 #1").css({"font-size" : "0.5em", "padding" : "0px", "margin" : "0px", "border" : "0"}).text("제대로 들가나?");
+			/* $("#2019-2-5 #1").css({"font-size" : "0.5em", "padding" : "0px", "margin" : "0px", "border" : "0"}).text("제대로 들가나?");
 			$("#2019-2-5 #2").css({"font-size" : "0.5em", "padding" : "0px", "margin" : "0px", "border" : "0"}).text("제대로 들가나?");
-			$("#2019-2-5 #3").css({"font-size" : "0.5em", "padding" : "0px", "margin" : "0px", "border" : "0"}).text("제대로 들가나?");
+			$("#2019-2-5 #3").css({"font-size" : "0.5em", "padding" : "0px", "margin" : "0px", "border" : "0"}).text("제대로 들가나?"); */
+			
+			$.ajax({
+				url : "selectMemberCalendar.com",
+				data : {
+					memberNo : 100
+				},
+				type : "get",
+				success : function(data){
+					console.log(data);
+				},
+				error: function(data){
+					console.log(data);
+				}
+			});
 			
 		}
+		
 			
 		function calendarTd(btn){
 			console.log($(btn).attr("id"));

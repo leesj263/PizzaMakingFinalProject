@@ -1,11 +1,14 @@
 package com.kh.pmfp.company.model.service;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.kh.pmfp.company.model.exception.FailChangeCalendarDate;
 import com.kh.pmfp.company.model.exception.FailInsertEmployeeInfo;
 import com.kh.pmfp.company.model.exception.FailInsertOrderStock;
 import com.kh.pmfp.company.model.exception.FailSelectAdminMessage;
+import com.kh.pmfp.company.model.exception.FailSelectCalendar;
 import com.kh.pmfp.company.model.exception.FailSelectCompanyReview;
 import com.kh.pmfp.company.model.exception.FailSelectCompanySales;
 import com.kh.pmfp.company.model.exception.FailSelectDeliveryMan;
@@ -17,6 +20,7 @@ import com.kh.pmfp.company.model.exception.FailUpdateEmployeeInfo;
 import com.kh.pmfp.company.model.exception.FailUpdateOrderStatus;
 import com.kh.pmfp.company.model.exception.FaileDetailMessage;
 import com.kh.pmfp.company.model.vo.CompanyBoard;
+import com.kh.pmfp.company.model.vo.CompanyCalendar;
 import com.kh.pmfp.company.model.vo.CompanyEmployee;
 import com.kh.pmfp.company.model.vo.CompanyMaterial;
 import com.kh.pmfp.company.model.vo.CompanyOrder;
@@ -80,5 +84,15 @@ public interface CompanyService {
 	ArrayList<CompanySales> selectAllCompanySales(int comNo) throws FailSelectCompanySales;
 
 	HashMap<String, ArrayList<CompanySalesList>> selectCompanySalesList(int comNo) throws FailSelectCompanySales;
+
+	ArrayList<CompanyCalendar> calendarDetail(Date date) throws FailSelectCalendar;
+
+	int insertCalendarData(CompanyCalendar cc) throws FailChangeCalendarDate;
+
+	int deleteCalendarData(CompanyCalendar cc) throws FailChangeCalendarDate;
+
+	ArrayList<CompanyCalendar> selectMemberCalendar(int memberNo) throws FailSelectCalendar;
+
+
 
 }

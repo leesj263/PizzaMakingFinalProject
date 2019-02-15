@@ -14,9 +14,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.kh.pmfp.company.model.exception.FailChangeCalendarDate;
 import com.kh.pmfp.company.model.exception.FailInsertEmployeeInfo;
 import com.kh.pmfp.company.model.exception.FailInsertOrderStock;
 import com.kh.pmfp.company.model.exception.FailSelectAdminMessage;
+import com.kh.pmfp.company.model.exception.FailSelectCalendar;
 import com.kh.pmfp.company.model.exception.FailSelectCompanyReview;
 import com.kh.pmfp.company.model.exception.FailSelectCompanySales;
 import com.kh.pmfp.company.model.exception.FailSelectDeliveryMan;
@@ -657,10 +659,84 @@ public class CompanyController {
 		System.out.println("id : " + id);
 		java.sql.Date date = java.sql.Date.valueOf(id);
 		System.out.println("date : " + date);
-		//list = cs.calendarDetail();
+
+		try {
+			list = cs.calendarDetail(date);
+			
+			request.setAttribute("list", list);
+			request.setAttribute("date", date);
+			return "company/calendarDetail";
+			
+			
+		} catch (FailSelectCalendar e) {
+			request.setAttribute("msg", e.getMessage());
+			return "common/errorPage";
+		}
+		
+	}
+	
+	
+	@RequestMapping("insertCalendarData.com")
+	public String insertCalendarData(String date, String memberNo, String listSize, String text) {
+		/*System.out.println("date : " + date);
+		System.out.println("memberNo : " + memberNo);
+		System.out.println("listSize : " + listSize);
+		System.out.println("text : " + text);*/
+		
+		//DB에 값 집어넣기
+		CompanyCalendar cc = new CompanyCalendar();
+		cc.setCalendarCateg(Integer.parseInt(listSize));
+		cc.setCalendarContent(text);
+		cc.setCalendarDate(java.sql.Date.valueOf(date));
+		cc.setMemberNo(Integer.parseInt(memberNo));
+		try {
+			int result = cs.insertCalendarData(cc);
+			System.out.println("달력 데이터 삽입 결과 개수 : " + result);
+			return "redirect:calendarDetail.com?id="+date;
+		} catch (FailChangeCalendarDate e) {
+			return "common/errorPage";
+		}
+		
+	}
+	
+	
+	@RequestMapping("deleteCalendarData.com")
+	public String deleteCalendarData(String date, String listSize, String calendarNo) {
+		
+		CompanyCalendar cc = new CompanyCalendar();
+		cc.setCalendarCateg(Integer.parseInt(listSize));
+		cc.setCalendarDate(java.sql.Date.valueOf(date));
+		cc.setCalendarNo(Integer.parseInt(calendarNo));
+		try {
+			int result = cs.deleteCalendarData(cc);
+			
+			return "redirect:calendarDetail.com?id="+date;
+		} catch (FailChangeCalendarDate e) {
+			return "common/errorPage";
+		}
 		
 		
-		return "";
+	}
+	
+	//여기 부분 goMain.com부분과 합치는것으로 테스트해보기
+	@RequestMapping("selectMemberCalendar.com")
+	public String selectMemberCalendar(String memberNo, HttpServletRequest request, HttpServletResponse response) {
+		ArrayList<CompanyCalendar> calendarList = new ArrayList<CompanyCalendar>();
+		//임의로 회원번호 삽입
+		int selectMemberNo = Integer.parseInt(memberNo);
+		try {
+			calendarList = cs.selectMemberCalendar(selectMemberNo);
+			System.out.println("calendarList : " + calendarList);
+			request.setAttribute("calendarList", calendarList);
+			
+			return "redirect:goMain.com";
+		} catch (FailSelectCalendar e) {
+			// TODO Auto-generated catch block
+			request.setAttribute("msg", e.getMessage());
+			return "common/errorPage";
+		}
+		
+		
 	}
 	
 	
