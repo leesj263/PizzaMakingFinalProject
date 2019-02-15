@@ -58,7 +58,7 @@
 		ON (M.MATERIAL_NO = I.MATERIAL_NO
 			AND I.IMG_STATUS = 'Y')
 		WHERE M.MATERIAL_STATUS = 'Y'
-		AND M.MATERIAL_CATEG <![CDATA[ < ]]> 5
+		AND M.MATERIAL_CATEG <![CDATA[ < ]]> 6
 	</select>
 	
 	<!-- 기본 메뉴 리스트 가져오기 -->
@@ -95,6 +95,7 @@
     	VALUES(SEQ_IMGNO.NEXTVAL,4,#{imgOriginname},#{imgChangename},#{imgFilepath},SYSDATE,'Y',null,null,#{mypizzaNo},null,null)
 	</insert>
 	
+	<!-- 내 레시피 목록 가져오기 -->
 	<select id="selectMyPizzaList" resultMap="myPizzaListResultSet" parameterType="_int">
 		SELECT MP.MYPIZZA_NO, MP.MYPIZZA_NAME,
 		    OT.MATERIAL_NO, OT.ORDER_TCOUNT,
@@ -103,6 +104,17 @@
 		JOIN ORDER_TOPPING OT ON (MP.ORDER_INO = OT.ORDER_INO
 		    AND MP.MEMBER_NO = #{memberNo})
 		JOIN MATERIAL MA ON (OT.MATERIAL_NO = MA.MATERIAL_NO)
+	</select>
+	
+	<!-- 사이즈 메뉴 리스트 가져오기 -->
+	<select id="selectSideList" resultMap="materialResultSet">
+		SELECT *
+		FROM MATERIAL M
+		LEFT OUTER JOIN IMAGE I
+		ON (M.MATERIAL_NO = I.MATERIAL_NO
+			AND I.IMG_STATUS = 'Y')
+		WHERE M.MATERIAL_STATUS = 'Y'
+		AND M.MATERIAL_CATEG = 5
 	</select>
 	
 </mapper>

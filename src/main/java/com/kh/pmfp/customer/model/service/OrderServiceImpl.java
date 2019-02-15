@@ -72,4 +72,10 @@ public class OrderServiceImpl implements OrderService {
 	public ArrayList<MyPizza> selectMyPizzaList(int memberNo) throws OrderException {
 		return od.selectMyPizzaList(sqlSession, memberNo);
 	}
+
+	//사이드 메뉴 가져오기
+	@Override
+	public ArrayList<MaterialImage> selectSideList() throws OrderException {
+		return od.selectSideList(sqlSession);
+	}
 }
