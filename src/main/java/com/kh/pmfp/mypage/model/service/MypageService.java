@@ -40,6 +40,6 @@ public interface MypageService {
 	ArrayList<Location> selectComLocation();
 
 	//배송지 추가
-	int insertUserDelAddr(int memberNo, String finalDeliveryLoc, String addr, String deliName);
+	int insertUserDelAddr(int memberNo, int finalDeliveryLoc, String addr, String deliName);
 
 }

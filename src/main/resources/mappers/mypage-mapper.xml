@@ -18,6 +18,7 @@
 		<result property="comName" column="COM_NAME"/>
 		<result property="delAddr" column="DELIVERY_ADDRESS"/>
 		<result property="delName" column="DELIVERY_NAME"/>
+		<result property="comNo" column="COM_NO"/>
 	</resultMap>
 	
 	<!-- <resultMap type="com.kh.pmfp.mypage.model.vo.DelList" id="mypageDelResultSet2">
@@ -79,10 +80,12 @@
 	
 	
 	<select id="selectDelList" resultMap="mypageDelResultSet" parameterType="_int">
-		SELECT d.DELIVERY_NAME, d.DELIVERY_ADDRESS, c.COM_Name 
+		SELECT d.DELIVERY_NAME, d.DELIVERY_ADDRESS, c.COM_Name
 		FROM DELIVERY d 
 		JOIN company c ON c.com_no = d.com_no
 		WHERE MEMBER_NO = #{memberNo}
+		order by d.delivery_no
+		
 	</select>
 	
 	

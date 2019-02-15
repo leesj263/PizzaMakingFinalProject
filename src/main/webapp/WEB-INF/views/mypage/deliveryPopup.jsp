@@ -63,8 +63,10 @@
 <!-- <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script> -->
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js?autoload=false"></script>
 <script>
+	var flag = false;
 	var latlonVal;
 
+	//다음 도로명주소 api
     function sample4_execDaumPostcode() {
     	 daum.postcode.load(function(){
         new daum.Postcode({
@@ -120,19 +122,14 @@
 				
                 //사용자가 입력한 주소의 위도/경도 구하기
                 latlonVal = latlon(roadAddr);
-                console.log("뭐지 "+latlonVal);
-                
- 		
             }
-
-        }).open();
-        
+        }).open();   
     })
     };
     
     
   
-    //사용자가 입력한 주소 위/경도로 변환
+    //구글 지오코딩 api : 사용자가 입력한 주소 위/경도로 변환
     function latlon(value) {
         var geocode = "https://maps.googleapis.com/maps/api/geocode/json?address="+value+"&key=AIzaSyCbicS4cErqcGQUcYybf3OWZAZZWZRP5Lk";
         var tag = "";
@@ -142,71 +139,64 @@
             async:false,
            	success: function(myJSONResult){
 	            if(myJSONResult.status == 'OK') {
-	                
 	                var i;
+	                
 	                for (i = 0; i < myJSONResult.results.length; i++) {
 	                  tag += myJSONResult.results[i].geometry.location.lat+",";
 	                  tag += myJSONResult.results[i].geometry.location.lng;
+	                  
+	                  flag="true";
 	                }
-	                
-	
 	            }else{
 	            	console.log(myJSONResult);
 	            }
-	            }
+	        }
         }); 
         return tag;
     }
     
     
- 
-    
-    
-    
-    //등록하기 버튼
+    //배송지 등록하기 버튼
     function addAddr(){
-    	var postcode = $("#postcode").val();
     	var roadAddress = $("#roadAddress").val();
-    	var jibunAddress = $("#jibunAddress").val();
-
-    	console.log(postcode);
-    	console.log(roadAddress);
-    	console.log(jibunAddress);
+    	var detailAddress = $("#detailAddress").val();
+    	var deliName = $("#deliveryName").val();
     	
-    	jQuery.ajax({
-    		url:"comLatLon.mp",
-    		data:{latlonVal:latlonVal},
-    		type:'POST',
-    		async:false,
-    		success:function(data){
-    			console.log("finalDeliveryLoc :  " + data);
-    			var addr = $("#roadAddress").val() + "+" + $("#detailAddress").val();
-    			
-    			var deliName = $("#deliveryName").val();
-
-    			window.close();
-    			
-    			opener.location.href="deliveryAdd.mp?finalDeliveryLoc=" + data + "&addr=" + addr + "&deliName=" + deliName;
-
-    		},
-    		error:function(data){
-    			console.log("실패");
-    			console.log(data);
-    		}
-    	});
+    	if(flag == false){
+    		alert("주소를 등록하세요");
+    	}else if(!detailAddress){
+    		alert("상세 주소를 입력하세요");
+    	}else if(!deliName){
+    		alert("배달지 이름을 입력하세요");
+    	}else{
+	    	jQuery.ajax({
+	    		url:"comLatLon.mp",
+	    		data:{latlonVal:latlonVal},
+	    		type:'POST',
+	    		async:false,
+	    		success:function(data){
+	    			if(data == "실패"){
+	    				alert("배달 가능 매장이 없습니다");
+	    			}else{
+		    			var addr = roadAddress + "+" + detailAddress
+	
+		    			window.close();
+	
+		    			opener.location.href="deliveryAdd.mp?finalDeliveryLoc=" + data + "&addr=" + addr + "&deliName=" + deliName;
+	    			}
+	    		},
+	    		error:function(data){
+	    			console.log("통신 실패");
+	    			console.log(data);
+	    		}
+	    	});
+    	}
     }
     
     
 </script>
-
-
 </div>
-
-
-
 </body>
-
-
 </html>
 
 

@@ -54,23 +54,20 @@
 					<div class="ui card" style="width: 250px;">
 					  <div class="content">
 					    <div class="right floated ">35,000원</div>
-					    	<input type="checkbox"> 맛있는조합
+					    	맛있는조합
 					  </div>
 					  <div class="image">
 					    <img src="/pmfp/main/webapp/resources/main/images/222.jpg" style="height: 150px;">
 					  </div>
-					  <div class="content">
-					    <span class="right floated">
-					      	<button class="ui icon button">-</button>
-					      	&nbsp;<label>1</label>&nbsp;
-					      	<button class="ui icon button">+</button>
-					    </span>
+					  <div class="content" align="center">
 					   <button class="ui secondary basic button">상세보기</button>
 					  </div>
 					</div>
 				</td>
 				
-				<td>
+				
+
+				<!-- <td>
 					<div class="ui card" style="width: 250px;">
 					  <div class="content">
 					    <div class="right floated ">35,000원</div>
@@ -88,31 +85,9 @@
 					   <button class="ui secondary basic button">상세보기</button>
 					  </div>
 					</div>
-				</td>
-				<td>
-					<div class="ui card" style="width: 250px;">
-					  <div class="content">
-					    <div class="right floated ">35,000원</div>
-					    	<input type="checkbox"> 맛있는조합
-					  </div>
-					  <div class="image">
-					    <img src="/pmfp/main/webapp/resources/main/images/222.jpg" style="height: 150px;">
-					  </div>
-					  <div class="content">
-					    <span class="right floated">
-					      	<button class="ui icon button">-</button>
-					      	&nbsp;<label>1</label>&nbsp;
-					      	<button class="ui icon button">+</button>
-					    </span>
-					   <button class="ui secondary basic button">상세보기</button>
-					  </div>
-					</div>
-				</td>
+				</td> -->
 			</tr>
 			
-			<tr>
-				<td colspan="3" align="center"><br><button class="ui yellow button">주문하기</button></td>
-			</tr>
 		
 		</table>
 		

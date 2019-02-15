@@ -90,7 +90,7 @@ public class MypageServiceImpl implements MypageService{
 
 	//배송지 추가
 	@Override
-	public int insertUserDelAddr(int memberNo, String finalDeliveryLoc, String addr, String deliName) {
+	public int insertUserDelAddr(int memberNo, int finalDeliveryLoc, String addr, String deliName) {
 		int result = md.insertUserDelAddr(sqlSession, memberNo, finalDeliveryLoc, addr, deliName);
 		return result;
 	}

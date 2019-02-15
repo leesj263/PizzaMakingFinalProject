@@ -65,8 +65,11 @@
 		    <c:forEach items="${ orderList }" var="o" varStatus="status">
 		    	<tr>
 		    		<td>${ o.orderNo }</td>
-					<%-- <td>${ toppingList[status.index] }</td> --%>
-					<td>${ o.orderMaterial }</td>
+					<td>
+						${ baseList[status.index] } <br>
+						${ toppingList[status.index] }
+					</td>
+					<%-- <td>${ o.orderMaterial }</td> --%>
 		    		
 		    		<c:if test="${o.orderMethod == 1}">
 		    			<td>방문포장</td>
@@ -82,12 +85,16 @@
 		    
 		  </tbody>
 		</table>
-		
-		
-		
-		
-		
 	</div>
+	
+	
+	<script>
+		$("td").click(function(){
+			var orderNo = $(this).parent().children("td").eq(0).text();
+			
+			location.href="mpOderDetail.mp?orderNo="+orderNo;
+		});
+	</script>
 	
 	
 

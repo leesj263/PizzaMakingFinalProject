@@ -156,12 +156,14 @@ public class MypageDaoImpl implements MypageDao{
 
 	//배송지 추가
 	@Override
-	public int insertUserDelAddr(SqlSessionTemplate sqlSession, int memberNo, String finalDeliveryLoc, String addr, String deliName) {
-		DelList del = new DelList(deliName, addr, finalDeliveryLoc, memberNo);
+	public int insertUserDelAddr(SqlSessionTemplate sqlSession, int memberNo, int finalDeliveryLoc, String addr,
+			String deliName) {
+		DelList del = new DelList(memberNo, finalDeliveryLoc, addr, deliName);
 
 		return sqlSession.insert("Mypage.insertUserDelAddr", del);
 	}
 
+	
 
 	
 	

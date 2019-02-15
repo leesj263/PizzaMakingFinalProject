@@ -49,6 +49,8 @@ public class MypageController {
 		int memberNo = loginUser.getMemberNo();
 		
 		ArrayList<OrderList> orderList = new ArrayList<OrderList>();
+		ArrayList<String> baseList = new ArrayList<>();
+		ArrayList<String> toppingList = new ArrayList<>();
 		
 		orderList = mps.selectOrderList(memberNo);
 		System.out.println("orderList : " + orderList);
@@ -61,7 +63,11 @@ public class MypageController {
 		for(int i=0;i<orderList.size();i++) {
 			arr = orderList.get(i).getOrderMaterial().split("/");
 			for(int j=0;j<3;j++) {
-				arr1 += arr[j].substring(0, arr[j].lastIndexOf("1"))+" / ";
+				if(j == 2) {
+					arr1 += arr[j].substring(0, arr[j].lastIndexOf("1"));
+				}else {
+					arr1 += arr[j].substring(0, arr[j].lastIndexOf("1")) + " / ";
+				}
 			}
 			for(int k=3;k<arr.length;k++) {
 				if(k == arr.length-1) {
@@ -71,17 +77,31 @@ public class MypageController {
 				}
 			}
 			
-			orderList.get(i).setOrderMaterial(arr1+arr2);
+			//orderList.get(i).setOrderMaterial(arr1+"\n"+arr2);
+			baseList.add(arr1);
+			toppingList.add(arr2);
 			
 			arr1="";
 			arr2="";
 		}
 
-		
+		model.addAttribute("baseList",baseList);
+		model.addAttribute("toppingList",toppingList);
 		model.addAttribute("orderList",orderList);
 
 		return "mypage/orderList";
 	}
+	
+	
+	//주문내역 - 상세보기
+	@RequestMapping(value="mpOderDetail.mp")
+	public String mpOderDetail(String orderNo) {
+		
+		
+		return "mypage/orderDetail?orderNo="+orderNo;
+	}
+	
+	
 	
 	//배송지 내역
 	@RequestMapping(value="/myPageDelAddr.mp")
@@ -102,20 +122,15 @@ public class MypageController {
 	//배송지 추가 팝업
 	@RequestMapping(value="myPageDelPopup.mp")
 	public String delPopup() {
-		
 		return "mypage/deliveryPopup";
 	}
 	
-	//@RequestMapping(value="comLatLon.mp", produces="application/text;charset=utf8")
-	@RequestMapping(value="comLatLon.mp")
-	public @ResponseBody int comLatLon(@RequestParam String latlonVal, HttpServletResponse response){
-		System.out.println("latlonVal : " + latlonVal);
+	//사용자주소와 매장주소 좌표비교 & 가까운 곳 배정
+	@RequestMapping(value="comLatLon.mp", produces="application/text;charset=utf8")
+	public @ResponseBody void comLatLon(@RequestParam String latlonVal, HttpServletResponse response){
+		response.setContentType("text/html; charset=utf-8");
+		
 		String[] latlonValArr = latlonVal.split(",");
-		//double[] arr = new double[2];
-		//arr[0] = Double.parseDouble(userAddrList[0]);
-		//arr[1] = Double.parseDouble(userAddrList[1]);
-		System.out.println("double lat :" + latlonValArr[0]);
-		System.out.println("double lon :" + latlonValArr[1]);
 		
 		double userLat = Double.parseDouble(latlonValArr[0]);
 		double userLon = Double.parseDouble(latlonValArr[1]);
@@ -123,22 +138,14 @@ public class MypageController {
 		//지점 전체의 위도, 경도 얻기
 		ArrayList<Location> list = mps.selectComLocation();
 		
-		//String finalDeliveryLoc = "";
-		//int finalDeliveryLoc = 0;
-		
 		ArrayList<DistanceLoc> locDistanceArr = new ArrayList<>();
-		
-		
+
 		//가까운곳 배정
 		for(int i=0;i<list.size();i++) {
 			new Distance();
 			double locDistance = Distance.distance(list.get(i).getLat(), list.get(i).getLon(), userLat, userLon);
 			
-			//System.out.println(list.get(i).getComName()+ " locDistance : " + locDistance);
-			
 			locDistanceArr.add(new DistanceLoc(locDistance, list.get(i).getComNo()));
-			System.out.println("흠 : " + locDistanceArr);
-			//locDistanceArr.add(locDistance);
 		}
 		
 		Collections.sort(locDistanceArr);
@@ -147,52 +154,43 @@ public class MypageController {
 			System.out.println(d.getLocDistance());
 		}
 		
-
 		if(locDistanceArr.get(0).getLocDistance() < 3) {
-			System.out.println("insert작업");
 			System.out.println(locDistanceArr.get(0).getComNo());
 			
-			return locDistanceArr.get(0).getComNo();
-			
-		}else {
 			try {
-				PrintWriter out = response.getWriter();
-				out.println("<script>alert('배달 가능한 매장이 없습니다.')");
-				out.flush();
-				
-				
+				response.getWriter().print(locDistanceArr.get(0).getComNo());
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			return 0;
+			
+		}else {
+			try {
+				response.getWriter().print("실패");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
-		
-		
-		
+	
 	}
 	
 	
 	//배송지 추가
 	@RequestMapping(value="deliveryAdd.mp")
-	public String deliveryAdd(HttpServletRequest request, String finalDeliveryLoc, String addr, String deliName ,Model model) {
+	public String deliveryAdd(HttpServletRequest request, int finalDeliveryLoc, String addr, String deliName ,Model model) {
 		HttpSession session = request.getSession();
 		Member loginUser = (Member)session.getAttribute("loginUser");
 		int memberNo = loginUser.getMemberNo();
 		
-		System.out.println("memberNo : " + memberNo);
-		System.out.println("finalDeliveryLoc : " + finalDeliveryLoc);
-		System.out.println("addr : " + addr);
-		System.out.println("deliName : " + deliName);
-		
 		int result = mps.insertUserDelAddr(memberNo, finalDeliveryLoc, addr, deliName);
 		
 		if(result>0) {
-			return "redirect:mypage/deliList";
+			System.out.println("성공직전");
+			return "redirect:myPageDelAddr.mp";
 		}else {
 			//model.addAttribute("msg", "배송지 추가 실패");
 			//return "common/errorPage";
+			return null;
 		}
-		return null;
 	}
 	
 	
