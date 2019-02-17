@@ -105,54 +105,7 @@
 		<div class="col-md-2"></div>
 		<div class="col-md-10"><button class="btn btn-outline-secondary" onclick="location.href='calculateList.ad'">목록</button></div>
 	</div>
-	<%-- <div class="col-md-5"></div>
-	<div class="dataTables_paginate paging_simple_numbers col-md-4" id="bootstrap-data-table_paginate">
-		<ul class="pagination">
-			<c:if test="${pi.currentPage >1}">
-				<c:url var="btnList" value="${ addr }">
-					<c:param name="currentPage" value="${pi.currentPage-1}"/>
-				</c:url>
-				<li class="paginate_button page-item previous" id="bootstrap-data-table_previous">
-					<a href="${btnList }" aria-controls="bootstrap-data-table" data-dt-idx="0" tabindex="0" class="page-link"><i class="ti-angle-left"></i></a>
-				</li>
-			</c:if>
-			<c:if test="${pi.currentPage==1 }">
-				<li class="paginate_button page-item previous disabled" id="bootstrap-data-table_previous">
-					<a href="#" aria-controls="bootstrap-data-table" data-dt-idx="0" tabindex="0" class="page-link"><i class="ti-angle-left"></i></a>
-				</li>
-			</c:if>
-		<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
-			<c:if test="${ p eq pi.currentPage }">
-				<li class="paginate_button page-item active disabled">
-					<a href="#" aria-controls="bootstrap-data-table" data-dt-idx="${p }" tabindex="0" class="page-link">${p }</a>
-				</li>
-			</c:if>
-				
-			<c:if test = "${ p ne pi.currentPage }">
-				<c:url var="btnList" value="${ addr }">
-					<c:param name="currentPage" value="${ p }"/>
-				</c:url>
-				<li class="paginate_button page-item">
-					<a href="${btnList }" aria-controls="bootstrap-data-table" data-dt-idx="${p }" tabindex="0" class="page-link">${p }</a>
-				</li>
-			</c:if>
-		</c:forEach>
-			<c:if test="${pi.currentPage <pi.maxPage}">
-				<c:url var="btnList" value="${ addr }">
-					<c:param name="currentPage" value="${pi.currentPage+1}"/>
-				</c:url>
-				<li class="paginate_button page-item next" id="bootstrap-data-table_next">
-					<a href="${btnList }" aria-controls="bootstrap-data-table" data-dt-idx="7" tabindex="0" class="page-link"><i class="ti-angle-right"></i></a>
-				</li>
-			</c:if>
-			<c:if test="${pi.currentPage>=pi.maxPage }">
-				<li class="paginate_button page-item next disabled" id="bootstrap-data-table_next">
-					<a href="#" aria-controls="bootstrap-data-table" data-dt-idx="7" tabindex="0" class="page-link"><i class="ti-angle-right"></i></a>
-				</li>
-			</c:if>
-		</ul>
-	</div>
-	<div class="col-md-4"></div> --%>
+
 		<script>
 		$(function(){
 			$("#calList").find("td").mouseenter(function(){
@@ -168,19 +121,22 @@
 			var endString=$("#endDate").text();
 			var endDate=new Date(endString);
 			endDate=new Date(endDate.getYear(), endDate.getMonth()+1, 0);
-			console.log(endDate);
 			$("#endDate").text((endDate.getFullYear()+1900)+"-"+(endDate.getMonth()+1)+"-"+endDate.getDate());
 		});
 			function calYes(num1, num2){
 				$.ajax({
 					url:"updateCalculate.ad",
 					type:"get",
+					async: false,
 					data:{orderExpNo:num1,comNo:num2},
 					success:function(data){
-						if(data=='성공'){
+						console.log(data);
+						if(data==1){
+							console.log(data);
 							alert("정산 처리가 완료되었습니다.");
 							location.href='calculateDetail.ad?orderExpNo='+num1+"&comNo="+num2;
 						}else{
+							console.log(data);
 							alert("정산 처리가 실패했습니다. 다시 시도해주세요.");
 							location.href='calculateDetail.ad?orderExpNo='+num1+"&comNo="+num2;
 						}

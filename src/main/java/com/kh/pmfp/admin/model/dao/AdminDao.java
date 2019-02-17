@@ -15,6 +15,7 @@ import com.kh.pmfp.admin.model.vo.AdminCalculate;
 import com.kh.pmfp.admin.model.vo.AdminCalculateList;
 import com.kh.pmfp.admin.model.vo.AdminMaterial;
 import com.kh.pmfp.admin.model.vo.AdminMember;
+import com.kh.pmfp.admin.model.vo.AdminMenu;
 import com.kh.pmfp.admin.model.vo.AdminOrder;
 import com.kh.pmfp.admin.model.vo.AdminOrderMenu;
 import com.kh.pmfp.admin.model.vo.AdminSeller;
@@ -176,6 +177,18 @@ public interface AdminDao {
 
 	//정산 상세조회용
 	ArrayList<AdminCalculate> selectCalculate(SqlSessionTemplate sqlSession, AdminCalculateList cal) throws AdminSelectException;
+
+	//정산 완료 처리용 - 상세보기에서 ajax
+	int updateCalculate(SqlSessionTemplate sqlSession, AdminCalculate cal) throws AdminUpdateException;
+
+	//정산 처리 대상 개수 세기
+	int selectUpdateCalCount(SqlSessionTemplate sqlSession, AdminCalculate cal) throws AdminCountException;
+
+	//기본 메뉴 개수 조회용
+	int selectMenuCount(SqlSessionTemplate sqlSession) throws AdminCountException;
+
+	//기본 메뉴 목록 조회용
+	ArrayList<AdminMenu> selectMenuList(SqlSessionTemplate sqlSession, PageInfo pi) throws AdminSelectException;
 
 	
 

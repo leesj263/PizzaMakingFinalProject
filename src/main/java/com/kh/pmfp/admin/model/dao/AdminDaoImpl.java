@@ -17,6 +17,7 @@ import com.kh.pmfp.admin.model.vo.AdminCalculate;
 import com.kh.pmfp.admin.model.vo.AdminCalculateList;
 import com.kh.pmfp.admin.model.vo.AdminMaterial;
 import com.kh.pmfp.admin.model.vo.AdminMember;
+import com.kh.pmfp.admin.model.vo.AdminMenu;
 import com.kh.pmfp.admin.model.vo.AdminOrder;
 import com.kh.pmfp.admin.model.vo.AdminOrderMenu;
 import com.kh.pmfp.admin.model.vo.AdminSeller;
@@ -661,6 +662,50 @@ public class AdminDaoImpl implements AdminDao {
 			throw new AdminSelectException("정산 상세조회 실패");
 		}
 		return calList;
+	}
+
+	//정산 완료 처리용 - 상세보기에서 ajax
+	@Override
+	public int updateCalculate(SqlSessionTemplate sqlSession, AdminCalculate cal) throws AdminUpdateException {
+		int result=-1;
+		result=sqlSession.update("Admin.updateCalculate", cal);
+		if(result<=0) {
+			throw new AdminUpdateException("정산 업데이트 실패");
+		}
+		return result;
+	}
+
+	//업데이트 할 정산내역 개수세기
+	@Override
+	public int selectUpdateCalCount(SqlSessionTemplate sqlSession, AdminCalculate cal) throws AdminCountException {
+		int result=-1;
+		result=sqlSession.selectOne("Admin.selectUpdateCalCount", cal);
+		if(result<0) {
+			throw new AdminCountException("정산내역 개수 카운트 실패");
+		}
+		return result;
+	}
+
+	//기본 메뉴 개수 조회용
+	@Override
+	public int selectMenuCount(SqlSessionTemplate sqlSession) throws AdminCountException {
+		int result=-1;
+		result=sqlSession.selectOne("Admin.selectMenuCount");
+		if(result<0) {
+			throw new AdminCountException("기본 메뉴 개수 조회 실패");
+		}
+		return result;
+	}
+
+	//기본 메뉴 목록 조회용
+	@Override
+	public ArrayList<AdminMenu> selectMenuList(SqlSessionTemplate sqlSession, PageInfo pi) throws AdminSelectException {
+		ArrayList<AdminMenu> menuList=new ArrayList<AdminMenu>();
+		int offset=pi.getLimit()*(pi.getCurrentPage()-1);
+		RowBounds rowBounds=new RowBounds(offset, pi.getLimit());
+		menuList=(ArrayList)sqlSession.selectList("Admin.selectMenuList", null, rowBounds);
+		
+		return menuList;
 	}
 
 	

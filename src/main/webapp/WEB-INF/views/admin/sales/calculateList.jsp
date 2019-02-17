@@ -150,11 +150,12 @@
 		function calYes(num1, num2){
 			console.log("updateCalculate.ad?orderExpNo="+num1+"&comNo="+num2);
 			$.ajax({
-				url:"updateSelectCalList.ad",
+				url:"updateCalculateList.ad",
 				type:"get",
+				async: false,
 				data:{orderExpNo:num1,comNo:num2},
 				success:function(data){
-					if(data=='성공'){
+					if(data==1){
 						alert("정산 처리가 완료되었습니다.");
 						location.href='calculateList.ad';
 					}else{
@@ -188,9 +189,10 @@
 			$.ajax({
 				url:"updateSelectCalList.ad",
 				type:"get",
+				async: false,
 				data:{orderExpNo:checkOrderExpNo,comNo:checkComNo},
 				success:function(data){
-					if(data=='성공'){
+					if(data==1){
 						alert("정산 처리가 완료되었습니다.");
 						location.href='calculateList.ad';
 					}else{

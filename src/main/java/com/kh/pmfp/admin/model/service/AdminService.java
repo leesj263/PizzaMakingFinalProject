@@ -13,6 +13,7 @@ import com.kh.pmfp.admin.model.vo.AdminCalculate;
 import com.kh.pmfp.admin.model.vo.AdminCalculateList;
 import com.kh.pmfp.admin.model.vo.AdminMaterial;
 import com.kh.pmfp.admin.model.vo.AdminMember;
+import com.kh.pmfp.admin.model.vo.AdminMenu;
 import com.kh.pmfp.admin.model.vo.AdminOrder;
 import com.kh.pmfp.admin.model.vo.AdminOrderMenu;
 import com.kh.pmfp.admin.model.vo.AdminSeller;
@@ -164,7 +165,13 @@ public interface AdminService {
 	ArrayList<AdminCalculate> selectCalculate(AdminCalculateList cal) throws AdminSelectException;
 
 	//정산 완료 처리용 - 상세보기에서 ajax
-	int updateCalculate(AdminCalculate cal) throws AdminSelectException;
+	int updateCalculate(AdminCalculate cal) throws AdminUpdateException, AdminCountException;
+
+	//기본 메뉴 개수 조회용
+	int selectMenuCount() throws AdminCountException;
+
+	//기본 메뉴 목록 조회용
+	ArrayList<AdminMenu> selectMenuList(PageInfo pi) throws AdminSelectException;
 
 
 
