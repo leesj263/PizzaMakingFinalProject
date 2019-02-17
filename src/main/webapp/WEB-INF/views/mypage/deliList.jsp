@@ -15,7 +15,7 @@
 		<a class="item" href="mypage.mp">
 		    주문내역
 		  </a>
-		  <a class="item" href="myPageMyMenu.t">
+		  <a class="item" href="myPageMyMenu.mp">
 		    나만의 메뉴
 		  </a>
 		  <a class="item active" href="myPageDelAddr.mp">
@@ -51,8 +51,8 @@
 		 	</tr></thead>
 		  <tbody>
 		    <c:forEach items="${ delList }" var="d">
-		    	<tr class="t">
-		    		<td><input type="checkbox" name="chk" class="b"></td>
+		    	<tr>
+		    		<td><input type="checkbox" name="chk"></td>
 		    		<td>${ d.delName }</td>
 		    		<td>${ d.delAddr }</td>
 		    		<td>${ d.comName }점</td>
@@ -62,9 +62,7 @@
 		</table>
 		
 		<button class="ui yellow button" id="pop">추가</button>
-		<!-- <button class="ui yellow button">수정</button>
-		<button class="ui yellow button">삭제</button> -->
-		<button class="ui yellow basic button">수정</button>
+		<!-- <button class="ui yellow basic button">수정</button> -->
 		<button class="ui yellow basic button">삭제</button>
 
 	</div>
@@ -103,48 +101,21 @@
 			}else{
 				$("input[name=chk]").prop("checked", false);
 			}
-			
-			//$("input[name=chk]").trigger("change");
 		}));
 
 		//전체 체크박스 개수(헤더 제외)
 		var chkCountAll = $("input[name=chk]").length;
 		
 		//사용자가 체크한 체크박스 개수(헤더 제외)
-		var chkCount=0;
-		var chkFlag = false;
-		
-		
-		
-		$("input[name=chk]").change(function(){
+		var chkCount;  
+	
+
+		$("input[name=chk]").click(function(){
+			chkCount = $('input[name=chk]:checked').length;
 			
+			console.log("전체 개수 : " + chkCountAll);
+			console.log("체크한거 개수 : " + chkCount);
 			
-			
-			/* if($("input[name=chk]:checked") && chkFlag == false){
-				chkCount += 1;
-				chkFlag = true;
-			}else if(($("input[name=chk]").prop("checked") == false) && chkFlag == true){
-				chkCount -= 1;
-				chkFlag = false;
-			} */
-			
-			var i=0;
-			//if($("tr:eq(i+1) td:first input:checkbox:checked")){
-			//for(var i=0;i<chkCountAll;i++){
-				//if($("tr>td:eq(i) input:checkbox:checked")){
-				if($(".t:eq(i) td input:checkbox:checked")){
-					chkCount += 1;
-					i++;
-				}else{
-					chkCount -= 1;
-				}
-				
-			//} 
-			
-			
-			
-			console.log("전체 행 수 : " + chkCountAll);
-			console.log("클릭 카운트 : " + chkCount);
 			
 			if(chkCountAll == chkCount){
 				$("#chkTop").prop("checked", true);

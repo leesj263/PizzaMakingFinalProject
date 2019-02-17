@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.kh.pmfp.common.model.vo.PageInfo;
+import com.kh.pmfp.customer.model.vo.MyPizza;
 import com.kh.pmfp.mypage.model.dao.MypageDao;
 import com.kh.pmfp.mypage.model.vo.Coupon;
 import com.kh.pmfp.mypage.model.vo.DelList;
@@ -92,6 +93,13 @@ public class MypageServiceImpl implements MypageService{
 	@Override
 	public int insertUserDelAddr(int memberNo, int finalDeliveryLoc, String addr, String deliName) {
 		int result = md.insertUserDelAddr(sqlSession, memberNo, finalDeliveryLoc, addr, deliName);
+		return result;
+	}
+
+	//내피자
+	@Override
+	public ArrayList<MyPizza> selectMypizzaList(int memberNo) {
+		ArrayList<MyPizza> result = md.selectMypizzaList(sqlSession, memberNo);
 		return result;
 	}
 

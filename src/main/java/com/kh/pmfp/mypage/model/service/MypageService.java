@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.kh.pmfp.common.model.vo.PageInfo;
+import com.kh.pmfp.customer.model.vo.MyPizza;
 import com.kh.pmfp.mypage.model.vo.Coupon;
 import com.kh.pmfp.mypage.model.vo.DelList;
 import com.kh.pmfp.mypage.model.vo.Location;
@@ -41,5 +42,8 @@ public interface MypageService {
 
 	//배송지 추가
 	int insertUserDelAddr(int memberNo, int finalDeliveryLoc, String addr, String deliName);
+
+	//내피자
+	ArrayList<MyPizza> selectMypizzaList(int memberNo);
 
 }

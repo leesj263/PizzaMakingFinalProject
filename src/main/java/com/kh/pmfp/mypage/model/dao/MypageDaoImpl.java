@@ -8,6 +8,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.kh.pmfp.common.model.vo.PageInfo;
+import com.kh.pmfp.customer.model.vo.MyPizza;
 import com.kh.pmfp.mypage.model.vo.Coupon;
 import com.kh.pmfp.mypage.model.vo.DelList;
 import com.kh.pmfp.mypage.model.vo.Location;
@@ -161,6 +162,18 @@ public class MypageDaoImpl implements MypageDao{
 		DelList del = new DelList(memberNo, finalDeliveryLoc, addr, deliName);
 
 		return sqlSession.insert("Mypage.insertUserDelAddr", del);
+	}
+
+	//내피자
+	@Override
+	public ArrayList<MyPizza> selectMypizzaList(SqlSessionTemplate sqlSession, int memberNo) {
+		System.out.println("memberNo : " + memberNo);
+		
+		ArrayList<MyPizza> list = (ArrayList)sqlSession.selectList("Mypage.selectMypizza", memberNo);
+		
+		System.out.println("내 피자 dao : " + list);
+		
+		return list;
 	}
 
 	

@@ -60,6 +60,13 @@
 		<result property="lat" column="LAT"/>
 		<result property="lon" column="LON"/>
 	</resultMap>
+	
+	<resultMap type="com.kh.pmfp.mypage.model.vo.Mypizza" id="mypageMypizzaResultSet">
+		<id property="mypizzaNo" column="MYPIZZA_NO"/>
+		<result property="mypizzaName" column="MYPIZZA_NAME"/>
+		<result property="imgChangeName" column="IMG_CHANGENAME"/>
+		<result property="imgFilepath" column="IMG_FILEPATH"/>
+	</resultMap>
 
 
 
@@ -146,6 +153,23 @@
 	<insert id="insertUserDelAddr" parameterType="DelList">
 		INSERT INTO DELIVERY VALUES(SEQ_DNO.NEXTVAL, #{memberNo}, #{comNo},#{delAddr},#{delName})
 	</insert>
+	
+	<select id="selectMypizza" resultMap="mypageMypizzaResultSet" parameterType="_int">
+		select mp.mypizza_no, mp.mypizza_name, img.img_filepath, img.img_changename, img.img_categ
+		from my_pizza mp 
+		join image img 
+		on img.mypizza_no = mp.mypizza_no
+		where mp.member_no=#{memberNo} and img.img_categ=3 and img.img_status='Y'
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 </mapper>

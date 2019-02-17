@@ -22,7 +22,7 @@
 		<a class="item" href="mypage.mp">
 		    주문내역
 		  </a>
-		  <a class="item" href="myPageMyMenu.t">
+		  <a class="item" href="myPageMyMenu.mp">
 		    나만의 메뉴
 		  </a>
 		  <a class="item" href="myPageDelAddr.mp">
