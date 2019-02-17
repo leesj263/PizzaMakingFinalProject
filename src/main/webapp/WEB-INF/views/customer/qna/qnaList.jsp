@@ -38,6 +38,8 @@
 		 		<tbody align="center"> 				
 			<c:forEach var="qna" items="${ qnaList }">
 				<tr>
+				<td><input type="hidden" name="boardNo" value="${qna.boardNo }"></td>
+								<th scope="row">${qnaboard.bo }</th>
 					<td>${ qna.bid }</td>
 					<td>${ qna.bTitle }</td>
 					<td>${ qna.userName }</td>
@@ -75,7 +77,7 @@
       <a class="dropdown-item" href="#">제목+내용</a>    
     </div>
     &nbsp;
-   <div class="col-md-1"><button class="btn btn-outline-warning" onclick="location.href='noticeWriteView.ad'">글 작성</button></div>
+   <div class="col-md-1"><button class="btn btn-outline-warning" onclick="location.href='writeQna.bo'">글 작성</button></div>
     
   </div>
   
