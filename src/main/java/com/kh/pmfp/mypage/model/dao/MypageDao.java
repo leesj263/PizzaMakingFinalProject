@@ -6,6 +6,7 @@ import java.util.HashMap;
 import org.mybatis.spring.SqlSessionTemplate;
 
 import com.kh.pmfp.common.model.vo.PageInfo;
+import com.kh.pmfp.customer.model.vo.MyPizza;
 import com.kh.pmfp.mypage.model.vo.Coupon;
 import com.kh.pmfp.mypage.model.vo.DelList;
 import com.kh.pmfp.mypage.model.vo.Location;
@@ -44,6 +45,9 @@ public interface MypageDao {
 	//배송지 추가
 	int insertUserDelAddr(SqlSessionTemplate sqlSession, int memberNo, int finalDeliveryLoc, String addr,
 			String deliName);
+
+	//내피자
+	ArrayList<MyPizza> selectMypizzaList(SqlSessionTemplate sqlSession, int memberNo);
 
 
 

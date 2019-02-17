@@ -27,6 +27,7 @@ import com.kh.pmfp.common.model.vo.Distance;
 import com.kh.pmfp.common.model.vo.Member;
 import com.kh.pmfp.common.model.vo.PageInfo;
 import com.kh.pmfp.common.model.vo.Pagination;
+import com.kh.pmfp.customer.model.vo.MyPizza;
 import com.kh.pmfp.mypage.model.service.MypageService;
 import com.kh.pmfp.mypage.model.vo.Coupon;
 import com.kh.pmfp.mypage.model.vo.DelList;
@@ -286,7 +287,19 @@ public class MypageController {
 		return "mypage/qnaList";
 	}
 	
-	
+	//내피자
+	@RequestMapping(value="myPageMyMenu.mp")
+	public String myPizzaList(HttpServletRequest request, Model model) {
+		HttpSession session = request.getSession();
+		Member loginUser = (Member)session.getAttribute("loginUser");
+		int memberNo = loginUser.getMemberNo();
+		
+		ArrayList<MyPizza> myPizzaList = mps.selectMypizzaList(memberNo);
+		
+		model.addAttribute("myPizzaList",myPizzaList);
+		
+		return "mypage/myMenu";
+	}
 	
 	
 	
