@@ -28,6 +28,7 @@ import com.kh.pmfp.admin.model.vo.AdminCalculate;
 import com.kh.pmfp.admin.model.vo.AdminCalculateList;
 import com.kh.pmfp.admin.model.vo.AdminMaterial;
 import com.kh.pmfp.admin.model.vo.AdminMember;
+import com.kh.pmfp.admin.model.vo.AdminMenu;
 import com.kh.pmfp.admin.model.vo.AdminOrder;
 import com.kh.pmfp.admin.model.vo.AdminOrderMenu;
 import com.kh.pmfp.admin.model.vo.AdminSeller;
@@ -779,28 +780,64 @@ public class AdminController {
 	//정산 완료 처리용 - 상세보기에서 ajax
 	@RequestMapping(value="updateCalculate.ad", method=RequestMethod.GET)
 	@ResponseBody
-	public String updateCalculate(@ModelAttribute AdminCalculate cal, HttpServletRequest request, RedirectAttributes redirectAttributes) {
-		System.out.println(cal);
-		//int result=as.updateCalculate(cal);
-		return "성공";
-		
+	public int updateCalculate(@ModelAttribute AdminCalculate cal, HttpServletRequest request, RedirectAttributes redirectAttributes) throws AdminUpdateException, AdminCountException {
+		System.out.println("정산할 내역 : "+cal);
+		int result=as.updateCalculate(cal);
+		return result;
 	}
 	
 	//정산 완료 처리용 - 정산목록에서 버튼 > ajax
 	@RequestMapping(value="updateCalculateList.ad", method=RequestMethod.GET)
 	@ResponseBody
-	public String updateCalculateList(@ModelAttribute AdminCalculate cal, HttpServletRequest request) {
-		System.out.println(cal);
-		return "성공";
-		
+	public int updateCalculateList(@ModelAttribute AdminCalculate cal, HttpServletRequest request) throws AdminUpdateException, AdminCountException {
+		System.out.println("정산할 내역 : "+cal);
+		int result=as.updateCalculate(cal);
+		return result;	
 	}
 	
 	//정산 완료 처리용 - 정산목록에서 체크박스 ajax
 	@RequestMapping(value="updateSelectCalList.ad", method=RequestMethod.GET)
 	@ResponseBody
-	public String updateSelectCalList(@RequestParam(value="orderExpNo") String orderExpNo, @RequestParam(value="comNo") String comNo, HttpServletRequest request) {
+	public int updateSelectCalList(@RequestParam(value="orderExpNo") String orderExpNo, @RequestParam(value="comNo") String comNo, HttpServletRequest request) throws AdminUpdateException, AdminCountException {
 		System.out.println(orderExpNo);
 		System.out.println(comNo);
-		return "성공";
+		String[] orderExpNoArr=orderExpNo.split(",");
+		String[] comNoArr=comNo.split(",");
+		ArrayList<AdminCalculate> calList=new ArrayList<AdminCalculate>();
+		for(int i=0;i<comNoArr.length;i++) {
+			AdminCalculate cal=new AdminCalculate();
+			cal.setComNo(Integer.parseInt(comNoArr[i]));
+			cal.setOrderExpNo(Integer.parseInt(orderExpNoArr[i]));
+			calList.add(cal);
+		}
+		int result=0;
+		for(int i=0;i<calList.size();i++) {
+			result+=as.updateCalculate(calList.get(i));
+		}
+		if(result==calList.size()) {
+			return 1;
+		}else {
+			return -1;
+		}
+	}
+	
+	@RequestMapping("menuList.ad")
+	public String selectMenuList(@RequestParam(value="currentPage", required=false, defaultValue="1")int currentPage, HttpServletRequest request) {
+		ArrayList<AdminMenu> menuList=new ArrayList<AdminMenu>();
+		
+		try {
+			int listCount=as.selectMenuCount();
+			PageInfo pi=Pagination.getPageInfo(currentPage, listCount);
+			menuList=as.selectMenuList(pi);
+			request.setAttribute("menuList", menuList);
+			request.setAttribute("pi", pi);
+			return "admin/sales/menu/menuList";
+		} catch (AdminCountException e) {
+			request.setAttribute("msg", e.getMessage());
+			return "common/errorPage";
+		} catch (AdminSelectException e) {
+			request.setAttribute("msg", e.getMessage());
+			return "common/errorPage";
+		}
 	}
 }

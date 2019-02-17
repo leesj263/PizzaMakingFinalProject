@@ -206,6 +206,14 @@
 		<result property="rn" column="ROWNUM" />
 	</resultMap>
 	
+	<resultMap type="com.kh.pmfp.admin.model.vo.AdminMenu" id="adminBasicResultSet">
+		<id property="basicNo" column="BASIC_NO"/>
+		<result property="basicSize" column="BASIC_SIZE"/>
+		<result property="basicMenu" column="BASIC_MENU" />
+		<result property="menuDetail" column="MENUDETAIL" />
+		<result property="rn" column="ROWNUM" />
+	</resultMap>
+	
 	<select id="selectUserCount" resultType="_int" parameterType="AdminMember">
 		SELECT COUNT(*) 
 		FROM MEMBER M 
@@ -609,7 +617,27 @@
 		ORDER BY ROWNUM
 	</select>
 	
+	<select id="selectUpdateCalCount" resultType="_int" parameterType="AdminCalculate">
+		SELECT COUNT(*) FROM ORDER_MATERIAL 
+		WHERE COM_NO=#{comNo} AND ORDEREXPENSE_NO=#{orderExpNo}
+	</select>
+	
 	<update id="updateCalculate" parameterType="AdminCalculate">
 		UPDATE ORDER_MATERIAL SET ORDER_CALCULATE='Y' WHERE COM_NO=#{comNo} AND ORDEREXPENSE_NO=#{orderExpNo}
 	</update>
+	
+	<select id="selectMenuCount" resultType="_int">
+		SELECT COUNT(*) FROM BASIC_MENU
+	</select>
+	
+	<select id="selectMenuList" resultMap="adminBasicResultSet">
+		SELECT ROWNUM, MENU.* 
+		FROM 
+			(SELECT BM.BASIC_NO, BM.BASIC_SIZE, BM.BASIC_MENU, 
+			LISTAGG(CAST(M.MATERIAL_NAME||M.MATERIAL_SIZE||'／'||BT.BASIC_TCOUNT AS VARCHAR(300)) , ', ') WITHIN GROUP (ORDER BY M.MATERIAL_NAME) MENUDETAIL 
+			FROM BASIC_MENU BM 
+			JOIN BASIC_TOPPING BT ON (BM.BASIC_NO=BT.BASIC_NO) 
+			JOIN MATERIAL M ON (M.MATERIAL_NO=BT.MATERIAL_NO)
+			GROUP BY BM.BASIC_NO, BM.BASIC_SIZE, BM.BASIC_MENU) MENU
+	</select>
 </mapper>

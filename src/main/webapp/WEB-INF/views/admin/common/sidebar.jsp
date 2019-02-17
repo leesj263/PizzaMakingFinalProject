@@ -62,7 +62,7 @@
 					<ul class="sub-menu children dropdown-menu">
 						<li><i class="fa fa-table"></i><a href="sellerList.ad">Seller List</a></li>
 						<li><i class="fa fa-spinner"></i><a href="waitSeller.ad">Wait Seller List</a></li>
-						<li><i class="ti-shopping-cart"></i><a href="sellerOrder.ad">Seller Order</a></li>
+						<li><i class="ti-shopping-cart-full"></i><a href="sellerOrder.ad">Seller Order</a></li>
 						<!-- 
 						<li><i class="fa fa-spinner"></i><a href="#">Wait Seller List</a></li> 
 						-->
@@ -84,8 +84,8 @@
 						<i class="menu-icon fa fa-tasks"></i>Sales
 					</a>
 					<ul class="sub-menu children dropdown-menu">
-						<li><i class="menu-icon fa fa-line-chart"></i><a href="orderList.ad">Order List</a></li>
-						<li><i class="menu-icon fa fa-line-chart"></i><a href="calculateList.ad">Calculate List</a></li>
+						<li><i class="menu-icon ti-credit-card"></i><a href="orderList.ad">Order List</a></li>
+						<li><i class="menu-icon ti-receipt"></i><a href="calculateList.ad">Calculate List</a></li>
 					</ul>
 				</li>
 				
@@ -103,10 +103,10 @@
 				
 				<li class="menu-item-has-children dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> 
-					<i class="menu-icon fa fa-area-chart"></i>Menu</a>
+					<i class="menu-icon ti-heart"></i>Menu</a>
 					<ul class="sub-menu children dropdown-menu">
-						<li><i class="menu-icon fa fa-map-o"></i><a href="toppingList.ad">Topping List</a></li>
-						<!-- <li><i class="menu-icon fa fa-street-view"></i><a href="admin.ad?admin=sales/menu/addTopping">Add Topping</a></li> -->
+						<li><i class="menu-icon ti-harddrives"></i><a href="toppingList.ad">Topping List</a></li>
+						<li><i class="menu-icon ti-menu"></i><a href="menuList.ad">Menu List</a></li>
 					</ul>
 				</li>
 				

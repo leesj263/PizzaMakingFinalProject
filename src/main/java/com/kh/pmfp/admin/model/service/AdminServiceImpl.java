@@ -17,6 +17,7 @@ import com.kh.pmfp.admin.model.vo.AdminCalculate;
 import com.kh.pmfp.admin.model.vo.AdminCalculateList;
 import com.kh.pmfp.admin.model.vo.AdminMaterial;
 import com.kh.pmfp.admin.model.vo.AdminMember;
+import com.kh.pmfp.admin.model.vo.AdminMenu;
 import com.kh.pmfp.admin.model.vo.AdminOrder;
 import com.kh.pmfp.admin.model.vo.AdminOrderMenu;
 import com.kh.pmfp.admin.model.vo.AdminSeller;
@@ -451,10 +452,32 @@ public class AdminServiceImpl implements AdminService {
 		return calList;
 	}
 
+	//정산 완료 처리용 - 상세보기에서 ajax
 	@Override
-	public int updateCalculate(AdminCalculate cal) throws AdminSelectException {
-		// TODO Auto-generated method stub
-		return 0;
+	public int updateCalculate(AdminCalculate cal) throws AdminUpdateException, AdminCountException {
+		int listCount=ad.selectUpdateCalCount(sqlSession, cal);
+		int result=ad.updateCalculate(sqlSession, cal);
+		if(listCount==result) {
+			result=1;
+		}else {
+			result=-1;
+		}
+		return result;
+	}
+
+	//기본 메뉴 개수 조회용
+	@Override
+	public int selectMenuCount() throws AdminCountException {
+		int result=ad.selectMenuCount(sqlSession);
+		return result;
+	}
+
+	//기본 메뉴 목록 조회용
+	@Override
+	public ArrayList<AdminMenu> selectMenuList(PageInfo pi) throws AdminSelectException {
+		ArrayList<AdminMenu> menuList=new ArrayList<AdminMenu>();
+		menuList=ad.selectMenuList(sqlSession, pi);
+		return menuList;
 	}
 
 	
