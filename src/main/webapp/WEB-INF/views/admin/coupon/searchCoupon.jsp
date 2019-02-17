@@ -110,34 +110,87 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr>
-								<th scope="row">1</th>
-								<td>CP00001</td>
-								<td>회원가입 쿠폰</td>
-								<td>30% 할인</td>
-								<td>20190115</td>
-								<td>20190222</td>
+						<c:forEach var="cList" items="${searchCouponList}" varStatus="varStatus">
+							<tr class="listAreaTr">
+								<th scope="row">${varStatus.count }</th>
+								<td>${cList.couponNo }</td>
+								<td>${cList.couponName }</td>
+								<c:if test="${cList.couponCateg ==0}">								
+								<td>${cList.couponRdiscount *100}%</td>
+								</c:if>
+								<c:if test="${cList.couponCateg ==1}">								
+								<td>${cList.couponPdiscount }원</td>
+								</c:if>
+								<td>${cList.couponCdate }</td>
+								<td>${cList.couponEdate }</td>
 							</tr>
-							<tr>
-								<th scope="row">2</th>
-								<td>CP00002</td>
-								<td>50% 쿠폰</td>
-								<td>50% 할인</td>
-								<td>20190111</td>
-								<td>20190655</td>
-							</tr>
-							<tr>
-								<th scope="row">3</th>
-								<td>CP00011</td>
-								<td>이벤트 쿠폰</td>
-								<td>10% 할인</td>
-								<td>20190215</td>
-								<td>20190523</td>
-							</tr>
+						</c:forEach>
 						</tbody>
 					</table>
+					<div align="center">
+						<div class="dataTables_paginate paging_simple_numbers col-md-1"
+							id="bootstrap-data-table_paginate">
+							<ul class="pagination">
+								<c:if test="${pi.currentPage >1}">
+									<c:url var="btnList" value="${ addr }">
+										<c:param name="currentPage" value="${pi.currentPage-1}" />
+									</c:url>
+									<li class="paginate_button page-item previous"
+										id="bootstrap-data-table_previous"><a href="${btnList }"
+										aria-controls="bootstrap-data-table" data-dt-idx="0"
+										tabindex="0" class="page-link"><i class="ti-angle-left"></i></a>
+									</li>
+								</c:if>
+								<c:if test="${pi.currentPage==1 }">
+									<li class="paginate_button page-item previous disabled"
+										id="bootstrap-data-table_previous"><a href="#"
+										aria-controls="bootstrap-data-table" data-dt-idx="0"
+										tabindex="0" class="page-link"><i class="ti-angle-left"></i></a>
+									</li>
+								</c:if>
+								<c:forEach var="p" begin="${ pi.startPage }"
+									end="${ pi.endPage }">
+									<c:if test="${ p eq pi.currentPage }">
+										<li class="paginate_button page-item active disabled"><a
+											href="#" aria-controls="bootstrap-data-table"
+											data-dt-idx="${p }" tabindex="0" class="page-link">${p }</a>
+										</li>
+									</c:if>
+
+									<c:if test="${ p ne pi.currentPage }">
+										<c:url var="btnList" value="${ addr }">
+											<c:param name="currentPage" value="${ p }" />
+										</c:url>
+										<li class="paginate_button page-item"><a
+											href="${btnList }" aria-controls="bootstrap-data-table"
+											data-dt-idx="${p }" tabindex="0" class="page-link">${p }</a>
+										</li>
+									</c:if>
+								</c:forEach>
+								<c:if test="${pi.currentPage <pi.maxPage}">
+									<c:url var="btnList" value="${ addr }">
+										<c:param name="currentPage" value="${pi.currentPage+1}" />
+									</c:url>
+									<li class="paginate_button page-item next"
+										id="bootstrap-data-table_next"><a href="${btnList }"
+										aria-controls="bootstrap-data-table" data-dt-idx="7"
+										tabindex="0" class="page-link"><i class="ti-angle-right"></i></a>
+									</li>
+								</c:if>
+								<c:if test="${pi.currentPage>=pi.maxPage }">
+									<li class="paginate_button page-item next disabled"
+										id="bootstrap-data-table_next"><a href="#"
+										aria-controls="bootstrap-data-table" data-dt-idx="7"
+										tabindex="0" class="page-link"><i class="ti-angle-right"></i></a>
+									</li>
+								</c:if>
+							</ul>
+						</div>
+					</div>
+
 					<div class="tableBtnDiv">
-						<button type="button" class="btn btn-outline-secondary btn-sm" onclick="location.href='admin.ad?admin=coupon/lssuingCoupon'">
+						<!-- <button type="button" class="btn btn-outline-secondary btn-sm" onclick="location.href='admin.ad?admin=coupon/lssuingCoupon'" id=""> -->
+						<button type="button" class="btn btn-outline-secondary btn-sm"  id="couponLissuingBtn">
 							<i class="fa fa-lightbulb-o"></i>&nbsp; 발급
 						</button>
 						&nbsp;&nbsp;
@@ -153,5 +206,24 @@
 
 	</div>
 </section>
+
+<script>
+
+	var couponNo=0;
+		$(".listAreaTr").mouseenter(function(){
+			$(this).children().css({"color" : "#9d9d9d","cursor" : "pointer"});
+		}).mouseout(function(){
+			$(this).children().css({"color" : "#212529"});
+		}).click(function(){
+			couponNo=$(this).children().eq(1).text();
+		});
+		
+		$("#couponLissuingBtn").click(function(){
+			console.log(couponNo);
+			location.href='admin.ad?admin=coupon/lssuingCoupon&couponNo='+couponNo;
+		});
+
+
+</script>
 <jsp:include page="../common/footer.jsp" />
 
