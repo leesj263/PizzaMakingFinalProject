@@ -66,13 +66,45 @@
 				<br>
 				<div align="center">
 					
-					<button class="ui yellow button">등록하기</button>
+					<button class="ui yellow button"type="submit" onclick="qnaWrite();">등록하기</button>
 					<button class="ui grey button">취소하기</button>
 				</div>
 			</form>
 		</div>
 		
 	</div>
+	<script>
+		function showCategory(obj) {
+			var category1 = [ "결제", "주문", "공유 / 후기 / 질문답변", "이벤트" ];
+			var cateVal=[1, 2, 3, 4];
+			
+			var $target = $("select[name='boardCate']");
+			var data;
+	
+			if (obj == 4) {
+				data = category1;
+			} 
+	
+			$target.empty();
+			for (x in data) {
+				for(y in cateVal){
+					if(x==y){
+					var option = "<option value='"+cateVal[y]+"'>" + data[x] + "</option>";
+					$target.append(option);
+					}
+				}
+			}
+			$target.css("display", "");
+		}
+		function qnaWrite(){
+			var boardTitle=$("#boardTitle").val();
+			var boardContent=$("#boardContent").val();
+			var boardType=$("select[name='boardType']").val();
+			var boardCate=$("select[name='boardCate']").val();
+			//var nFile=$("#nFile").val();
+			console.log(boardTitle+boardContent+boardType+boardCate);
+		}
+	</script>
 	
 
 </body>
