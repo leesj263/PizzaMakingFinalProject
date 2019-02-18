@@ -37,16 +37,23 @@ import com.kh.pmfp.company.model.vo.CompanySalesList;
 public class CompanyDaoImpl implements CompanyDao{
 
 	@Override
-	public ArrayList<CompanyBoard> selectAdminMessage(SqlSessionTemplate sqlSession) throws FailSelectAdminMessage {
+	public HashMap<String, ArrayList> selectAdminMessage(SqlSessionTemplate sqlSession, int memberNo) throws FailSelectAdminMessage {
 		// TODO Auto-generated method stub
+		HashMap<String, ArrayList> hmap = new HashMap<String, ArrayList>();
+		
 		ArrayList<CompanyBoard> adminMessage = new ArrayList<CompanyBoard>();
 		adminMessage = (ArrayList)sqlSession.selectList("Company.selectAdminMessage");
+		ArrayList<CompanyCalendar> memberCalendar = new ArrayList<CompanyCalendar>();
+		memberCalendar = (ArrayList)sqlSession.selectList("Company.selectMemberCalendar", memberNo);
 		
-		if(adminMessage == null) {
+		hmap.put("adminMessage", adminMessage);
+		hmap.put("memberCalendar", memberCalendar);
+		
+		if(adminMessage == null || memberCalendar == null) {
 			throw new FailSelectAdminMessage("관리자 메세지 조회 실패!");
 		}
 		
-		return adminMessage;
+		return hmap;
 	}
 
 	@Override
@@ -446,6 +453,18 @@ public class CompanyDaoImpl implements CompanyDao{
 	}
 
 	@Override
+	public int reflectModify(SqlSessionTemplate sqlSession, CompanyCalendar cc) throws FailChangeCalendarDate {
+		// TODO Auto-generated method stub
+		int result =  sqlSession.update("Company.reflectModify", cc);
+		
+		if(result <=0) {
+			throw new  FailChangeCalendarDate("달력 값 변경 실패!");
+		}
+		
+		return result;
+	}
+
+/*	@Override
 	public ArrayList<CompanyCalendar> selectMemberCalendar(SqlSessionTemplate sqlSession, int memberNo) throws FailSelectCalendar {
 		// TODO Auto-generated method stub
 		ArrayList<CompanyCalendar> list = new ArrayList<CompanyCalendar>();
@@ -458,6 +477,6 @@ public class CompanyDaoImpl implements CompanyDao{
 		return list;
 	}
 	
-	
+	*/
 
 }

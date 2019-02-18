@@ -58,7 +58,7 @@
 										<c:forEach items="${list}" var="value">
 											<tr class="adminMessageTr" style="cursor: pointer;" orderMNo = "${value.orderMNo}">
 												<th scope="row"><c:if
-														test="${ value.orderMStatus == 1}">
+														test="${ value.orderMStatus == 1 ||  value.orderMStatus == 2 }">
 														<input type="checkbox" name="orderMaterialListcheck"
 															style="width: 20px; height: 20px" >
 													</c:if></th>
@@ -70,6 +70,9 @@
 													<td>미수령</td>
 												</c:if>
 												<c:if test="${ value.orderMStatus == 2}">
+													<td>배달완료</td>
+												</c:if>
+												<c:if test="${ value.orderMStatus == 3}">
 													<td>수령완료</td>
 												</c:if>
 

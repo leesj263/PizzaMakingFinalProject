@@ -102,10 +102,12 @@ public class CompanyController {
 		return "customer/review/" + movePage;
 	}
 
+	
+/*	
 	@RequestMapping(value = "goMain.com", method = RequestMethod.GET)
 	public String goCompanyMain(HttpServletRequest request, HttpServletResponse response) {
 		ArrayList<CompanyBoard> adminMessage = new ArrayList<CompanyBoard>();
-
+		HashMap<String, ArrayList> hmap = new HashMap<String, ArrayList>();
 		try {
 			adminMessage = cs.selectAdminMessage();
 			// System.out.println("adminMessage : " + adminMessage);
@@ -117,7 +119,57 @@ public class CompanyController {
 			return "common/errorPage";
 		}
 
+	}*/
+	
+	
+	@RequestMapping(value = "goMain.com", method = RequestMethod.GET)
+	public String goCompanyMain(HttpServletRequest request, HttpServletResponse response) {
+		HashMap<String, ArrayList> hmap = new HashMap<String, ArrayList>();
+		try {
+			int memberNo = 100;
+			hmap = cs.selectAdminMessage(memberNo);
+			ArrayList<CompanyBoard> adminMessage = hmap.get("adminMessage");
+			ArrayList<CompanyCalendar> memberCalendar = hmap.get("memberCalendar");
+			// System.out.println("adminMessage : " + adminMessage);
+			request.setAttribute("adminMessage", adminMessage);
+			request.setAttribute("memberCalendar", memberCalendar);
+			System.out.println("adminMessage : " + adminMessage);
+			System.out.println("memberCalendar : " + memberCalendar);
+			return "company/companyMain";
+			// return "redirect:RedirectGoMain.com";
+		} catch (FailSelectAdminMessage e) {
+			request.setAttribute("msg", e.getMessage());
+			return "common/errorPage";
+		}
+		
 	}
+	
+	
+	/*//여기 부분 goMain.com부분과 합치는것으로 테스트해보기
+		@RequestMapping("selectMemberCalendar.com")
+		public String selectMemberCalendar(String memberNo, HttpServletRequest request, HttpServletResponse response) {
+			ArrayList<CompanyCalendar> calendarList = new ArrayList<CompanyCalendar>();
+			//임의로 회원번호 삽입
+			int selectMemberNo = Integer.parseInt(memberNo);
+			try {
+				calendarList = cs.selectMemberCalendar(selectMemberNo);
+				System.out.println("calendarList : " + calendarList);
+				request.setAttribute("calendarList", calendarList);
+				
+				return "redirect:goMain.com";
+			} catch (FailSelectCalendar e) {
+				// TODO Auto-generated catch block
+				request.setAttribute("msg", e.getMessage());
+				return "common/errorPage";
+			}
+			
+			
+		}*/
+	
+	
+	
+	
+	
 
 	@RequestMapping("detailAdminMessage.com")
 	public String detailAdminMessage(int boardNo, HttpServletRequest request, HttpServletResponse response) {
@@ -718,26 +770,30 @@ public class CompanyController {
 		
 	}
 	
-	//여기 부분 goMain.com부분과 합치는것으로 테스트해보기
-	@RequestMapping("selectMemberCalendar.com")
-	public String selectMemberCalendar(String memberNo, HttpServletRequest request, HttpServletResponse response) {
-		ArrayList<CompanyCalendar> calendarList = new ArrayList<CompanyCalendar>();
-		//임의로 회원번호 삽입
-		int selectMemberNo = Integer.parseInt(memberNo);
+	
+	@RequestMapping("reflectModify.com")
+	public void reflectModify(HttpServletRequest request, HttpServletResponse response, String date, String calendarNo, String content) {
+		System.out.println("date : " + date);
+		System.out.println("calendarNo : " + calendarNo);
+		System.out.println("content : " + content);
+		
+		
+		CompanyCalendar cc = new CompanyCalendar();
+		cc.setCalendarNo(Integer.parseInt(calendarNo));
+		cc.setCalendarContent(content);
+		cc.setCalendarDate(java.sql.Date.valueOf(date));
+
+		
 		try {
-			calendarList = cs.selectMemberCalendar(selectMemberNo);
-			System.out.println("calendarList : " + calendarList);
-			request.setAttribute("calendarList", calendarList);
-			
-			return "redirect:goMain.com";
-		} catch (FailSelectCalendar e) {
+			int result = cs.reflectModify(cc);
+		} catch (FailChangeCalendarDate e) {
 			// TODO Auto-generated catch block
-			request.setAttribute("msg", e.getMessage());
-			return "common/errorPage";
+			e.printStackTrace();
 		}
 		
-		
 	}
+	
+	
 	
 	
 }

@@ -31,7 +31,7 @@ import com.kh.pmfp.company.model.vo.CompanySalesList;
 
 public interface CompanyService {
 
-	ArrayList<CompanyBoard> selectAdminMessage() throws FailSelectAdminMessage;
+	HashMap<String, ArrayList> selectAdminMessage(int memberNo) throws FailSelectAdminMessage;
 
 	CompanyBoard detailAdminMessage(int boardNo) throws FaileDetailMessage;
 
@@ -91,7 +91,9 @@ public interface CompanyService {
 
 	int deleteCalendarData(CompanyCalendar cc) throws FailChangeCalendarDate;
 
-	ArrayList<CompanyCalendar> selectMemberCalendar(int memberNo) throws FailSelectCalendar;
+	int reflectModify(CompanyCalendar cc) throws FailChangeCalendarDate;
+
+	//ArrayList<CompanyCalendar> selectMemberCalendar(int memberNo) throws FailSelectCalendar;
 
 
 

@@ -34,7 +34,7 @@ import com.kh.pmfp.company.model.vo.CompanySalesList;
 
 public interface CompanyDao {
 
-	ArrayList<CompanyBoard> selectAdminMessage(SqlSessionTemplate sqlSession) throws FailSelectAdminMessage;
+	HashMap<String, ArrayList> selectAdminMessage(SqlSessionTemplate sqlSession, int memberNo) throws FailSelectAdminMessage;
 
 	CompanyBoard detailAdminMessage(SqlSessionTemplate sqlSession, int boardNo) throws FaileDetailMessage;
 
@@ -94,6 +94,8 @@ public interface CompanyDao {
 
 	int deleteCalendarData(SqlSessionTemplate sqlSession, CompanyCalendar cc) throws FailChangeCalendarDate;
 
-	ArrayList<CompanyCalendar> selectMemberCalendar(SqlSessionTemplate sqlSession, int memberNo) throws FailSelectCalendar;
+	int reflectModify(SqlSessionTemplate sqlSession, CompanyCalendar cc) throws FailChangeCalendarDate;
+
+	//ArrayList<CompanyCalendar> selectMemberCalendar(SqlSessionTemplate sqlSession, int memberNo) throws FailSelectCalendar;
 
 }
