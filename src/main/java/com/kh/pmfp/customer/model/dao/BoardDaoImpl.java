@@ -32,13 +32,13 @@ public class BoardDaoImpl implements BoardDao {
 	}
 //qna수정
 	@Override
-	public int updateqna(SqlSessionTemplate sqlSession, Board qna) {
+	public int updateqna(SqlSessionTemplate sqlSession, Board qna) throws BoardException {
 		int result =0;
 		result= sqlSession.update("qna.updateqna", qna);
 		if(result<=0) {
-			
+			throw new BoardException("qna 수정실패");
 		}
-		return 0;
+		return result;
 	}
 
 }
