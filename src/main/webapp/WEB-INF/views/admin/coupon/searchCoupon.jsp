@@ -20,6 +20,7 @@
 
 		<!-- -------------------------쿠폰 검색---------------------------------- --->
 
+	<form action="searchTwoCoupon.co">
 		<div class="card-body col-lg-10">
 			<div class="justify-content-md-cente">
 				<h3>쿠폰 검색</h3>
@@ -33,7 +34,7 @@
 						</th>
 						<th scope="col">
 							<div class="col-12 col-md-3">
-								<select name="select" id="select" class="form-control">
+								<select name="searchType" id="select" class="form-control">
 									<option value="0">이름 검색</option>
 									<option value="1">내용 검색</option>
 								</select>
@@ -41,7 +42,7 @@
 
 							<div class="row form-group">
 								<div class="col-12 col-md-10">
-									<input type="text" id="text-input" name="text-input"
+									<input type="text" id="text-input" name="searchContent"
 										placeholder="내용을 입력하세요" class="form-control">
 								</div>
 							</div>
@@ -51,12 +52,12 @@
 			</table>
 
 			<div class="row justify-content-md-center">
-				<button type="button" class="btn btn-outline-secondary btn-lg">
+				<button type="submit" class="btn btn-outline-secondary btn-lg">
 					<i class="fa fa-search"></i>&nbsp;검색
 				</button>
 			</div>
 		</div>
-
+</form>
 
 		<!-- ------------------------------------------------------------ -->
 		<!--    <div class="col-lg-10">

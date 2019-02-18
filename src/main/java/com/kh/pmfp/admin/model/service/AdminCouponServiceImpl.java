@@ -38,6 +38,15 @@ public class AdminCouponServiceImpl implements AdminCouponService{
 		
 		return searchCouponList;
 	}
+
+	//쿠폰 생성하기
+	@Override
+	public int insertCreateCoupon(AdminCoupon couponCreate) {
+		
+		int result = cd.insertCreateCoupon(sqlSession,couponCreate);
+		
+		return result;
+	}
 	
 	
 }

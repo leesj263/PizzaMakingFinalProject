@@ -15,6 +15,9 @@ public interface AdminCouponService {
 	//생성된 쿠폰 목록
 	ArrayList<AdminCoupon> selectSearchCouponList(PageInfo pi) throws AdminSelectException;
 
+	//쿠폰 생성하기
+	int insertCreateCoupon(AdminCoupon couponCreate);
+
 	
 	
 
