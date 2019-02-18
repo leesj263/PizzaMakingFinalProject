@@ -56,16 +56,16 @@
 						<c:forEach items="${orderList }" var="order">
 							<tr>
 								<td><input type="hidden" name="comNo" value="${order.comNo}"></td>
-								<td>${order.orderMDate }</td>
+								<td>${order.orderMDate.toString().substring(0,10) }</td>
 								<td>${order.comName }</td>
 								<td>${order.orderList }</td>
 								<c:choose>
 									<c:when test="${order.orderMStatus ==1}">
-										<td>주문 완료</td>
+										<td><input type="hidden" name="orderMStatus" value="${order.orderMStatus}">주문 완료</td>
 										<th><button class="btn btn-sm btn-outline-warning" type="button" onclick="orderMStatus();">배송완료</button></th>
 									</c:when>
 									<c:when test="${order.orderMStatus ==2}">
-										<td>배송 완료</td>
+										<td><input type="hidden" name="orderMStatus" value="${order.orderMStatus}">배송 완료</td>
 										<th><button class="btn btn-sm btn-outline-warning" disabled type="button"onclick="orderMStatus();">수령 대기중</button></th>
 									</c:when>
 									<c:otherwise>
@@ -141,8 +141,13 @@
 				location.href="sellerOrderDetail.ad?comNo="+comNo+"&orderMDate="+orderMDate;
 				console.log("sellerOrderDetail.ad?comNo="+comNo+"&orderMDate="+orderMDate);
 			});
-
 		});
+		function orderMStatus(){
+			var orderMDate=$("#sellerOrder").find("td").parent().children().eq(1).text();
+			var comNo=$("#sellerOrder").find("td").parent().children().eq(0).children().val();
+			var orderMStatus=$("#sellerOrder").find("td").parent().children().eq(4).children().eq(0).val();
+			location.href="sellerOrderApply.ad?comNo="+comNo+"&orderMDate="+orderMDate+"&orderMStatus="+orderMStatus;
+		}
 	</script>
 	</div>
 </section>

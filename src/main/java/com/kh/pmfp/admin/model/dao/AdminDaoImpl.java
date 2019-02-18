@@ -708,6 +708,52 @@ public class AdminDaoImpl implements AdminDao {
 		return menuList;
 	}
 
+	//기본 메뉴 이미지 조회용
+	@Override
+	public int selectMenuImgCount(SqlSessionTemplate sqlSession, int basicNo) throws AdminCountException {
+		int count=-1;
+		count=sqlSession.selectOne("Admin.selectMenuImgCount", basicNo);
+		if(count<0) {
+			throw new AdminCountException("기본메뉴 이미지 카운트 실패");
+		}
+		return count;
+	}
+
+	//기본 메뉴 조회용
+	@Override
+	public AdminMenu selectMenu(SqlSessionTemplate sqlSession, int basicNo) throws AdminSelectException {
+		AdminMenu menu=new AdminMenu();
+		menu=sqlSession.selectOne("Admin.selectMenu", basicNo);
+		if(menu==null) {
+			throw new AdminSelectException("기본 메뉴 상세조회 실패");
+		}
+		return menu;
+	}
+
+	//기본 메뉴 조회용
+	@Override
+	public AdminMenu selectMenuImg(SqlSessionTemplate sqlSession, int basicNo) throws AdminSelectException {
+		AdminMenu menu=new AdminMenu();
+		menu=sqlSession.selectOne("Admin.selectMenuImg", basicNo);
+		if(menu==null) {
+			throw new AdminSelectException("기본 메뉴 상세조회 실패");
+		}
+		return menu;
+	}
+
+	//기본 메뉴 상세 조회용
+	@Override
+	public ArrayList<AdminMenu> selectMenuDetail(SqlSessionTemplate sqlSession, int basicNo)
+			throws AdminSelectException {
+		ArrayList<AdminMenu> menuDetail=new ArrayList<AdminMenu>();
+		menuDetail=(ArrayList)sqlSession.selectList("Admin.selectMenuDetail", basicNo);
+		if(menuDetail==null) {
+			throw new AdminSelectException("기본 메뉴 토핑 조회 실패");
+		}
+		return menuDetail;
+	}
+
+	
 	
 	
 

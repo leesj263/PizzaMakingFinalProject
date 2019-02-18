@@ -29,18 +29,16 @@
 							<th scope="col">이름</th>
 							<th scope="col">도매가</th>
 							<th scope="col">판매가</th>
-							<th scope="col">상태</th>
-							<th scope="col"></th>
+							<th></th>
 						</tr>
 					</thead>
 					<tbody>
 						<c:forEach items="${menuList }" var="menu">
 							<tr>
-								<td>${menu.basicNo }</td>
-								<td>${menu.basicMenu} ${menu.basicSize }</td>
-								<td></td>
-								<td></td>
-								<td></td>
+								<td>${menu.bNo }</td>
+								<td>${menu.bMenu} ${menu.bSize }</td>
+								<td>${menu.bBuyPrice }</td>
+								<td>${menu.bSellPrice }</td>
 								<th>
 									<button class="btn btn-sm btn-outline-warning" onclick="modMenu()">수정</button>
 								</th>
@@ -112,13 +110,13 @@
 			}).click(function(){
 				var num=$(this).parent().children().eq(0).text();
 				console.log(num);
-				location.href="menuDetail.ad?materialNo="+num;
+				location.href="menuDetail.ad?basicNo="+num;
 			});
 		});
 		function modMenu(){
 			var num=$("#menuList").find("td").parent().children().eq(0).text();
 			console.log(num);
-			location.href="menuModifyView.ad?materialNo="+num;
+			location.href="menuModifyView.ad?basicNo="+num;
 		}
 		
 	</script>

@@ -7,7 +7,15 @@
 		<p>statistics.jsp</p>
 		<div class="card">
 			<div class="card-body">
-				<h4 class="mb-3">Bar chart</h4>
+				<div class="row">
+					<div class="col-md-8"></div>
+					<div class="col-md-4">
+						<button class="btn btn-sm btn-warning" disable>전체매출</button>
+						<button class="btn btn-sm btn-outline-primary">업체매출</button>
+						<button class="btn btn-sm btn-outline-danger">토핑매출</button>
+					</div>
+				</div>
+				<h4 class="mb-3">전체 매출</h4>
 				<canvas id="barChart"></canvas>
 				<script>
 					(function($) {
@@ -17,21 +25,21 @@
 					    var myChart = new Chart( ctx, {
 					        type: 'bar',
 					        data: {
-					            labels: [ "January", "February", "March", "April", "May", "June", "July" ],
+					            labels: [ "January", "February", "March", "April", "May", "June", "July", "August", "September" ],
 					            datasets: [
 					                {
-					                    label: "My First dataset",
+					                    label: "고객 주문 매출",
 					                    data: [ 65, 59, 99, 81, 56, 55, 99 ],
 					                    borderColor: "rgba(0, 123, 255, 0.9)",
 					                    borderWidth: "0",
 					                    backgroundColor: "rgba(0, 123, 255, 0.5)"
 					                            },
 					                {
-					                    label: "My Second dataset",
-					                    data: [ 28, 48, 40, 19, 86, 27, 10 ],
-					                    borderColor: "rgba(0,0,0,0.09)",
+					                    label: "업체 주문 매출",
+					                    data: [ 28, 48, 40, 19, 86, 27, 10, 50, 61, 30 ],
+					                    borderColor: "rgb(150,107,255)",
 					                    borderWidth: "0",
-					                    backgroundColor: "rgba(0,0,0,0.07)"
+					                    backgroundColor: "rgb(208,189,255)"
 					                            }
 					                        ]
 					        },
