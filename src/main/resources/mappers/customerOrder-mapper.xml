@@ -50,6 +50,28 @@
 		<result property="orderTcount" column="ORDER_TCOUNT" />
 	</resultMap>
 	
+	<resultMap type="com.kh.pmfp.customer.model.vo.DeliveryCompany"
+		id="deliveryCompanyResultSet">
+		<id property="deliveryNo" column="DELIVERY_NO" />
+		<result property="memberNo" column="MEMBER_NO" />
+		<result property="comNo" column="COM_NO" />
+		<result property="deliveryAddress" column="DELIVERY_ADDRESS" />
+		<result property="deliveryName" column="DELIVERY_NAME" />
+		<result property="deliveryStatus" column="DELIVERY_STATUS" />
+		<result property="comName" column="COM_NAME" />
+		<result property="comAddress" column="COM_ADDRESS" />
+		<result property="comTel" column="COM_TEL" />
+		<result property="comLisenseno" column="COM_LISENSENO" />
+		<result property="comStatus" column="COM_STATUS" />
+		<result property="comDate" column="COM_DATE" />
+		<result property="comSalestime" column="COM_SALESTIME" />
+		<result property="comLocation" column="COM_LOCATION" />
+		<result property="comParking" column="COM_PARKING" />
+		<result property="comConfirm" column="COM_CONFIRM" />
+		<result property="lat" column="LAT" />
+		<result property="lon" column="LON" />
+	</resultMap>
+	
 	<!-- 재료 전체 리스트 가져오기 -->
 	<select id="selectMateList" resultMap="materialResultSet">
 		SELECT *
@@ -117,6 +139,15 @@
 		AND M.MATERIAL_CATEG = 5
 	</select>
 	
+	<select id="selectDeliveryCompanyList" resultMap="deliveryCompanyResultSet" parameterType="_int">
+		SELECT DE.DELIVERY_NO, DE.MEMBER_NO, DE.COM_NO, DE.DELIVERY_ADDRESS, DE.DELIVERY_NAME, DE.DELIVERY_STATUS,
+			CO.COM_NAME, CO.COM_ADDRESS, CO.COM_TEL, CO.COM_LISENSENO, CO.COM_STATUS, CO.COM_DATE, CO.COM_SALESTIME,
+			CO.COM_LOCATION, CO.COM_PARKING, CO.COM_CONFIRM, CO.LAT, CO.LON
+		FROM DELIVERY DE
+		JOIN COMPANY CO ON (DE.COM_NO = CO.COM_NO)
+		WHERE DE.DELIVERY_STATUS = 'Y' AND CO.COM_STATUS = 'Y'
+		AND DE.MEMBER_NO = #{ memberNo }
+	</select>
 </mapper>
 
 

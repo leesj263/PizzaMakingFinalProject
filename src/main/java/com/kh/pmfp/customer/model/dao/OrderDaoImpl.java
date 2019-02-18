@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import com.kh.pmfp.customer.model.exception.OrderException;
 import com.kh.pmfp.customer.model.vo.BasicMenu;
 import com.kh.pmfp.customer.model.vo.BasicTopping;
+import com.kh.pmfp.customer.model.vo.DeliveryCompany;
 import com.kh.pmfp.customer.model.vo.Image;
 import com.kh.pmfp.customer.model.vo.MaterialImage;
 import com.kh.pmfp.customer.model.vo.MyPizza;
@@ -89,6 +90,14 @@ public class OrderDaoImpl implements OrderDao {
 		ArrayList<MaterialImage> sideList = (ArrayList)sqlSession.selectList("CustomerOrder.selectSideList");
 		if(sideList == null) throw new OrderException("사이드 메뉴 목록 가져오기 오류 발생!");
 		return sideList;
+	}
+
+	//배송지 정보 가져오기
+	@Override
+	public ArrayList<DeliveryCompany> selectDeliveryCompanyList(SqlSessionTemplate sqlSession, int memberNo) throws OrderException {
+		ArrayList<DeliveryCompany> dcList = (ArrayList)sqlSession.selectList("CustomerOrder.selectDeliveryCompanyList", memberNo);
+		if(dcList == null) throw new OrderException("배송지 정보 목록 가져오기 오류 발생!");
+		return dcList;
 	}
 
 

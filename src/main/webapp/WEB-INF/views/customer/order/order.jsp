@@ -111,22 +111,17 @@ div.radio label:hover {
 					id="oaTopRight"></div>
 			</div>
 			
-			<table class="ui very basic table delivery-table">
+			<input type="hidden" id="deliveryNo" value="">
+			<input type="hidden" id="comNo" value="">
+			<table class="ui very basic table delivery-table" id="addressTable">
 				<tbody>
-					<tr>
-						<td>서울특별시 강남구 역삼동 kh정보교육원 C클래스<br> <b>역삼지점(02-123-1234)</b></td>
-						<td>
-							<button class="ui black active button">선택</button>
-							<button class="ui grey button">삭제</button>
-						</td>
-					</tr>
-					<tr>
-						<td>서울특별시 강남구 역삼동 kh정보교육원 C클래스<br> <b>역삼지점(02-123-1234)</b></td>
-						<td>
-							<button class="ui grey button">선택</button>
-							<button class="ui grey button">삭제</button>
-						</td>
-					</tr>
+					<!-- 주소 -->
+				</tbody>
+			</table>
+			
+			<table class="ui very basic table delivery-table" id="comTable">
+				<tbody>
+					<!-- 매장 방문 -->
 				</tbody>
 			</table>
 		</div>
@@ -432,12 +427,50 @@ div.radio label:hover {
 				$("#oaTopLeft").append($("<h3>").text("배달주소"));
 				$("#oaTopRight").append(
 						$("<button class='ui button brown'>").text("배달주소 등록"));
+				
+				$.ajax({
+					url: "getDeliveryInfo.cor",
+					type: "POST",
+					success: function(data){
+						//console.log(data);
+						
+						var $table = $("#addressTable tbody");
+						$table.empty();
+						
+						for(var i=0; i<data.length; i++){
+							var $tr = $("<tr>");
+							var $td1 = $("<td>").html(data[i].deliveryAddress + "<br><b>" + data[i].comName + " (" + data[i].comTel + ")" + "</b>");
+							var $td2 = $("<td>").append($("<button class='ui grey button addrSel' onclick='addressSelect(this,"+data[i].deliveryNo+","+data[i].comNo+")'>").text("선택"));
+							$tr.append($td1).append($td2);
+							$table.append($tr);
+						}
+						
+						$("#deliveryNo").val("");
+						$("#comNo").val("");
+						$("#comTable").hide();
+						$("#addressTable").show();
+						
+					}, error: function(data){
+						console.log("배송지 정보 가져오기 실패!");
+					}
+				});
 			} else {
 				$("#oaTopLeft").append($("<h3>").text("매장"));
-				$("#oaTopRight").append(
-						$("<button class='ui button brown'>").text("매장 등록"));
+				$("#oaTopRight").append($("<button class='ui button brown'>").text("매장 등록"));
+				$("#deliveryNo").val("");
+				$("#comNo").val("");
+				$("#addressTable").hide();
+				$("#comTable").show();
 			}
-			$(".delivery-table").show();
+			
+		}
+		
+		function addressSelect(btn, deliveryNo, comNo){
+			$(".addrSel").removeClass("active").removeClass("black").removeClass("grey");
+			$(".addrSel").addClass("grey");
+			$("#deliveryNo").val(deliveryNo);
+			$("#comNo").val(comNo);
+			$(btn).removeClass("grey").addClass("black active");
 		}
 		
 		function couponSelect(){

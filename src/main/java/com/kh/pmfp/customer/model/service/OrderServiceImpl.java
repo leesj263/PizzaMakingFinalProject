@@ -10,6 +10,7 @@ import com.kh.pmfp.customer.model.dao.OrderDao;
 import com.kh.pmfp.customer.model.exception.OrderException;
 import com.kh.pmfp.customer.model.vo.BasicMenu;
 import com.kh.pmfp.customer.model.vo.BasicTopping;
+import com.kh.pmfp.customer.model.vo.DeliveryCompany;
 import com.kh.pmfp.customer.model.vo.Image;
 import com.kh.pmfp.customer.model.vo.MaterialImage;
 import com.kh.pmfp.customer.model.vo.MyPizza;
@@ -77,5 +78,11 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public ArrayList<MaterialImage> selectSideList() throws OrderException {
 		return od.selectSideList(sqlSession);
+	}
+
+	//배송지 정보 가져오기
+	@Override
+	public ArrayList<DeliveryCompany> selectDeliveryCompanyList(int memberNo) throws OrderException {
+		return od.selectDeliveryCompanyList(sqlSession, memberNo);
 	}
 }

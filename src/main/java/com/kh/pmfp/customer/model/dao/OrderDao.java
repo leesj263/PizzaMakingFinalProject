@@ -7,6 +7,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import com.kh.pmfp.customer.model.exception.OrderException;
 import com.kh.pmfp.customer.model.vo.BasicMenu;
 import com.kh.pmfp.customer.model.vo.BasicTopping;
+import com.kh.pmfp.customer.model.vo.DeliveryCompany;
 import com.kh.pmfp.customer.model.vo.Image;
 import com.kh.pmfp.customer.model.vo.MaterialImage;
 import com.kh.pmfp.customer.model.vo.MyPizza;
@@ -36,5 +37,7 @@ public interface OrderDao {
 	ArrayList<MyPizza> selectMyPizzaList(SqlSessionTemplate sqlSession, int memberNo) throws OrderException;
 
 	ArrayList<MaterialImage> selectSideList(SqlSessionTemplate sqlSession) throws OrderException;
+
+	ArrayList<DeliveryCompany> selectDeliveryCompanyList(SqlSessionTemplate sqlSession, int memberNo) throws OrderException;
 
 }
