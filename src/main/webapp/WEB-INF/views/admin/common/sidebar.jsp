@@ -81,26 +81,26 @@
 
 				<li class="menu-item-has-children dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> 
-						<i class="menu-icon fa fa-tasks"></i>Sales
+						<i class="menu-icon ti-money"></i>Sales
 					</a>
 					<ul class="sub-menu children dropdown-menu">
 						<li><i class="menu-icon ti-credit-card"></i><a href="orderList.ad">Order List</a></li>
 						<li><i class="menu-icon ti-receipt"></i><a href="calculateList.ad">Calculate List</a></li>
+						<li><i class="menu-icon ti-stats-up"></i><a href="admin.ad?admin=sales/statistics/statistics">Sales Statistics</a></li>
 					</ul>
 				</li>
-				
+				<!-- 
 				<li class="menu-item-has-children dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> 
 					<i class="menu-icon fa fa-bar-chart"></i>Statistics </a>
 					<ul class="sub-menu children dropdown-menu">
-						<!-- <li><i class="menu-icon fa fa-line-chart"></i><a href="admin.ad?admin=sales/statistics/orderList">Order List</a></li> -->
-						<li><i class="menu-icon fa fa-area-chart"></i><a href="admin.ad?admin=sales/statistics/statistics">Sales Statistics</a></li>
-						<!-- 
+						<li><i class="menu-icon fa fa-line-chart"></i><a href="admin.ad?admin=sales/statistics/orderList">Order List</a></li>
+						
 						<li><i class="menu-icon fa fa-pie-chart"></i><a href="#">Peity Chart</a></li>
-						 -->
+						
 					</ul>
 				</li>
-				
+				 -->
 				<li class="menu-item-has-children dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> 
 					<i class="menu-icon ti-heart"></i>Menu</a>
@@ -114,7 +114,7 @@
 				
 				<li class="menu-item-has-children dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> 
-					<i class="menu-icon fa fa-area-chart"></i>Coupon</a>
+					<i class="menu-icon ti-ticket"></i>Coupon</a>
 					<ul class="sub-menu children dropdown-menu">
 						<li><i class="menu-icon fa fa-map-o"></i><a href="searchCoupon.co">생성 쿠폰 목록</a></li>
 						<li><i class="menu-icon fa fa-street-view"></i><a href="admin.ad?admin=coupon/newCouponCreate">쿠폰 생성</a></li>
@@ -124,17 +124,14 @@
 				</li>
 				
 				
-				
-				
-				
 				<h3 class="menu-title">Board</h3>
 				<!-- /.menu-title -->
 				<li class="menu-item-has-children dropdown">
 				<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> 
-					<i class="menu-icon fa fa-glass"></i>Notice</a>
+					<i class="menu-icon ti-direction-alt"></i>Notice</a>
 					<ul class="sub-menu children dropdown-menu">
-						<li><i class="menu-icon fa fa-sign-in"></i><a href="noticeList.ad">Notice List</a></li>
-						<li><i class="menu-icon fa fa-sign-in"></i><a href="noticeWriteView.ad">Write</a></li>
+						<li><i class="menu-icon ti-menu"></i><a href="noticeList.ad">Notice List</a></li>
+						<li><i class="menu-icon ti-pencil"></i><a href="noticeWriteView.ad">Write</a></li>
 						<!-- 
 						<li><i class="menu-icon fa fa-paper-plane"></i><a href="#">Forget	Pass</a></li>
 						 -->

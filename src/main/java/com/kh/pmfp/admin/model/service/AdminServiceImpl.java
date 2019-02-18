@@ -480,6 +480,29 @@ public class AdminServiceImpl implements AdminService {
 		return menuList;
 	}
 
+	//기본 메뉴 조회용
+	@Override
+	public AdminMenu selectMenu(int basicNo) throws AdminSelectException, AdminCountException {
+		AdminMenu menu=new AdminMenu();
+		int count=ad.selectMenuImgCount(sqlSession, basicNo);
+		if(count==0) {
+			menu=ad.selectMenu(sqlSession, basicNo);
+		}else {
+			menu=ad.selectMenuImg(sqlSession, basicNo);
+		}
+		return menu;
+	}
+
+	//기본 메뉴 상세 조회용
+	@Override
+	public ArrayList<AdminMenu> selectMenuDetail(int basicNo) throws AdminSelectException {
+		ArrayList<AdminMenu> menuDetail=new ArrayList<AdminMenu>();
+		menuDetail=ad.selectMenuDetail(sqlSession, basicNo);
+		return menuDetail;
+	}
+
+
+
 	
 	
 

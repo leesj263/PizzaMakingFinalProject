@@ -840,4 +840,24 @@ public class AdminController {
 			return "common/errorPage";
 		}
 	}
+	
+	@RequestMapping("menuDetail.ad")
+	public String selectMenu(@RequestParam(value="basicNo") int basicNo, HttpServletRequest request) {
+		AdminMenu menu=new AdminMenu();
+		ArrayList<AdminMenu> menuDetail=new ArrayList<AdminMenu>();
+		try {
+			menu=as.selectMenu(basicNo);
+			menuDetail=as.selectMenuDetail(basicNo);
+			request.setAttribute("menu", menu);
+			request.setAttribute("menuDetail", menuDetail);
+			return "admin/sales/menu/menuDetail";
+		} catch (AdminSelectException e) {
+			request.setAttribute("msg", e.getMessage());
+			return "common/errorPage";
+		} catch (AdminCountException e) {
+			request.setAttribute("msg", e.getMessage());
+			return "common/errorPage";
+		}
+		
+	}
 }

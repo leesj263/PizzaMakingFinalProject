@@ -190,6 +190,20 @@ public interface AdminDao {
 	//기본 메뉴 목록 조회용
 	ArrayList<AdminMenu> selectMenuList(SqlSessionTemplate sqlSession, PageInfo pi) throws AdminSelectException;
 
+	//기본 메뉴 이미지 조회용
+	int selectMenuImgCount(SqlSessionTemplate sqlSession, int basicNo) throws AdminCountException;
+
+	//기본 메뉴 조회용
+	AdminMenu selectMenu(SqlSessionTemplate sqlSession, int basicNo) throws AdminSelectException;
+
+	//기본 메뉴 조회용
+	AdminMenu selectMenuImg(SqlSessionTemplate sqlSession, int basicNo) throws AdminSelectException;
+	
+	//기본 메뉴 상세 조회용
+	ArrayList<AdminMenu> selectMenuDetail(SqlSessionTemplate sqlSession, int basicNo) throws AdminSelectException;
+
+	
+
 	
 
 

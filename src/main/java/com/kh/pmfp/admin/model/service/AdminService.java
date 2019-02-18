@@ -173,11 +173,12 @@ public interface AdminService {
 	//기본 메뉴 목록 조회용
 	ArrayList<AdminMenu> selectMenuList(PageInfo pi) throws AdminSelectException;
 
+	//기본 메뉴 조회용
+	AdminMenu selectMenu(int basicNo) throws AdminSelectException, AdminCountException;
 
-
+	//기본 메뉴 상세 조회용
+	ArrayList<AdminMenu> selectMenuDetail(int basicNo) throws AdminSelectException;
 	
-
-
 	
 
 }
