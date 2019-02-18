@@ -24,5 +24,16 @@ public class BoardServiceImpl implements BoardService {
 		selectfaqOrder = bd.selectfaqOrder(sqlSession);
 		return selectfaqOrder;
 	}
+//qna작성
+	@Override
+	public int insertqna(Board qna) throws BoardException {
+		int result=bd.insertqna(sqlSession, qna);
+		return result;
+	}
+	@Override
+	public int updateqna(Board qna) throws BoardException {
+		int result=bd.updateqna(sqlSession, qna);
+		return result;
+	}
 
 }

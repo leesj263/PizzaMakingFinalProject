@@ -31,6 +31,11 @@
 		BOARD_REFNO,BOARD_STATUS,BOARD_ANSWER,BOARD_COMNO from board 
 		where board_type =2 and board_status='Y'
 	</select>
+	<!-- qna작성 -->
+	<insert id="insertqna" parameterType="Board">
+		INSERT INTO BOARD VALUES (SEQ_BONO.NEXTVAL, #{boardType}, #{boardCate}, #{boardTitle},
+		#{boardContent}, DEFAULT, #{memberNo},  DEFAULT, 1, TO_DATE, 1, NULL, DEFAULT, NULL, NULL); 
+	</insert>
 
 
 

@@ -7,6 +7,12 @@ import com.kh.pmfp.customer.model.vo.Board;
 
 public interface BoardService {
 
+	//faq상세보기
 	ArrayList<Board> selectfaqOrder() throws BoardException;
+
+	//qna작성하기
+	int insertqna(Board qna) throws BoardException;
+	//qna 수정하기
+	int updateqna(Board qna) throws BoardException;
 
 }
