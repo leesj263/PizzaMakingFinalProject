@@ -23,6 +23,7 @@ import com.kh.pmfp.customer.model.exception.OrderException;
 import com.kh.pmfp.customer.model.service.OrderService;
 import com.kh.pmfp.customer.model.vo.BasicMenu;
 import com.kh.pmfp.customer.model.vo.BasicTopping;
+import com.kh.pmfp.customer.model.vo.DeliveryCompany;
 import com.kh.pmfp.customer.model.vo.Image;
 import com.kh.pmfp.customer.model.vo.MaterialImage;
 import com.kh.pmfp.customer.model.vo.MyPizza;
@@ -341,5 +342,27 @@ public class OrderConroller {
 	@RequestMapping(value="/order.cor")
 	public String order() {
 		return "customer/order/order";
+	}
+	
+	//배송지 정보 가져오기
+	@RequestMapping(value="/getDeliveryInfo.cor")
+	public @ResponseBody ArrayList<DeliveryCompany> getDeliveryInfo(HttpServletRequest request) {
+		if(request.getSession().getAttribute("loginUser") != null) {
+			int memberNo = ((Member)request.getSession().getAttribute("loginUser")).getMemberNo();
+			
+			try {
+				ArrayList<DeliveryCompany> dcList = os.selectDeliveryCompanyList(memberNo);
+				
+				System.out.println(dcList);
+				return dcList;
+			} catch (OrderException e) {
+				
+				e.printStackTrace();
+				return null;
+			}
+		} else {
+			return null;
+		}
+		
 	}
 }
