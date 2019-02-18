@@ -9,9 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.kh.pmfp.admin.model.exception.AdminInsertException;
 import com.kh.pmfp.admin.model.vo.AdminBoard;
+import com.kh.pmfp.common.model.vo.PageInfo;
+import com.kh.pmfp.common.model.vo.Pagination;
 import com.kh.pmfp.customer.model.exception.BoardException;
 import com.kh.pmfp.customer.model.service.BoardService;
 import com.kh.pmfp.customer.model.vo.Board;
@@ -73,5 +76,17 @@ public class BoardController {
 			return "common/errorPage";
 		}
 		
-	}			
+	}	
+	//qna리스트
+	@RequestMapping("qnaList.bo")
+	public String qnaList(@RequestParam(value="currentPage", required=false, defaultValue="1")int currentPage, HttpServletRequest request, HttpServletResponse response) {
+		ArrayList<Board> qnaList=new ArrayList<Board>();
+		
+		int listCount=bs.selectQnaCount();
+		
+		
+		
+		return "customer/qna/qnaList";
+	}
+	
 }
