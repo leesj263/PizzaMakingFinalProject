@@ -28,7 +28,7 @@
 					<tr>
 						<td><b>분야</b></td>
 						<td>
-							<select name="category" onChange="showCategory(this.options[this.selectedIndex].value);">
+							<select name="category">
 								<option value="1" selected>결제 </option>
 								<option value="2">주문</option>
 								<option value="3">공유 / 후기 / 질문답변</option>

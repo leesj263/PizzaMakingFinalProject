@@ -30,10 +30,17 @@ public class BoardServiceImpl implements BoardService {
 		int result=bd.insertqna(sqlSession, qna);
 		return result;
 	}
+//qna 수정
 	@Override
 	public int updateqna(Board qna) throws BoardException {
 		int result=bd.updateqna(sqlSession, qna);
 		return result;
+	}
+//qna 리스트조회
+	@Override
+	public int selectQnaCount() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }
