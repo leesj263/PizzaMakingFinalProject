@@ -31,6 +31,7 @@
 		<typeAlias type="com.kh.pmfp.mypage.model.vo.Coupon" alias="Coupon"/>
 		<typeAlias type="com.kh.pmfp.mypage.model.vo.MyWriting" alias="MyWriting"/>
 		<typeAlias type="com.kh.pmfp.mypage.model.vo.Location" alias="Location"/>
+		<typeAlias type="com.kh.pmfp.customer.model.vo.Board" alias="Board"/>
 	</typeAliases>
 	
 	

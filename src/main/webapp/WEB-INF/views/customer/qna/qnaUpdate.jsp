@@ -19,7 +19,7 @@
 	<%-- <% if(loginUser != null){%> --%>
 	<div class="outer">
 		<br>
-		<h1 align="center">QnA 작성</h1>
+		<h1 align="center">QnA 수정</h1>
 		<br>
 		<br>
 		<div class="tableArea">
@@ -29,10 +29,10 @@
 						<td><b>분야</b></td>
 						<td>
 							<select name="category">
-								<option value="10">결제 및 주문</option>
-								<option value="20">회원가입</option>
-								<option value="30">e-쿠폰</option>
-								<option value="70">기타</option>
+								<option value="1" selected>결제 </option>
+								<option value="2">주문</option>
+								<option value="3">공유 / 후기 / 질문답변</option>
+								<option value="4">이벤트</option>
 							</select>
 						</td>
 					</tr>
@@ -41,7 +41,8 @@
 					<tr>
 						<td><b>제목</b></td>
 						<td colspan="3">
-							<input type="text" size="60" name="title" placeholder="제목을 입력해주세요">
+						<input type="hidden" name="boardNo" value="${qna.boardNo }">
+							<input type="text" name="qnaTitle" id="qnaTitle" class="form-control" value="${qna.boardTitle }">
 						</td>
 					</tr>
 					<tr></tr>
@@ -49,26 +50,39 @@
 					<tr>
 						<td><b>내용</b></td>
 						<td>
-							<input type="textarea" name="content" cols="100" rows="25" style="resize:none;" placeholder="내용을 입력해주세요"></textarea>
+							<textarea name="qnaContent" id="qnaContents" cols="100" rows="25" style="resize:none;">${notice.boardContent}</textarea>
 						</td>
 					</tr>
-					<tr>
+					<!-- <tr>
 						<td><b>파일첨부</b></td>
 						<td colspan="3">
 							<input type="file" size="60" name="title">
 						</td>
-					</tr>					
+					</tr>	 -->				
 				</table>
 				<br>
 				<div align="center">
 					
-					<button class="ui yellow button">수정하기</button>
-					<button class="ui grey button">취소하기</button>
+					<button class="ui yellow button" type="submit" onclick="qnaUpdate();">수정하기</button>
+					<button class="ui grey button" type="button" onclick="qnaCancle();">취소하기</button>
+					
 				</div>
 			</form>
 		</div>
 		
 	</div>
+	<script>
+		function qnaUpdate(){
+			var num=$("input[name='boardNo']").val();
+			location.href="qnaList.bo";
+		  }
+		function qnaCancel(){
+			
+			location.href="qnaList.bo";
+		}
+	
+	
+	</script>
 	
 
 </body>

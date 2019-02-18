@@ -51,17 +51,17 @@
 					<tr>
 						<td><b>내용</b></td>
 						<td>
-							<input type="textarea" name="content" cols="100" rows="100" style="resize:none;" placeholder="내용을 입력해주세요"></textarea>
+							<textarea name="content" cols="100" rows="25" style="resize:none;" placeholder="내용을 입력해주세요"></textarea>
 						</td>
 					</tr>
 					<tr></tr>
 					<tr></tr>
-					<tr>
+					<!-- <tr>
 						<td><b>파일첨부</b></td>
 						<td colspan="3">
 							<input type="file" size="60" name="title">
 						</td>
-					</tr>					
+					</tr>	 -->				
 				</table>
 				<br>
 				<div align="center">
@@ -74,35 +74,14 @@
 		
 	</div>
 	<script>
-		function showCategory(obj) {
-			var category1 = [ "결제", "주문", "공유 / 후기 / 질문답변", "이벤트" ];
-			var cateVal=[1, 2, 3, 4];
-			
-			var $target = $("select[name='boardCate']");
-			var data;
-	
-			if (obj == 4) {
-				data = category1;
-			} 
-	
-			$target.empty();
-			for (x in data) {
-				for(y in cateVal){
-					if(x==y){
-					var option = "<option value='"+cateVal[y]+"'>" + data[x] + "</option>";
-					$target.append(option);
-					}
-				}
-			}
-			$target.css("display", "");
+		
 		}
 		function qnaWrite(){
 			var boardTitle=$("#boardTitle").val();
 			var boardContent=$("#boardContent").val();
 			var boardType=$("select[name='boardType']").val();
 			var boardCate=$("select[name='boardCate']").val();
-			//var nFile=$("#nFile").val();
-			console.log(boardTitle+boardContent+boardType+boardCate);
+			location.href="qnaList.bo";
 		}
 	</script>
 	
