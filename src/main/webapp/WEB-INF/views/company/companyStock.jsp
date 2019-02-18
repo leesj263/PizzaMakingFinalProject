@@ -69,7 +69,7 @@ mater = [];
 
 				</div>
 				<div class="stockBtn">
-					<button onclick="location.href = 'selectReceiptList.com'"
+					<button onclick="location.href = 'selectReceiptList.com?comNo=${sessionScope.loginUser.comNo }'"
 						type="button" class="btn btn-secondary">
 						<i class="fa fa-won"></i>&nbsp; 요금 명세서
 					</button>
@@ -77,7 +77,7 @@ mater = [];
 						class="btn btn-secondary">
 						<i class="fa fa-truck"></i>&nbsp; 재고 주문
 					</button>
-					<button onclick="location.href = 'selectOrderStockList.com'"
+					<button onclick="location.href = 'selectOrderStockList.com?comNo=${sessionScope.loginUser.comNo }'"
 						type="button" class="btn btn-secondary">
 						<i class="fa fa-archive"></i>&nbsp; 재고 주문내역
 					</button>

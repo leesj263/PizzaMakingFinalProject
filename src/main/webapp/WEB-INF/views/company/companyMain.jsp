@@ -6,8 +6,7 @@
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 <%@   taglib prefix = "fn" uri = "http://java.sun.com/jsp/jstl/functions" %>
 
-
-
+<!-- ${sessionScope.loginUser.comNo }  -->
 
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
@@ -445,7 +444,7 @@
 		function calendarTd(btn){
 			console.log($(btn).attr("id"));
 			
-			location.href = "calendarDetail.com?id="+$(btn).attr("id");
+			location.href = "calendarDetail.com?id="+$(btn).attr("id") + "&memberNo=${sessionScope.loginUser.memberNo }";
 		}
 		
 	</script>

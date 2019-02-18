@@ -150,7 +150,7 @@ td {
 		     	  		success : function(data){
 		     	  			swal("회원삭제가 정상적으로 이루어졌습니다!").then((value) =>{
 								if(value = "ok"){
-									location.href = "selectEmployeeList.com";
+									location.href = "selectEmployeeList.com?comNo=${sessionScope.loginUser.comNo }";
 								}
 							});
 		     	  			console.log(data);

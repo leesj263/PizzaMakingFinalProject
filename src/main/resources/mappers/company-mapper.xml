@@ -160,7 +160,7 @@
 		AND BOARD_NO = #{boardNo}
 	</select>
 
-	<select id="orderWaiting" resultMap="companyOrderResultSet">
+	<select id="orderWaiting" resultMap="companyOrderResultSet" parameterType="_int">
 		SELECT OM.ORDER_NO,
 		OM.MEMBER_NO, OM.ORDER_METHOD, OM.ORDER_RECEIVER, OM.ORDER_RTEL,
 		OM.ORDER_DATE, OM.ORDER_RESERVETIME, OM.ORDER_PAYNO,
@@ -178,7 +178,8 @@
 		ON(OT.ORDER_INO = OI.ORDER_INO)
 		JOIN MATERIAL M
 		ON(M.MATERIAL_NO = OT.MATERIAL_NO)
-		WHERE ORDER_STATUS = 1
+		WHERE OM.ORDER_STATUS = 1
+		AND OM.COM_NO = #{ comNo}
 		GROUP BY OM.ORDER_NO, OM.MEMBER_NO, OM.ORDER_METHOD, OM.ORDER_RECEIVER,
 		OM.ORDER_RTEL, OM.ORDER_DATE, OM.ORDER_RESERVETIME, OM.ORDER_PAYNO,
 		OM.ORDER_PAYPRICE,
@@ -186,7 +187,7 @@
 		DE.DELIVERY_NAME
 	</select>
 
-<select id="orderMaking" resultMap="companyOrderResultSet">
+<select id="orderMaking" resultMap="companyOrderResultSet" parameterType="_int">
 		SELECT OM.ORDER_NO,
 		OM.MEMBER_NO, OM.ORDER_METHOD, OM.ORDER_RECEIVER, OM.ORDER_RTEL,
 		OM.ORDER_DATE, OM.ORDER_RESERVETIME, OM.ORDER_PAYNO,
@@ -204,33 +205,8 @@
 		ON(OT.ORDER_INO = OI.ORDER_INO)
 		JOIN MATERIAL M
 		ON(M.MATERIAL_NO = OT.MATERIAL_NO)
-		WHERE ORDER_STATUS = 2
-		GROUP BY OM.ORDER_NO, OM.MEMBER_NO, OM.ORDER_METHOD, OM.ORDER_RECEIVER,
-		OM.ORDER_RTEL, OM.ORDER_DATE, OM.ORDER_RESERVETIME, OM.ORDER_PAYNO,
-		OM.ORDER_PAYPRICE,
-		OM.ORDER_STATUS, OM.DELIVERY_NO, OM.EMP_NO, OM.COM_NO, DE.DELIVERY_ADDRESS,
-		DE.DELIVERY_NAME
-	</select>
-	
-	<select id="orderDelivering" resultMap="companyOrderResultSet">
-		SELECT OM.ORDER_NO,
-		OM.MEMBER_NO, OM.ORDER_METHOD, OM.ORDER_RECEIVER, OM.ORDER_RTEL,
-		OM.ORDER_DATE, OM.ORDER_RESERVETIME, OM.ORDER_PAYNO,
-		OM.ORDER_PAYPRICE,
-		OM.ORDER_STATUS, OM.DELIVERY_NO, OM.EMP_NO, OM.COM_NO, DE.DELIVERY_ADDRESS,
-		DE.DELIVERY_NAME, LISTAGG(CAST(M.MATERIAL_NAME || 'x' ||
-		M.MATERIAL_WEIGHT || 'g' AS VARCHAR(300)) , ', ') WITHIN GROUP(ORDER
-		BY M.MATERIAL_NAME) ADDTOPPING
-		FROM ORDER_MAIN OM
-		JOIN DELIVERY DE
-		ON(OM.MEMBER_NO = DE.MEMBER_NO)
-		JOIN ORDER_ITEM OI
-		ON(OI.ORDER_NO = OM.ORDER_NO)
-		JOIN ORDER_TOPPING OT
-		ON(OT.ORDER_INO = OI.ORDER_INO)
-		JOIN MATERIAL M
-		ON(M.MATERIAL_NO = OT.MATERIAL_NO)
-		WHERE ORDER_STATUS = 3
+		WHERE OM.ORDER_STATUS = 2
+		AND OM.COM_NO = #{ comNo}
 		GROUP BY OM.ORDER_NO, OM.MEMBER_NO, OM.ORDER_METHOD, OM.ORDER_RECEIVER,
 		OM.ORDER_RTEL, OM.ORDER_DATE, OM.ORDER_RESERVETIME, OM.ORDER_PAYNO,
 		OM.ORDER_PAYPRICE,
@@ -238,7 +214,7 @@
 		DE.DELIVERY_NAME
 	</select>
 	
-	<select id="orderComplete" resultMap="companyOrderResultSet">
+	<select id="orderDelivering" resultMap="companyOrderResultSet" parameterType="_int">
 		SELECT OM.ORDER_NO,
 		OM.MEMBER_NO, OM.ORDER_METHOD, OM.ORDER_RECEIVER, OM.ORDER_RTEL,
 		OM.ORDER_DATE, OM.ORDER_RESERVETIME, OM.ORDER_PAYNO,
@@ -256,16 +232,16 @@
 		ON(OT.ORDER_INO = OI.ORDER_INO)
 		JOIN MATERIAL M
 		ON(M.MATERIAL_NO = OT.MATERIAL_NO)
-		WHERE ORDER_STATUS = 4
+		WHERE OM.ORDER_STATUS = 3
+		AND OM.COM_NO = #{ comNo}
 		GROUP BY OM.ORDER_NO, OM.MEMBER_NO, OM.ORDER_METHOD, OM.ORDER_RECEIVER,
 		OM.ORDER_RTEL, OM.ORDER_DATE, OM.ORDER_RESERVETIME, OM.ORDER_PAYNO,
 		OM.ORDER_PAYPRICE,
 		OM.ORDER_STATUS, OM.DELIVERY_NO, OM.EMP_NO, OM.COM_NO, DE.DELIVERY_ADDRESS,
 		DE.DELIVERY_NAME
 	</select>
-
-
-	<select id="orderRefuseList" resultMap="companyOrderResultSet">
+	
+	<select id="orderComplete" resultMap="companyOrderResultSet" parameterType="_int">
 		SELECT OM.ORDER_NO,
 		OM.MEMBER_NO, OM.ORDER_METHOD, OM.ORDER_RECEIVER, OM.ORDER_RTEL,
 		OM.ORDER_DATE, OM.ORDER_RESERVETIME, OM.ORDER_PAYNO,
@@ -283,7 +259,36 @@
 		ON(OT.ORDER_INO = OI.ORDER_INO)
 		JOIN MATERIAL M
 		ON(M.MATERIAL_NO = OT.MATERIAL_NO)
-		WHERE ORDER_STATUS = 5
+		WHERE OM.ORDER_STATUS = 4
+		AND OM.COM_NO = #{ comNo}
+		GROUP BY OM.ORDER_NO, OM.MEMBER_NO, OM.ORDER_METHOD, OM.ORDER_RECEIVER,
+		OM.ORDER_RTEL, OM.ORDER_DATE, OM.ORDER_RESERVETIME, OM.ORDER_PAYNO,
+		OM.ORDER_PAYPRICE,
+		OM.ORDER_STATUS, OM.DELIVERY_NO, OM.EMP_NO, OM.COM_NO, DE.DELIVERY_ADDRESS,
+		DE.DELIVERY_NAME
+	</select>
+
+
+	<select id="orderRefuseList" resultMap="companyOrderResultSet" parameterType="_int">
+		SELECT OM.ORDER_NO,
+		OM.MEMBER_NO, OM.ORDER_METHOD, OM.ORDER_RECEIVER, OM.ORDER_RTEL,
+		OM.ORDER_DATE, OM.ORDER_RESERVETIME, OM.ORDER_PAYNO,
+		OM.ORDER_PAYPRICE,
+		OM.ORDER_STATUS, OM.DELIVERY_NO, OM.EMP_NO, OM.COM_NO, DE.DELIVERY_ADDRESS,
+		DE.DELIVERY_NAME, LISTAGG(CAST(M.MATERIAL_NAME || 'x' ||
+		M.MATERIAL_WEIGHT || 'g' AS VARCHAR(300)) , ', ') WITHIN GROUP(ORDER
+		BY M.MATERIAL_NAME) ADDTOPPING
+		FROM ORDER_MAIN OM
+		JOIN DELIVERY DE
+		ON(OM.MEMBER_NO = DE.MEMBER_NO)
+		JOIN ORDER_ITEM OI
+		ON(OI.ORDER_NO = OM.ORDER_NO)
+		JOIN ORDER_TOPPING OT
+		ON(OT.ORDER_INO = OI.ORDER_INO)
+		JOIN MATERIAL M
+		ON(M.MATERIAL_NO = OT.MATERIAL_NO)
+		WHERE OM.ORDER_STATUS = 5
+		AND OM.COM_NO = #{ comNo}
 		GROUP BY OM.ORDER_NO, OM.MEMBER_NO, OM.ORDER_METHOD, OM.ORDER_RECEIVER,
 		OM.ORDER_RTEL, OM.ORDER_DATE, OM.ORDER_RESERVETIME, OM.ORDER_PAYNO,
 		OM.ORDER_PAYPRICE,
@@ -293,11 +298,22 @@
 
 
 
-	<update id="acceptOrder" parameterType="_int">
+	<update id="acceptOrder">
 		UPDATE ORDER_MAIN 
 		SET ORDER_STATUS = 2 
-		WHERE ORDER_NO = #{orderNoInt}
+		WHERE ORDER_NO = #{orderNo}
 	</update>
+	
+	<select id="selectSalesPrice" resultType="_int">
+		SELECT ORDER_PAYPRICE
+		FROM ORDER_MAIN
+		WHERE ORDER_NO =#{orderNo}
+	</select>
+	
+	<insert id="reflectAcceptOrderToSales">
+		INSERT INTO SALES
+		VALUES(SEQ_SALESNO.NEXTVAL, #{comNo}, SYSDATE, 1, NULL, #{orderNo},  #{salesPrice})
+	</insert>
 	
 	<update id="refuseOrder" parameterType="_int">
 		UPDATE ORDER_MAIN 
@@ -356,7 +372,7 @@
 	
 	<insert id="inputEmployeeInfo">
 		INSERT INTO EMPLOYEE 
-		VALUES(SEQ_EMPNO.NEXTVAL, 2, #{ employeeName }, #{ employeePhone }, 'Y', #{employeeRank}, #{employeeDate}, #{employeeAddress}, NULL, NULL)
+		VALUES(SEQ_EMPNO.NEXTVAL, #{ companyNo }, #{ employeeName }, #{ employeePhone }, #{employeeAddress}, #{employeeDate}, 'Y', #{employeeRank}, 'Y', NULL)
 	</insert>
 
 
@@ -376,8 +392,7 @@
 		FROM BOARD B
 		JOIN MEMBER M
 		ON (B.MEMBER_NO = M.MEMBER_NO)
-		WHERE BOARD_TYPE = 1
-		AND BOARD_COMNO = #{comNo}
+		WHERE BOARD_COMNO = #{comNo}
 	</select>
 	
 	<select id="orderStrok" resultMap="companyMaterialResultSet">
@@ -410,6 +425,11 @@
 		VALUES(SEQ_EXPNO.NEXTVAL, 2, #{materialPrice}, NULL , (SELECT OE.ORDEREXPENSE_NO FROM (SELECT ORDEREXPENSE_NO FROM ORDER_EXPENSE ORDER BY 1 DESC) OE WHERE ROWNUM =1))
 	</insert>
 	
+	<insert id="applyStockIfDontHaveStock">
+		INSERT INTO STOCK
+		VALUES(SEQ_STOCKNO.NEXTVAL, #{materialNo}, #{comNo}, #{materialWeight})
+	</insert>
+	
 	<update id="applyStockAndUpdateStockList">
 		UPDATE STOCK 
 		SET STOCK_WEIGHT  = (SELECT STOCK_WEIGHT FROM STOCK WHERE MATERIAL_NO = #{materialNo}) + #{materialWeight} 
@@ -436,7 +456,7 @@
 	
 	<update id="receiptConfirm" parameterType="java.util.List">
 		UPDATE ORDER_MATERIAL
-		SET ORDER_MSTATUS = 2
+		SET ORDER_MSTATUS = 3
 		WHERE ORDER_MNO IN
 		<foreach collection="list" item = "item" index = "index" open = "(" close = ")" separator = ",">
 			#{item.value}
@@ -498,10 +518,11 @@
 		WHERE S.COM_NO = #{comNo}
 	</select>
 	
-	<select id="calendarDetail" resultMap="companyCalendarResultSet" parameterType="java.sql.Date">
+	<select id="calendarDetail" resultMap="companyCalendarResultSet">
 		SELECT CALENDAR_NO, CALENDAR_CATEG, CALENDAR_CONTENT, CALENDAR_DATE, MEMBER_NO
 		FROM CALENDAR
-		WHERE CALENDAR_DATE = #{date}
+		WHERE CALENDAR_DATE = #{calendarDate}
+		AND MEMBER_NO = #{memberNo}
 	</select>
 	
 	<insert id="insertCalendarData">

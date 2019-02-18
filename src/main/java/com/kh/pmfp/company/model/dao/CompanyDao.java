@@ -38,19 +38,19 @@ public interface CompanyDao {
 
 	CompanyBoard detailAdminMessage(SqlSessionTemplate sqlSession, int boardNo) throws FaileDetailMessage;
 
-	ArrayList<CompanyOrder> orderWaiting(SqlSessionTemplate sqlSession) throws FailSelectOrder;
+	ArrayList<CompanyOrder> orderWaiting(SqlSessionTemplate sqlSession, int comNo) throws FailSelectOrder;
 
-	ArrayList<CompanyOrder> orderMaking(SqlSessionTemplate sqlSession) throws FailSelectOrder;
+	ArrayList<CompanyOrder> orderMaking(SqlSessionTemplate sqlSession, int comNo) throws FailSelectOrder;
 
-	ArrayList<CompanyOrder> orderDelivering(SqlSessionTemplate sqlSession) throws FailSelectOrder;
+	ArrayList<CompanyOrder> orderDelivering(SqlSessionTemplate sqlSession, int comNo) throws FailSelectOrder;
 
-	ArrayList<CompanyOrder> orderComplete(SqlSessionTemplate sqlSession) throws FailSelectOrder;
+	ArrayList<CompanyOrder> orderComplete(SqlSessionTemplate sqlSession, int comNo) throws FailSelectOrder;
 
-	int acceptOrder(SqlSessionTemplate sqlSession, int orderNoInt) throws FailUpdateOrderStatus;
+	int acceptOrder(SqlSessionTemplate sqlSession, CompanySales comsales) throws FailUpdateOrderStatus;
 
 	int refuseOrder(SqlSessionTemplate sqlSession, int orderNoInt) throws FailUpdateOrderStatus;
 
-	ArrayList<CompanyOrder> orderRefuseList(SqlSessionTemplate sqlSession) throws FailSelectOrder;
+	ArrayList<CompanyOrder> orderRefuseList(SqlSessionTemplate sqlSession, int comNo) throws FailSelectOrder;
 
 	ArrayList<CompanyEmployee> remainDeliveryMan(SqlSessionTemplate sqlSession, int comNo) throws FailSelectDeliveryMan;
 
@@ -88,7 +88,7 @@ public interface CompanyDao {
 
 	HashMap<String, ArrayList<CompanySalesList>> selectCompanySalesList(SqlSessionTemplate sqlSession, int comNo) throws FailSelectCompanySales;
 
-	ArrayList<CompanyCalendar> calendarDetail(SqlSessionTemplate sqlSession, Date date) throws FailSelectCalendar;
+	ArrayList<CompanyCalendar> calendarDetail(SqlSessionTemplate sqlSession, CompanyCalendar cc) throws FailSelectCalendar;
 
 	int insertCalendarData(SqlSessionTemplate sqlSession, CompanyCalendar cc) throws FailChangeCalendarDate;
 

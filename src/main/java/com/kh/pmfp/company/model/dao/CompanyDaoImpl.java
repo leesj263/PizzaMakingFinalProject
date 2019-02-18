@@ -69,10 +69,10 @@ public class CompanyDaoImpl implements CompanyDao{
 	}
 
 	@Override
-	public ArrayList<CompanyOrder> orderWaiting(SqlSessionTemplate sqlSession) throws FailSelectOrder {
+	public ArrayList<CompanyOrder> orderWaiting(SqlSessionTemplate sqlSession, int comNo) throws FailSelectOrder {
 		// TODO Auto-generated method stub
 		ArrayList<CompanyOrder> list = new ArrayList<CompanyOrder>();
-		list = (ArrayList)sqlSession.selectList("Company.orderWaiting");
+		list = (ArrayList)sqlSession.selectList("Company.orderWaiting", comNo);
 		
 		if(list == null) {
 			throw new FailSelectOrder("업체 주문조회에 실패했습니다!");
@@ -82,9 +82,9 @@ public class CompanyDaoImpl implements CompanyDao{
 	}
 
 	@Override
-	public ArrayList<CompanyOrder> orderMaking(SqlSessionTemplate sqlSession) throws FailSelectOrder {
+	public ArrayList<CompanyOrder> orderMaking(SqlSessionTemplate sqlSession, int comNo) throws FailSelectOrder {
 		ArrayList<CompanyOrder> list = new ArrayList<CompanyOrder>();
-		list = (ArrayList)sqlSession.selectList("Company.orderMaking");
+		list = (ArrayList)sqlSession.selectList("Company.orderMaking", comNo);
 		
 		if(list == null) {
 			throw new FailSelectOrder("업체 주문조회에 실패했습니다!");
@@ -94,9 +94,9 @@ public class CompanyDaoImpl implements CompanyDao{
 	}
 
 	@Override
-	public ArrayList<CompanyOrder> orderDelivering(SqlSessionTemplate sqlSession) throws FailSelectOrder {
+	public ArrayList<CompanyOrder> orderDelivering(SqlSessionTemplate sqlSession, int comNo) throws FailSelectOrder {
 		ArrayList<CompanyOrder> list = new ArrayList<CompanyOrder>();
-		list = (ArrayList)sqlSession.selectList("Company.orderDelivering");
+		list = (ArrayList)sqlSession.selectList("Company.orderDelivering", comNo);
 		
 		if(list == null) {
 			throw new FailSelectOrder("업체 주문조회에 실패했습니다!");
@@ -106,9 +106,9 @@ public class CompanyDaoImpl implements CompanyDao{
 	}
 
 	@Override
-	public ArrayList<CompanyOrder> orderComplete(SqlSessionTemplate sqlSession) throws FailSelectOrder {
+	public ArrayList<CompanyOrder> orderComplete(SqlSessionTemplate sqlSession, int comNo) throws FailSelectOrder {
 		ArrayList<CompanyOrder> list = new ArrayList<CompanyOrder>();
-		list = (ArrayList)sqlSession.selectList("Company.orderComplete");
+		list = (ArrayList)sqlSession.selectList("Company.orderComplete", comNo);
 		
 		if(list == null) {
 			throw new FailSelectOrder("업체 주문조회에 실패했습니다!");
@@ -118,9 +118,9 @@ public class CompanyDaoImpl implements CompanyDao{
 	}
 	
 	@Override
-	public ArrayList<CompanyOrder> orderRefuseList(SqlSessionTemplate sqlSession) throws FailSelectOrder {
+	public ArrayList<CompanyOrder> orderRefuseList(SqlSessionTemplate sqlSession, int comNo) throws FailSelectOrder {
 		ArrayList<CompanyOrder> list = new ArrayList<CompanyOrder>();
-		list = (ArrayList)sqlSession.selectList("Company.orderRefuseList");
+		list = (ArrayList)sqlSession.selectList("Company.orderRefuseList", comNo);
 		
 		if(list == null) {
 			throw new FailSelectOrder("업체 주문조회에 실패했습니다!");
@@ -133,9 +133,12 @@ public class CompanyDaoImpl implements CompanyDao{
 	
 
 	@Override
-	public int acceptOrder(SqlSessionTemplate sqlSession, int orderNoInt) throws FailUpdateOrderStatus {
+	public int acceptOrder(SqlSessionTemplate sqlSession, CompanySales comsales) throws FailUpdateOrderStatus {
 		// TODO Auto-generated method stub
-		int result = sqlSession.update("Company.acceptOrder", orderNoInt);
+		int result = sqlSession.update("Company.acceptOrder", comsales);
+		int salesPrice = sqlSession.selectOne("Company.selectSalesPrice", comsales);
+		comsales.setSalesPrice(salesPrice);
+		int resultB = sqlSession.insert("Company.reflectAcceptOrderToSales", comsales);
 		
 		if(result <= 0) {
 			throw new FailUpdateOrderStatus("주문 상태변경에 실패했습니다!");
@@ -309,11 +312,22 @@ public class CompanyDaoImpl implements CompanyDao{
 		
 		for(int i = 0; i < list.size(); i++) {
 			result += sqlSession.insert("Company.applyStock", list.get(i));
+			System.out.println(i+"번째 applyStock : " + result);
 			result += sqlSession.insert("Company.applyStockAndAddExpense", list.get(i));
-			resultupdate += sqlSession.update("Company.applyStockAndUpdateStockList", list.get(i));
+			System.out.println(i+"번째 applyStockAndAddExpense : " + result);
+			resultupdate = sqlSession.update("Company.applyStockAndUpdateStockList", list.get(i));
+			result += resultupdate;
+			System.out.println(i+"번째 applyStockAndUpdateStockList : " + result);
 			result += sqlSession.insert("Company.applyStockAndInsertSales", list.get(i));
-
+			System.out.println(i+"번째 applyStockAndInsertSales : " + result);
+			
+			if(resultupdate == 0) {
+				resultupdate = sqlSession.insert("Company.applyStockIfDontHaveStock", list.get(i));
+				System.out.println("중간resultupdate : " + resultupdate);
+			}
+			resultupdate = 0;
 		}
+		System.out.println("result : " + result );
 		System.out.println("resultupdate : " + resultupdate );
 		
 		if(result <= 0 ) {
@@ -405,10 +419,10 @@ public class CompanyDaoImpl implements CompanyDao{
 	}
 
 	@Override
-	public ArrayList<CompanyCalendar> calendarDetail(SqlSessionTemplate sqlSession, Date date) throws FailSelectCalendar {
+	public ArrayList<CompanyCalendar> calendarDetail(SqlSessionTemplate sqlSession, CompanyCalendar cc) throws FailSelectCalendar {
 		// TODO Auto-generated method stub
 		ArrayList<CompanyCalendar> list = new ArrayList<CompanyCalendar>();
-		list = (ArrayList)sqlSession.selectList("Company.calendarDetail", date);
+		list = (ArrayList)sqlSession.selectList("Company.calendarDetail", cc);
 		
 		if(list == null) {
 			throw new FailSelectCalendar("달력 조회 실패!");

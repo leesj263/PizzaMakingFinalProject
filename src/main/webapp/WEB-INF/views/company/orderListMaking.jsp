@@ -52,15 +52,15 @@ td {
 
 									<ul class="nav nav-tabs" id="myTab" role="tablist">
 										<li class="nav-item"><a class="nav-link "
-											href="orderWaiting.com">대기중</a></li>
+											href="orderWaiting.com?comNo=${sessionScope.loginUser.comNo }">대기중</a></li>
 										<li class="nav-item"><a class="nav-link active"
-											style="background: #F7F7F7" href="orderMaking.com">제조중</a></li>
+											style="background: #F7F7F7" href="orderMaking.com?comNo=${sessionScope.loginUser.comNo }">제조중</a></li>
 										<li class="nav-item"><a class="nav-link"
-											href="orderDelivering.com">배달중</a></li>
+											href="orderDelivering.com?comNo=${sessionScope.loginUser.comNo }">배달중</a></li>
 										<li class="nav-item"><a class="nav-link "
-											href="orderComplete.com">배달완료</a></li>
+											href="orderComplete.com?comNo=${sessionScope.loginUser.comNo }">배달완료</a></li>
 										<li class="nav-item"><a class="nav-link "
-											href="orderRefuseList.com">거절목록</a></li>
+											href="orderRefuseList.com?comNo=${sessionScope.loginUser.comNo }">거절목록</a></li>
 									</ul>
 								</div>
 							</div>
@@ -166,7 +166,7 @@ td {
 	
 	function clickDeliveryMan(btn){
 		var empNo = $(btn).attr('id');
-		location.href = "assignDeliveryMan.com?orderNo=" + selectOrderNo +"&empNo="+empNo;
+		location.href = "assignDeliveryMan.com?orderNo=" + selectOrderNo +"&empNo="+empNo +"&comNo=${sessionScope.loginUser.comNo }";
 	}
 </script>
 

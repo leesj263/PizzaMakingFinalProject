@@ -58,7 +58,7 @@
 										<c:forEach items="${list}" var="value">
 											<tr class="adminMessageTr" style="cursor: pointer;" orderMNo = "${value.orderMNo}">
 												<th scope="row"><c:if
-														test="${ value.orderMStatus == 1 ||  value.orderMStatus == 2 }">
+														test="${ value.orderMStatus == 1 || value.orderMStatus == 2}">
 														<input type="checkbox" name="orderMaterialListcheck"
 															style="width: 20px; height: 20px" >
 													</c:if></th>
@@ -119,7 +119,7 @@
 			traditional : true,
 			success : function(data){
 				console.log(data);
-				location.href = "selectOrderStockList.com";
+				location.href = "selectOrderStockList.com?comNo=${sessionScope.loginUser.comNo }";
 			},
 			error : function(data){
 				console.log(data);
@@ -147,7 +147,7 @@
 						onclick = "receiptConfirm()"
 						type="button" class="btn btn-primary" style="width: 150px">수령확인</button>
 					<button
-						onclick="location.href = 'selectAllMaterialList.com'"
+						onclick="location.href = 'selectAllMaterialList.com?comNo=${sessionScope.loginUser.comNo }'"
 						type="button" class="btn btn-secondary" style="width: 150px">취소</button>
 				</div>
 			</div>
