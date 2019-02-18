@@ -51,15 +51,15 @@
 								<div class="col-lg-6">
 									<ul class="nav nav-tabs" id="myTab" role="tablist">
 										<li class="nav-item"><a class="nav-link  active"
-											style="background: #F7F7F7" href="orderWaiting.com">대기중</a></li>
+											style="background: #F7F7F7" href="orderWaiting.com?comNo=${sessionScope.loginUser.comNo }">대기중</a></li>
 										<li class="nav-item"><a class="nav-link"
-											href="orderMaking.com">제조중</a></li>
+											href="orderMaking.com?comNo=${sessionScope.loginUser.comNo }">제조중</a></li>
 										<li class="nav-item"><a class="nav-link"
-											href="orderDelivering.com">배달중</a></li>
+											href="orderDelivering.com?comNo=${sessionScope.loginUser.comNo }">배달중</a></li>
 										<li class="nav-item"><a class="nav-link "
-											href="orderComplete.com">배달완료</a></li>
+											href="orderComplete.com?comNo=${sessionScope.loginUser.comNo }">배달완료</a></li>
 										<li class="nav-item"><a class="nav-link "
-										href="orderRefuseList.com">거절목록</a></li>
+										href="orderRefuseList.com?comNo=${sessionScope.loginUser.comNo }">거절목록</a></li>
 									</ul>
 								</div>
 							</div>
@@ -93,8 +93,8 @@
 												<td>${ value.addTopping }</td>
 												<td>${ value.orderDate }</td>
 												<td>
-													<button type="button" class="btn btn-primary btn-sm" onclick = "location.href = 'acceptOrder.com?orderNo=${value.orderNo}'">수락</button>
-													<button type="button" class="btn btn-secondary btn-sm" onclick = "location.href = 'refuseOrder.com?orderNo=${value.orderNo}'">거절</button>
+													<button type="button" class="btn btn-primary btn-sm" onclick = "location.href = 'acceptOrder.com?orderNo=${value.orderNo}&comNo=${sessionScope.loginUser.comNo }'">수락</button>
+													<button type="button" class="btn btn-secondary btn-sm" onclick = "location.href = 'refuseOrder.com?orderNo=${value.orderNo}&comNo=${sessionScope.loginUser.comNo }'">거절</button>
 												</td>
 											</tr>
 										</c:forEach>

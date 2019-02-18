@@ -97,7 +97,7 @@
 				<div align="right">
 					<button type="button" class="btn btn-primary" style="width: 150px"
 						data-toggle="modal" data-target="#smallmodal">명세서 확인</button>
-					<button onclick="location.href = 'selectAllMaterialList.com'"
+					<button onclick="location.href = 'selectAllMaterialList.com?comNo=${sessionScope.loginUser.comNo }'"
 						type="button" class="btn btn-secondary" style="width: 150px">취소</button>
 				</div>
 			</div>
@@ -123,6 +123,7 @@
 				<div class="modal-body">
 					<form method="post" id="smsForm">
 						번호입력 : <input type="text" name="from" style="border-radius: 5px" />
+						<input type = "hidden" name = "comNo" value = "${sessionScope.loginUser.comNo }"/>
 						<input type = "hidden" name="text" value = '
 						[피자학교]업체 재고 결제 내역안내
 						안녕하세요, 점주님의 이번달 주문내역과 결제내역을 안내해드립니다!점주님께서는 이번달 말일까지  해당 계좌로 입금부탁드립니다

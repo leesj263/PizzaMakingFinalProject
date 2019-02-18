@@ -63,46 +63,46 @@ public class CompanyServiceImpl implements CompanyService{
 	}
 
 	@Override
-	public ArrayList<CompanyOrder> orderWaiting() throws FailSelectOrder {
+	public ArrayList<CompanyOrder> orderWaiting(int comNo) throws FailSelectOrder {
 		// TODO Auto-generated method stub
 		ArrayList<CompanyOrder> list = new ArrayList<CompanyOrder>();
-		list = cd.orderWaiting(sqlSession);
+		list = cd.orderWaiting(sqlSession, comNo);
 
 		
 		return list;
 	}
 
 	@Override
-	public ArrayList<CompanyOrder> orderMaking() throws FailSelectOrder {
+	public ArrayList<CompanyOrder> orderMaking(int comNo) throws FailSelectOrder {
 		ArrayList<CompanyOrder> list = new ArrayList<CompanyOrder>();
-		list = cd.orderMaking(sqlSession);
+		list = cd.orderMaking(sqlSession, comNo);
 
 		
 		return list;
 	}
 
 	@Override
-	public ArrayList<CompanyOrder> orderDelivering() throws FailSelectOrder {
+	public ArrayList<CompanyOrder> orderDelivering(int comNo) throws FailSelectOrder {
 		ArrayList<CompanyOrder> list = new ArrayList<CompanyOrder>();
-		list = cd.orderDelivering(sqlSession);
+		list = cd.orderDelivering(sqlSession, comNo);
 
 		
 		return list;
 	}
 
 	@Override
-	public ArrayList<CompanyOrder> orderComplete() throws FailSelectOrder {
+	public ArrayList<CompanyOrder> orderComplete(int comNo) throws FailSelectOrder {
 		ArrayList<CompanyOrder> list = new ArrayList<CompanyOrder>();
-		list = cd.orderComplete(sqlSession);
+		list = cd.orderComplete(sqlSession, comNo);
 
 		
 		return list;
 	}
 	
 	@Override
-	public ArrayList<CompanyOrder> orderRefuseList() throws FailSelectOrder {
+	public ArrayList<CompanyOrder> orderRefuseList(int comNo) throws FailSelectOrder {
 		ArrayList<CompanyOrder> list = new ArrayList<CompanyOrder>();
-		list = cd.orderRefuseList(sqlSession);
+		list = cd.orderRefuseList(sqlSession, comNo);
 
 		
 		return list;
@@ -112,9 +112,9 @@ public class CompanyServiceImpl implements CompanyService{
 	
 
 	@Override
-	public int acceptOrder(int orderNoInt) throws FailUpdateOrderStatus {
+	public int acceptOrder(CompanySales comsales) throws FailUpdateOrderStatus {
 		// TODO Auto-generated method stub
-		int result = cd.acceptOrder(sqlSession, orderNoInt);
+		int result = cd.acceptOrder(sqlSession, comsales);
 		
 		return result;
 	}
@@ -274,10 +274,10 @@ public class CompanyServiceImpl implements CompanyService{
 	}
 
 	@Override
-	public ArrayList<CompanyCalendar> calendarDetail(Date date) throws FailSelectCalendar {
+	public ArrayList<CompanyCalendar> calendarDetail(CompanyCalendar cc) throws FailSelectCalendar {
 		// TODO Auto-generated method stub
 		ArrayList<CompanyCalendar> list = new ArrayList<CompanyCalendar>();
-		list = cd.calendarDetail(sqlSession, date);
+		list = cd.calendarDetail(sqlSession, cc);
 		return list;
 	}
 

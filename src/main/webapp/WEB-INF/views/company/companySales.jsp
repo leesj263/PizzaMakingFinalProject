@@ -61,7 +61,7 @@
 
 				</div>
 				<!-- .animated -->
-				<button id = "salesListBtn" onclick = "location.href='selectCompanySalesList.com'" type="button" class="btn btn-primary" style = "width : 150px">매출 내역</button>
+				<button id = "salesListBtn" onclick = "location.href='selectCompanySalesList.com?comNo=${sessionScope.loginUser.comNo }'" type="button" class="btn btn-primary" style = "width : 150px">매출 내역</button>
 			</div>
 			<!-- .content -->
 		</div>

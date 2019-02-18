@@ -75,7 +75,7 @@
 					
 
 				</div>
-						<button type="button" class="btn btn-secondary" onclick = "location.href = 'goMain.com'"><i class="fa fa-mail-reply"></i>돌아가기</button>
+						<button type="button" class="btn btn-secondary" onclick = "location.href = 'goMain.com?memberNo=${sessionScope.loginUser.memberNo }'"><i class="fa fa-mail-reply"></i>돌아가기</button>
 				
 			</div>
 			
@@ -91,7 +91,7 @@
 		console.log("date : " + date);
 		console.log("listSize : " + listSize);
 		//memberCode로 회사별 달력을 구분함, 임의로 memberNo를 100으로 입력
-		var memberNo = 100;
+		var memberNo = "${sessionScope.loginUser.memberNo }";
 		
 		$.ajax({
 			url : "insertCalendarData.com",
@@ -101,7 +101,7 @@
 				memberNo : memberNo},
 			type : "get",
 			success : function(data){
-				location.href = "calendarDetail.com?id="+date;
+				location.href = "calendarDetail.com?id="+date+ "&memberNo=${sessionScope.loginUser.memberNo }";
 				console.log(date);
 			},
 			error : function(data){
@@ -129,7 +129,7 @@
 	}
 	
 	function cancelModify(){
-		location.href = "calendarDetail.com?id="+"${ date }";
+		location.href = "calendarDetail.com?id=${ date }&memberNo=${sessionScope.loginUser.memberNo }";
 	}
 	
 	function reflectModify(btn){
@@ -138,18 +138,19 @@
 		console.log($("#reflectModifyId").val());
 		var calendarNo = $(btn).parent().attr("calNo");
 		console.log("calendarNo : " + calendarNo);
-		
+		var memberNo = "${sessionScope.loginUser.memberNo }";
 		
 		$.ajax({
 			url : "reflectModify.com",
 			data : {
 				date : date,
 				content : content,
-				calendarNo : calendarNo
+				calendarNo : calendarNo,
+				memberNo : memberNo
 			},
 			type : "get",
 			success : function(data){
-				location.href = "calendarDetail.com?id="+date;
+				location.href = "calendarDetail.com?id="+date+ "&memberNo=${sessionScope.loginUser.memberNo }";
 				console.log(data);
 			},
 			error : function(data){
@@ -169,17 +170,19 @@
 		console.log("listSize : " + listSize);
 		var calendarNo = $(btn).attr("id");
 		console.log("calendarNo : " + calendarNo);
+		var memberNo = "${sessionScope.loginUser.memberNo }";
 		
 		$.ajax({
 			url : "deleteCalendarData.com",
 			data : {
 				date : date,
 				listSize : listSize,
-				calendarNo : calendarNo
+				calendarNo : calendarNo,
+				memberNo : memberNo
 			},
 			type : "get",
 			success : function(data){
-				location.href = "calendarDetail.com?id="+date;
+				location.href = "calendarDetail.com?id="+date + "&memberNo=${sessionScope.loginUser.memberNo }";
 				console.log(data);
 			},
 			error : function(data){

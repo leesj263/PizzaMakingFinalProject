@@ -137,7 +137,7 @@
 				<hr>
 					<div align = "right">
 					<button onclick = "applyStock()" type="button" class="btn btn-primary" style = "width : 150px">신청</button>
-					<button onclick = "location.href = 'selectAllMaterialList.com'" type="button" class="btn btn-secondary" style = "width : 150px">취소</button>
+					<button onclick = "location.href = 'selectAllMaterialList.com?comNo=${sessionScope.loginUser.comNo }'" type="button" class="btn btn-secondary" style = "width : 150px">취소</button>
 					</div>
 				</div>
 			</div>
@@ -216,9 +216,8 @@
 			for(var i = 0; i < trLength ; i++){
 				var data = "";
 				
-				data += 2 ;
+				data += "${sessionScope.loginUser.comNo }";
 				data += ",";
-				//임시로 넣어둔 회사번호
 				data += $("#orderStockTable").children("tr").eq(i).attr("id");
 				data += ",";
 				data += $("#orderStockTable").children("tr").eq(i).children("td").eq(0).text();
@@ -244,7 +243,7 @@
 					  icon: "success",
 					}).then((value) =>{
 					if(value = "ok"){
-						location.href = "selectAllMaterialList.com";
+						location.href = "selectAllMaterialList.com?comNo=${sessionScope.loginUser.comNo }";
 					}
 				});
 				

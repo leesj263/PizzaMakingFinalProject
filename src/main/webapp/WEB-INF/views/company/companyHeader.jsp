@@ -22,8 +22,8 @@
                 <div class="col-sm-5">
                     <div class="user-area dropdown float-right" align = "right">
                     <div style = "font-size : 1.1em">
-                    	<label style = "text-size : 1.2em">사당1호</label>지점&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    	<b>점주</b>&nbsp;&nbsp;&nbsp;<label>황민규</label>
+                    	<label style = "text-size : 1.2em">사당 1호</label>지점&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    	<b>점주</b>&nbsp;&nbsp;&nbsp;<label>${sessionScope.loginUser.memberName }</label>
                     </div>
                      <%-- <img class="user-avatar rounded-circle" src="${contextPath }/resources/companyCss/images/admin.jpg" alt="User Avatar"> --%>
                      <button type="button" class="btn btn-primary" onclick = "location.href = 'index.jsp'"><i class="fa fa-cutlery"></i>&nbsp; 사용자 메뉴로 이동</button>

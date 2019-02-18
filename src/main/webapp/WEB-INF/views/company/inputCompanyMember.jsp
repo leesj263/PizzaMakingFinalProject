@@ -117,17 +117,20 @@
      		var inputPhone = $("input[name='phone']").val();
      		var inputAddress = $("input[name='address']").val();
      		var inputDate = $("input[name='date']").val();
+     		var comNo = "${sessionScope.loginUser.comNo }";
      		
      		$.ajax({
      			url : "inputEmployeeInfo.com",
-     			data : {inputRank : inputRank,
+     			data : {
+     				comNo : comNo,
+     				inputRank : inputRank,
      				inputName : inputName,
      				inputPhone : inputPhone,
      				inputAddress : inputAddress,
      				inputDate : inputDate},
      			type : "get",
      			success : function(data){
-     				location.href = "selectEmployeeList.com";
+     				location.href = "selectEmployeeList.com?comNo=${sessionScope.loginUser.comNo }";
      			},
      			error : function(data){
      				console.log(data);

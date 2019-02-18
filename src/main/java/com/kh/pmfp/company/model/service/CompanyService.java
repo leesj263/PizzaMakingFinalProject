@@ -35,19 +35,19 @@ public interface CompanyService {
 
 	CompanyBoard detailAdminMessage(int boardNo) throws FaileDetailMessage;
 
-	ArrayList<CompanyOrder> orderWaiting() throws FailSelectOrder;
+	ArrayList<CompanyOrder> orderWaiting(int comNo) throws FailSelectOrder;
 
-	ArrayList<CompanyOrder> orderMaking() throws FailSelectOrder;
+	ArrayList<CompanyOrder> orderMaking(int comNo) throws FailSelectOrder;
 
-	ArrayList<CompanyOrder> orderDelivering() throws FailSelectOrder;
+	ArrayList<CompanyOrder> orderDelivering(int comNo) throws FailSelectOrder;
 
-	ArrayList<CompanyOrder> orderComplete() throws FailSelectOrder;
+	ArrayList<CompanyOrder> orderComplete(int comNo) throws FailSelectOrder;
 
-	int acceptOrder(int orderNoInt) throws FailUpdateOrderStatus;
+	int acceptOrder(CompanySales comsales) throws FailUpdateOrderStatus;
 
 	int refuseOrder(int orderNoInt) throws FailUpdateOrderStatus;
 
-	ArrayList<CompanyOrder> orderRefuseList() throws FailSelectOrder;
+	ArrayList<CompanyOrder> orderRefuseList(int comNo) throws FailSelectOrder;
 
 	ArrayList<CompanyEmployee> remainDeliveryMan(int comNo) throws FailSelectDeliveryMan;
 
@@ -85,7 +85,7 @@ public interface CompanyService {
 
 	HashMap<String, ArrayList<CompanySalesList>> selectCompanySalesList(int comNo) throws FailSelectCompanySales;
 
-	ArrayList<CompanyCalendar> calendarDetail(Date date) throws FailSelectCalendar;
+	ArrayList<CompanyCalendar> calendarDetail(CompanyCalendar cc) throws FailSelectCalendar;
 
 	int insertCalendarData(CompanyCalendar cc) throws FailChangeCalendarDate;
 

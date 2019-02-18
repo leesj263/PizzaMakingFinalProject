@@ -135,11 +135,11 @@
                             <li><i class="menu-icon fa fa-sign-in"></i><a href="movePage.com?movePage=page-login">Login</a></li>
                             <li><i class="menu-icon fa fa-sign-in"></i><a href="movePage.com?movePage=page-register">Register</a></li>
                             <li><i class="menu-icon fa fa-paper-plane"></i><a href="movePage.com?movePage=pages-forget">Forget Pass</a></li>
-                            <li><i class="menu-icon fa fa-paper-plane"></i><a href="orderWaiting.com">주문신청 내역</a></li>
-                            <li><i class="menu-icon fa fa-paper-plane"></i><a href="selectEmployeeList.com">업체 직원 관리</a></li>
-                            <li><i class="menu-icon fa fa-paper-plane"></i><a href="selectAllMaterialList.com">업체 재고관리</a></li>
-                            <li><i class="menu-icon fa fa-paper-plane"></i><a href="selectAllCompanySales.com">업체 매출관리</a></li>
-                            <li><i class="menu-icon fa fa-paper-plane"></i><a href="selectCompanyReview.com">업체 후기 작성</a></li>
+                            <li><i class="menu-icon fa fa-paper-plane"></i><a href="orderWaiting.com?comNo=${sessionScope.loginUser.comNo }">주문신청 내역</a></li>
+                            <li><i class="menu-icon fa fa-paper-plane"></i><a href="selectEmployeeList.com?comNo=${sessionScope.loginUser.comNo }">업체 직원 관리</a></li>
+                            <li><i class="menu-icon fa fa-paper-plane"></i><a href="selectAllMaterialList.com?comNo=${sessionScope.loginUser.comNo }">업체 재고관리</a></li>
+                            <li><i class="menu-icon fa fa-paper-plane"></i><a href="selectAllCompanySales.com?comNo=${sessionScope.loginUser.comNo }">업체 매출관리</a></li>
+                            <li><i class="menu-icon fa fa-paper-plane"></i><a href="selectCompanyReview.com?comNo=${sessionScope.loginUser.comNo }">업체 후기 작성</a></li>
                         </ul>
                     </li>
                 </ul>

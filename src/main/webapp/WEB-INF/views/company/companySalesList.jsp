@@ -140,7 +140,7 @@ td {
 				<div align="right">
 					<!-- <button  type="button" class="btn btn-primary" style="width: 150px" data-toggle="modal" data-target="#smallmodal">매출
 						내역 받기</button> -->
-					<button onclick="location.href='selectAllCompanySales.com'" type="button"
+					<button onclick="location.href='selectAllCompanySales.com?comNo=${sessionScope.loginUser.comNo }'" type="button"
 						class="btn btn-secondary" style="width: 150px">돌아가기</button>
 				</div>
 			</div>

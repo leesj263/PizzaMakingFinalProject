@@ -91,12 +91,13 @@ public class CompanyController {
 	 * 
 	 * return "main/main"; }
 	 */
-
+	//페이지 이동
 	@RequestMapping(value = "movePage.com", method = RequestMethod.GET)
 	public String moveCompanyPage(String movePage) {
 		return "company/" + movePage;
 	}
-
+	
+	//고객페이지로 이동
 	@RequestMapping(value = "movePageToCustomerReview.com", method = RequestMethod.GET)
 	public String moveCompanyPage2(String movePage) {
 		return "customer/review/" + movePage;
@@ -121,13 +122,13 @@ public class CompanyController {
 
 	}*/
 	
-	
+	//업체 메인페이지로 이동(관리자 메세지보기, 달력보기)
 	@RequestMapping(value = "goMain.com", method = RequestMethod.GET)
-	public String goCompanyMain(HttpServletRequest request, HttpServletResponse response) {
+	public String goCompanyMain(HttpServletRequest request, HttpServletResponse response, String memberNo) {
 		HashMap<String, ArrayList> hmap = new HashMap<String, ArrayList>();
 		try {
-			int memberNo = 100;
-			hmap = cs.selectAdminMessage(memberNo);
+			int IntMemberNo = Integer.parseInt(memberNo);
+			hmap = cs.selectAdminMessage(IntMemberNo);
 			ArrayList<CompanyBoard> adminMessage = hmap.get("adminMessage");
 			ArrayList<CompanyCalendar> memberCalendar = hmap.get("memberCalendar");
 			// System.out.println("adminMessage : " + adminMessage);
@@ -170,7 +171,7 @@ public class CompanyController {
 	
 	
 	
-
+	//관리자 메세지 상세보기
 	@RequestMapping("detailAdminMessage.com")
 	public String detailAdminMessage(int boardNo, HttpServletRequest request, HttpServletResponse response) {
 		System.out.println("클릭한 게시글 번호 : " + boardNo);
@@ -192,11 +193,14 @@ public class CompanyController {
 		return "company/companyMain";
 	}
 
+	//주문대기
 	@RequestMapping("orderWaiting.com")
-	public String orderWaiting(HttpServletRequest request, HttpServletResponse response) {
+	public String orderWaiting(HttpServletRequest request, HttpServletResponse response, String comNo) {
+		int IntComNo = Integer.parseInt(comNo);
+		System.out.println("IntComNo : " + IntComNo);
 		ArrayList<CompanyOrder> list = new ArrayList<CompanyOrder>();
 		try {
-			list = cs.orderWaiting();
+			list = cs.orderWaiting(IntComNo);
 			System.out.println("대기중 리스트 : " + list);
 			request.setAttribute("list", list);
 			return "company/orderListWaitting";
@@ -207,18 +211,20 @@ public class CompanyController {
 		}
 
 	}
-
+	
+	//주문 제조중
 	@RequestMapping("orderMaking.com")
-	public String orderMaking(HttpServletRequest request, HttpServletResponse response) {
+	public String orderMaking(HttpServletRequest request, HttpServletResponse response, String comNo) {
+		int IntComNo = Integer.parseInt(comNo);
+		System.out.println("IntComNo : " + IntComNo);
 		ArrayList<CompanyOrder> list = new ArrayList<CompanyOrder>();
 		ArrayList<CompanyEmployee> DeliveryManList = new ArrayList<CompanyEmployee>();
 		try {
-			list = cs.orderMaking();
+			list = cs.orderMaking(IntComNo);
 			System.out.println("제조중 리스트 : " + list);
 			request.setAttribute("list", list);
 
-			// CompanyNo를 임시로 2로 부여
-			DeliveryManList = cs.remainDeliveryMan(2);
+			DeliveryManList = cs.remainDeliveryMan(IntComNo);
 			request.setAttribute("DeliveryManList", DeliveryManList);
 			System.out.println("배달원 리스트 : " + DeliveryManList);
 			return "company/orderListMaking";
@@ -229,11 +235,14 @@ public class CompanyController {
 		}
 	}
 
+	//주문 배달중
 	@RequestMapping("orderDelivering.com")
-	public String orderDelivering(HttpServletRequest request, HttpServletResponse response) {
+	public String orderDelivering(HttpServletRequest request, HttpServletResponse response, String comNo) {
+		int IntComNo = Integer.parseInt(comNo);
+		System.out.println("IntComNo : " + IntComNo);
 		ArrayList<CompanyOrder> list = new ArrayList<CompanyOrder>();
 		try {
-			list = cs.orderDelivering();
+			list = cs.orderDelivering(IntComNo);
 			System.out.println("배달중 리스트 : " + list);
 			request.setAttribute("list", list);
 			return "company/orderListDelivering";
@@ -244,11 +253,14 @@ public class CompanyController {
 		}
 	}
 
+	//배달완료
 	@RequestMapping("orderComplete.com")
-	public String orderComplete(HttpServletRequest request, HttpServletResponse response) {
+	public String orderComplete(HttpServletRequest request, HttpServletResponse response, String comNo) {
+		int IntComNo = Integer.parseInt(comNo);
+		System.out.println("IntComNo : " + IntComNo);
 		ArrayList<CompanyOrder> list = new ArrayList<CompanyOrder>();
 		try {
-			list = cs.orderComplete();
+			list = cs.orderComplete(IntComNo);
 			System.out.println("배달완료 리스트 : " + list);
 			request.setAttribute("list", list);
 			return "company/orderListComplete";
@@ -259,11 +271,14 @@ public class CompanyController {
 		}
 	}
 
+	//배달 거절목록
 	@RequestMapping("orderRefuseList.com")
-	public String orderRefuseList(HttpServletRequest request, HttpServletResponse response) {
+	public String orderRefuseList(HttpServletRequest request, HttpServletResponse response, String comNo) {
+		int IntComNo = Integer.parseInt(comNo);
+		System.out.println("IntComNo : " + IntComNo);
 		ArrayList<CompanyOrder> list = new ArrayList<CompanyOrder>();
 		try {
-			list = cs.orderRefuseList();
+			list = cs.orderRefuseList(IntComNo);
 			System.out.println("거절목록 리스트 : " + list);
 			request.setAttribute("list", list);
 			return "company/orderListRefuse";
@@ -276,11 +291,17 @@ public class CompanyController {
 
 	// 주문을 수락
 	@RequestMapping("acceptOrder.com")
-	public String acceptOrder(String orderNo) {
+	public String acceptOrder(String orderNo, String comNo) {
 		int orderNoInt = Integer.parseInt(orderNo);
-		// System.out.println("orderNoInt : " + orderNoInt);
+		int IntComNo = Integer.parseInt(comNo);
+		
+		
+		CompanySales comsales = new CompanySales();
+		comsales.setOrderNo(orderNoInt);
+		comsales.setComNo(IntComNo);
+		
 		try {
-			int result = cs.acceptOrder(orderNoInt);
+			int result = cs.acceptOrder(comsales);
 			System.out.println("acceptresult : " + result);
 
 		} catch (FailUpdateOrderStatus e) {
@@ -288,14 +309,13 @@ public class CompanyController {
 			e.printStackTrace();
 		}
 
-		return "redirect:orderWaiting.com";
+		return "redirect:orderWaiting.com?comNo="+comNo;
 	}
 
 	// 주문을 거절
 	@RequestMapping("refuseOrder.com")
-	public String refuseOrder(String orderNo) {
+	public String refuseOrder(String orderNo, String comNo) {
 		int orderNoInt = Integer.parseInt(orderNo);
-		// System.out.println("orderNoInt : " + orderNoInt);
 		try {
 			int result = cs.refuseOrder(orderNoInt);
 			System.out.println("refuseresult : " + result);
@@ -305,7 +325,7 @@ public class CompanyController {
 			e.printStackTrace();
 		}
 
-		return "redirect:orderWaiting.com";
+		return "redirect:orderWaiting.com?comNo="+comNo;
 	}
 
 	/*
@@ -324,12 +344,12 @@ public class CompanyController {
 	 * }
 	 */
 
+	//배달원 배정
 	@RequestMapping("assignDeliveryMan.com")
 	public String assignDeliveryMan(String orderNo, String empNo, HttpServletRequest request,
-			HttpServletResponse response) {
+			HttpServletResponse response, String comNo) {
 		// 배달원 상태변경
 		// 주문 상태변경 2가지를 수행해야됨
-		// System.out.println("orderNo : " + orderNo);
 		System.out.println("배달원지정 메소드 들어옴");
 		int orderNoInt = Integer.parseInt(orderNo);
 		int empNoInt = Integer.parseInt(empNo);
@@ -340,20 +360,21 @@ public class CompanyController {
 			System.out.println("deliveryManUpdate : " + deliveryManUpdate);
 			System.out.println("orderUpdate : " + orderUpdate);
 
-			return "redirect:orderMaking.com";
+			return "redirect:orderMaking.com?comNo="+comNo;
 		} catch (FailUpdateDelivery | FailUpdateOrderStatus e) {
 			request.setAttribute("msg", e.getMessage());
 			return "common/errorPage";
 		}
 	}
 
+	//배달완료로 상태변경
 	@RequestMapping("deliveryComplete.com")
-	public String deliveryComplete(String orderNo, HttpServletRequest request, HttpServletResponse response) {
+	public String deliveryComplete(String orderNo, HttpServletRequest request, HttpServletResponse response, String comNo) {
 		int orderNoInt = Integer.parseInt(orderNo);
 
 		try {
 			int result = cs.orderUpdateToComplete(orderNoInt);
-			return "redirect:orderDelivering.com";
+			return "redirect:orderDelivering.com?comNo="+comNo;
 
 		} catch (FailUpdateOrderStatus e) {
 			request.setAttribute("msg", e.getMessage());
@@ -362,15 +383,16 @@ public class CompanyController {
 
 	}
 
+	//배달상태 삭제로 변경
 	@RequestMapping("orderUpdateToDelete.com")
-	public String orderUpdateToDelete(String orderNo, HttpServletRequest request, HttpServletResponse response) {
+	public String orderUpdateToDelete(String orderNo, HttpServletRequest request, HttpServletResponse response, String comNo) {
 
 		int orderNoInt = Integer.parseInt(orderNo);
 
 		try {
 			int result = cs.orderUpdateToDelete(orderNoInt);
 
-			return "redirect:orderComplete.com";
+			return "redirect:orderComplete.com?comNo="+comNo;
 
 		} catch (FailUpdateOrderStatus e) {
 			request.setAttribute("msg", e.getMessage());
@@ -378,27 +400,29 @@ public class CompanyController {
 		}
 	}
 
+	//거절목록 삭제
 	@RequestMapping("refuseListDelete.com")
-	public String refuseListDelete(String orderNo, HttpServletRequest request, HttpServletResponse response) {
+	public String refuseListDelete(String orderNo, HttpServletRequest request, HttpServletResponse response, String comNo) {
 
 		int orderNoInt = Integer.parseInt(orderNo);
 
 		try {
 			int result = cs.refuseListDelete(orderNoInt);
 
-			return "redirect:orderRefuseList.com";
+			return "redirect:orderRefuseList.com?comNo="+comNo;
 		} catch (FailUpdateOrderStatus e) {
 			request.setAttribute("msg", e.getMessage());
 			return "common/errorPage";
 		}
 	}
 
+	//직원목록 가져오기
 	@RequestMapping("selectEmployeeList.com")
-	public String selectEmployeeList(HttpServletRequest request, HttpServletResponse response) {
+	public String selectEmployeeList(HttpServletRequest request, HttpServletResponse response, String comNo) {
+		int IntComNo = Integer.parseInt(comNo);
 		ArrayList<CompanyEmployee> list = new ArrayList<CompanyEmployee>();
 		try {
-			// 업체번호를 임시로 2로 부여
-			list = cs.selectEmployeeList(2);
+			list = cs.selectEmployeeList(IntComNo);
 			request.setAttribute("list", list);
 			return "company/CompanyEmployeeList";
 
@@ -408,8 +432,10 @@ public class CompanyController {
 		}
 	}
 
+	//새로운 직원 넣기
 	@RequestMapping("inputEmployeeInfo.com")
-	public void inputEmployeeInfo(HttpServletRequest request, HttpServletResponse response) {
+	public void inputEmployeeInfo(HttpServletRequest request, HttpServletResponse response, String comNo) {
+		int IntComNo = Integer.parseInt(comNo);
 		String inputRank = request.getParameter("inputRank");
 		String inputName = request.getParameter("inputName");
 		String inputPhone = request.getParameter("inputPhone");
@@ -424,15 +450,15 @@ public class CompanyController {
 
 		try {
 			java.sql.Date date = java.sql.Date.valueOf(inputDate);
-
+			System.out.println("date : " + date);
 			CompanyEmployee ce = new CompanyEmployee();
-			// 나중에 업체번호도 넣어야됨
 			ce.setEmployeeRank(inputRank);
 			ce.setEmployeeName(inputName);
 			ce.setEmployeePhone(inputPhone);
 			ce.setEmployeeAddress(inputAddress);
 			ce.setEmployeeDate(date);
-
+			ce.setCompanyNo(IntComNo);
+			
 			int result = cs.inputEmployeeInfo(ce);
 
 		} catch (FailInsertEmployeeInfo e) {
@@ -442,6 +468,7 @@ public class CompanyController {
 
 	}
 
+	//직원 목록 삭제
 	@RequestMapping("deleteEmployeeInfo.com")
 	public void deleteEmployeeInfo(HttpServletRequest request, HttpServletResponse response) {
 		String[] empNoList = request.getParameterValues("arr");
@@ -464,13 +491,14 @@ public class CompanyController {
 
 	}
 
+	
+	//업체 리뷰목록 가져오기
 	@RequestMapping("selectCompanyReview.com")
-	public String selectCompanyReview(HttpServletRequest request, HttpServletResponse response) {
-
+	public String selectCompanyReview(HttpServletRequest request, HttpServletResponse response, String comNo) {
+		int IntComNo = Integer.parseInt(comNo);
 		ArrayList<CompanyBoard> list = new ArrayList<CompanyBoard>();
 		try {
-			// 업체번호를 넘겨야됨(임시로 2번)
-			list = cs.selectCompanyReview(2);
+			list = cs.selectCompanyReview(IntComNo);
 			request.setAttribute("list", list);
 			return "company/companyAnswer";
 
@@ -481,6 +509,7 @@ public class CompanyController {
 
 	}
 
+	//재고 주문페이지로 이동(재고들 목록 가져옴(가격, 종류등 정보))
 	@RequestMapping("orderStrok.com")
 	public String orderStrok(HttpServletRequest request, HttpServletResponse response) {
 		ArrayList<CompanyMaterial> list = new ArrayList<CompanyMaterial>();
@@ -495,6 +524,7 @@ public class CompanyController {
 
 	}
 
+	//재고 주문하기(주문할 재고들 선택된 상태)
 	@RequestMapping("applyStock.com")
 	public void applyStock(HttpServletRequest request, HttpServletResponse response) {
 
@@ -527,13 +557,13 @@ public class CompanyController {
 
 	}
 
+	//주문목록 리스트 가져옴
 	@RequestMapping("selectOrderStockList.com")
-	public String selectOrderStockList(HttpServletRequest request, HttpServletResponse response) {
-
+	public String selectOrderStockList(HttpServletRequest request, HttpServletResponse response, String comNo) {
+		int IntComNo = Integer.parseInt(comNo);
 		ArrayList<CompanyOrderStock> list = new ArrayList<CompanyOrderStock>();
 		try {
-			// 회사번호 임의 입력
-			list = cs.selectOrderStockList(2);
+			list = cs.selectOrderStockList(IntComNo);
 			request.setAttribute("list", list);
 			return "company/orderStockList";
 
@@ -544,6 +574,7 @@ public class CompanyController {
 
 	}
 
+	//배달 수령으로 상태변경 
 	@RequestMapping("receiptConfirm.com")
 	public void receiptConfirm(HttpServletRequest request, HttpServletResponse response) {
 		String[] arr = request.getParameterValues("arr");
@@ -564,12 +595,13 @@ public class CompanyController {
 		}
 	}
 
+	//결제목록 리스트 가져오기
 	@RequestMapping("selectReceiptList.com")
-	public String selectReceiptList(HttpServletRequest request, HttpServletResponse response) {
+	public String selectReceiptList(HttpServletRequest request, HttpServletResponse response, String comNo) {
+		int IntComNo = Integer.parseInt(comNo);
 		ArrayList<CompanyOrderStock> list = new ArrayList<CompanyOrderStock>();
-		// 임시로 회사번호 2번으로 넘김, 나중에 로그인 완성시 수정하기
 		try {
-			list = cs.selectReceiptList(2);
+			list = cs.selectReceiptList(IntComNo);
 			request.setAttribute("list", list);
 			return "company/companyReceipt";
 		} catch (FailSelectOrderStock e) {
@@ -578,12 +610,13 @@ public class CompanyController {
 		}
 	}
 
+	//모든 재고 리스트 가져오기
 	@RequestMapping("selectAllMaterialList.com")
-	public String selectAllMaterialList(HttpServletRequest request, HttpServletResponse response) {
-		// 임시로 업체번호를 2번으로 지정, 나중에 로그인 완성시 수정하기
+	public String selectAllMaterialList(HttpServletRequest request, HttpServletResponse response, String comNo) {
+		int IntConNo = Integer.parseInt(comNo);
 		ArrayList<CompanyRemainMaterial> list = new ArrayList<CompanyRemainMaterial>();
 		try {
-			list = cs.selectAllMaterialList(2);
+			list = cs.selectAllMaterialList(IntConNo);
 			request.setAttribute("list", list);
 			System.out.println("조회한 모든 남은재고 list : " + list);
 			return "company/companyStock";
@@ -619,9 +652,10 @@ public class CompanyController {
 		}
 	}*/
 	
+	//영수증 메세지 보내기
 	@RequestMapping("sendExampleMsg.com")
 	  public String sendSms(HttpServletRequest request) throws Exception {
-
+		String comNo = request.getParameter("comNo");
 	    String api_key = "NCSA40TFBGX94XV0";
 	    String api_secret = "98M3RJGXL6EKXF2I1SCV1ZJJD9AT546V";
 	    Coolsms coolsms = new Coolsms(api_key, api_secret);
@@ -653,19 +687,18 @@ public class CompanyController {
 	      System.out.println(result.get("message")); // 에러메시지
 	    }
 
-	    return "redirect:selectReceiptList.com";
+	    return "redirect:selectReceiptList.com?comNo="+comNo;
 	  }
 
 	
 	
-	
+	//업체의 모든 매출목록 가져오기
 	@RequestMapping("selectAllCompanySales.com")
-	public String selectAllCompanySales(HttpServletRequest request, HttpServletResponse response) {
-		
+	public String selectAllCompanySales(HttpServletRequest request, HttpServletResponse response, String comNo) {
+		int IntComNo = Integer.parseInt(comNo);
 		ArrayList<CompanySales> list = new ArrayList<CompanySales>();
-		//임시로 업체번호 입력
 		try {
-			list = cs.selectAllCompanySales(2);
+			list = cs.selectAllCompanySales(IntComNo);
 			request.setAttribute("list", list);
 			System.out.println("매출 리스트 : " + list);
 			return "company/companySales";
@@ -678,14 +711,13 @@ public class CompanyController {
 
 	}
 	
-	
+	//매출목록 리스트 가져오기(텍스트)
 	@RequestMapping("selectCompanySalesList.com")
-	public String selectCompanySalesList(HttpServletRequest request, HttpServletResponse response) {
-
+	public String selectCompanySalesList(HttpServletRequest request, HttpServletResponse response, String comNo) {
+		int IntComNo = Integer.parseInt(comNo);
 		HashMap<String, ArrayList<CompanySalesList>> hmap = new HashMap<String, ArrayList<CompanySalesList>>();
-		//임의로 회사번호 입력
 		try {
-			hmap = cs.selectCompanySalesList(2);
+			hmap = cs.selectCompanySalesList(IntComNo);
 			ArrayList<CompanySalesList> inComeList = hmap.get("inComeList");
 			ArrayList<CompanySalesList> outComeList = hmap.get("outComeList");
 			request.setAttribute("inComeList", inComeList);
@@ -703,17 +735,22 @@ public class CompanyController {
 		
 	}
 	
-	
+	//달력 상세보기
 	@RequestMapping("calendarDetail.com")
-	public String calendarDetail(HttpServletRequest request, HttpServletResponse response, String id) {
+	public String calendarDetail(HttpServletRequest request, HttpServletResponse response, String id, String memberNo) {
 		ArrayList<CompanyCalendar> list = new ArrayList<CompanyCalendar>();
+		
+		int IntMemberNo = Integer.parseInt(memberNo);
 		
 		System.out.println("id : " + id);
 		java.sql.Date date = java.sql.Date.valueOf(id);
 		System.out.println("date : " + date);
-
+		
+		CompanyCalendar cc = new CompanyCalendar();
+		cc.setMemberNo(IntMemberNo);
+		cc.setCalendarDate(date);
 		try {
-			list = cs.calendarDetail(date);
+			list = cs.calendarDetail(cc);
 			
 			request.setAttribute("list", list);
 			request.setAttribute("date", date);
@@ -727,7 +764,7 @@ public class CompanyController {
 		
 	}
 	
-	
+	//달력에 일정 삽입하기
 	@RequestMapping("insertCalendarData.com")
 	public String insertCalendarData(String date, String memberNo, String listSize, String text) {
 		/*System.out.println("date : " + date);
@@ -744,16 +781,16 @@ public class CompanyController {
 		try {
 			int result = cs.insertCalendarData(cc);
 			System.out.println("달력 데이터 삽입 결과 개수 : " + result);
-			return "redirect:calendarDetail.com?id="+date;
+			return "redirect:calendarDetail.com?id="+date + "&memberNo=" + memberNo;
 		} catch (FailChangeCalendarDate e) {
 			return "common/errorPage";
 		}
 		
 	}
 	
-	
+	//일정 지우기
 	@RequestMapping("deleteCalendarData.com")
-	public String deleteCalendarData(String date, String listSize, String calendarNo) {
+	public String deleteCalendarData(String date, String listSize, String calendarNo, String memberNo) {
 		
 		CompanyCalendar cc = new CompanyCalendar();
 		cc.setCalendarCateg(Integer.parseInt(listSize));
@@ -762,7 +799,7 @@ public class CompanyController {
 		try {
 			int result = cs.deleteCalendarData(cc);
 			
-			return "redirect:calendarDetail.com?id="+date;
+			return "redirect:calendarDetail.com?id="+date + "&memberNo=" + memberNo;
 		} catch (FailChangeCalendarDate e) {
 			return "common/errorPage";
 		}
@@ -770,7 +807,7 @@ public class CompanyController {
 		
 	}
 	
-	
+	//일정 수정하기
 	@RequestMapping("reflectModify.com")
 	public void reflectModify(HttpServletRequest request, HttpServletResponse response, String date, String calendarNo, String content) {
 		System.out.println("date : " + date);
