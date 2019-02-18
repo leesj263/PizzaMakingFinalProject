@@ -396,12 +396,18 @@
 	</insert> -->
 	<insert id="applyStock">
 		INSERT INTO ORDER_MATERIAL
-		VALUES(SEQ_ODMATNO.NEXTVAL, #{comNo}, #{materialNo}, SYSDATE, 1, 'N', 1, #{materialWeight}, #{materialPrice})
+		VALUES(SEQ_ODMATNO.NEXTVAL, #{comNo}, #{materialNo}, TO_DATE(SYSDATE, 'RR-MM-DD'), 1, 'N', (SELECT OE.ORDEREXPENSE_NO FROM (SELECT ORDEREXPENSE_NO FROM ORDER_EXPENSE ORDER BY 1 DESC) OE WHERE ROWNUM =1), #{materialWeight}, #{materialPrice})
 	</insert>
 	
+	<!-- 원본
+		<insert id="applyStock">
+		INSERT INTO ORDER_MATERIAL
+		VALUES(SEQ_ODMATNO.NEXTVAL, #{comNo}, #{materialNo}, SYSDATE, 1, 'N', 1, #{materialWeight}, #{materialPrice})
+	</insert>
+	 -->
 	<insert id="applyStockAndAddExpense">
 		INSERT INTO EXPENSE
-		VALUES(SEQ_EXPNO.NEXTVAL, 2, #{materialPrice}, NULL , SEQ_ODMATNO.CURRVAL)
+		VALUES(SEQ_EXPNO.NEXTVAL, 2, #{materialPrice}, NULL , (SELECT OE.ORDEREXPENSE_NO FROM (SELECT ORDEREXPENSE_NO FROM ORDER_EXPENSE ORDER BY 1 DESC) OE WHERE ROWNUM =1))
 	</insert>
 	
 	<update id="applyStockAndUpdateStockList">
@@ -520,6 +526,18 @@
 		SET  CALENDAR_CATEG = CALENDAR_CATEG - 1
 		WHERE CALENDAR_CATEG > #{calendarCateg}
 		AND CALENDAR_DATE =  #{calendarDate}
+	</update>
+	
+	<select id="selectMemberCalendar" resultMap="companyCalendarResultSet" parameterType="_int">
+		SELECT CALENDAR_NO, CALENDAR_CATEG, CALENDAR_CONTENT, CALENDAR_DATE, MEMBER_NO
+		FROM CALENDAR
+		WHERE MEMBER_NO = #{memberNo}
+	</select>
+	
+	<update id="reflectModify">
+		UPDATE CALENDAR
+		SET CALENDAR_CONTENT = #{calendarContent}
+		WHERE CALENDAR_NO = #{calendarNo}
 	</update>
 	
 </mapper>

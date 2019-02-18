@@ -25,6 +25,7 @@
 <script src="https://code.jquery.com/jquery-3.3.1.js"
 	integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
 	crossorigin="anonymous"></script>
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 	
 <style>
 	.col-lg-8{
@@ -32,6 +33,9 @@
 		left : 15%;
 	}
 </style>
+<script>
+	temp = 0;
+</script>
 </head>
 <body>
 
@@ -54,11 +58,11 @@
 				</div>
 				<div class="card-body card-block">
 				<c:forEach items = "${list}" var = "value">
-					<div class="has-success form-group">
+					<div class="has-success form-group"  calNo = "${value.calendarNo}">
 							<label for="inputSuccess2i" class=" form-control-label" >등록된 일정 : &nbsp;&nbsp;</label><span>
 							${value.calendarContent }</span><br>
 							<button style = "position : relative; top : 5px" type="button" class="btn btn-danger" id = "${value.calendarNo}" onclick = "deleteCalendar(this)">삭제</button> 
-							<button style = "position : relative; top : 5px" type="button" class="btn btn-warning">수정</button>
+							<button style = "position : relative; top : 5px" type="button" class="btn btn-warning" onclick = "modifyCalendar(this)">수정</button>
 					</div>
 					<br>
 				</c:forEach>
@@ -106,6 +110,56 @@
 		});
 	}
 	
+	function modifyCalendar(btn){
+		if(temp == 0){
+			var date = "${date}";
+			$(btn).parent().children("span").remove();
+			$(btn).parent().children("label").append("<input id ='reflectModifyId' type = 'text'/>");
+			
+			$(btn).after("<button style = 'position : relative; top : 5px' type='button' class='btn btn-secondary' onclick = 'cancelModify()'>취소</button>&nbsp;&nbsp;");
+			$(btn).after("<button style = 'position : relative; top : 5px' type='button' class='btn btn-primary'   onclick = 'reflectModify(this)'>등록</button>&nbsp;&nbsp;");
+			$(btn).parent().children("button").eq(0).remove();
+			$(btn).remove();
+			temp = 1;
+		}else{
+			swal("수정중인 작업이 있습니다!");
+		}
+		
+		
+	}
+	
+	function cancelModify(){
+		location.href = "calendarDetail.com?id="+"${ date }";
+	}
+	
+	function reflectModify(btn){
+		var date = "${date}";
+		var content = $("#reflectModifyId").val();
+		console.log($("#reflectModifyId").val());
+		var calendarNo = $(btn).parent().attr("calNo");
+		console.log("calendarNo : " + calendarNo);
+		
+		
+		$.ajax({
+			url : "reflectModify.com",
+			data : {
+				date : date,
+				content : content,
+				calendarNo : calendarNo
+			},
+			type : "get",
+			success : function(data){
+				location.href = "calendarDetail.com?id="+date;
+				console.log(data);
+			},
+			error : function(data){
+				console.log(data);
+			}
+		});
+		
+		
+		
+	}
 	
 	function deleteCalendar(btn){
 		var date = "${date}";

@@ -45,13 +45,13 @@ public class CompanyServiceImpl implements CompanyService{
 	private CompanyDao cd;
 	
 	@Override
-	public ArrayList<CompanyBoard> selectAdminMessage() throws FailSelectAdminMessage {
+	public HashMap<String, ArrayList> selectAdminMessage(int memberNo) throws FailSelectAdminMessage {
 		// TODO Auto-generated method stub
-		ArrayList<CompanyBoard> adminMessage = new ArrayList<CompanyBoard>();
-		adminMessage = cd.selectAdminMessage(sqlSession);
+		HashMap<String, ArrayList> hmap = new HashMap<String, ArrayList>();
+		hmap = cd.selectAdminMessage(sqlSession, memberNo);
 		
 		
-		return adminMessage;
+		return hmap;
 	}
 
 	@Override
@@ -298,13 +298,21 @@ public class CompanyServiceImpl implements CompanyService{
 	}
 
 	@Override
+	public int reflectModify(CompanyCalendar cc) throws FailChangeCalendarDate {
+		// TODO Auto-generated method stub
+		int result = cd.reflectModify(sqlSession, cc);
+		
+		return result;
+	}
+
+/*	@Override
 	public ArrayList<CompanyCalendar> selectMemberCalendar(int memberNo) throws FailSelectCalendar {
 		// TODO Auto-generated method stub
 		ArrayList<CompanyCalendar> list = new ArrayList<CompanyCalendar>();
 		list = cd.selectMemberCalendar(sqlSession, memberNo);
 		
 		return list;
-	}
+	}*/
 	
 	
 }

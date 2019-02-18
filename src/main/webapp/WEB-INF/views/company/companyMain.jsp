@@ -25,6 +25,8 @@
     <script src="https://code.jquery.com/jquery-3.3.1.js"
 	integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
 	crossorigin="anonymous"></script>
+	
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <style>
 	#calendar td:hover{
 		background : lightgray !important; 
@@ -35,7 +37,6 @@
 	}
 	td {
 		table-layout: fixed;
-		
 
 	}
 	table{
@@ -46,6 +47,7 @@
 </style>
 <script>
 	idDate = "";
+	temp = 0;
 </script>
 </head>
 
@@ -134,11 +136,6 @@
         </div><!-- .content -->
 
 
-<button onclick = "test()">테스트용</button>
-
-
-
-
         <div class="content mt-3" >
             <div class="animated fadeIn">
                 <div class="row">
@@ -149,7 +146,7 @@
                                 <strong class="card-title">업체 달력</strong>
                             </div>
                             <div class="card-body">
-                                <table id="calendar" border = "1px"  align="center" style="border-color : black;width : 95%; height : 500px; background : white">
+                                <table id="calendar" border = "1px"  align="center" style="border-color : black;width : 95%; height : 600px; background : white">
 							    	<tr><!-- label은 마우스로 클릭을 편하게 해줌 -->
 								        <td align = "center" onclick="prevCalendar()"><i class="fa fa-arrow-left" ></i></td>
 								        <td align="center" id="tbCalendarYM" colspan="5">
@@ -194,6 +191,108 @@
          buildCalendar(); //달력 cell 만들어 출력 
         }
  
+        function test(){
+        	
+			var memberCalendarList = "${memberCalendar}";
+			
+			//console.log(memberCalendarList);
+			
+			
+			var memberCalendarData = memberCalendarList.split(',');
+			var listSize = memberCalendarData.length/5;
+			var memberCalendarDataCateG = [];
+			var memberCalendarDataContent = [];
+			var memberCalendarDataDate = [];
+			
+			var arrIndexCateG = 1;
+			var arrIndexContent = 2;
+			var arrIndexDate = 3;
+			
+			for(var i = 0; i < listSize; i++){
+				memberCalendarDataCateG[i] = memberCalendarData[arrIndexCateG];
+				arrIndexCateG = arrIndexCateG + 5;
+			} 
+			
+			for(var i = 0; i < listSize; i++){
+				memberCalendarDataContent[i] = memberCalendarData[arrIndexContent];
+				arrIndexContent = arrIndexContent + 5;
+			} 
+			
+			for(var i = 0; i < listSize; i++){
+				memberCalendarDataDate[i] = memberCalendarData[arrIndexDate];
+				arrIndexDate = arrIndexDate + 5;
+			}
+			
+			/* console.log("listSize : " + listSize);
+			console.log("arrIndexCateG : " + arrIndexCateG);
+			console.log("arrIndexContent : " + arrIndexContent);
+			console.log("arrIndexDate : " + arrIndexDate); */
+			
+			/* console.log("memberCalendarData : " + memberCalendarData);
+			console.log("memberCalendarDataCateG : " + memberCalendarDataCateG);
+			console.log("memberCalendarDataContent : " + memberCalendarDataContent);
+			console.log("memberCalendarDataDate : " + memberCalendarDataDate); */
+			
+			var calendarCateG= [];
+			var calendarContent= [];
+			var calendarDate= [];
+			
+			for(var i = 0; i < memberCalendarDataCateG.length ; i++){
+				calendarCateG[i] = memberCalendarDataCateG[i].split('=')[1];
+			}
+			
+			for(var i = 0; i < memberCalendarDataContent.length ; i++){
+				calendarContent[i] = memberCalendarDataContent[i].split('=')[1];
+			}
+			
+			for(var i = 0; i < memberCalendarDataDate.length ; i++){
+				calendarDate[i] = memberCalendarDataDate[i].split('=')[1];
+			}
+			
+			/* console.log("calendarCateG : " + calendarCateG);
+			console.log("calendarContent : " + calendarContent);
+			console.log("calendarDate : " + calendarDate); */
+			
+			
+			for(var i = 0; i < calendarDate.length ; i++){
+				calendarDate[i] = calendarDate[i].split('-')[0]+ "-" + parseInt(calendarDate[i].split('-')[1]) + "-" +parseInt(calendarDate[i].split('-')[2]);
+			}
+			
+			console.log("calendarCateG : " + calendarCateG);
+			console.log("calendarContent : " + calendarContent);
+			console.log("calendarDate : " + calendarDate);
+			
+			
+			var nowDate = new Date();
+			nowDate = nowDate.getFullYear() + "-" + (nowDate.getMonth() + 1) + "-" +nowDate.getDate();
+			console.log("nowDate : " + nowDate);
+			var nowContent = "";
+			
+			for(var i = 0; i < calendarDate.length ; i++){
+				$("#"+calendarDate[i]).css({"table-layout" : "fixed"});
+				$("#"+calendarDate[i] + " #" + calendarCateG[i]).css({"font-size" : "0.6em", "padding" : "0px", "margin" : "0px", "border" : "0", "max-height" : "2px"}).text(calendarContent[i]);		
+				//$("#"+calendarDate[i] + " #" + calendarCateG[i]).parent().css({"padding" : "0px", "margin" : "0px", "border" : "0","max-height" : "2px"});
+				if(nowDate == calendarDate[i]){
+					nowContent += calendarCateG[i] + " : " + calendarContent[i] + "\n";
+					
+				}
+			}
+			
+			if(nowContent != "" && temp == 0){
+				swal("금일 일정 안내\n"+nowContent);
+				temp = 1;
+			}
+			
+			
+			
+			
+			/* for(var i = 0; i < splitArr2.length ; i++){
+				mater[i] = mater[i].split("]")[0];
+			}  */
+			
+		}
+        
+        
         function nextCalendar() {//다음 달
             // 다음 달을 today에 값을 저장하고 달력에 today 넣어줌
             //today.getFullYear() 현재 년도//today.getMonth() 월  //today.getDate() 일 
@@ -246,7 +345,7 @@
              //1일부터 마지막 일까지 돌림
                   cell = row.insertCell();//열 한칸한칸 계속 만들어주는 역할
                   cell.innerHTML =  
-                  "<table width = '100%' height = '100%' onclick = 'calendarTd(this)' id = '"+ idDate + "-" + i + "'>"+
+                  "<table width = '100%' height = '90px' onclick = 'calendarTd(this)' id = '"+ idDate + "-" + i + "'>"+
                  	 "<tr >"+
                   		"<td  rowspan = '4' width = '15%'>"+ i +"</td>"+
                  	 "</tr>"+
@@ -266,7 +365,7 @@
                   //1주일이 7일 이므로 일요일 구하기
                   //월화수목금토일을 7로 나눴을때 나머지가 1이면 cnt가 1번째에 위치함을 의미한다
                 cell.innerHTML = 
-                "<table width = '100%' height = '100%' onclick = 'calendarTd(this)' id = '"+ idDate + "-" + cnt + "'>"+
+                "<table width = '100%' height = '90px' onclick = 'calendarTd(this)' id = '"+ idDate + "-" + i + "'>"+
 	            	 "<tr >"+
 	             		"<td  rowspan = '4' width = '15%'>"+ "<font color=#F79DC2>" + i +"</td>"+
 	            	 "</tr>"+
@@ -285,7 +384,7 @@
               if (cnt%7 == 0){/* 1주일이 7일 이므로 토요일 구하기*/
                   //월화수목금토일을 7로 나눴을때 나머지가 0이면 cnt가 7번째에 위치함을 의미한다
                   cell.innerHTML = 
-                  "<table width = '100%' height = '100%' onclick = 'calendarTd(this)' id = '"+ idDate + "-" + cnt + "'>"+
+                  "<table width = '100%' height = '90px' onclick = 'calendarTd(this)' id = '"+ idDate + "-" + i + "'>"+
 	              	 "<tr >"+
 	               		"<td  rowspan = '4' width = '15%'>"+ "<font color=skyblue>" + i +"</td>"+
 	              	 "</tr>"+
@@ -311,6 +410,7 @@
                 cell.bgColor = "#FAF58C";//셀의 배경색을 노랑으로 
                }
              }
+             test();
         }
     </script>
     <script>
@@ -339,26 +439,7 @@
 	
 	
 	<script>
-		function test(){
-			/* $("#2019-2-5 #1").css({"font-size" : "0.5em", "padding" : "0px", "margin" : "0px", "border" : "0"}).text("제대로 들가나?");
-			$("#2019-2-5 #2").css({"font-size" : "0.5em", "padding" : "0px", "margin" : "0px", "border" : "0"}).text("제대로 들가나?");
-			$("#2019-2-5 #3").css({"font-size" : "0.5em", "padding" : "0px", "margin" : "0px", "border" : "0"}).text("제대로 들가나?"); */
-			
-			$.ajax({
-				url : "selectMemberCalendar.com",
-				data : {
-					memberNo : 100
-				},
-				type : "get",
-				success : function(data){
-					console.log(data);
-				},
-				error: function(data){
-					console.log(data);
-				}
-			});
-			
-		}
+		
 		
 			
 		function calendarTd(btn){
