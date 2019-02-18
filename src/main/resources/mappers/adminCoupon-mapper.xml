@@ -27,7 +27,12 @@
 		FROM COUPON ORDER BY COUPON_NO DESC
 	</select>
 	
-	
+	<insert id="insertCreateCoupon" parameterType="AdminCoupon">
+		INSERT
+		INTO COUPON
+		VALUES (SEQ_CPNO.NEXTVAL,#{couponName},#{couponCateg},#{couponCondition},SYSDATE,#{couponEdate},#{couponRdiscount},#{couponPdiscount})
+		
+	</insert>
 	
 	
 	

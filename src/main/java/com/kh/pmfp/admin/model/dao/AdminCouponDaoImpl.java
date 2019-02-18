@@ -33,11 +33,18 @@ public class AdminCouponDaoImpl implements AdminCouponDao{
 		int offset = (pi.getCurrentPage()-1)*pi.getLimit();
 		RowBounds rowBounds = new RowBounds(offset, pi.getLimit());
 		searchCouponList = (ArrayList)sqlSession.selectList("Coupon.selectSearchCouponList",null,rowBounds);
-		System.out.println(searchCouponList);
+		//System.out.println(searchCouponList);
 		if(searchCouponList==null) {
 			throw new AdminSelectException("생성된 쿠폰 조회 실패");
 		}
 		return searchCouponList;
+	}
+
+	//쿠폰 생성하기
+	@Override
+	public int insertCreateCoupon(SqlSessionTemplate sqlSession, AdminCoupon couponCreate) {
+		
+		return sqlSession.insert("Coupon.insertCreateCoupon",couponCreate);
 	}
 
 }

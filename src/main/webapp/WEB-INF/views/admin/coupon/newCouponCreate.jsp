@@ -28,8 +28,7 @@ td{
                </div><hr>
 				<div class="card-body card-block">
 				
-					<form action="" method="post" enctype="multipart/form-data"
-						>
+					<form action="newCouponCreate.co" method="post">
 					<table align="center">
 					<Tr>
 						
@@ -38,7 +37,7 @@ td{
 								<strong>쿠폰 이름</strong></label>
 						</td>
 						<td>
-								<input type="text" id="text-input" name="text-input"
+								<input type="text" id="text-input" name="couponName" style="width:425px"
 									placeholder="" class="form-control">
 						</td>
 					
@@ -50,6 +49,7 @@ td{
 					</tr>
 					<tr>
 						
+						
 							
 							<td>
 								<label><strong>할인율 or 할인 금액</strong></label>
@@ -59,13 +59,13 @@ td{
 							<div class="inline fields">
 								<div class="field">
 									<div class="ui radio checkbox">
-										<input type="radio" name="couponSaleType" checked="checked">
+										<input type="radio" name="couponCategStr" id="radioPercent" value="0">
 										<label>쿠폰 할인율</label>
 									</div>
 								</div>
 								<div class="field">
 									<div class="ui radio checkbox">
-										<input type="radio" name="couponSaleType"> 
+										<input type="radio" name="couponCategStr" id="radioWon" value="1"> 
 										<label>쿠폰 할인금액</label>
 									</div>
 								</div>
@@ -83,20 +83,36 @@ td{
 							</div>
 						</div> -->
 					
-					<tr>
+					<tr id="percentTr">
 						<div class="row form-group">
 							<td>
-								<label for="text-input" class=" form-control-label"><strong>쿠폰
+								<label for="text-input" class=" form-control-label"><strong>
 										할인율</strong></label>
 							</td>
 							&nbsp;&nbsp;&nbsp;
 							<td>
-								<input type="text" id="text-input" name="text-input" style="width:425px"
-									placeholder="%" class="form-control">&nbsp;&nbsp;
+								<input type="text" id="percent" name="couponRdiscountStr" style="width:425px"
+									placeholder="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;%" class="form-control">&nbsp;&nbsp;
 							</td>
 							
 						</div>
 					</tr>
+					
+					<tr id="wonTr">
+						<div class="row form-group">
+							<td>
+								<label for="text-input" class=" form-control-label"><strong>할인 금액</strong></label>
+							</td>
+							&nbsp;&nbsp;&nbsp;
+							<td>
+								<input type="text" id="won" name="couponPdiscountStr" style="width:425px"
+									placeholder="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;원" class="form-control">&nbsp;&nbsp;
+							</td>
+							
+						</div>
+					</tr>
+					
+					
 					<tr>
 						<div class="row form-group">
 							<td>
@@ -104,7 +120,7 @@ td{
 										결제 금액</strong></label>
 							</td>
 							<td>
-								<input type="text" id="text-input" name="text-input"
+								<input type="text" id="text-input" name="couponConditionStr"
 									placeholder="" class="form-control"><small
 									class="form-text text-muted">원 이상 주문시 사용 가능</small>
 							</td>
@@ -116,11 +132,11 @@ td{
 								<label for="select" class=" form-control-label"><strong>유효기간</strong></label>
 							</td>
 							<td>
-								<select name="select" id="select" class="form-control">
-									<option value="0">30일</option>
-									<option value="1">60일</option>
-									<option value="2">90일</option>
-									<option value="3">120일</option>
+								<select name="couponEdateStr" id="select" class="form-control">
+									<option value="1">30일</option>
+									<option value="2">60일</option>
+									<option value="3">90일</option>
+									<option value="4">120일</option>
 								</select>
 							</td>
 						</div>
@@ -133,7 +149,7 @@ td{
 					<tr>
 						<td colspan="2">
 						<div class="row justify-content-md-center" align="center">
-							<button type="button" class="btn btn-outline-secondary btn-lg" data-toggle="modal"
+							<button type="submit" class="btn btn-outline-secondary btn-lg" data-toggle="modal"
 							data-target="#createModal" style="width:200px; height:60px">
 								<i class="fa fa-hand-o-right"></i>&nbsp;쿠폰 생성
 							</button>
@@ -162,14 +178,29 @@ td{
 					<p>쿠폰이 생성되었습니다!!!!!</p>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-outline-primary" onclick="location.href='admin.ad?admin=coupon/searchCoupon'">예</button>
+					<button type="button" class="btn btn-outline-primary" onclick="location.href='searchCoupon.co'">예</button>
 				</div>
 			</div>
 		</div>
 	</div>
 	
 	<script>
-	
+	$(function(){
+		
+		$("#percentTr").hide();
+		$("#wonTr").hide();
+		
+		//console.log($("input:checked[id='radioPercent']").click());
+		$("#radioPercent").change(function(){
+			$("#percentTr").show();
+			$("#wonTr").hide();
+		});
+		$("#radioWon").change(function(){
+			$("#wonTr").show();
+			$("#percentTr").hide();
+		});
+		
+	});
 	
 	</script>
 	

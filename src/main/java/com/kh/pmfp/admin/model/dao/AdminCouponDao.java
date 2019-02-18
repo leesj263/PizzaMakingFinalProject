@@ -17,4 +17,7 @@ public interface AdminCouponDao {
 	//생성된 쿠폰 목록 리스트
 	ArrayList<AdminCoupon> selectSearchCouponList(SqlSessionTemplate sqlSession, PageInfo pi) throws AdminSelectException;
 
+	//쿠폰 생성하기
+	int insertCreateCoupon(SqlSessionTemplate sqlSession, AdminCoupon couponCreate);
+
 }
