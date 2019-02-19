@@ -689,6 +689,47 @@ public class CompanyController {
 
 	    return "redirect:selectReceiptList.com?comNo="+comNo;
 	  }
+	
+	
+	
+	@RequestMapping("sendCustomerDeliveryMsg.com")
+	  public String sendCustomerDeliveryMsg(HttpServletRequest request) throws Exception {
+		String comNo = request.getParameter("comNo");
+		String expectTime = request.getParameter("expectTime");
+		String phoneNumber = request.getParameter("phoneNumber");
+		String text = "[피자학교]주문하신 음식의 예상 소요시간은  " + expectTime +"분 입니다!";
+		
+	    String api_key = "NCSA40TFBGX94XV0";
+	    String api_secret = "98M3RJGXL6EKXF2I1SCV1ZJJD9AT546V";
+	    Coolsms coolsms = new Coolsms(api_key, api_secret);
+
+	    HashMap<String, String> set = new HashMap<String, String>();
+	    set.put("from", "01095902959"); // 수신번호
+	    set.put("to", phoneNumber); // 발신번호
+	    set.put("text", text); // 문자내용
+	    set.put("type", "sms"); // 문자 타입
+
+	    System.out.println(set);
+
+	    org.json.simple.JSONObject result = coolsms.send(set); // 보내기&전송결과받기
+
+	    if ((boolean)result.get("status") == true) {
+	      // 메시지 보내기 성공 및 전송결과 출력
+	      System.out.println("성공");
+	      System.out.println(result.get("group_id")); // 그룹아이디
+	      System.out.println(result.get("result_code")); // 결과코드
+	      System.out.println(result.get("result_message")); // 결과 메시지
+	      System.out.println(result.get("success_count")); // 메시지아이디
+	      System.out.println(result.get("error_count")); // 여러개 보낼시 오류난 메시지 수
+	    } else {
+	      // 메시지 보내기 실패
+	      System.out.println("실패");
+	      System.out.println(result.get("code")); // REST API 에러코드
+	      System.out.println(result.get("message")); // 에러메시지
+	    }
+
+	    return "redirect:orderWaiting.com?comNo="+comNo;
+	  }
 
 	
 	

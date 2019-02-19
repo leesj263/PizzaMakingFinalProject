@@ -50,7 +50,12 @@
 					<div class="col-lg-10">
 						<div class="card">
 							<div class="card-body">
-								<h4 class="mb-3">매출관리</h4>
+								<h4 class="mb-3" style= "display : inline;">매출관리</h4>
+								<select id = "switchSales" style= "float : right; width : 150px; height : 30px; border-radius : 5px">
+                                       	<option value = "day" selected onclick = "day()">일별</option>
+                                       	<option value = "month" onclick = "month()">월별</option>
+                                       	<option value = "quarter" onclick = "quarter()">분기별</option>
+	                            </select>
 								<canvas id="lineChart"></canvas>
 							</div>
 						</div>
@@ -208,9 +213,13 @@
 			
 			if(monthDateStart == monthDateFinish){
 				for(var i = 0; i < dayDateFinish ; i++){
-					daily[k] = yearDate + "-" + monthDateStart + "-" + dayDateStart;
-					dayDateStart++;
-					k++;
+					if(dayDateStart == (dayDateFinish+1)){
+						break;
+					}else{
+						daily[k] = yearDate + "-" + monthDateStart + "-" + dayDateStart;
+						dayDateStart++;
+						k++;
+					}
 				}
 				break;
 			} 
@@ -271,49 +280,119 @@
 		console.log("fixMinusPrice : " + fixMinusPrice);
 		
 		
-		var ctx = document.getElementById( "lineChart" );
-	    ctx.height = 150;
-	    var myChart = new Chart( ctx, {
-	        type: 'line',
-	        data: {
-	            labels: daily,
-	            datasets: [
-	                {
-	                    label: "지출",
-	                    borderColor: "rgba(0,0,0,.09)",
-	                    borderWidth: "1",
-	                    backgroundColor: "rgba(0,0,0,.07)",
-	                    data: fixMinusPrice
-	                            },
-	                {
-	                    label: "수입",
-	                    borderColor: "rgba(0, 123, 255, 0.9)",
-	                    borderWidth: "1",
-	                    backgroundColor: "rgba(0, 123, 255, 0.5)",
-	                    pointHighlightStroke: "rgba(26,179,148,1)",
-	                    data: fixPlusPrice
-	                            }
-	                        ]
-	        },
-	        options: {
-	            responsive: true,
-	            tooltips: {
-	                mode: 'index',
-	                intersect: false
-	            },
-	            hover: {
-	                mode: 'nearest',
-	                intersect: true
-	            }
+		$("#switchSales").change(function(){
+		    var selectVal =  $(this).val();
+		    console.log("selectVal : " + selectVal);
+		    var k = 0;
+		    var changeDay = [];
+		    var changeMinusPrice = [0];
+		    var changePlusPrice = [0];
+		    
+		    if(selectVal == "month"){
+		    	console.log("daily : " + daily);
+		    	console.log("daily.length : " + daily.length);
+		    	console.log("daily[0].split('-')[1] : " + daily[0].split('-')[1]);
+		    	
+		    	for(var i = 0; i < daily.length ; i++){
+		    		if(daily[i].split('-')[1] == daily[i+1].split('-')[1]){
+		    			changeDay[k] = daily[i].split('-')[0] + "-" + daily[i].split('-')[1];
+		    			changeMinusPrice[k] += parseInt(fixMinusPrice[i]);
+		    			changePlusPrice[k] += parseInt(fixPlusPrice[i]);
+		    			if((i+2) == daily.length){
+		    				changeMinusPrice[k] += parseInt(fixMinusPrice[i+1]);
+			    			changePlusPrice[k] += parseInt(fixPlusPrice[i+1]);
+		    				break;
+		    			}
+		    		}else{
+		    			changeDay[k] = daily[i].split('-')[0] + "-" + daily[i].split('-')[1];
+		    			changeMinusPrice[k] += parseInt(fixMinusPrice[i]);
+		    			changePlusPrice[k] += parseInt(fixPlusPrice[i]);
+		    			k++;
+		    			changeMinusPrice[k] = 0;
+		    			changePlusPrice[k] = 0;
+		    		}
+		    	}
+		    	console.log("changeDay : " + changeDay);
+		    	console.log("changeMinusPrice : " + changeMinusPrice);
+		    	console.log("changePlusPrice : " + changePlusPrice);
+		    	
+		    	
+		    	var ctx = document.getElementById( "lineChart" );
+			    ctx.height = 150;
+			    var myChart = new Chart( ctx, {
+			        type: 'line',
+			        data: {
+			            labels: changeDay,
+			            datasets: [
+			                {
+			                    label: "지출",
+			                    borderColor: "rgba(0,0,0,.09)",
+			                    borderWidth: "1",
+			                    backgroundColor: "rgba(0,0,0,.07)",
+			                    data: changeMinusPrice
+			                            },
+			                {
+			                    label: "수입",
+			                    borderColor: "rgba(0, 123, 255, 0.9)",
+			                    borderWidth: "1",
+			                    backgroundColor: "rgba(0, 123, 255, 0.5)",
+			                    pointHighlightStroke: "rgba(26,179,148,1)",
+			                    data: changePlusPrice
+			                            }
+			                        ]
+			        },
+			        options: {
+			            responsive: true,
+			            tooltips: {
+			                mode: 'index',
+			                intersect: false
+			            },
+			            hover: {
+			                mode: 'nearest',
+			                intersect: true
+			            }
 
-	        }
-	    } );
+			        }
+			    } );
+			    
+			    
+		    	
+		    }
+		    
+		    
+		    
+		    
+		    
+		    
+		    
+		    
+		    
+		    
+		    
+		    
+		    
+		    
+		    
+		    
+		    
+		    
+		    
+		    
+		});
+		
+		
+		
 		
 	});
     
+	 
+	 
+	
+
 
 	</script>
 	
+		
 	<script
 		src="${contextPath }/resources/companyCss/vendors/chart.js/dist/Chart.bundle.min.js"></script>
 	<%-- <script

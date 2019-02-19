@@ -10,8 +10,8 @@
 <body>
 	<c:set var="contextPath" value="${pageContext.servletContext.contextPath }" scope="application"/>
 	
-	<a href="adminMain.ad">관리자 페이지</a>
-	<a href="goMain.com?memberNo=${sessionScope.loginUser.memberNo }">업체 페이지</a>
+	<a href="adminMain.t">관리자 페이지</a>
+	<%-- <a href="goMain.com?memberNo=${sessionScope.loginUser.memberNo }">업체 페이지</a> --%>
 	<a href="main.t">메인 페이지</a>
 	
 	
