@@ -13,6 +13,8 @@ public class Distance {
 
         //킬로미터
         dist = dist * 1.609344;
+        
+        System.out.println("dist : " + dist);
 
         return (dist);
     }

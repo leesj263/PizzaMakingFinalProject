@@ -120,8 +120,11 @@
                     guideTextBox.style.display = 'none';
                 }
 				
+                console.log("roadAddr : " + roadAddr);
+                
                 //사용자가 입력한 주소의 위도/경도 구하기
-                latlonVal = latlon(roadAddr);
+               latlonVal = latlon(roadAddr);
+               console.log("latlonVal : " + latlonVal);
             }
         }).open();   
     })
@@ -141,18 +144,25 @@
 	            if(myJSONResult.status == 'OK') {
 	                var i;
 	                
-	                for (i = 0; i < myJSONResult.results.length; i++) {
+	                /* for (i = 0; i < myJSONResult.results.length; i++) {
 	                  tag += myJSONResult.results[i].geometry.location.lat+",";
-	                  tag += myJSONResult.results[i].geometry.location.lng;
+	                  tag += myJSONResult.results[i].geometry.location.lng+"";
 	                  
 	                  flag="true";
-	                }
+	                } */
+	                tag += myJSONResult.results[0].geometry.location.lat+",";
+	                tag += myJSONResult.results[0].geometry.location.lng;
+	                  
+	                flag="true";
+	                
 	            }else{
 	            	console.log(myJSONResult);
 	            }
 	        }
         }); 
+        console.log("ㅡㅡ tag: " + tag)
         return tag;
+        
     }
     
     

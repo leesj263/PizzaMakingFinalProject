@@ -80,7 +80,7 @@
 		
 		<br><br>
 		<a class="ui grey tag label">주문 메뉴</a>
-		<table class="ui celled table" style="width:500px;">
+		<table class="ui celled table" style="width:700px;">
 		<thead>
 		</thead>
 		  <tbody>
@@ -91,16 +91,14 @@
 		    </tr>
 		    <tr>
 		    
-		   <c:forEach items="${ orderDetailList}" var="i">
-		   		<td>
-		      		${ i.materialName }
-		   		</td>
-		   		<td>
-		      		${ i.materialName }
-		   		</td>
-		   		<td>
-		      		${ i.materialName }
-		   		</td>
+		    <td>
+		      		${ orderMain }
+		   	</td>
+		    
+		   <c:forEach items="orderSide" var="o">
+		   		<td></td>
+		   		<td></td>
+		   		<td></td>
 		   </c:forEach>
 		      
 		    </tr>
