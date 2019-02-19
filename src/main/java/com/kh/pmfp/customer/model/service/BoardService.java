@@ -10,14 +10,14 @@ public interface BoardService {
 
 	//faq상세보기
 	ArrayList<Board> selectfaqOrder() throws BoardException;
-
 	//qna작성하기
 	int insertqna(Board qna) throws BoardException;
 	//qna 수정하기
 	int updateqna(Board qna) throws BoardException;
 	//qna 글 수 
-	int selectQnaCount();
-	//
+	int selectQnaCount() throws BoardException;
+	//qna페이징
+	ArrayList<Board> selectqnaList(PageInfo pi) throws BoardException;
 
 	
 
