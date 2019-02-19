@@ -501,6 +501,27 @@ public class AdminServiceImpl implements AdminService {
 		return menuDetail;
 	}
 
+	//업체 승인용 
+	@Override
+	public int confirmSeller(AdminSeller seller) throws AdminUpdateException {
+		int result=ad.confirmSeller(sqlSession, seller);
+		return result;
+	}
+
+	//업체 주문 업데이트용 - 목록  & 상세보기
+	@Override
+	public int sellerOrderApply(AdminSellerOrder order) throws AdminUpdateException, AdminCountException {
+		int listCount=ad.selectsellerOrderApplyCount(sqlSession, order);
+		int result=ad.sellerOrderApply(sqlSession, order);
+		if(result==listCount) {
+			result=1;
+		}else {
+			result=-1;
+		}
+		return result;
+	}
+
+	
 
 
 	

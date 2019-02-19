@@ -1,8 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-
-<!-- Right Panel -->
-<!--  <div id="right-panel" class="right-panel"> -->
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
 <!-- Header-->
 <header id="header" class="header">
@@ -14,13 +12,13 @@
 			<div class="user-area dropdown float-right">
 				<ul class="nav navbar-nav">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown"aria-haspopup="true" aria-expanded="false">
-							<i class="menu-icon fa fa-laptop"></i>&nbsp; &nbsp;ADMIN
+							<i class="menu-icon fa fa-laptop"></i>&nbsp; &nbsp;${sessionScope.loginUser.memberName }
 						</a>
 						<div class="user-menu dropdown-menu">
 							<a class="nav-link" href="#"><i class="fa fa-user"></i>&nbsp; &nbsp;My Profile</a>
 							<!--<a class="nav-link" href="#"><i class="fa fa-user"></i> Notifications <span class="count">13</span></a> -->
 							<a class="nav-link" href="#"><i class="fa fa-cog"></i>&nbsp; &nbsp;Settings</a>
-							<a class="nav-link" href="#"><i class="fa fa-power-off"></i>&nbsp; &nbsp;Logout</a>
+							<a class="nav-link" href="logout.ad"><i class="fa fa-power-off"></i>&nbsp; &nbsp;Logout</a>
 						</div>
 				</ul>
 			</div>

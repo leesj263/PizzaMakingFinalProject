@@ -202,6 +202,15 @@ public interface AdminDao {
 	//기본 메뉴 상세 조회용
 	ArrayList<AdminMenu> selectMenuDetail(SqlSessionTemplate sqlSession, int basicNo) throws AdminSelectException;
 
+	//업체 승인용 
+	int confirmSeller(SqlSessionTemplate sqlSession, AdminSeller seller) throws AdminUpdateException;
+	
+	//업체 주문 업데이트 대상 카운트용
+	int selectsellerOrderApplyCount(SqlSessionTemplate sqlSession, AdminSellerOrder order) throws AdminCountException;
+
+	//업체 주문 업데이트용 - 목록  & 상세보기
+	int sellerOrderApply(SqlSessionTemplate sqlSession, AdminSellerOrder order) throws AdminUpdateException;
+
 	
 
 	

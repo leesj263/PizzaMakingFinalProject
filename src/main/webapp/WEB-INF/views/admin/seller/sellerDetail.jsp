@@ -29,8 +29,8 @@
 								<p>
 									<c:choose>
 										<c:when test="${seller.comStatus.equals('Y') }">영업중</c:when>
-										<c:when test="${seller.comStatus.equals('Y') }">영업 정지</c:when>
-										<c:when test="${seller.comStatus.equals('Y') }">개점준비중</c:when>
+										<c:when test="${seller.comStatus.equals('S') }">영업 정지</c:when>
+										<c:when test="${seller.comStatus.equals('W') }">개점준비중</c:when>
 										<c:otherwise>영업 종료</c:otherwise>
 									</c:choose>
 								</p>
@@ -240,7 +240,7 @@
 								<li class="member-li"><span>계정승인상태</span>
 									<p>
 										<c:if test="${seller.comConfirm=='N'}">
-										<button class="btn btn-outline-warning btn-sm" onclick="admit()">계정 승인</button>
+										<button class="btn btn-outline-warning btn-sm" onclick="confirm()">계정 승인</button>
 										</c:if>
 									</p></li>
 								<li class="member-li"><span></span></li>
@@ -283,6 +283,40 @@
 				location.href="sellerOrderDetail.ad?comNo="+comNo+"&orderMDate="+orderMDate;
 			});
 		});
+		
+		function getLatLon(value){
+			var geocode = "https://maps.googleapis.com/maps/api/geocode/json?address="+value+"&key=AIzaSyCbicS4cErqcGQUcYybf3OWZAZZWZRP5Lk";
+	        var tag = "";
+	        jQuery.ajax({
+	            url: geocode,
+	            type: 'POST',
+	            async:false,
+	           	success: function(myJSONResult){
+		            if(myJSONResult.status == 'OK') {
+		                var i;
+		                
+		                for (i = 0; i < myJSONResult.results.length; i++) {
+		                  tag += myJSONResult.results[i].geometry.location.lat+",";
+		                  tag += myJSONResult.results[i].geometry.location.lng;
+		                  
+		                  flag="true";
+		                }
+		            }else{
+		            	console.log(myJSONResult);
+		            }
+		        }
+	        }); 
+	        return tag;
+		}
+		
+		function confirm(){
+			var latlon=getLatLon("${seller.comAddress}");
+			var comLL=latlon.split(",");
+			var comLat=Number(comLL[1]);
+			var comLon=Number(comLL[0]);
+			console.log(comLat+"/"+comLon);
+			location.href='confirmSeller.ad?comNo='+${seller.comNo}+'&comLat='+comLat+'&comLon='+comLon;
+		}
 	</script>
 </section>
 <jsp:include page="../common/footer.jsp"/>
