@@ -98,6 +98,8 @@ mater = [];
 		//console.log(listSize);
 		var labelDataArr;
 		labelDataArr = '${list}';
+		console.log("list : " + labelDataArr);
+		console.log("listSize : " + listSize);
 		/* for(var i = 0; i< listSize; i++){
 			labelDataArr[i] = "<c:out value='${list[i].materialName}'/>";
 		} */
@@ -107,10 +109,10 @@ mater = [];
 		//console.log(typeof splitArr)
 		var arrIndex = 4;
 		var splitArr2 = [];
-		for(var i = 0; i < (listSize/2); i++){
+		for(var i = 0; i < listSize; i++){
 			//console.log(splitArr[arrIndex]);
 			splitArr2[i] = splitArr[arrIndex];
-			arrIndex = arrIndex + 10;
+			arrIndex = arrIndex + 5;
 		} 
 		
 		//var mater = splitArr2[0].split('=')[1];
@@ -127,10 +129,10 @@ mater = [];
 		
 		var arrIndex2 = 3;
 		var splitWeight2 = [];
-		for(var i = 0; i < (listSize/2); i++){
+		for(var i = 0; i < listSize; i++){
 			//console.log(splitArr[arrIndex]);
 			splitWeight2[i] = splitArr[arrIndex2];
-			arrIndex2 = arrIndex2 + 10;
+			arrIndex2 = arrIndex2 + 5;
 		} 
 
 		var weightList = [];

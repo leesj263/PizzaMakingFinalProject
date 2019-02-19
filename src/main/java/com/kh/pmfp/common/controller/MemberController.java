@@ -50,7 +50,7 @@ public class MemberController {
 			request.getSession().setAttribute("loginUser", loginUser);
 
 			if(loginUser.getMemberCateg()==1) {
-				return "redirect:goMain.com";
+				return "redirect:goMain.com?memberNo="+loginUser.getMemberNo();
 			}else if(loginUser.getMemberCateg()==2) {
 				return "redirect:adminMain.t";
 			}else {

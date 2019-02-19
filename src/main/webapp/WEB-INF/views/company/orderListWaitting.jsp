@@ -15,7 +15,14 @@
 <title>Sufee Admin - HTML5 Admin Template</title>
 <meta name="description" content="Sufee Admin - HTML5 Admin Template">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
+<script
+  src="https://code.jquery.com/jquery-3.3.1.js"
+  integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+  crossorigin="anonymous"></script>
+  <!-- <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.33.1/sweetalert2.all.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.33.1/sweetalert2.all.min.js"></script>
 <style>
 	td{
 		font-size : 0.9em;
@@ -93,7 +100,7 @@
 												<td>${ value.addTopping }</td>
 												<td>${ value.orderDate }</td>
 												<td>
-													<button type="button" class="btn btn-primary btn-sm" onclick = "location.href = 'acceptOrder.com?orderNo=${value.orderNo}&comNo=${sessionScope.loginUser.comNo }'">수락</button>
+													<button type="button" class="btn btn-primary btn-sm" phoneNumber = "${ value.orderTel }" orderNo = "${value.orderNo}" onclick = "acceptOrderFunction(this)">수락</button>
 													<button type="button" class="btn btn-secondary btn-sm" onclick = "location.href = 'refuseOrder.com?orderNo=${value.orderNo}&comNo=${sessionScope.loginUser.comNo }'">거절</button>
 												</td>
 											</tr>
@@ -115,6 +122,101 @@
 
 	</div>
 
+
+
+
+
+<div class="modal" id = "orderModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Modal body text goes here.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+<script>
+	function acceptOrderFunction(btn){
+		var orderNo = $(btn).attr("orderNo");
+		var phoneNumber = $(btn).attr("phoneNumber");
+		var comNo = "${sessionScope.loginUser.comNo}";
+		console.log("orderNo : " + orderNo);
+		console.log("comNo : " + comNo);
+		console.log("phoneNumber : " + phoneNumber);
+			 
+	
+
+		$.ajax({
+			url : "acceptOrder.com",
+			data : {
+				orderNo : orderNo,
+				comNo : comNo
+			},
+			type : "get",
+			success : function(data){
+				
+				console.log("돌아옴")
+				
+				Swal.fire({
+					  title: '예생 배달 소요시간을 선택해 주세요!',
+					  input: 'select',
+					  inputOptions: {
+					    '10': '10분',
+					    '20': '20분',
+					    '30': '30분',
+					    '40': '40분',
+					    '50': '50분',
+					    '60': '60분'
+					  },
+					  inputPlaceholder: '소요시간',
+					  showCancelButton: true,
+					  inputValidator: (value) => {
+					    return new Promise((resolve) => {
+					      if (value === '') {
+					    	 resolve('소요시간을 선택해 주세요!');
+					      } else {
+					    	 var expectTime = value;
+					    	 Swal.fire('예상 소요시간 ' + value + "분으로\n 문자를 전송합니다!").then((value) =>{
+									if(value = "ok"){
+										location.href = "sendCustomerDeliveryMsg.com?comNo="+comNo +"&expectTime=" + expectTime +"&phoneNumber=" + phoneNumber;
+									}
+								});
+					      }
+					    })
+					  }
+					})
+				
+				
+				
+				
+			},
+			error : function(data){
+				console.log(data);
+			}
+		});
+		//"location.href = 'acceptOrder.com?orderNo=${value.orderNo}&comNo=${sessionScope.loginUser.comNo }'"
+	}
+
+</script>
 
 
 	<script
