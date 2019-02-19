@@ -11,6 +11,8 @@ public class Board implements Serializable {
 	private String boardContent;
 	private int boardCount;
 	private int memberNo;
+	private String memberName;
+	private String memberNickname;
 	private Date boardDate;
 	private int boardLevel;
 	private int boardRefNo;
@@ -22,8 +24,8 @@ public class Board implements Serializable {
 	public Board() {}
 
 	public Board(int boardNo, int boardType, int boardCateg, String boardTitle, String boardContent, int boardCount,
-			int memberNo, Date boardDate, int boardLevel, int boardRefNo, String boardStatus, String boardAnswer,
-			int boardComNo, int rownum) {
+			int memberNo, String memberName, String memberNickname, Date boardDate, int boardLevel, int boardRefNo,
+			String boardStatus, String boardAnswer, int boardComNo, int rownum) {
 		super();
 		this.boardNo = boardNo;
 		this.boardType = boardType;
@@ -32,6 +34,8 @@ public class Board implements Serializable {
 		this.boardContent = boardContent;
 		this.boardCount = boardCount;
 		this.memberNo = memberNo;
+		this.memberName = memberName;
+		this.memberNickname = memberNickname;
 		this.boardDate = boardDate;
 		this.boardLevel = boardLevel;
 		this.boardRefNo = boardRefNo;
@@ -97,6 +101,22 @@ public class Board implements Serializable {
 		this.memberNo = memberNo;
 	}
 
+	public String getMemberName() {
+		return memberName;
+	}
+
+	public void setMemberName(String memberName) {
+		this.memberName = memberName;
+	}
+
+	public String getMemberNickname() {
+		return memberNickname;
+	}
+
+	public void setMemberNickname(String memberNickname) {
+		this.memberNickname = memberNickname;
+	}
+
 	public Date getBoardDate() {
 		return boardDate;
 	}
@@ -157,10 +177,12 @@ public class Board implements Serializable {
 	public String toString() {
 		return "Board [boardNo=" + boardNo + ", boardType=" + boardType + ", boardCateg=" + boardCateg + ", boardTitle="
 				+ boardTitle + ", boardContent=" + boardContent + ", boardCount=" + boardCount + ", memberNo="
-				+ memberNo + ", boardDate=" + boardDate + ", boardLevel=" + boardLevel + ", boardRefNo=" + boardRefNo
-				+ ", boardStatus=" + boardStatus + ", boardAnswer=" + boardAnswer + ", boardComNo=" + boardComNo
-				+ ", rownum=" + rownum + "]";
+				+ memberNo + ", memberName=" + memberName + ", memberNickname=" + memberNickname + ", boardDate="
+				+ boardDate + ", boardLevel=" + boardLevel + ", boardRefNo=" + boardRefNo + ", boardStatus="
+				+ boardStatus + ", boardAnswer=" + boardAnswer + ", boardComNo=" + boardComNo + ", rownum=" + rownum
+				+ "]";
 	}
+
 	
 
 	

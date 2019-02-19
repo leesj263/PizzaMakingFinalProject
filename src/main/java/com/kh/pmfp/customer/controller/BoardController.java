@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.kh.pmfp.admin.model.exception.AdminInsertException;
 import com.kh.pmfp.admin.model.vo.AdminBoard;
+import com.kh.pmfp.common.model.vo.Member;
 import com.kh.pmfp.common.model.vo.PageInfo;
 import com.kh.pmfp.common.model.vo.Pagination;
 import com.kh.pmfp.customer.model.exception.BoardException;
@@ -44,11 +46,19 @@ public class BoardController {
 	}
 
 	// qna작성
-	@RequestMapping("qnaWrite.ad")
-	public String noticeWrite(@ModelAttribute Board qna, HttpServletRequest request, HttpServletResponse response) {
+	@RequestMapping("qnaWrite.bo")
+	public String noticeWrite(@ModelAttribute Board qna, HttpServletRequest request, HttpServletResponse response, String category) {
 		System.out.println(qna);
-
-		qna.setMemberNo(1);
+		System.out.println(category);
+		Integer.parseInt(category);
+		// 세션에서 memberNo 가져와서 넣기qna.setMemberNo(1);
+		HttpSession session = request.getSession();
+		Member loginUser= (Member) session.getAttribute("loginUser");
+		qna.setMemberNo(loginUser.getMemberNo());
+		qna.setBoardCateg(Integer.parseInt(category));
+		
+		
+		
 
 		try {
 			int result = bs.insertqna(qna);
@@ -82,11 +92,20 @@ public class BoardController {
 	public String qnaList(@RequestParam(value="currentPage", required=false, defaultValue="1")int currentPage, HttpServletRequest request, HttpServletResponse response) {
 		ArrayList<Board> qnaList=new ArrayList<Board>();
 		
-		int listCount=bs.selectQnaCount();
 		
-		
-		
-		return "customer/qna/qnaList";
+		try {
+			int listCount = bs.selectQnaCount();
+			PageInfo pi=Pagination.getPageInfo(currentPage, listCount);
+			qnaList=bs.selectqnaList(pi);
+			request.setAttribute("qnaList", qnaList);
+			request.setAttribute("pi", pi);
+			System.out.println(qnaList);
+			return "customer/qna/qnaList";
+		} catch (BoardException e) {
+			request.setAttribute("msg", e.getMessage());
+			return "common/errorPage";
+		}
+	
 	}
 	
 }

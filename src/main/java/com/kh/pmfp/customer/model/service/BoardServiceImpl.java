@@ -6,6 +6,8 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.kh.pmfp.admin.model.vo.AdminBoard;
+import com.kh.pmfp.common.model.vo.PageInfo;
 import com.kh.pmfp.customer.model.dao.BoardDao;
 import com.kh.pmfp.customer.model.exception.BoardException;
 import com.kh.pmfp.customer.model.vo.Board;
@@ -36,11 +38,20 @@ public class BoardServiceImpl implements BoardService {
 		int result=bd.updateqna(sqlSession, qna);
 		return result;
 	}
+//qna 리스트 글 수
+	@Override
+	public int selectQnaCount() throws BoardException {
+		int result=0;
+		result=bd.selectQnaCount(sqlSession);
+		return result;
+	}
 //qna 리스트조회
 	@Override
-	public int selectQnaCount() {
-		// TODO Auto-generated method stub
-		return 0;
+	public ArrayList<Board> selectqnaList(PageInfo pi) throws BoardException {
+		ArrayList<Board> qnaList=new ArrayList<Board>();
+		qnaList=bd.selectqnaList(sqlSession, pi);
+		
+		return qnaList;
 	}
 
 }

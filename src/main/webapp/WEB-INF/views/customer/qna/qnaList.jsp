@@ -21,6 +21,11 @@
 	crossorigin="anonymous"></script>
 
 <title>Insert title here</title>
+<style>
+	#qnaList{
+		text-align:center;
+	}
+</style>
 </head>
 <body>
 	<%@ include file="/WEB-INF/views/main/menubar.jsp"%>
@@ -48,114 +53,119 @@
 				<tbody align="center">
 					<c:forEach var="qna" items="${ qnaList }">
 						<tr>
-							<td><input type="hidden" name="boardNo"
-								value="${qna.boardNo }"></td>
-							<th scope="row">${qnaboard.bo }</th>
+							<td><input type="hidden" name="boardNo" id="boardNo"
+								value="${qna.boardNo }">${qna.rownum }</td>
 							<c:choose>
-								<c:when test="${notice.boardCate==1 }">
+								<c:when test="${qna.boardCateg==1 }">
 									<td>[결제]</td>
 								</c:when>
-								<c:when test="${notice.boardCate==2 }">
+								<c:when test="${qna.boardCateg==2 }">
 									<td>[주문]</td>
 								</c:when>
-								<c:when test="${notice.boardCate==3 }">
+								<c:when test="${qna.boardCateg==3 }">
 									<td>[공유 / 후기 / 질문답변]</td>
 								</c:when>
 								<c:otherwise>
 									<td>[이벤트]</td>
 								</c:otherwise>
 							</c:choose>
-							<td>${notice.boardTitle }</td>
-							<td>${notice.userName}</td>
-							<td>${notice.boardDate }</td>
-							<td>${notice.boardCount }</td>
+							<td>${qna.boardTitle }</td>
+							<td>${qna.memberNickname}</td>
+							<td>${qna.boardDate }</td>
+							<td>${qna.boardCount }</td>
 						</tr>
 					</c:forEach>
 				</tbody>
 				>
 			</table>
-		<!-- 페이징--> 
-<%-- <div class="dataTables_paginate paging_simple_numbers col-md-4" id="bootstrap-data-table_paginate">
-		<ul class="pagination">
-			<c:if test="${pi.currentPage >1}">
-				<c:url var="btnList" value="${ addr }">
-					<c:param name="currentPage" value="${pi.currentPage-1}"/>
-				</c:url>
-				<li class="paginate_button page-item previous" id="bootstrap-data-table_previous">
-					<a href="${btnList }" aria-controls="bootstrap-data-table" data-dt-idx="0" tabindex="0" class="page-link"><i class="ti-angle-left"></i></a>
-				</li>
-			</c:if>
-			<c:if test="${pi.currentPage==1 }">
-				<li class="paginate_button page-item previous disabled" id="bootstrap-data-table_previous">
-					<a href="#" aria-controls="bootstrap-data-table" data-dt-idx="0" tabindex="0" class="page-link"><i class="ti-angle-left"></i></a>
-				</li>
-			</c:if>
-		<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
-			<c:if test="${ p eq pi.currentPage }">
-				<li class="paginate_button page-item active disabled">
-					<a href="#" aria-controls="bootstrap-data-table" data-dt-idx="${p }" tabindex="0" class="page-link">${p }</a>
-				</li>
-			</c:if>
-				
-			<c:if test = "${ p ne pi.currentPage }">
-				<c:url var="btnList" value="${ addr }">
-					<c:param name="currentPage" value="${ p }"/>
-				</c:url>
-				<li class="paginate_button page-item">
-					<a href="${btnList }" aria-controls="bootstrap-data-table" data-dt-idx="${p }" tabindex="0" class="page-link">${p }</a>
-				</li>
-			</c:if>
-		</c:forEach>
-			<c:if test="${pi.currentPage <pi.maxPage}">
-				<c:url var="btnList" value="${ addr }">
-					<c:param name="currentPage" value="${pi.currentPage+1}"/>
-				</c:url>
-				<li class="paginate_button page-item next" id="bootstrap-data-table_next">
-					<a href="${btnList }" aria-controls="bootstrap-data-table" data-dt-idx="7" tabindex="0" class="page-link"><i class="ti-angle-right"></i></a>
-				</li>
-			</c:if>
-			<c:if test="${pi.currentPage>=pi.maxPage }">
-				<li class="paginate_button page-item next disabled" id="bootstrap-data-table_next">
-					<a href="#" aria-controls="bootstrap-data-table" data-dt-idx="7" tabindex="0" class="page-link"><i class="ti-angle-right"></i></a>
-				</li>
-			</c:if>
-		</ul>
-	</div> --%>
-	<div class="col-md-1"></div>
-				
-				
-				<!-- 검색영역 -->
-				<div class="input-group-prepend" id="searchText"
-					style="margin: 0px 0px 0px 150px">
-			
-					<select class="form-control" name="searchNotice">
-				<option value="memberNickName">작성자</option>
-				<option value="boardTitle">제목</option>
-			</select>
-					<input type="text" placeholder="검색어 입력">
-					<button class="search-trigger" onclick="searchNotice();"><i class="fa fa-search"></i></button>
-					
-					<div class="col-md-1">
-						<button class="btn btn-outline-warning"
-							onclick="location.href='writeQna.bo'">글 작성</button>
-					</div>
+			<!-- 페이징-->
+			<div class="dataTables_paginate paging_simple_numbers col-md-4"
+				id="bootstrap-data-table_paginate">
+				<ul class="pagination">
+					<c:if test="${pi.currentPage >1}">
+						<c:url var="btnList" value="${ addr }">
+							<c:param name="currentPage" value="${pi.currentPage-1}" />
+						</c:url>
+						<li class="paginate_button page-item previous"
+							id="bootstrap-data-table_previous"><a href="${btnList }"
+							aria-controls="bootstrap-data-table" data-dt-idx="0" tabindex="0"
+							class="page-link"><i class="ti-angle-left"></i></a></li>
+					</c:if>
+					<c:if test="${pi.currentPage==1 }">
+						<li class="paginate_button page-item previous disabled"
+							id="bootstrap-data-table_previous"><a href="#"
+							aria-controls="bootstrap-data-table" data-dt-idx="0" tabindex="0"
+							class="page-link"><i class="ti-angle-left"></i></a></li>
+					</c:if>
+					<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
+						<c:if test="${ p eq pi.currentPage }">
+							<li class="paginate_button page-item active disabled"><a
+								href="#" aria-controls="bootstrap-data-table"
+								data-dt-idx="${p }" tabindex="0" class="page-link">${p }</a></li>
+						</c:if>
 
+						<c:if test="${ p ne pi.currentPage }">
+							<c:url var="btnList" value="${ addr }">
+								<c:param name="currentPage" value="${ p }" />
+							</c:url>
+							<li class="paginate_button page-item"><a href="${btnList }"
+								aria-controls="bootstrap-data-table" data-dt-idx="${p }"
+								tabindex="0" class="page-link">${p }</a></li>
+						</c:if>
+					</c:forEach>
+					<c:if test="${pi.currentPage <pi.maxPage}">
+						<c:url var="btnList" value="${ addr }">
+							<c:param name="currentPage" value="${pi.currentPage+1}" />
+						</c:url>
+						<li class="paginate_button page-item next"
+							id="bootstrap-data-table_next"><a href="${btnList }"
+							aria-controls="bootstrap-data-table" data-dt-idx="7" tabindex="0"
+							class="page-link"><i class="ti-angle-right"></i></a></li>
+					</c:if>
+					<c:if test="${pi.currentPage>=pi.maxPage }">
+						<li class="paginate_button page-item next disabled"
+							id="bootstrap-data-table_next"><a href="#"
+							aria-controls="bootstrap-data-table" data-dt-idx="7" tabindex="0"
+							class="page-link"><i class="ti-angle-right"></i></a></li>
+					</c:if>
+				</ul>
+			</div>
+			<div class="col-md-1"></div>
+
+
+			<!-- 검색영역 -->
+			<div class="input-group-prepend" id="searchText"
+				style="margin: 0px 0px 0px 150px">
+
+				<select class="form-control" name="searchNotice">
+					<option value="memberNickName">작성자</option>
+					<option value="boardTitle">제목</option>
+				</select>
+				 <input type="text" placeholder="검색어 입력">
+				<button class="search-trigger" onclick="searchNotice();">
+					<i class="fa fa-search"></i>
+				</button>
+
+				<div class="col-md-1">
+					<button class="btn btn-outline-warning"
+						><a href="./qnaWrite.t">글 작성</a></button>
 				</div>
+
+			</div>
 		</div>
-		</ul>
 
-		</nav>
-
-
-	</div>
-
-	</div>
-
-	</div>
+	
 	</section>
+<script>
+$(function(){
+	$("#qnaList tr").click(function(){
+		var num=$(this).find("#boardNo").val();
+		console.log(num);
+		location.href="./qnaDetail.bo";
+	});
+});
 
-</body>
-</html>
 
+</script>
 </body>
 </html>

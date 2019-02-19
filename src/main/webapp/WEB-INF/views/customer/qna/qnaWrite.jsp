@@ -23,12 +23,12 @@
 		<br>
 		<br>
 		<div class="tableArea">
-			<form action="writeQna.bo" method="post">
+			<form action="qnaWrite.bo" method="post">
 				<table align="center">
 					<tr>
 						<td><b>분야</b></td>
 						<td>
-							<select name="category">
+							<select name="category" id="category">
 								<option value="1" selected>결제 </option>
 								<option value="2">주문</option>
 								<option value="3">공유 / 후기 / 질문답변</option>
@@ -51,7 +51,7 @@
 					<tr>
 						<td><b>내용</b></td>
 						<td>
-							<textarea name="content" cols="100" rows="25" style="resize:none;" placeholder="내용을 입력해주세요"></textarea>
+							<textarea name="boardContent" cols="100" rows="25" style="resize:none;" placeholder="내용을 입력해주세요"></textarea>
 						</td>
 					</tr>
 					<tr></tr>
@@ -75,7 +75,7 @@
 	</div>
 	<script>
 		
-		}
+		
 		function qnaWrite(){
 			var boardTitle=$("#boardTitle").val();
 			var boardContent=$("#boardContent").val();
@@ -83,6 +83,10 @@
 			var boardCate=$("select[name='boardCate']").val();
 			location.href="qnaList.bo";
 		}
+		$("#category").click(function() {
+            var selected = $("#category option:selected").val();
+            console.log(selected);
+         });
 	</script>
 	
 

@@ -13,6 +13,8 @@
 		<result property="boardContent" column="BOARD_CONTENT" />
 		<result property="boardCount" column="BOARD_COUNT" />
 		<result property="memberNo" column="MEMBER_NO" />
+		<result property="memberName" column="MEMBER_NAME" />
+		<result property="memberNickname" column="MEMBER_NICKNAME" />
 		<result property="boardDate" column="BOARD_DATE" />
 		<result property="boardLevel" column="BOARD_LEVEL" />
 		<result property="boardRefNo" column="BOARD_REFNO" />
@@ -33,9 +35,31 @@
 	</select>
 	<!-- qna작성 -->
 	<insert id="insertqna" parameterType="Board">
-		INSERT INTO BOARD VALUES (SEQ_BONO.NEXTVAL, #{boardType}, #{boardCate}, #{boardTitle},
-		#{boardContent}, DEFAULT, #{memberNo},  DEFAULT, 1, TO_DATE, 1, NULL, DEFAULT, NULL, NULL); 
+		INSERT INTO BOARD VALUES (SEQ_BONO.NEXTVAL, 3, #{boardCateg}, #{boardTitle},
+		#{boardContent}, DEFAULT, #{memberNo}, SYSDATE, 1, NULL, DEFAULT, 'N', NULL) 
 	</insert>
+		<!-- qna 수정 -->
+	<update id="updateqna" parameterType="_int">
+		UPDATE BOARD SET BOARD_ANSWER='Y'
+		WHERE BOARD_NO=#{num}
+	</update>
+	
+	<!-- qna 글 수  -->
+	<select id="selectQnaCount" resultType="_int">
+		SELECT COUNT(*) FROM BOARD WHERE BOARD_TYPE=3 AND BOARD_LEVEL=1 AND BOARD_STATUS='Y'
+	</select>
+	
+	<!-- qna리스트 -->
+	<select id="selectqnaList" resultMap="boardResultSet">
+		select
+			ROWNUM, B.BOARD_NO, B.BOARD_TYPE, B.BOARD_CATEG, B.BOARD_TITLE, B.BOARD_CONTENT, B.BOARD_COUNT, 
+			B.MEMBER_NO, B.BOARD_DATE, B.BOARD_LEVEL, M.MEMBER_NICKNAME, 
+			B.BOARD_REFNO, B.BOARD_STATUS,B. BOARD_ANSWER, B.BOARD_COMNO 
+		from board B
+		JOIN MEMBER M ON (M.MEMBER_NO=B.MEMBER_NO)
+		where B.board_type =3 and B.board_status='Y' AND B.BOARD_LEVEL=1 
+        ORDER BY B.BOARD_DATE DESC, B.BOARD_NO DESC
+	</select>
 
 
 

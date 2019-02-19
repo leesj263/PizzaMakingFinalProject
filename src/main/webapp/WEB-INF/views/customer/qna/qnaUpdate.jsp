@@ -23,7 +23,7 @@
 		<br>
 		<br>
 		<div class="tableArea">
-			<form action="updateQna.b" method="post">
+			<form action="updateQna.bo" method="post">
 				<table align="center">
 					<tr>
 						<td><b>분야</b></td>
