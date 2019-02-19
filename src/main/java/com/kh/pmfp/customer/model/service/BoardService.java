@@ -18,6 +18,11 @@ public interface BoardService {
 	int selectQnaCount() throws BoardException;
 	//qna페이징
 	ArrayList<Board> selectqnaList(PageInfo pi) throws BoardException;
+	//qna상세보기
+	Board selectQna(int num) throws BoardException;
+	//qna답변
+	Board selectAnswer(int num);
+	
 
 	
 

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.kh.pmfp.admin.model.exception.AdminInsertException;
@@ -56,9 +57,7 @@ public class BoardController {
 		Member loginUser= (Member) session.getAttribute("loginUser");
 		qna.setMemberNo(loginUser.getMemberNo());
 		qna.setBoardCateg(Integer.parseInt(category));
-		
-		
-		
+
 
 		try {
 			int result = bs.insertqna(qna);
@@ -107,5 +106,21 @@ public class BoardController {
 		}
 	
 	}
+	//qna 상세보기
+	@RequestMapping(value="qnaDetail.bo", method=RequestMethod.GET)
+	public String selectQna(int num, HttpServletRequest request, HttpServletResponse response) {
+		System.out.println("게시글 번호 : "+num);
+		Board qna=new Board();
+		Board answer=new Board();
+		qna=bs.selectQna(num);
+		answer=bs.selectAnswer(num);
+		return "customer/qna/qnaDetail";
+	}
+	//qna 삭제용
+		@RequestMapping(value="noticeDelete.ad", method=RequestMethod.GET)
+		public String noticeDelete(@RequestParam int num, HttpServletRequest request, HttpServletResponse response) {
+			return null;
 	
 }
+}
+
