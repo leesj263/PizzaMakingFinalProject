@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -382,6 +383,7 @@ public class OrderConroller {
 		
 	}
 	
+	//쿠폰 목록 가져오기
 	@RequestMapping(value="/getCouponList.cor")
 	public @ResponseBody ArrayList<Coupon> getCouponList(HttpServletRequest request, @RequestParam(value="totalPrice", required=false) String totalPrice) {
 		if(request.getSession().getAttribute("loginUser") != null) {
@@ -400,5 +402,22 @@ public class OrderConroller {
 		} else {
 			return new ArrayList<Coupon>();
 		}
+	}
+	
+	//주문하기
+	@RequestMapping(value="/insertOrder.cor")
+	public @ResponseBody String insertOrder(HttpServletRequest request, @RequestBody HashMap<String, Object> jsonData) {
+		//System.out.println(jsonData);
+		for(String key: jsonData.keySet()) {
+			if(key.equals("orderItem")) {
+				ArrayList list = (ArrayList)jsonData.get(key);
+				for(int i=0; i<list.size(); i++) {
+					System.out.println("orderItem: " + list.get(i));
+				}
+			} else {
+				System.out.println(key + ": "+ jsonData.get(key));
+			}
+		}
+		return "성공";
 	}
 }

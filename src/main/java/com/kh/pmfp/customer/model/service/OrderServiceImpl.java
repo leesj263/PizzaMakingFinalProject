@@ -89,11 +89,13 @@ public class OrderServiceImpl implements OrderService {
 		return od.selectDeliveryCompanyList(sqlSession, memberNo);
 	}
 
+	//최근 수령자 정보 가져오기
 	@Override
 	public OrderMain selectRecentReceiver(int memberNo) throws OrderException {
 		return od.selectRecentReceiver(sqlSession, memberNo);
 	}
 
+	//쿠폰 목록 가져오기
 	@Override
 	public ArrayList<Coupon> selectCouponList(HashMap<String, Integer> condi) throws OrderException {
 		return od.selectCouponList(sqlSession, condi);

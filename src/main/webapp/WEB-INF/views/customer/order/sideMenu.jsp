@@ -277,6 +277,12 @@
 		//-----------------------------------------------------------------------------------------------------------
 		
 		function orderBtn(){
+			var orderToday = new Date();
+			if(orderToday.getHours() >= 21){
+				alert("주문은 저녁 9시까지 가능합니다.");
+				return;
+			}
+			
 			var totalPrice = Number($("#cartTotalPrice").text().replace(" 원", "").replace(/,/g, ""));
 			//console.log(totalPrice);
 			if($.cookie("cartNoList")){
