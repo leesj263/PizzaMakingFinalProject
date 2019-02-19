@@ -14,6 +14,7 @@ import com.kh.pmfp.mypage.model.vo.Coupon;
 import com.kh.pmfp.mypage.model.vo.DelList;
 import com.kh.pmfp.mypage.model.vo.Location;
 import com.kh.pmfp.mypage.model.vo.MyWriting;
+import com.kh.pmfp.mypage.model.vo.OrderDetail;
 import com.kh.pmfp.mypage.model.vo.OrderList;
 
 @Service
@@ -31,6 +32,27 @@ public class MypageServiceImpl implements MypageService{
 	public ArrayList<OrderList> selectOrderList(int memberNo) {
 		ArrayList<OrderList> orderList = md.selectOrderList(sqlSession, memberNo);
 		return orderList;
+	}
+	
+	//사용쿠폰내역 카운트 조회
+	@Override
+	public int selectUseCouponList(int memberNo, int orderNo) {
+		int result = md.selectUseCouponList(sqlSession, memberNo, orderNo);
+		return result;
+	}
+	
+	//쿠폰 사용내역 X - 상세보기
+	@Override
+	public ArrayList<OrderDetail> selectOrderDetailList(int orderNo) {
+		ArrayList<OrderDetail> orderDetailList = md.selectOrderDetailList(sqlSession, orderNo);
+		return orderDetailList;
+	}
+	
+	//쿠폰 사용내역 O - 상세보기
+	@Override
+	public ArrayList<OrderDetail> selectOrderDetailList2(int orderNo) {
+		ArrayList<OrderDetail> orderDetailList = md.selectOrderDetailList2(sqlSession, orderNo);
+		return orderDetailList;
 	}
 
 	//배송지 내역
@@ -102,6 +124,9 @@ public class MypageServiceImpl implements MypageService{
 		ArrayList<MyPizza> result = md.selectMypizzaList(sqlSession, memberNo);
 		return result;
 	}
+
+	
+
 
 	
 	

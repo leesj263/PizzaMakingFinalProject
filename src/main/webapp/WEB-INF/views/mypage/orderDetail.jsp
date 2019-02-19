@@ -61,20 +61,16 @@
 		</thead>
 		  <tbody>
 		    <tr>
-		      <td class="tableHead">주문번호</td>
-		      <td>201901081234</td>
-		    </tr>
-		    <tr>
 		      <td class="tableHead">주문일시</td>
-		      <td> 2019-01-08 15:30</td>
+		      <td> ${ orderDetailList[0].orderDate }</td>
 		    </tr>
 		    <tr>
 		      <td class="tableHead">주문자명</td>
- 			  <td>010-0044-9966</td>
+ 			  <td>${ orderDetailList[0].orderReceiver }</td>
 		    </tr>
 		    <tr>
 		      <td class="tableHead">휴대폰번호</td>
- 			  <td>010-0044-9966</td>
+ 			  <td>${ orderDetailList[0].orderRtel }</td>
 		    </tr>
 		  </tbody>
 		</table>
@@ -94,19 +90,31 @@
 		      <td class="tableHead">금액</td>
 		    </tr>
 		    <tr>
-		      <td>도우-씬 /사이즈-L <br>
-		      엣지-크러스트 / 소스-토마토소스<br>
-		        토핑-불고기1, 새우1, 파인애플2</td>
-		      <td>1</td>
-		      <td>35,000원</td>
+		    
+		   <c:forEach items="${ orderDetailList}" var="i">
+		   		<td>
+		      		${ i.materialName }
+		   		</td>
+		   		<td>
+		      		${ i.materialName }
+		   		</td>
+		   		<td>
+		      		${ i.materialName }
+		   		</td>
+		   </c:forEach>
+		      
 		    </tr>
 		    
 		    
 		    
 		    <tr>
-				<td rowspan="3">회원가입 5% 쿠폰</td>
+				<td rowspan="3"></td>
 				<td class="totalArea">총 금액</td>
-				<td class="totalArea">35,000원</td>
+				<td class="totalArea">
+					<c:if test="">
+					
+					</c:if>
+				</td>
 			</tr>
 			<tr>
 				<td class="totalArea">할인 금액</td>
@@ -125,27 +133,7 @@
 		
 		
 		
-		<br><br>
-		<a class="ui grey tag label">결제 정보</a>
-		<table class="ui celled table" style="width:500px;">
-		<thead>
-		</thead>
-		  <tbody>
-		    <tr>
-		      <td class="tableHead">결제방식</td>
-		      <td>신용카드</td>
-		    </tr>
-		    <tr>
-		      <td class="tableHead">카드번호</td>
-		      <td> 1234-****-****</td>
-		    </tr>
-		    <tr>
-		      <td class="tableHead">승인일시</td>
- 			  <td>20190111</td>
-		    </tr>
-		  </tbody>
-		</table>
-		
+	
 		
 		
 		
