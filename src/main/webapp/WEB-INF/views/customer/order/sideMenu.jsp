@@ -61,9 +61,16 @@
 		</div>
 		
 		<div class="ui container center aligned">
-			<button class="ui blue button" style="width: 150px;" onclick="orderBtn();">
-				주문하기
-			</button>
+			<c:if test="${ empty sessionScope.loginUser and empty sessionScope.noLoginUser }">
+				<button class="ui blue button" style="width: 150px;" onclick="alert('로그인이 필요합니다.'); $('html,body').scrollTop(0); login();">
+					주문하기
+				</button>
+			</c:if>
+			<c:if test="${ !empty sessionScope.loginUser or empty !sessionScope.noLoginUser }">
+				<button class="ui blue button" style="width: 150px;" onclick="orderBtn();">
+					주문하기
+				</button>
+			</c:if>
 		</div>
 	</div>
 

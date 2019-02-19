@@ -23,11 +23,13 @@ import com.kh.pmfp.customer.model.exception.OrderException;
 import com.kh.pmfp.customer.model.service.OrderService;
 import com.kh.pmfp.customer.model.vo.BasicMenu;
 import com.kh.pmfp.customer.model.vo.BasicTopping;
+import com.kh.pmfp.customer.model.vo.Coupon;
 import com.kh.pmfp.customer.model.vo.DeliveryCompany;
 import com.kh.pmfp.customer.model.vo.Image;
 import com.kh.pmfp.customer.model.vo.MaterialImage;
 import com.kh.pmfp.customer.model.vo.MyPizza;
 import com.kh.pmfp.customer.model.vo.OrderItem;
+import com.kh.pmfp.customer.model.vo.OrderMain;
 import com.kh.pmfp.customer.model.vo.OrderTopping;
 
 @Controller
@@ -340,8 +342,22 @@ public class OrderConroller {
 	
 	//주문 페이지
 	@RequestMapping(value="/order.cor")
-	public String order() {
-		return "customer/order/order";
+	public String order(HttpServletRequest request) {
+		if(request.getSession().getAttribute("loginUser") != null) {
+			int memberNo = ((Member)request.getSession().getAttribute("loginUser")).getMemberNo();
+			//System.out.println(memberNo);
+			try {
+				OrderMain receiver = os.selectRecentReceiver(memberNo);
+				//System.out.println(receiver);
+				request.setAttribute("receiver", receiver);
+				return "customer/order/order";
+			} catch (OrderException e) {
+				return "customer/order/order";
+			}
+		} else {
+			return "customer/order/order";
+		}
+		
 	}
 	
 	//배송지 정보 가져오기
@@ -353,7 +369,7 @@ public class OrderConroller {
 			try {
 				ArrayList<DeliveryCompany> dcList = os.selectDeliveryCompanyList(memberNo);
 				
-				System.out.println(dcList);
+				//System.out.println(dcList);
 				return dcList;
 			} catch (OrderException e) {
 				
@@ -364,5 +380,25 @@ public class OrderConroller {
 			return null;
 		}
 		
+	}
+	
+	@RequestMapping(value="/getCouponList.cor")
+	public @ResponseBody ArrayList<Coupon> getCouponList(HttpServletRequest request, @RequestParam(value="totalPrice", required=false) String totalPrice) {
+		if(request.getSession().getAttribute("loginUser") != null) {
+			int memberNo = ((Member)request.getSession().getAttribute("loginUser")).getMemberNo();
+			HashMap<String, Integer> condi = new HashMap<String, Integer>();
+			condi.put("memberNo", memberNo);
+			condi.put("totalPrice", Integer.parseInt(totalPrice));
+			try {
+				ArrayList<Coupon> cpList = os.selectCouponList(condi);
+				//System.out.println(cpList);
+				return cpList;
+			} catch (OrderException e) {
+				e.printStackTrace();
+				return new ArrayList<Coupon>();
+			}
+		} else {
+			return new ArrayList<Coupon>();
+		}
 	}
 }

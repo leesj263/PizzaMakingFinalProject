@@ -22,6 +22,13 @@
 .cartTable tbody tr td{
 	height: 80px;
 }
+#couponTable tbody tr td:not(:first-child){
+	text-align: center;
+}
+.discountText{
+	font-size: 18px;
+}
+
 div.radio label:hover {
 	cursor: pointer;
 }
@@ -85,6 +92,12 @@ div.radio label:hover {
 </head>
 <body>
 	<%@ include file="/WEB-INF/views/main/menubar.jsp"%>
+	
+	<%-- <c:if test="${empty sessionScope.loginUser and empty sessionScope.noLoginUser}">
+		<c:set var="msg" value="잘못된 접근입니다." scope="page"/>
+		<jsp:forward page="views/common/errorPage.jsp"/>
+	</c:if> --%>
+	
 	<div class="content-box">
 
 		<h1 align="center">주문서 작성</h1>
@@ -152,6 +165,7 @@ div.radio label:hover {
 				</tbody>
 			</table>
 		</div>
+		<input type="hidden" value="" id="cartTotalPrice">
 
 		<!-- 할인-도착예정시간 -->
 		<div class="discount-time">
@@ -162,12 +176,17 @@ div.radio label:hover {
 							<h2>할인</h2>
 						</div>
 						<div class="right floated eight wide column right aligned">
+							<c:if test="${ !empty sessionScope.loginUser }">
 							<button class="ui brown button" onclick="couponSelect();">할인 선택</button>
+							</c:if>
+							<c:if test="${ empty sessionScope.loginUser }">
+							<button class="ui brown button" onclick="alert('회원가입이 필요한 기능입니다.');">할인 선택</button>
+							</c:if>
 						</div>
 					</div>
 					<div class="ui divider"></div>
 					
-					<div style="margin-bottom: 30px;">
+					<div style="margin-bottom: 50px;" id="discountDetail">
 						* 할인내역
 					</div>
 					
@@ -177,7 +196,7 @@ div.radio label:hover {
 								<span class="text-label red-text">할인 금액</span>
 							</div>
 							<div class="right floated eight wide column right aligned">
-								<span class="text-label red-text">0 원</span>
+								<span class="text-label red-text discountPrice">0 원</span>
 							</div>
 						</div>
 						<div class="row">
@@ -185,7 +204,7 @@ div.radio label:hover {
 								<span class="text-label">결제 예정 금액</span>
 							</div>
 							<div class="right floated eight wide column right aligned">
-								<span class="text-label">20,000 원</span>
+								<span class="text-label finalPrice">0 원</span>
 							</div>
 						</div>
 					</div>
@@ -221,7 +240,7 @@ div.radio label:hover {
 							<td style="width: 160px;"><span class="text-label">이름</span></td>
 							<td>
 								<div class="ui input fluid">
-									<input type="text" placeholder="이름">
+									<input type="text" placeholder="이름" id="orderMemberName">
 								</div>
 							</td>
 						</tr>
@@ -229,15 +248,7 @@ div.radio label:hover {
 							<td><span class="text-label">전화번호</span></td>
 							<td>
 								<div class="ui input fluid">
-									<input type="text" placeholder="전화번호">
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td><span class="text-label">기타 요청사항</span></td>
-							<td>
-								<div class="ui input fluid">
-									<input type="text" placeholder="기타 요청사항">
+									<input type="text" placeholder="전화번호" id="orderMemberPhone">
 								</div>
 							</td>
 						</tr>
@@ -267,7 +278,7 @@ div.radio label:hover {
 								<span class="text-label">총 주문 금액</span>
 							</div>
 							<div class="right floated eight wide column right aligned">
-								<span class="text-label">20,000 원</span>
+								<span class="text-label totalPrice">0 원</span>
 							</div>
 						</div>
 						<div class="row">
@@ -275,7 +286,7 @@ div.radio label:hover {
 								<span class="text-label red-text">할인 금액</span>
 							</div>
 							<div class="right floated eight wide column right aligned">
-								<span class="text-label red-text">0 원</span>
+								<span class="text-label red-text discountPrice">0 원</span>
 							</div>
 						</div>
 						<div class="row" style="margin-top: 30px;">
@@ -283,7 +294,7 @@ div.radio label:hover {
 								<span class="text-label">결제 예정 금액</span>
 							</div>
 							<div class="right floated eight wide column right aligned">
-								<span class="text-label">20,000 원</span>
+								<span class="text-label finalPrice">0 원</span>
 							</div>
 						</div>
 						<div class="row" style="margin-top: 30px;">
@@ -297,15 +308,15 @@ div.radio label:hover {
 				</div>
 			</div>
 		</div>
+		<input type="hidden" value="" id="finalPrice">
 		
 	</div>
 
-
-	<!-- 토핑 추가 모달 -->
-	<div class="ui longer modal" id="couponModal">
+	<!-- 주소 모달 -->
+	<div class="ui longer modal" id="addressModal">
 		<div class="header">할인 선택</div>
 		<div class="content">
-			<table class="ui single line table">
+			<table class="ui fixed table">
 				<thead>
 					<tr>
 						<th>쿠폰명</th>
@@ -330,17 +341,160 @@ div.radio label:hover {
 				</tbody>
 			</table>
 		</div>
-		
+
 		<div class="actions">
 			<div class="ui positive approve button">선택</div>
 			<div class="ui negative cancel button">취소</div>
 		</div>
 	</div>
 
+	<!-- 쿠폰 모달 -->
+	<div class="ui longer modal" id="couponModal">
+		<div class="header">할인 선택 (한 개까지 선택 가능합니다.)</div>
+		<div class="content">
+			
+			<table class="ui fixed table" id="couponTable">
+				<thead>
+					<tr>
+						<th style="width: 50%;">쿠폰명</th>
+						<th style="width: 20%; text-align: center;">할인</th>
+						<th style="width: 30%; text-align: center;">유효기간</th>
+					</tr>
+				</thead>
+				<tbody>
+					<!-- 목록 -->
+				</tbody>
+			</table>
+		</div>
+		<div class="actions">
+			<div class="ui positive approve button" onclick="addCoupon();" id="addCouponBtn">선택</div>
+			<div class="ui negative cancel button">취소</div>
+		</div>
+	</div>
+	<input type="hidden" value="" id="issueNo">
+	<input type="hidden" value="" id="couponDiscount">
 	
 	<script src="/pmfp/resources/main/assets/js/semantic/semantic.min.js"></script>
 	<script src="/pmfp/resources/customer/js/jquery.cookie-1.4.1.min.js"></script>
+	
+	<c:if test="${!empty sessionScope.loginUser}">
 	<script>
+		$(function(){
+			$("#orderMemberName").val("${requestScope.receiver.orderReceiver}");;
+			$("#orderMemberPhone").val("${requestScope.receiver.orderRtel}");
+		});
+	
+		function orderMethodSel(val) {
+			$("#oaTopLeft").empty();
+			$("#oaTopRight").empty();
+			if (val == 1) {
+				$("#oaTopLeft").append($("<h3>").text("배달주소"));
+				$("#oaTopRight").append(
+						$("<button class='ui button brown'>").text("배달주소 등록"));
+				
+				$.ajax({
+					url: "getDeliveryInfo.cor",
+					type: "POST",
+					success: function(data){
+						//console.log(data);
+						
+						var $table = $("#addressTable tbody");
+						$table.empty();
+						
+						for(var i=0; i<data.length; i++){
+							var $tr = $("<tr>");
+							var $td1 = $("<td>").html(data[i].deliveryAddress + "<br><b>" + data[i].comName + " (" + data[i].comTel + ")" + "</b>");
+							var $td2 = $("<td>").append($("<button class='ui grey button addrSel' onclick='addressSelect(this,"+data[i].deliveryNo+","+data[i].comNo+")'>").text("선택"));
+							$tr.append($td1).append($td2);
+							$table.append($tr);
+						}
+						
+						$("#deliveryNo").val("");
+						$("#comNo").val("");
+						$("#comTable").hide();
+						$("#addressTable").show();
+						
+					}, error: function(data){
+						console.log("배송지 정보 가져오기 실패!");
+					}
+				});
+			} else {
+				$("#oaTopLeft").append($("<h3>").text("매장"));
+				$("#oaTopRight").append($("<button class='ui button brown'>").text("매장 등록"));
+				$("#deliveryNo").val("");
+				$("#comNo").val("");
+				$("#addressTable").hide();
+				$("#comTable").show();
+			}
+			
+		}
+	
+	</script>
+	</c:if>
+	
+	<c:if test="${!empty sessionScope.noLoginUser}">
+	<script>
+		$(function(){
+			$("#orderMemberName").val("${sessionScope.noLoginUser.memberName}");
+			$("#orderMemberPhone").val("${sessionScope.noLoginUser.memberPhone}");
+		});
+	
+		function orderMethodSel(val) {
+			$("#oaTopLeft").empty();
+			$("#oaTopRight").empty();
+			if (val == 1) {
+				$("#oaTopLeft").append($("<h3>").text("배달주소"));
+				$("#oaTopRight").append(
+						$("<button class='ui button brown'>").text("배달주소 등록"));
+				
+				$.ajax({
+					url: "getDeliveryInfo.cor",
+					type: "POST",
+					success: function(data){
+						//console.log(data);
+						
+						var $table = $("#addressTable tbody");
+						$table.empty();
+						
+						for(var i=0; i<data.length; i++){
+							var $tr = $("<tr>");
+							var $td1 = $("<td>").html(data[i].deliveryAddress + "<br><b>" + data[i].comName + " (" + data[i].comTel + ")" + "</b>");
+							var $td2 = $("<td>").append($("<button class='ui grey button addrSel' onclick='addressSelect(this,"+data[i].deliveryNo+","+data[i].comNo+")'>").text("선택"));
+							$tr.append($td1).append($td2);
+							$table.append($tr);
+						}
+						
+						$("#deliveryNo").val("");
+						$("#comNo").val("");
+						$("#comTable").hide();
+						$("#addressTable").show();
+						
+					}, error: function(data){
+						console.log("배송지 정보 가져오기 실패!");
+					}
+				});
+			} else {
+				$("#oaTopLeft").append($("<h3>").text("매장"));
+				$("#oaTopRight").append($("<button class='ui button brown'>").text("매장 등록"));
+				$("#deliveryNo").val("");
+				$("#comNo").val("");
+				$("#addressTable").hide();
+				$("#comTable").show();
+			}
+			
+		}
+	</script>
+	</c:if>
+	
+	<script>
+		function addressSelect(btn, deliveryNo, comNo){
+			$(".addrSel").removeClass("active").removeClass("black").removeClass("grey");
+			$(".addrSel").addClass("grey");
+			$("#deliveryNo").val(deliveryNo);
+			$("#comNo").val(comNo);
+			$(btn).removeClass("grey").addClass("black active");
+		}
+		
 		var mateMap;
 		var cartNo = 0;
 		var cartNoList = [];
@@ -417,64 +571,110 @@ div.radio label:hover {
 						$cartTable.append($tr);
 					}
 				}
+				cartTotalCalc();
 			}
-		}
-	
-		function orderMethodSel(val) {
-			$("#oaTopLeft").empty();
-			$("#oaTopRight").empty();
-			if (val == 1) {
-				$("#oaTopLeft").append($("<h3>").text("배달주소"));
-				$("#oaTopRight").append(
-						$("<button class='ui button brown'>").text("배달주소 등록"));
-				
-				$.ajax({
-					url: "getDeliveryInfo.cor",
-					type: "POST",
-					success: function(data){
-						//console.log(data);
-						
-						var $table = $("#addressTable tbody");
-						$table.empty();
-						
-						for(var i=0; i<data.length; i++){
-							var $tr = $("<tr>");
-							var $td1 = $("<td>").html(data[i].deliveryAddress + "<br><b>" + data[i].comName + " (" + data[i].comTel + ")" + "</b>");
-							var $td2 = $("<td>").append($("<button class='ui grey button addrSel' onclick='addressSelect(this,"+data[i].deliveryNo+","+data[i].comNo+")'>").text("선택"));
-							$tr.append($td1).append($td2);
-							$table.append($tr);
-						}
-						
-						$("#deliveryNo").val("");
-						$("#comNo").val("");
-						$("#comTable").hide();
-						$("#addressTable").show();
-						
-					}, error: function(data){
-						console.log("배송지 정보 가져오기 실패!");
-					}
-				});
-			} else {
-				$("#oaTopLeft").append($("<h3>").text("매장"));
-				$("#oaTopRight").append($("<button class='ui button brown'>").text("매장 등록"));
-				$("#deliveryNo").val("");
-				$("#comNo").val("");
-				$("#addressTable").hide();
-				$("#comTable").show();
-			}
-			
 		}
 		
-		function addressSelect(btn, deliveryNo, comNo){
-			$(".addrSel").removeClass("active").removeClass("black").removeClass("grey");
-			$(".addrSel").addClass("grey");
-			$("#deliveryNo").val(deliveryNo);
-			$("#comNo").val(comNo);
-			$(btn).removeClass("grey").addClass("black active");
+		//장바구니 총액 계산
+		function cartTotalCalc(){
+			if(cartNoList.length > 0){
+				var totalPrice = 0;
+				var $cartTable = $("#cartTable tbody tr");
+				
+				for(var i=0; i<$cartTable.length; i++){
+					var price = Number($($cartTable[i]).children().eq(3).text().replace(/,/g, ""));
+					totalPrice += price;
+				}
+				
+				$("#cartTotalPrice").val(totalPrice);
+				$(".totalPrice").text(numComma(totalPrice) + " 원");
+				$(".finalPrice").text(numComma(totalPrice) + " 원");
+			} else {
+				$("#cartTotalPrice").val("0");
+			}
 		}
 		
 		function couponSelect(){
+			var totalPrice = $("#cartTotalPrice").val();
+			
+			$.ajax({
+				url: "getCouponList.cor",
+				data: {"totalPrice": totalPrice},
+				type: "POST",
+				success: function(data){
+					//console.log("성공");
+					var $couponTable = $("#couponTable tbody");
+					$couponTable.empty();
+					if(data.length > 0){
+						for(var i=0; i<data.length; i++){
+							var $tr = $("<tr class='issueNo"+data[i].issueNo+"' onclick='selectCoupon(this, "+data[i].issueNo + ", " + (data[i].couponRdiscount+data[i].couponPdiscount) +")'>")
+								.mouseenter(function(){
+									$(this).css({"background":"lightgray", "cursor":"pointer"});
+								}).mouseout(function(){
+									$(this).css({"background":"white"});
+								});;
+							var $td1 = $("<td>").text(data[i].couponName);
+							var $td2;
+							if(data[i].couponCateg == 0){
+								$td2 = $("<td>").text(data[i].couponRdiscount*100 + " %");
+							} else {
+								$td2 = $("<td>").text(data[i].couponPdiscount + "원 ");
+							}
+							
+							var date = new Date(data[i].issueEdate);
+							var $td3 = $("<td>").text("~ " + date.getFullYear() + "년 " + date.getMonth() + "월 " + date.getDate() + "일 까지");
+							
+							$tr.append($td1).append($td2).append($td3);
+							$couponTable.append($tr);
+						}
+						$(".issueNo" + $("#issueNo").val()).addClass("active");
+						$("#addCouponBtn").attr("onclick", "");
+					} else {
+						$couponTable.append($("<tr>").append($("<td colspan='3'>").text("사용할 수 있는 쿠폰이 없습니다.")))
+					}
+				}, error: function(data){
+					console.log("쿠폰 목록 가져오기 실패!");
+				}
+			});
 			$("#couponModal").modal("show");
+		}
+		
+		function selectCoupon(tr, issueNo, couponDiscount){
+			if($(tr).hasClass("active")){
+				$(tr).removeClass("active");
+				
+				$("#addCouponBtn").attr("onclick", "addCoupon('', '');");
+			} else {
+				$("#couponTable tbody tr").removeClass("active");
+				$(tr).addClass("active");
+				
+				$("#addCouponBtn").attr("onclick", "addCoupon("+issueNo + ", " + couponDiscount+");");
+			}
+		}
+		
+		function addCoupon(issueNo, couponDiscount){
+			$("#issueNo").val(issueNo);
+			$("#couponDiscount").val(couponDiscount);
+			//console.log($("#couponDiscount").val());
+			
+			if(issueNo != ""){				
+				var detail = $(".issueNo" + issueNo).children().eq(0).text() + " (" + $(".issueNo" + issueNo).children().eq(1).text() + ")";
+				$("#discountDetail").html("* 할인내역<br><br><span class='discountText'>" +detail+ "</span>");
+			} else {
+				$("#discountDetail").html("* 할인내역");
+			}
+			
+			var totalPrice = Number($("#cartTotalPrice").val());
+			
+			if(couponDiscount > 1){
+				$(".discountPrice").text(numComma(couponDiscount) + " 원");
+				$(".finalPrice").text(numComma(totalPrice-couponDiscount) + " 원");
+				$("#finalPrice").val(totalPrice-couponDiscount);
+			} else {
+				$(".discountPrice").text(numComma(totalPrice*couponDiscount) + " 원");
+				$(".finalPrice").text(numComma(totalPrice-(totalPrice*couponDiscount)) + " 원");
+				$("#finalPrice").val(totalPrice-(totalPrice*couponDiscount));
+			}
 		}
 		
 		function noReservation(btn){

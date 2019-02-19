@@ -1,17 +1,21 @@
 package com.kh.pmfp.customer.model.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.mybatis.spring.SqlSessionTemplate;
 
+import com.kh.pmfp.common.model.vo.Member;
 import com.kh.pmfp.customer.model.exception.OrderException;
 import com.kh.pmfp.customer.model.vo.BasicMenu;
 import com.kh.pmfp.customer.model.vo.BasicTopping;
+import com.kh.pmfp.customer.model.vo.Coupon;
 import com.kh.pmfp.customer.model.vo.DeliveryCompany;
 import com.kh.pmfp.customer.model.vo.Image;
 import com.kh.pmfp.customer.model.vo.MaterialImage;
 import com.kh.pmfp.customer.model.vo.MyPizza;
 import com.kh.pmfp.customer.model.vo.OrderItem;
+import com.kh.pmfp.customer.model.vo.OrderMain;
 import com.kh.pmfp.customer.model.vo.OrderTopping;
 
 public interface OrderDao {
@@ -39,5 +43,9 @@ public interface OrderDao {
 	ArrayList<MaterialImage> selectSideList(SqlSessionTemplate sqlSession) throws OrderException;
 
 	ArrayList<DeliveryCompany> selectDeliveryCompanyList(SqlSessionTemplate sqlSession, int memberNo) throws OrderException;
+
+	OrderMain selectRecentReceiver(SqlSessionTemplate sqlSession, int memberNo) throws OrderException;
+
+	ArrayList<Coupon> selectCouponList(SqlSessionTemplate sqlSession, HashMap<String, Integer> condi) throws OrderException;
 
 }
