@@ -79,7 +79,15 @@
 		<aop:advisor advice-ref="txAdvice" pointcut-ref="serviceMethod"
 					id="transactionAdvisor"/>
 	</aop:config>
-	
-	
+<!-- 	
+	<bean class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping">
+        <property name="interceptor">
+            <list>
+                <ref bean="interceptorTest"/>
+            </list>
+        </property>
+    </bean>
+    <bean name="/" class="com.kh.pmfp.common.interceptor.Interceptor"/>
+    <bean name="interceptor" class="com.mungchung.sample.HandlerInterceptorTest"/> -->
 	
 </beans>

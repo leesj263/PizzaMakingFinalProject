@@ -2,6 +2,7 @@ package com.kh.pmfp.admin.controller;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -30,9 +31,11 @@ import com.kh.pmfp.admin.model.vo.AdminMember;
 import com.kh.pmfp.admin.model.vo.AdminMenu;
 import com.kh.pmfp.admin.model.vo.AdminOrder;
 import com.kh.pmfp.admin.model.vo.AdminOrderMenu;
+import com.kh.pmfp.admin.model.vo.AdminSales;
 import com.kh.pmfp.admin.model.vo.AdminSeller;
 import com.kh.pmfp.admin.model.vo.AdminSellerOrder;
 import com.kh.pmfp.admin.model.vo.AdminSellerOrderList;
+import com.kh.pmfp.admin.model.vo.AdminStatistics;
 import com.kh.pmfp.common.model.vo.PageInfo;
 import com.kh.pmfp.common.model.vo.Pagination;
 import com.kh.pmfp.common.model.vo.Pagination5;
@@ -921,6 +924,25 @@ public class AdminController {
 			request.setAttribute("msg", e.getMessage());
 			return "common/errorPage";
 		}
-		
+	}
+	
+	@RequestMapping("statistics.ad")
+	public String statistics(HttpServletRequest request) {
+		/*
+		HashMap<String, AdminStatistics> daySales=new HashMap<String, AdminStatistics>();
+		HashMap<String, AdminStatistics> dayExpense=new HashMap<String, AdminStatistics>();
+		AdminSales sales=new AdminSales(1);
+		AdminSales expense=new AdminSales(0);
+		try {
+			daySales=as.selectDayStatistics(sales);
+			dayExpense=as.selectDayStatistics(expense);
+			request.setAttribute("daySales", daySales);
+			request.setAttribute("dayExpense", dayExpense);
+			return "admin/sales/statistics/statistics";
+		} catch (AdminSelectException e) {
+			request.setAttribute("msg", e.getMessage());
+			return "common/errorPage";
+		}*/
+		return "admin/sales/statistics/statistics";
 	}
 }

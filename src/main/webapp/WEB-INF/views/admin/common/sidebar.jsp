@@ -21,7 +21,7 @@
 				<i class="fa fa-bars"></i>
 			</button> -->
 			
-			<a class="navbar-brand" href="./">
+			<a class="navbar-brand" href="main.t">
 				<img src="${contextPath }/resources/admin/images/logo.PNG" alt="Logo" height="60px">
 			</a>
 		</div>
@@ -29,7 +29,7 @@
 		<div id="main-menu" class="main-menu collapse navbar-collapse">
 			<ul class="nav navbar-nav">
 				<li class="active">
-					<a href="admin.ad?admin=adminMain"><i class="menu-icon fa fa-dashboard"></i>Main</a>
+					<a href="adminMain.ad"><i class="menu-icon ti-desktop"></i>Main</a>
 				</li>
 
 				<h3 class="menu-title">Member</h3>
@@ -63,9 +63,6 @@
 						<li><i class="fa fa-table"></i><a href="sellerList.ad">Seller List</a></li>
 						<li><i class="fa fa-spinner"></i><a href="waitSeller.ad">Wait Seller List</a></li>
 						<li><i class="ti-shopping-cart-full"></i><a href="sellerOrder.ad">Seller Order</a></li>
-						<!-- 
-						<li><i class="fa fa-spinner"></i><a href="#">Wait Seller List</a></li> 
-						-->
 					</ul>
 				</li>
 				<!-- <li class="menu-item-has-children dropdown">
@@ -86,7 +83,7 @@
 					<ul class="sub-menu children dropdown-menu">
 						<li><i class="menu-icon ti-credit-card"></i><a href="orderList.ad">Order List</a></li>
 						<li><i class="menu-icon ti-receipt"></i><a href="calculateList.ad">Calculate List</a></li>
-						<li><i class="menu-icon ti-stats-up"></i><a href="admin.ad?admin=sales/statistics/statistics">Sales Statistics</a></li>
+						<li><i class="menu-icon ti-stats-up"></i><a href="statistics.ad">Sales Statistics</a></li>
 					</ul>
 				</li>
 				<!-- 

@@ -1,6 +1,7 @@
 package com.kh.pmfp.admin.model.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.kh.pmfp.admin.model.exception.AdminCountException;
 import com.kh.pmfp.admin.model.exception.AdminDeleteException;
@@ -8,7 +9,6 @@ import com.kh.pmfp.admin.model.exception.AdminInsertException;
 import com.kh.pmfp.admin.model.exception.AdminSelectException;
 import com.kh.pmfp.admin.model.exception.AdminUpdateException;
 import com.kh.pmfp.admin.model.vo.AdminBoard;
-import com.kh.pmfp.admin.model.vo.AdminBoard2;
 import com.kh.pmfp.admin.model.vo.AdminCalculate;
 import com.kh.pmfp.admin.model.vo.AdminCalculateList;
 import com.kh.pmfp.admin.model.vo.AdminMaterial;
@@ -16,9 +16,11 @@ import com.kh.pmfp.admin.model.vo.AdminMember;
 import com.kh.pmfp.admin.model.vo.AdminMenu;
 import com.kh.pmfp.admin.model.vo.AdminOrder;
 import com.kh.pmfp.admin.model.vo.AdminOrderMenu;
+import com.kh.pmfp.admin.model.vo.AdminSales;
 import com.kh.pmfp.admin.model.vo.AdminSeller;
 import com.kh.pmfp.admin.model.vo.AdminSellerOrder;
 import com.kh.pmfp.admin.model.vo.AdminSellerOrderList;
+import com.kh.pmfp.admin.model.vo.AdminStatistics;
 import com.kh.pmfp.common.model.vo.PageInfo;
 
 public interface AdminService {
@@ -184,6 +186,11 @@ public interface AdminService {
 
 	//업체 주문 업데이트용 
 	int sellerOrderApply(AdminSellerOrder order) throws AdminUpdateException, AdminCountException;
+
+	//일간 통계 출력용 - 주문/업체주문
+	HashMap<String, AdminStatistics> selectDayStatistics(AdminSales sales) throws AdminSelectException;
+
+	
 
 	
 

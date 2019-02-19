@@ -1,6 +1,7 @@
 package com.kh.pmfp.admin.model.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.mybatis.spring.SqlSessionTemplate;
 
@@ -18,9 +19,11 @@ import com.kh.pmfp.admin.model.vo.AdminMember;
 import com.kh.pmfp.admin.model.vo.AdminMenu;
 import com.kh.pmfp.admin.model.vo.AdminOrder;
 import com.kh.pmfp.admin.model.vo.AdminOrderMenu;
+import com.kh.pmfp.admin.model.vo.AdminSales;
 import com.kh.pmfp.admin.model.vo.AdminSeller;
 import com.kh.pmfp.admin.model.vo.AdminSellerOrder;
 import com.kh.pmfp.admin.model.vo.AdminSellerOrderList;
+import com.kh.pmfp.admin.model.vo.AdminStatistics;
 import com.kh.pmfp.common.model.vo.PageInfo;
 
 public interface AdminDao {
@@ -210,6 +213,9 @@ public interface AdminDao {
 
 	//업체 주문 업데이트용 - 목록  & 상세보기
 	int sellerOrderApply(SqlSessionTemplate sqlSession, AdminSellerOrder order) throws AdminUpdateException;
+
+	//일간 통계 출력용 - 주문/업체주문
+	HashMap<String, AdminStatistics> selectDayStatistics(SqlSessionTemplate sqlSession, AdminSales sales) throws AdminSelectException;
 
 	
 
