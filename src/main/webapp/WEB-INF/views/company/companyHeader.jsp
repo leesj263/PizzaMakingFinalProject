@@ -26,8 +26,8 @@
                     	<b>점주</b>&nbsp;&nbsp;&nbsp;<label>${sessionScope.loginUser.memberName }</label>
                     </div>
                      <%-- <img class="user-avatar rounded-circle" src="${contextPath }/resources/companyCss/images/admin.jpg" alt="User Avatar"> --%>
-                     <button type="button" class="btn btn-primary" onclick = "location.href = 'index.jsp'"><i class="fa fa-cutlery"></i>&nbsp; 사용자 메뉴로 이동</button>
-                     <button type="button" class="btn btn-secondary"><i class="fa fa-sign-out"></i>&nbsp; 로그아웃</button>
+                     <button type="button" class="btn btn-primary" onclick = "location.href = 'goMain.co'"><i class="fa fa-cutlery"></i>&nbsp; 사용자 메뉴로 이동</button>
+                     <button type="button" class="btn btn-secondary" onclick = "location.href = 'logout.co'"><i class="fa fa-sign-out" ></i>&nbsp; 로그아웃</button>
                        <!--  <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                            
                         </a>
