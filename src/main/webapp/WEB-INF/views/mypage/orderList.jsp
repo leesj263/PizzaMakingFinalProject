@@ -52,15 +52,6 @@
 			    <th>주문금액</th>
 		 	</tr></thead>
 		  <tbody>
-		    <!-- <tr onclick="location.href='myPageOrderDetail.t'">
-		     <td>20190117</td>
-		     <td>도우-씬 /사이즈-L 
-				엣지-크러스트 / 소스-토마토소스
-				토핑-불고기1, 새우1, 파인애플2</td>
-		     <td>배달</td>
-		     <td>천호점</td>
-		     <td>25,000원</td>
-		    </tr> -->
 		    
 		    <c:forEach items="${ orderList }" var="o" varStatus="status">
 		    	<tr>
@@ -91,8 +82,8 @@
 	<script>
 		$("td").click(function(){
 			var orderNo = $(this).parent().children("td").eq(0).text();
-			
-			location.href="mpOderDetail.mp?orderNo="+orderNo;
+
+			location.href="mpOderDetail.mp?orderNo=" + orderNo;
 		});
 	</script>
 	

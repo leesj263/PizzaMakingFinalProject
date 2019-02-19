@@ -74,7 +74,7 @@
 							    <input id="mypizzaNo" type="hidden" value="${ m.mypizzaNo }">
 							  </div>
 							  <div class="image">
-							    <img src="/pizzaMakingFinalProject/src/main/webapp/resources/customer/images/myPizza/${m.imgChangeName }" style="height: 150px;">
+							    <img src="resources/customer/images/myPizza/${m.imgChangeName }" style="height: 150px;">
 							  </div>
 							  <div class="content" align="center">
 							   <button class="ui secondary basic button">상세보기</button>

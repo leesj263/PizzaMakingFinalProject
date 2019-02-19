@@ -9,12 +9,22 @@ import com.kh.pmfp.mypage.model.vo.Coupon;
 import com.kh.pmfp.mypage.model.vo.DelList;
 import com.kh.pmfp.mypage.model.vo.Location;
 import com.kh.pmfp.mypage.model.vo.MyWriting;
+import com.kh.pmfp.mypage.model.vo.OrderDetail;
 import com.kh.pmfp.mypage.model.vo.OrderList;
 
 public interface MypageService {
 
 	//마이페이지 메인 - 주문내역
 	ArrayList<OrderList> selectOrderList(int memberNo);
+	
+	//사용쿠폰내역 카운트 조회
+	int selectUseCouponList(int memberNo, int orderNo);
+	
+	//쿠폰 사용내역 X - 상세보기
+	ArrayList<OrderDetail> selectOrderDetailList(int orderNo);
+	
+	//쿠폰 사용내역 O - 상세보기
+	ArrayList<OrderDetail> selectOrderDetailList2(int orderNo);
 
 	//배송지 내역
 	ArrayList<DelList> selectDelList(int memberNo);
@@ -45,5 +55,9 @@ public interface MypageService {
 
 	//내피자
 	ArrayList<MyPizza> selectMypizzaList(int memberNo);
+
+	
+	
+	
 
 }

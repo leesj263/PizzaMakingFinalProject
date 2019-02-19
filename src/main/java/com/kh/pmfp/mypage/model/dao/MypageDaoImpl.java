@@ -13,6 +13,7 @@ import com.kh.pmfp.mypage.model.vo.Coupon;
 import com.kh.pmfp.mypage.model.vo.DelList;
 import com.kh.pmfp.mypage.model.vo.Location;
 import com.kh.pmfp.mypage.model.vo.MyWriting;
+import com.kh.pmfp.mypage.model.vo.OrderDetail;
 import com.kh.pmfp.mypage.model.vo.OrderList;
 
 @Repository
@@ -30,6 +31,30 @@ public class MypageDaoImpl implements MypageDao{
 		}
 		
 		return orderList;
+	}
+	
+	//사용쿠폰내역 카운트 조회
+	@Override
+	public int selectUseCouponList(SqlSessionTemplate sqlSession, int memberNo, int orderNo) {
+		OrderDetail od = new OrderDetail(orderNo, memberNo);
+		int result = sqlSession.selectOne("Mypage.selectUseCouponList", od);
+		return result;
+	}
+	
+	//쿠폰 사용내역 X - 상세보기
+	@Override
+	public ArrayList<OrderDetail> selectOrderDetailList(SqlSessionTemplate sqlSession, int orderNo) {
+		ArrayList<OrderDetail> orderDetailList = (ArrayList)sqlSession.selectList("Mypage.selectOrderDetailList", orderNo);
+		System.out.println("주문 상세정보 dao1 : " + orderDetailList);
+		return orderDetailList;
+	}
+	
+	//쿠폰 사용내역 O - 상세보기
+	@Override
+	public ArrayList<OrderDetail> selectOrderDetailList2(SqlSessionTemplate sqlSession, int orderNo) {
+		ArrayList<OrderDetail> orderDetailList = (ArrayList)sqlSession.selectList("Mypage.selectOrderDetailList2", orderNo);
+		System.out.println("주문 상세정보 dao2 : " + orderDetailList);
+		return orderDetailList;
 	}
 
 	//배송지 내역
@@ -175,6 +200,9 @@ public class MypageDaoImpl implements MypageDao{
 		
 		return list;
 	}
+	
+
+	
 
 	
 

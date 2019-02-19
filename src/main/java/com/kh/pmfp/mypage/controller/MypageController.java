@@ -34,6 +34,7 @@ import com.kh.pmfp.mypage.model.vo.DelList;
 import com.kh.pmfp.mypage.model.vo.DistanceLoc;
 import com.kh.pmfp.mypage.model.vo.Location;
 import com.kh.pmfp.mypage.model.vo.MyWriting;
+import com.kh.pmfp.mypage.model.vo.OrderDetail;
 import com.kh.pmfp.mypage.model.vo.OrderList;
 
 @Controller
@@ -96,10 +97,33 @@ public class MypageController {
 	
 	//주문내역 - 상세보기
 	@RequestMapping(value="mpOderDetail.mp")
-	public String mpOderDetail(String orderNo) {
+	public String mpOderDetail(HttpServletRequest request, int orderNo, Model model) {
+		HttpSession session = request.getSession();
+		Member loginUser = (Member)session.getAttribute("loginUser");
+		int memberNo = loginUser.getMemberNo();
+		
+		System.out.println("orderNo : " + orderNo);
+		
+		//사용쿠폰내역 카운트 조회
+		int result = mps.selectUseCouponList(memberNo, orderNo);
+		System.out.println("result : " + result);
+		
+		ArrayList<OrderDetail> orderDetailList;
+		if(result>0) {
+			//쿠폰 사용내역 O - 상세보기
+			orderDetailList = mps.selectOrderDetailList2(orderNo);
+		}else {
+			//쿠폰 사용내역 X - 상세보기
+			orderDetailList = mps.selectOrderDetailList(orderNo);
+		}
 		
 		
-		return "mypage/orderDetail?orderNo="+orderNo;
+		String[] arr = orderDetailList.get(0).getMaterialName().split("/");
+		
+		
+		model.addAttribute("orderDetailList",orderDetailList);
+
+		return "mypage/orderDetail";
 	}
 	
 	
