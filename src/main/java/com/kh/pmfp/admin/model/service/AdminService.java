@@ -178,7 +178,13 @@ public interface AdminService {
 
 	//기본 메뉴 상세 조회용
 	ArrayList<AdminMenu> selectMenuDetail(int basicNo) throws AdminSelectException;
-	
+
+	//업체 승인용 
+	int confirmSeller(AdminSeller seller) throws AdminUpdateException;
+
+	//업체 주문 업데이트용 
+	int sellerOrderApply(AdminSellerOrder order) throws AdminUpdateException, AdminCountException;
+
 	
 
 }

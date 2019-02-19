@@ -1,7 +1,6 @@
 package com.kh.pmfp.admin.controller;
 
-import static org.hamcrest.CoreMatchers.instanceOf;
-
+import java.sql.Date;
 import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.pmfp.admin.model.exception.AdminCountException;
@@ -23,7 +23,6 @@ import com.kh.pmfp.admin.model.exception.AdminSelectException;
 import com.kh.pmfp.admin.model.exception.AdminUpdateException;
 import com.kh.pmfp.admin.model.service.AdminService;
 import com.kh.pmfp.admin.model.vo.AdminBoard;
-import com.kh.pmfp.admin.model.vo.AdminBoard2;
 import com.kh.pmfp.admin.model.vo.AdminCalculate;
 import com.kh.pmfp.admin.model.vo.AdminCalculateList;
 import com.kh.pmfp.admin.model.vo.AdminMaterial;
@@ -36,7 +35,6 @@ import com.kh.pmfp.admin.model.vo.AdminSellerOrder;
 import com.kh.pmfp.admin.model.vo.AdminSellerOrderList;
 import com.kh.pmfp.common.model.vo.PageInfo;
 import com.kh.pmfp.common.model.vo.Pagination;
-import com.kh.pmfp.common.model.vo.Pagination20;
 import com.kh.pmfp.common.model.vo.Pagination5;
 
 @Controller
@@ -49,6 +47,19 @@ public class AdminController {
 	public String adminPage(@RequestParam("admin")String admin) {
 		System.out.println(admin);
 		return "admin/"+admin;
+	}
+	
+	//메인 이동용
+	@RequestMapping("adminMain.ad")
+	public String adminMain(HttpServletRequest request) {
+		return "admin/adminMain";
+	}
+	
+	//로그아웃용
+	@RequestMapping("logout.ad")
+	public String logout(SessionStatus status) {
+		status.setComplete();
+		return "redirect:logout.co";
 	}
 	
 	//회원 목록 출력용
@@ -138,6 +149,20 @@ public class AdminController {
 		}	
 	}
 	
+	//업체 승인용
+	@RequestMapping(value="confirmSeller.ad", method=RequestMethod.GET)
+	public String confirmSeller(@ModelAttribute AdminSeller seller, HttpServletRequest request, RedirectAttributes redirectAttributes) {
+		System.out.println(seller.getComNo()+"/"+seller.getComLat()+"/"+seller.getComLon());
+		try {
+			int result=as.confirmSeller(seller);
+			redirectAttributes.addAttribute("num", seller.getComNo());
+			return "redirect:sellerDetail.ad";
+		} catch (AdminUpdateException e) {
+			request.setAttribute("msg", e.getMessage());
+			return "common/errorPage";
+		}
+	}
+	
 	//업체 상세 조회용
 	@RequestMapping(value="sellerDetail.ad", method=RequestMethod.GET)
 	public String sellerDetail(@RequestParam(value="currentPage", required=false, defaultValue="1")int currentPage, int num, HttpServletRequest request, HttpServletResponse response) {
@@ -187,6 +212,44 @@ public class AdminController {
 			return "common/errorPage";
 		}
 		
+	}
+	
+	//업체 주문 업데이트용 - 목록  & 상세보기
+	@RequestMapping(value="sellerOrderApply.ad", method=RequestMethod.GET)
+	@ResponseBody
+	public int sellerOrderApply(@ModelAttribute AdminSellerOrder order, HttpServletRequest request) throws AdminUpdateException, AdminCountException {
+		System.out.println("배송 내역 : "+order);
+		int result=as.sellerOrderApply(order);
+		return result;
+	}
+	
+	//업체 주문 업데이트 용 - 목록 ajax 여러개
+	@RequestMapping(value="selectSellerOrderApply.ad", method=RequestMethod.GET)
+	@ResponseBody
+	public int selectSellerOrderApply(@RequestParam(value="orderMDate") String orderMDate, @RequestParam(value="orderMStatus") String orderMStatus, @RequestParam(value="comNo") String comNo, HttpServletRequest request) throws AdminUpdateException, AdminCountException {
+		System.out.println(orderMDate);
+		System.out.println(comNo);
+		System.out.println(orderMStatus);
+		String[] orderMStatusArr=orderMStatus.split(",");
+		String[] orderMDateArr=orderMDate.split(",");
+		String[] comNoArr=comNo.split(",");
+		ArrayList<AdminSellerOrder> orderList=new ArrayList<AdminSellerOrder>();
+		for(int i=0;i<comNoArr.length;i++) {
+			AdminSellerOrder order=new AdminSellerOrder();
+			order.setComNo(Integer.parseInt(comNoArr[i]));
+			order.setOrderMStatus(orderMStatusArr[i]);
+			order.setOrderMDate(Date.valueOf((orderMDateArr[i])));
+			orderList.add(order);
+		}
+		int result=0;
+		for(int i=0;i<orderList.size();i++) {
+			result+=as.sellerOrderApply(orderList.get(i));
+		}
+		if(result==orderList.size()) {
+			return 1;
+		}else {
+			return -1;
+		}
 	}
 	
 	//업체 주문 상세 조회용
