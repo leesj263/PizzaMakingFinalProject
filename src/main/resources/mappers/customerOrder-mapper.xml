@@ -72,6 +72,41 @@
 		<result property="lon" column="LON" />
 	</resultMap>
 	
+	<resultMap type="com.kh.pmfp.customer.model.vo.OrderMain"
+		id="orderMainResultMap">
+		<id property="orderNo" column="ORDER_NO" />
+		<result property="memberNo" column="MEMBER_NO" />
+		<result property="orderMethod" column="ORDER_METHOD" />
+		<result property="orderReceiver" column="ORDER_RECEIVER" />
+		<result property="orderRtel" column="ORDER_RTEL" />
+		<result property="orderDate" column="ORDER_DATE" />
+		<result property="orderReservetime" column="ORDER_RESERVETIME" />
+		<result property="orderPayno" column="ORDER_PAYNO" />
+		<result property="orderPayprice" column="ORDER_PAYPRICE" />
+		<result property="orderStatus" column="ORDER_STATUS" />
+		<result property="deliveryNo" column="DELIVERY_NO" />
+		<result property="empNo" column="EMP_NO" />
+		<result property="comNo" column="COM_NO" />
+	</resultMap>
+	
+	<resultMap type="com.kh.pmfp.customer.model.vo.Coupon"
+		id="couponResultMap">
+		<id property="couponNo" column="COUPON_NO" />
+		<result property="couponName" column="COUPON_NAME" />
+		<result property="couponCateg" column="COUPON_CATEG" />
+		<result property="couponCondition" column="COUPON_CONDITION" />
+		<result property="couponCdate" column="COUPON_CDATE" />
+		<result property="couponEdate" column="COUPON_EDATE" />
+		<result property="couponRdiscount" column="COUPON_RDISCOUNT" />
+		<result property="couponPdiscount" column="COUPON_PDISCOUNT" />
+		<result property="issueNo" column="ISSUE_NO" />
+		<result property="memberNo" column="MEMBER_NO" />
+		<result property="issueCdate" column="ISSUE_CDATE" />
+		<result property="issueEdate" column="ISSUE_EDATE" />
+		<result property="issueStatus" column="ISSUE_STATUS" />
+		<result property="orderNo" column="ORDER_NO" />
+	</resultMap>
+	
 	<!-- 재료 전체 리스트 가져오기 -->
 	<select id="selectMateList" resultMap="materialResultSet">
 		SELECT *
@@ -148,24 +183,25 @@
 		WHERE DE.DELIVERY_STATUS = 'Y' AND CO.COM_STATUS = 'Y'
 		AND DE.MEMBER_NO = #{ memberNo }
 	</select>
+	
+	<select id="selectRecentReceiver" resultMap="orderMainResultMap" parameterType="_int">
+		SELECT ORDER_RECEIVER, ORDER_RTEL
+		FROM ORDER_MAIN
+		WHERE MEMBER_NO = #{ memberNo }
+		AND ORDER_DATE = (SELECT max(ORDER_DATE)
+		    FROM ORDER_MAIN
+		    WHERE MEMBER_NO = #{ memberNo })
+	</select>
+	
+	<select id="selectCouponList" resultMap="couponResultMap">
+		SELECT CP.COUPON_NO, CP.COUPON_NAME, CP.COUPON_CATEG, CP.COUPON_CONDITION, CP.COUPON_CDATE, CP.COUPON_EDATE, CP.COUPON_RDISCOUNT, CP.COUPON_PDISCOUNT,
+		    CI.ISSUE_NO, CI.MEMBER_NO, CI.ISSUE_CDATE, CI.ISSUE_EDATE, CI.ORDER_NO
+		FROM COUPON CP
+		JOIN COUPON_ISSUE CI ON (CP.COUPON_NO = CI.COUPON_NO)
+		WHERE CI.ISSUE_STATUS = 'Y'
+		AND CI.MEMBER_NO = #{ memberNo }
+		AND CP.COUPON_CONDITION <![CDATA[ <= ]]> #{ totalPrice }
+	</select>
+	
+	
 </mapper>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

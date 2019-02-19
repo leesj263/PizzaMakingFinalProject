@@ -1,6 +1,7 @@
 package com.kh.pmfp.customer.model.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,11 +11,13 @@ import com.kh.pmfp.customer.model.dao.OrderDao;
 import com.kh.pmfp.customer.model.exception.OrderException;
 import com.kh.pmfp.customer.model.vo.BasicMenu;
 import com.kh.pmfp.customer.model.vo.BasicTopping;
+import com.kh.pmfp.customer.model.vo.Coupon;
 import com.kh.pmfp.customer.model.vo.DeliveryCompany;
 import com.kh.pmfp.customer.model.vo.Image;
 import com.kh.pmfp.customer.model.vo.MaterialImage;
 import com.kh.pmfp.customer.model.vo.MyPizza;
 import com.kh.pmfp.customer.model.vo.OrderItem;
+import com.kh.pmfp.customer.model.vo.OrderMain;
 import com.kh.pmfp.customer.model.vo.OrderTopping;
 
 @Service
@@ -84,5 +87,15 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public ArrayList<DeliveryCompany> selectDeliveryCompanyList(int memberNo) throws OrderException {
 		return od.selectDeliveryCompanyList(sqlSession, memberNo);
+	}
+
+	@Override
+	public OrderMain selectRecentReceiver(int memberNo) throws OrderException {
+		return od.selectRecentReceiver(sqlSession, memberNo);
+	}
+
+	@Override
+	public ArrayList<Coupon> selectCouponList(HashMap<String, Integer> condi) throws OrderException {
+		return od.selectCouponList(sqlSession, condi);
 	}
 }

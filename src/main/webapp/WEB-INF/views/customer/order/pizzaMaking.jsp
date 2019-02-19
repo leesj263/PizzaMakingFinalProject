@@ -59,7 +59,7 @@
 				</button>
 				</c:if>
 				<c:if test="${ empty sessionScope.loginUser }">
-				<button class="ui icon grey button" onclick="alert('로그인이 필요한 기능입니다.');">
+				<button class="ui icon grey button" onclick="alert('회원가입이 필요한 기능입니다.');">
 					<i class="edit icon"></i>
 				</button>
 				</c:if>
@@ -70,7 +70,7 @@
 				</button>
 				</c:if>
 				<c:if test="${ empty sessionScope.loginUser }">
-				<button class="ui blue button"  onclick="alert('로그인이 필요한 기능입니다.');" style="margin-left: 20px;">
+				<button class="ui blue button"  onclick="alert('회원가입이 필요한 기능입니다.');" style="margin-left: 20px;">
 					레시피 저장
 				</button>
 				</c:if>
@@ -236,9 +236,16 @@
 		</div>
 		
 		<div class="ui container center aligned">
-			<button class="ui blue button" style="width: 150px;" onclick="orderBtn();">
-				주문하기
-			</button>
+			<c:if test="${ empty sessionScope.loginUser and empty sessionScope.noLoginUser }">
+				<button class="ui blue button" style="width: 150px;" onclick="alert('로그인이 필요합니다.'); $('html,body').scrollTop(0); login();">
+					주문하기
+				</button>
+			</c:if>
+			<c:if test="${ !empty sessionScope.loginUser or !empty sessionScope.noLoginUser }">
+				<button class="ui blue button" style="width: 150px;" onclick="orderBtn();">
+					주문하기
+				</button>
+			</c:if>
 		</div>
 	</div>
 	

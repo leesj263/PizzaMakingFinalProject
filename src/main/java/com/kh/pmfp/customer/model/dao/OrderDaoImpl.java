@@ -1,18 +1,22 @@
 package com.kh.pmfp.customer.model.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.kh.pmfp.common.model.vo.Member;
 import com.kh.pmfp.customer.model.exception.OrderException;
 import com.kh.pmfp.customer.model.vo.BasicMenu;
 import com.kh.pmfp.customer.model.vo.BasicTopping;
+import com.kh.pmfp.customer.model.vo.Coupon;
 import com.kh.pmfp.customer.model.vo.DeliveryCompany;
 import com.kh.pmfp.customer.model.vo.Image;
 import com.kh.pmfp.customer.model.vo.MaterialImage;
 import com.kh.pmfp.customer.model.vo.MyPizza;
 import com.kh.pmfp.customer.model.vo.OrderItem;
+import com.kh.pmfp.customer.model.vo.OrderMain;
 import com.kh.pmfp.customer.model.vo.OrderTopping;
 
 @Repository
@@ -98,6 +102,21 @@ public class OrderDaoImpl implements OrderDao {
 		ArrayList<DeliveryCompany> dcList = (ArrayList)sqlSession.selectList("CustomerOrder.selectDeliveryCompanyList", memberNo);
 		if(dcList == null) throw new OrderException("배송지 정보 목록 가져오기 오류 발생!");
 		return dcList;
+	}
+
+	//최근 수령자 정보 가져오기
+	@Override
+	public OrderMain selectRecentReceiver(SqlSessionTemplate sqlSession, int memberNo) throws OrderException {
+		OrderMain receiver = sqlSession.selectOne("CustomerOrder.selectRecentReceiver", memberNo);
+		if(receiver == null) throw new OrderException("최근 수령자 정보 가져오기 오류 발생!");
+		return receiver;
+	}
+
+	@Override
+	public ArrayList<Coupon> selectCouponList(SqlSessionTemplate sqlSession, HashMap<String, Integer> condi) throws OrderException {
+		ArrayList<Coupon> cpList = (ArrayList)sqlSession.selectList("CustomerOrder.selectCouponList", condi);
+		if(cpList == null) throw new OrderException("쿠폰 목록 가져오기 오류 발생!");
+		return cpList;
 	}
 
 
