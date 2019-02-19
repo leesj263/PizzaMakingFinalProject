@@ -112,6 +112,7 @@ public class OrderDaoImpl implements OrderDao {
 		return receiver;
 	}
 
+	//쿠폰 목록 가져오기
 	@Override
 	public ArrayList<Coupon> selectCouponList(SqlSessionTemplate sqlSession, HashMap<String, Integer> condi) throws OrderException {
 		ArrayList<Coupon> cpList = (ArrayList)sqlSession.selectList("CustomerOrder.selectCouponList", condi);

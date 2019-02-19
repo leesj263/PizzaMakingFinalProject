@@ -37,6 +37,7 @@ div.radio label:hover {
 	display: none;
 	outline: 3px solid lightgrey;
 	padding: 10px;
+	min-height: 79px;
 }
 
 .delivery-table tbody tr td:last-child {
@@ -116,6 +117,7 @@ div.radio label:hover {
 					onchange="orderMethodSel(2);"> <label for="visitOrder"
 					style="font-size: 16px;">방문포장</label>
 			</div>
+			<input type="hidden" id="orderMethod">
 
 		
 			<div class="ui grid bottom aligned">
@@ -124,8 +126,6 @@ div.radio label:hover {
 					id="oaTopRight"></div>
 			</div>
 			
-			<input type="hidden" id="deliveryNo" value="">
-			<input type="hidden" id="comNo" value="">
 			<table class="ui very basic table delivery-table" id="addressTable">
 				<tbody>
 					<!-- 주소 -->
@@ -135,9 +135,12 @@ div.radio label:hover {
 			<table class="ui very basic table delivery-table" id="comTable">
 				<tbody>
 					<!-- 매장 방문 -->
+					<tr><td></td></tr>
 				</tbody>
 			</table>
 		</div>
+		<input type="hidden" value="" id="deliveryNo">
+		<input type="hidden" value="" id="comNo">
 
 		<!-- 주문제품 -->
 		<div class="order-product">
@@ -177,7 +180,7 @@ div.radio label:hover {
 						</div>
 						<div class="right floated eight wide column right aligned">
 							<c:if test="${ !empty sessionScope.loginUser }">
-							<button class="ui brown button" onclick="couponSelect();">할인 선택</button>
+							<button class="ui brown button" onclick="getCouponList();">할인 선택</button>
 							</c:if>
 							<c:if test="${ empty sessionScope.loginUser }">
 							<button class="ui brown button" onclick="alert('회원가입이 필요한 기능입니다.');">할인 선택</button>
@@ -187,7 +190,7 @@ div.radio label:hover {
 					<div class="ui divider"></div>
 					
 					<div style="margin-bottom: 50px;" id="discountDetail">
-						* 할인내역
+						* 할인내역<br><br><span class='discountText'>&nbsp;</span>
 					</div>
 					
 					<div class="ui grid">
@@ -221,7 +224,6 @@ div.radio label:hover {
 					</div>
 					<input type="hidden" name="reservationCondition" value="1" id="reservationCondition">
 					<div class="ui container center aligned" id="reservationDiv">
-						<label class='text-label'>00:00분 배달 예정입니다</label>
 					</div>
 					
 				</div>
@@ -240,7 +242,7 @@ div.radio label:hover {
 							<td style="width: 160px;"><span class="text-label">이름</span></td>
 							<td>
 								<div class="ui input fluid">
-									<input type="text" placeholder="이름" id="orderMemberName">
+									<input type="text" maxlength="20" placeholder="이름" id="orderMemberName">
 								</div>
 							</td>
 						</tr>
@@ -248,7 +250,7 @@ div.radio label:hover {
 							<td><span class="text-label">전화번호</span></td>
 							<td>
 								<div class="ui input fluid">
-									<input type="text" placeholder="전화번호" id="orderMemberPhone">
+									<input type="text" maxlength="13" placeholder="010-1234-5678" id="orderMemberPhone">
 								</div>
 							</td>
 						</tr>
@@ -300,7 +302,7 @@ div.radio label:hover {
 						<div class="row" style="margin-top: 30px;">
 							<div class="left floated eight wide column"></div>
 							<div class="right floated eight wide column right aligned">
-								<button class="ui button red orderBtn">주문</button>
+								<button class="ui button red orderBtn" onclick="order();">주문</button>
 							</div>
 						</div>
 					</div>
@@ -350,9 +352,8 @@ div.radio label:hover {
 
 	<!-- 쿠폰 모달 -->
 	<div class="ui longer modal" id="couponModal">
-		<div class="header">할인 선택 (한 개까지 선택 가능합니다.)</div>
+		<div class="header">할인 선택</div>
 		<div class="content">
-			
 			<table class="ui fixed table" id="couponTable">
 				<thead>
 					<tr>
@@ -377,17 +378,21 @@ div.radio label:hover {
 	<script src="/pmfp/resources/main/assets/js/semantic/semantic.min.js"></script>
 	<script src="/pmfp/resources/customer/js/jquery.cookie-1.4.1.min.js"></script>
 	
+	<!-- 로그인 유저 -->
 	<c:if test="${!empty sessionScope.loginUser}">
 	<script>
+		//최근 수령자 정보
 		$(function(){
 			$("#orderMemberName").val("${requestScope.receiver.orderReceiver}");;
 			$("#orderMemberPhone").val("${requestScope.receiver.orderRtel}");
 		});
 	
+		//주문방법 선택
 		function orderMethodSel(val) {
 			$("#oaTopLeft").empty();
 			$("#oaTopRight").empty();
 			if (val == 1) {
+				$("#orderMethod").val(1);
 				$("#oaTopLeft").append($("<h3>").text("배달주소"));
 				$("#oaTopRight").append(
 						$("<button class='ui button brown'>").text("배달주소 등록"));
@@ -409,6 +414,10 @@ div.radio label:hover {
 							$table.append($tr);
 						}
 						
+						if(data.length == 0){
+							$table.append($("<tr>").append($("<td style='text-align: center;'>").text("배송지 정보가 없습니다.")));
+						}
+						
 						$("#deliveryNo").val("");
 						$("#comNo").val("");
 						$("#comTable").hide();
@@ -419,8 +428,9 @@ div.radio label:hover {
 					}
 				});
 			} else {
+				$("#orderMethod").val(2);
 				$("#oaTopLeft").append($("<h3>").text("매장"));
-				$("#oaTopRight").append($("<button class='ui button brown'>").text("매장 등록"));
+				$("#oaTopRight").append($("<button class='ui button brown'>").text("매장 선택"));
 				$("#deliveryNo").val("");
 				$("#comNo").val("");
 				$("#addressTable").hide();
@@ -432,17 +442,21 @@ div.radio label:hover {
 	</script>
 	</c:if>
 	
+	<!-- 비로그인 유저 -->
 	<c:if test="${!empty sessionScope.noLoginUser}">
 	<script>
+		//비로그인 유저 정보
 		$(function(){
 			$("#orderMemberName").val("${sessionScope.noLoginUser.memberName}");
 			$("#orderMemberPhone").val("${sessionScope.noLoginUser.memberPhone}");
 		});
 	
+		//주문방법 선택
 		function orderMethodSel(val) {
 			$("#oaTopLeft").empty();
 			$("#oaTopRight").empty();
 			if (val == 1) {
+				$("#orderMethod").val(1);
 				$("#oaTopLeft").append($("<h3>").text("배달주소"));
 				$("#oaTopRight").append(
 						$("<button class='ui button brown'>").text("배달주소 등록"));
@@ -474,6 +488,7 @@ div.radio label:hover {
 					}
 				});
 			} else {
+				$("#orderMethod").val(2);
 				$("#oaTopLeft").append($("<h3>").text("매장"));
 				$("#oaTopRight").append($("<button class='ui button brown'>").text("매장 등록"));
 				$("#deliveryNo").val("");
@@ -487,6 +502,7 @@ div.radio label:hover {
 	</c:if>
 	
 	<script>
+		//배송지 선택
 		function addressSelect(btn, deliveryNo, comNo){
 			$(".addrSel").removeClass("active").removeClass("black").removeClass("grey");
 			$(".addrSel").addClass("grey");
@@ -589,12 +605,15 @@ div.radio label:hover {
 				$("#cartTotalPrice").val(totalPrice);
 				$(".totalPrice").text(numComma(totalPrice) + " 원");
 				$(".finalPrice").text(numComma(totalPrice) + " 원");
+				$("#finalPrice").val(totalPrice);
 			} else {
-				$("#cartTotalPrice").val("0");
+				$("#cartTotalPrice").val(0);
+				$("#finalPrice").val(0);
 			}
 		}
 		
-		function couponSelect(){
+		//쿠폰 목록 가져오기
+		function getCouponList(){
 			var totalPrice = $("#cartTotalPrice").val();
 			
 			$.ajax({
@@ -639,6 +658,7 @@ div.radio label:hover {
 			$("#couponModal").modal("show");
 		}
 		
+		//쿠폰 선택
 		function selectCoupon(tr, issueNo, couponDiscount){
 			if($(tr).hasClass("active")){
 				$(tr).removeClass("active");
@@ -652,6 +672,7 @@ div.radio label:hover {
 			}
 		}
 		
+		//쿠폰 적용
 		function addCoupon(issueNo, couponDiscount){
 			$("#issueNo").val(issueNo);
 			$("#couponDiscount").val(couponDiscount);
@@ -659,9 +680,9 @@ div.radio label:hover {
 			
 			if(issueNo != ""){				
 				var detail = $(".issueNo" + issueNo).children().eq(0).text() + " (" + $(".issueNo" + issueNo).children().eq(1).text() + ")";
-				$("#discountDetail").html("* 할인내역<br><br><span class='discountText'>" +detail+ "</span>");
+				$("#discountDetail").html("* 할인내역<br><br><span class='discountText'>- " +detail+ "</span>");
 			} else {
-				$("#discountDetail").html("* 할인내역");
+				$("#discountDetail").html("* 할인내역<br><br><span class='discountText'>&nbsp;</span>");
 			}
 			
 			var totalPrice = Number($("#cartTotalPrice").val());
@@ -671,12 +692,14 @@ div.radio label:hover {
 				$(".finalPrice").text(numComma(totalPrice-couponDiscount) + " 원");
 				$("#finalPrice").val(totalPrice-couponDiscount);
 			} else {
-				$(".discountPrice").text(numComma(totalPrice*couponDiscount) + " 원");
-				$(".finalPrice").text(numComma(totalPrice-(totalPrice*couponDiscount)) + " 원");
-				$("#finalPrice").val(totalPrice-(totalPrice*couponDiscount));
+				var discount = Math.ceil(totalPrice*couponDiscount/10)*10;
+				$(".discountPrice").text(numComma(discount) + " 원");
+				$(".finalPrice").text(numComma(totalPrice-discount) + " 원");
+				$("#finalPrice").val(totalPrice-discount);
 			}
 		}
 		
+		//바로구매
 		function noReservation(btn){
 			$(".reservationBtn").removeClass("active");
 			$(btn).addClass("active");
@@ -684,9 +707,9 @@ div.radio label:hover {
 			$("#reservationCondition").val(1);
 			
 			$("#reservationDiv").empty();
-			var $label = $("<label class='text-label'>").text("00:00분 배달 예정입니다");
-			$("#reservationDiv").append($label);
 		}
+		
+		//예약시간
 		function reservation(btn){
 			$(".reservationBtn").removeClass("active");
 			$(btn).addClass("active");
@@ -695,27 +718,217 @@ div.radio label:hover {
 			
 			$("#reservationDiv").empty();
 			
-			var $div = $("<div class='ui selection dropdown'>")
-							.append("<input type='hidden' name='timeHour'>")
-							.append("<i class='dropdown icon'>")
-							.append($("<div class='default text'>").text("시간"));
-			var $menu = $("<div class='menu'>")
-								.append($("<div class='item' data-value='0'>").text("00시"))
-								.append($("<div class='item' data-value='1'>").text("01시"));
-			$div.append($menu);
-			$("#reservationDiv").append($div);
+			var today = new Date();
+			var todayAfter = new Date(today.getTime() + 60*60*1000);
+			var hours = todayAfter.getHours();
+			var minutes = Math.ceil(todayAfter.getMinutes()/10)*10;
+			var todayEnd = new Date(todayAfter.getFullYear(),
+													todayAfter.getMonth(),
+													todayAfter.getDate(),
+													20, 50, 0, 0);
 			
-			var $div2 = $("<div class='ui selection dropdown' style='margin-left: 20px;'>")
-							.append("<input type='hidden' name='timeHour'>")
-							.append("<i class='dropdown icon'>")
-							.append($("<div class='default text'>").text("분"));
-			var $menu2 = $("<div class='menu'>")
-								.append($("<div class='item' data-value='0'>").text("00분"))
-								.append($("<div class='item' data-value='5'>").text("05분"));
-			$div2.append($menu2);
-			$("#reservationDiv").append($div2);
+			if(todayAfter.getTime() >= todayEnd.getTime()){
+				$("#reservationDiv").text("예약시간이 지났습니다.");
+			} else {
+				var $div = $("<div class='ui selection dropdown' id='reserveHoursDrop'>")
+								.append("<input type='hidden' name='timeHour' id='reserveHours'>")
+								.append("<i class='dropdown icon'>")
+								.append($("<div class='default text'>").text("시간"));
+				var $menu = $("<div class='menu'>");
+				
+				if(minutes >= 60){
+					for(var i=hours+1; i<21; i++){
+						$menu.append($("<div class='item' data-value='"+i+"'>").text(i+"시"));
+					}
+				} else {
+					for(var i=hours; i<21; i++){
+						$menu.append($("<div class='item' data-value='"+i+"'>").text(i+"시"));
+					}
+				}
+				
+				
+				$div.append($menu);
+				$("#reservationDiv").append($div);
+				
+				var $div2 = $("<div class='ui selection dropdown' style='margin-left: 20px;' id='reserveMinutesDrop'>")
+								.append("<input type='hidden' name='timeHour' id='reserveMinutes'>")
+								.append("<i class='dropdown icon'>")
+								.append($("<div class='default text'>").text("분"));
+				var $menu2 = $("<div class='menu'>");
+				
+				$div2.append($menu2);
+				$("#reservationDiv").append($div2);
+				
+				$("#reserveHours").change(function(){
+					$('#reserveMinutesDrop').dropdown('restore defaults');
+					$menu2.empty();
+					if($(this).val() == hours){
+						for(var i=minutes; i<60; i+=10){
+							$menu2.append($("<div class='item' data-value='"+i+"'>").text(i+"분"));
+						}
+					} else {
+						for(var i=0; i<60; i+=10){
+							$menu2.append($("<div class='item' data-value='"+i+"'>").text(i+"분"));
+						}
+					}
+				});
+				
+				$('.ui.dropdown').dropdown();
+			}
+		}
+		
+		//전화번호 유효성
+		$("#orderMemberPhone").change(function(){
+			var regExp1 = /\d\d\d-\d\d\d-\d\d\d\d/;
+			var regExp2 = /\d\d\d-\d\d\d\d-\d\d\d\d/;
 			
-			$('.ui.dropdown').dropdown();
+			if(regExp1.test($(this).val()) || regExp2.test($(this).val())){
+				$(this).css({"color":"black"});
+			} else {
+				$(this).css({"color":"red"});
+			}
+		});
+		
+		//주문하기
+		function order(){
+			var orderReceiver = $("#orderMemberName").val();
+			var orderRtel = $("#orderMemberPhone").val();
+			var orderPayprice = $("#finalPrice").val();
+			var orderMethod = $("#orderMethod").val();
+			var deliveryNo = $("#deliveryNo").val();
+			var comNo = $("#comNo").val();
+			var issueNo;
+			
+			if($("#issueNo").val() != ""){
+				issueNo = $("#issueNo").val();
+			}
+			
+			var regExp1 = /\d\d\d-\d\d\d-\d\d\d\d/;
+			var regExp2 = /\d\d\d-\d\d\d\d-\d\d\d\d/;
+			var regExp3 = /\d\d-\d\d\d\d-\d\d\d\d/;
+			var regExp4 = /\d\d-\d\d\d-\d\d\d\d/;
+			
+			var orderToday = new Date();
+			if(orderToday.getHours() >= 21){
+				alert("주문은 저녁 9시까지 가능합니다.");
+				return;
+			}
+			
+			if(orderMethod == ""){
+				alert("주문방법을 선택해주세요.");
+				return;
+			}
+			
+			if(orderMethod == 1){
+				if(deliveryNo == ""){
+					alert("배송지를 선택해주세요.");
+					return;
+				}
+			} else if(orderMethod == 2){
+				if(comNo == ""){
+					alert("매장을 선택해주세요.");
+					return;
+				}
+			}
+			
+			//폰번호 유효성
+			if(regExp1.test(orderRtel) || regExp2.test(orderRtel)
+					|| regExp3.test(orderRtel) || regExp4.test(orderRtel)){
+			} else {
+				alert("전화번호를 잘못 쓰셨습니다.");
+				return;
+			}
+			
+			
+			//예약시간
+			var orderReservetime;
+			if($("#reservationCondition").val() == 2){
+				if($("#reserveHours").val() != null && $("#reserveMinutes").val() != null){
+					orderReservetime = $("#reserveHours").val() + ":" + $("#reserveMinutes").val();
+				}
+				if(orderReservetime == null || $("#reserveHours").val() == "" || $("#reserveMinutes").val() == ""){
+					alert("예약시간을 선택해주세요.");
+					return;
+				}
+			}
+			
+			
+			//장바구니
+			var orderItem = [];
+			for(var no in cartList){
+				var orderTopping = [];
+				
+				if(cartList[no].categ == 1){
+					orderTopping.push({
+						materialNo: cartList[no].dough,
+						orderTcount: 1
+					});
+					orderTopping.push({
+						materialNo: cartList[no].sauce,
+						orderTcount: 1
+					});
+					orderTopping.push({
+						materialNo: cartList[no].edge,
+						orderTcount: 1
+					});
+				}
+				
+				for(var i=0; i<cartList[no].toppings.length; i++){
+					if(cartList[no].categ == 1){
+						orderTopping.push({
+							materialNo: cartList[no].toppings[i].materialNo,
+							orderTcount: cartList[no].toppings[i].amount
+						});
+					} else if(cartList[no].categ == 2){
+						orderTopping.push({
+							materialNo: cartList[no].toppings[i].topping,
+							orderTcount: cartList[no].toppings[i].amount
+						});
+					}
+				}
+				
+				orderItem.push({
+					orderIcateg: cartList[no].categ,
+					orderIsize: cartList[no].size,
+					orderTcount: cartList[no].amount,
+					orderTopping: orderTopping
+				});
+			}
+			
+			console.log(orderItem);
+			console.log("orderMethod: " + orderMethod);
+			console.log("orderReceiver: "+orderReceiver);
+			console.log("orderRtel: "+orderRtel);
+			console.log("orderReservetime: "+orderReservetime);
+			console.log("orderPayprice: "+orderPayprice);
+			console.log("deliveryNo: "+deliveryNo);
+			console.log("comNo: "+comNo);
+			console.log("issueNo: "+issueNo);
+			
+			var jsonData = JSON.stringify({
+					orderItem: orderItem,
+					orderMethod: orderMethod,
+					orderReceiver: orderReceiver,
+					orderRtel: orderRtel,
+					orderReservetime: orderReservetime,
+					orderPayprice: orderPayprice,
+					deliveryNo: deliveryNo,
+					comNo: comNo,
+					issueNo: issueNo
+			});
+			
+			$.ajax({
+				url: "insertOrder.cor",
+				type: "post",
+				contentType:"application/json;charset=UTF-8",
+				data: jsonData,
+				success: function(data){
+					console.log("성공");
+				}, error: function(data){
+					console.log("주문 실패!");
+				}
+			});
+			
 		}
 	</script>
 
