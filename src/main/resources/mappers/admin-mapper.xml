@@ -225,12 +225,47 @@
 		<result property="rn" column="ROWNUM" />
 	</resultMap>
 	
+	<resultMap type="com.kh.pmfp.admin.model.vo.AdminStatistics" id="adminStatisticsResultSet">
+		<id property="month" column="MONTH"/>
+		<result property="one" column="ONE"/>
+		<result property="two" column="TWO" />
+		<result property="three" column="THREE" />
+		<result property="four" column="FOUR" />
+		<result property="five" column="FIVE" />
+		<result property="six" column="SIX" />
+		<result property="seven" column="SEVEN" />
+		<result property="eight" column="EIGHT" />
+		<result property="nine" column="NINE" />
+		<result property="ten" column="TEN"/>
+		<result property="eleven" column="ELEVEN" />
+		<result property="twelve" column="TWELVE" />
+		<result property="thirteen" column="THIRTEEN" />
+		<result property="fourteen" column="FOURTEEN" />
+		<result property="fifteen" column="FIFTEEN" />
+		<result property="sixteen" column="SIXTEEN" />
+		<result property="seventeen" column="SEVENTEEN" />
+		<result property="eighteen" column="EIGHTEEN" />
+		<result property="nineteen=" column="NINETEEN"/>
+		<result property="twenty" column="TWENTY" />
+		<result property="twentyone" column="TWENTYONE" />
+		<result property="twentytwo" column="TWENTYTWO" />
+		<result property="twentythree" column="TWENTYTHREE" />
+		<result property="twentyfour" column="TWENTYFOUR" />
+		<result property="twentyfive" column="TWENTYFIVE" />
+		<result property="twentysix" column="TWENTYSIX" />
+		<result property="twentyseven" column="TWENTYSEVEN" />
+		<result property="twentyeight" column="TWENTYEIGHT" />
+		<result property="twentynine" column="TWENTYNINE" />
+		<result property="thirty" column="THIRTY" />
+		<result property="thirtyone" column="THIRTYONE" />
+	</resultMap>
+	
+	
 	<select id="selectUserCount" resultType="_int" parameterType="AdminMember">
 		SELECT COUNT(*) 
 		FROM MEMBER M 
 		WHERE MEMBER_CATEG=#{memberCateg} AND MEMBER_STATUS='Y'
 	</select>
-	
 	<select id="selectMemberList" resultMap="adminMemberResultSet1">
 		SELECT ROWNUM, (SELECT COUNT(*)  
 					FROM ORDER_MAIN O 
@@ -702,4 +737,51 @@
 		UPDATE ORDER_MATERIAL SET ORDER_MSTATUS=2
 		WHERE COM_NO=#{comNo} AND ORDER_MSTATUS=#{orderMStatus} AND ORDER_MDATE=TO_DATE(#{orderMDate}, 'RRRR-MM-DD')
 	</update>
+	
+	<select id="">
+	SELECT
+		MONTH, SUM("ONE") AS "ONE", SUM("TWO") AS "TWO", SUM("THREE") AS "THREE", SUM("FOUR") AS "FOUR", SUM("FIVE") AS "FIVE", SUM("SIX") AS "SIX",
+		SUM("SEVEN") AS "SEVEN", SUM("EIGHT") AS "EIGHT", SUM("NINE") AS "NINE", SUM("TEN") AS "TEN", SUM("ELEVEN") AS "ELEVEN", SUM("TWELVE") AS "TWELVE",
+		SUM("THIRTEEN") AS "THIRTEEN", SUM("FOURTEEN") AS "FOURTEEN", SUM("FIFTEEN") AS "FIFTEEN", SUM("SIXTEEN") AS "SIXTEEN", SUM("SEVENTEEN") AS "SEVENTEEN", SUM("EIGHTEEN") AS "EIGHTEEN",
+		SUM("NINETEEN") AS "NINETEEN", SUM("TWENTY") AS "TWENTY", SUM("TWENTYONE") AS "TWENTYONE", SUM("TWENTYTWO") AS "TWENTYTWO", SUM("TWENTYTHREE") AS "TWENTYTHREE", SUM("TWENTYFOUR") AS "TWENTYFOUR",
+		SUM("TWENTYFIVE") AS "TWENTYFIVE", SUM("TWENTYSIX") AS "TWENTYSIX", SUM("TWENTYSEVEN") AS "TWENTYSEVEN", SUM("TWENTYEIGHT") AS "TWENTYEIGHT", SUM("TWENTYNINE") AS "TWENTYNINE", SUM("THIRTY") AS "THIRTY", SUM("THIRTYONE") AS "THIRTYONE"
+	FROM(
+        SELECT TO_CHAR(S.SALES_INPUTDATE,'YYYY-MM') AS "MONTH", TO_CHAR(S.SALES_INPUTDATE,'DD') AS DD, S.SALES_PRICE
+        , DECODE(TO_CHAR(S.SALES_INPUTDATE,'DD'), '01', S.SALES_PRICE, 0) AS "ONE"
+        , DECODE(TO_CHAR(S.SALES_INPUTDATE,'DD'), '02', S.SALES_PRICE, 0) AS "TWO"
+        , DECODE(TO_CHAR(S.SALES_INPUTDATE,'DD'), '03', S.SALES_PRICE, 0) AS "THREE"
+        , DECODE(TO_CHAR(S.SALES_INPUTDATE,'DD'), '04', S.SALES_PRICE, 0) AS "FOUR"
+        , DECODE(TO_CHAR(S.SALES_INPUTDATE,'DD'), '05', S.SALES_PRICE, 0) AS "FIVE"
+        , DECODE(TO_CHAR(S.SALES_INPUTDATE,'DD'), '06', S.SALES_PRICE, 0) AS "SIX"
+        , DECODE(TO_CHAR(S.SALES_INPUTDATE,'DD'), '07', S.SALES_PRICE, 0) AS "SEVEN"
+        , DECODE(TO_CHAR(S.SALES_INPUTDATE,'DD'), '08', S.SALES_PRICE, 0) AS "EIGHT"
+        , DECODE(TO_CHAR(S.SALES_INPUTDATE,'DD'), '09', S.SALES_PRICE, 0) AS "NINE"
+        , DECODE(TO_CHAR(S.SALES_INPUTDATE,'DD'), '10', S.SALES_PRICE, 0) AS "TEN"
+        , DECODE(TO_CHAR(S.SALES_INPUTDATE,'DD'), '11', S.SALES_PRICE, 0) AS "ELEVEN"
+        , DECODE(TO_CHAR(S.SALES_INPUTDATE,'DD'), '12', S.SALES_PRICE, 0) AS "TWELVE"
+        , DECODE(TO_CHAR(S.SALES_INPUTDATE,'DD'), '13', S.SALES_PRICE, 0) AS "THIRTEEN"
+        , DECODE(TO_CHAR(S.SALES_INPUTDATE,'DD'), '14', S.SALES_PRICE, 0) AS "FOURTEEN"
+        , DECODE(TO_CHAR(S.SALES_INPUTDATE,'DD'), '15', S.SALES_PRICE, 0) AS "FIFTEEN"
+        , DECODE(TO_CHAR(S.SALES_INPUTDATE,'DD'), '16', S.SALES_PRICE, 0) AS "SIXTEEN"
+        , DECODE(TO_CHAR(S.SALES_INPUTDATE,'DD'), '17', S.SALES_PRICE, 0) AS "SEVENTEEN"
+        , DECODE(TO_CHAR(S.SALES_INPUTDATE,'DD'), '18', S.SALES_PRICE, 0) AS "EIGHTEEN"
+        , DECODE(TO_CHAR(S.SALES_INPUTDATE,'DD'), '19', S.SALES_PRICE, 0) AS "NINETEEN"
+        , DECODE(TO_CHAR(S.SALES_INPUTDATE,'DD'), '20', S.SALES_PRICE, 0) AS "TWENTY"
+        , DECODE(TO_CHAR(S.SALES_INPUTDATE,'DD'), '21', S.SALES_PRICE, 0) AS "TWENTYONE"
+        , DECODE(TO_CHAR(S.SALES_INPUTDATE,'DD'), '22', S.SALES_PRICE, 0) AS "TWENTYTWO"
+        , DECODE(TO_CHAR(S.SALES_INPUTDATE,'DD'), '23', S.SALES_PRICE, 0) AS "TWENTYTHREE"
+        , DECODE(TO_CHAR(S.SALES_INPUTDATE,'DD'), '24', S.SALES_PRICE, 0) AS "TWENTYFOUR"
+        , DECODE(TO_CHAR(S.SALES_INPUTDATE,'DD'), '25', S.SALES_PRICE, 0) AS "TWENTYFIVE"
+        , DECODE(TO_CHAR(S.SALES_INPUTDATE,'DD'), '26', S.SALES_PRICE, 0) AS "TWENTYSIX"
+        , DECODE(TO_CHAR(S.SALES_INPUTDATE,'DD'), '27', S.SALES_PRICE, 0) AS "TWENTYSEVEN"
+        , DECODE(TO_CHAR(S.SALES_INPUTDATE,'DD'), '28', S.SALES_PRICE, 0) AS "TWENTYEIGHT"
+        , DECODE(TO_CHAR(S.SALES_INPUTDATE,'DD'), '29', S.SALES_PRICE, 0) AS "TWENTYNINE"
+        , DECODE(TO_CHAR(S.SALES_INPUTDATE,'DD'), '30', S.SALES_PRICE, 0) AS "THIRTY"
+        , DECODE(TO_CHAR(S.SALES_INPUTDATE,'DD'), '31', S.SALES_PRICE, 0) AS "THIRTYONE"
+        FROM SALES S
+        JOIN ORDER_MAIN OM ON (S.ORDER_NO=OM.ORDER_NO)
+        WHERE S.SALES_CATEG=#{salesCate}
+		)GROUP BY MONTH
+		ORDER BY MONTH DESC
+	</select>
 </mapper>

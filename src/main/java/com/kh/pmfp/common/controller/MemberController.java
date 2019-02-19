@@ -52,7 +52,7 @@ public class MemberController {
 			if(loginUser.getMemberCateg()==1) {
 				return "redirect:goMain.com?memberNo="+loginUser.getMemberNo();
 			}else if(loginUser.getMemberCateg()==2) {
-				return "redirect:adminMain.t";
+				return "redirect:adminMain.ad";
 			}else {
 				return "redirect:goMain.co";
 			}

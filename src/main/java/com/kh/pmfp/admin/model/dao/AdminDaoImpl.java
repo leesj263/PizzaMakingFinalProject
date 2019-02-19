@@ -1,6 +1,7 @@
 package com.kh.pmfp.admin.model.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -20,9 +21,11 @@ import com.kh.pmfp.admin.model.vo.AdminMember;
 import com.kh.pmfp.admin.model.vo.AdminMenu;
 import com.kh.pmfp.admin.model.vo.AdminOrder;
 import com.kh.pmfp.admin.model.vo.AdminOrderMenu;
+import com.kh.pmfp.admin.model.vo.AdminSales;
 import com.kh.pmfp.admin.model.vo.AdminSeller;
 import com.kh.pmfp.admin.model.vo.AdminSellerOrder;
 import com.kh.pmfp.admin.model.vo.AdminSellerOrderList;
+import com.kh.pmfp.admin.model.vo.AdminStatistics;
 import com.kh.pmfp.common.model.vo.PageInfo;
 
 @Repository
@@ -785,6 +788,22 @@ public class AdminDaoImpl implements AdminDao {
 			throw new AdminUpdateException("업체 주문 업데이트 실패");
 		}
 		return result;
+	}
+
+	//일간 통계 출력용 - 주문/업체주문
+	@Override
+	public HashMap<String, AdminStatistics> selectDayStatistics(SqlSessionTemplate sqlSession, AdminSales sales)
+			throws AdminSelectException {
+		HashMap<String, AdminStatistics> dayStat=new HashMap<String, AdminStatistics>();
+		ArrayList<AdminStatistics> statList=new ArrayList<AdminStatistics>();
+		statList=(ArrayList)sqlSession.selectList("Admin.selectDayStatList", sales);
+		if(statList==null) {
+			throw new AdminSelectException("일별 통계 조회 실패");
+		}
+		for(int i=0;i<statList.size();i++) {
+			dayStat.put(statList.get(i).getMonth(), statList.get(i));
+		}
+		return dayStat;
 	}
 
 

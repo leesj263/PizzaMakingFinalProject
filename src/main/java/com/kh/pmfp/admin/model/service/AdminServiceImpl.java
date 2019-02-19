@@ -1,6 +1,7 @@
 package com.kh.pmfp.admin.model.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +21,11 @@ import com.kh.pmfp.admin.model.vo.AdminMember;
 import com.kh.pmfp.admin.model.vo.AdminMenu;
 import com.kh.pmfp.admin.model.vo.AdminOrder;
 import com.kh.pmfp.admin.model.vo.AdminOrderMenu;
+import com.kh.pmfp.admin.model.vo.AdminSales;
 import com.kh.pmfp.admin.model.vo.AdminSeller;
 import com.kh.pmfp.admin.model.vo.AdminSellerOrder;
 import com.kh.pmfp.admin.model.vo.AdminSellerOrderList;
+import com.kh.pmfp.admin.model.vo.AdminStatistics;
 import com.kh.pmfp.common.model.vo.PageInfo;
 
 @Service
@@ -520,6 +523,15 @@ public class AdminServiceImpl implements AdminService {
 		}
 		return result;
 	}
+
+	//일간 통계 출력용 - 주문/업체주문
+	@Override
+	public HashMap<String, AdminStatistics> selectDayStatistics(AdminSales sales) throws AdminSelectException {
+		HashMap<String, AdminStatistics> dayStat=new HashMap<String, AdminStatistics>();
+		dayStat=ad.selectDayStatistics(sqlSession, sales);
+		return dayStat;
+	}
+
 
 	
 

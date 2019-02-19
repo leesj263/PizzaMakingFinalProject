@@ -11,15 +11,15 @@
 <body>
 	<c:if test="${sessionScope.loginUser.memberCateg==1 }">
 		<script>alert("접근 권한이 없습니다.");</script>
-		<jsp:forward page="goMain.com?memberNo=${sessionScope.loginUser.memberNo }"/>
+		<jsp:forward page="/goMain.com?memberNo=${sessionScope.loginUser.memberNo }"/>
 	</c:if>
 	<c:if test="${sessionScope.loginUser.memberCateg==0}">
 		<script>alert("접근 권한이 없습니다.");</script>
-		<jsp:forward page="goMain.co"/>
+		<jsp:forward page="/goMain.co"/>
 	</c:if>
 	<c:if test="${empty sessionScope.loginUser}">
 		<script>alert("접근 권한이 없습니다. 로그인이 필요합니다.");</script>
-		<jsp:forward page="goMain.co"/>
+		<jsp:forward page="/goMain.co"/>
 	</c:if>
 	<c:if test="${sessionScope.loginUser.memberCateg==2 }">
 		<jsp:include page="sidebar.jsp" />
