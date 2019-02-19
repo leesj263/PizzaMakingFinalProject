@@ -112,12 +112,12 @@ public class BoardController {
 		System.out.println("게시글 번호 : "+num);
 		Board qna=new Board();
 		Board answer=new Board();
-		qna=bs.selectQna(num);
+		//qna=bs.selectQna(num);
 		answer=bs.selectAnswer(num);
 		return "customer/qna/qnaDetail";
 	}
 	//qna 삭제용
-		@RequestMapping(value="noticeDelete.ad", method=RequestMethod.GET)
+		@RequestMapping(value="noticeDelete.bo", method=RequestMethod.GET)
 		public String noticeDelete(@RequestParam int num, HttpServletRequest request, HttpServletResponse response) {
 			return null;
 	
