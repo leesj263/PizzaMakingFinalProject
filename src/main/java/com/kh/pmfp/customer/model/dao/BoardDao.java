@@ -19,6 +19,11 @@ public interface BoardDao {
 	int selectQnaCount(SqlSessionTemplate sqlSession) throws BoardException;
 //qna리스트 
 	ArrayList<Board> selectqnaList(SqlSessionTemplate sqlSession, PageInfo pi) throws BoardException;
+//qna상세보기조회
+	Board selectQna(SqlSessionTemplate sqlSession, int num) throws BoardException;
+//qna 조회수 증가
+	int updateBoardCount(SqlSessionTemplate sqlSession, int num) throws BoardException;
+	
 	
 
 }

@@ -53,5 +53,29 @@ public class BoardServiceImpl implements BoardService {
 		
 		return qnaList;
 	}
+//qna 상세조회
+	@Override
+	public Board selectQna(int num) throws BoardException {
+		Board qna=new Board();
+
+		//조회수 증가
+		int result=bd.updateBoardCount(sqlSession,num);
+		
+		System.out.println("조회수 증가 결과 : "+result);
+		
+		if(result>0) {
+			qna=bd.selectQna(sqlSession, num);
+		}
+		
+		return qna;
+	}
+	@Override
+	public Board selectAnswer(int num) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
+		
 
 }

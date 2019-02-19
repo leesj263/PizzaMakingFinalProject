@@ -78,4 +78,31 @@ public class BoardDaoImpl implements BoardDao {
 			return qnaList;
 	}
 
+	//qna상세보기
+	@Override
+	public Board selectQna(SqlSessionTemplate sqlSession, int num) throws BoardException {
+		Board qna=new Board();
+qna=sqlSession.selectOne("Board.selectQna", num);
+		
+		if(qna==null) {
+			throw new BoardException("Q&A 상세조회 실패");
+		}
+		
+		return qna;
+	}
+	
+//조회수증가
+	@Override
+	public int updateBoardCount(SqlSessionTemplate sqlSession, int num) throws BoardException {
+		int result=0;
+		result=sqlSession.update("Board.updateBoardCount", num);
+		
+		if(result<=0) {
+			throw new BoardException("조회수 증가 실패");
+		}
+		return result;
+	}
+
+	
+
 }
