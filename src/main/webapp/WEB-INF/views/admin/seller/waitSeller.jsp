@@ -7,7 +7,7 @@
 	div.card-header{
 		border:0px;
 	}
-	#bootstrap-data-table-export{
+	#waitSeller{
 		text-align:center;
 	}
 </style>
@@ -23,7 +23,7 @@
 			<!-- 업체 목록 영역 -->
 			<div class="row">
 				<div class="col-md-2"></div>
-				<table class="table table-striped col-md-8" id="bootstrap-data-table-export">
+				<table class="table table-striped col-md-8" id="waitSeller">
 				<c:if test="${waitSeller.size() > 0 }">
 					<thead>
 						<tr>
@@ -31,40 +31,20 @@
 							<th scope="col">ID</th>
 							<th scope="col">지점명</th>
 							<th scope="col">개점일자</th>
-							<th scope="col">계정상태</th>
 						</tr>
 					</thead>
 					<tbody>
 						<c:forEach items="${waitSeller }" var="seller">
-							<tr onclick="location.href='sellerDetail.ad?num=${seller.comNo }'" style="cursor:pointer;">
+							<tr>
 								<th scope="row">${seller.comNo }</th>
 								<td>${seller.memberId }</td>
 								<td>${seller.comName }</td>
-								<td>${seller.comDate }</td>
-								<td><button class="btn btn-outline-warning btn-sm" onclick="admit()">승인</button></td>
+								<td>
+									<c:if test="${empty seller.comDate }">미정</c:if>
+									<c:if test="${not empty seller.comDate }">${seller.comDate }</c:if>
+								</td>
 							</tr>
 						</c:forEach>
-						<!-- <tr>
-							<th scope="row">1</th>
-							<td>Mark</td>
-							<td>인천송도점</td>
-							<td>2019-2월 중</td>
-							<td><button class="btn btn-outline-warning btn-sm">승인</button></td>
-						</tr>
-						<tr>
-							<th scope="row">2</th>
-							<td>Jacob</td>
-							<td>고덕점</td>
-							<td>2019-2월 중</td>
-							<td><button class="btn btn-outline-warning btn-sm">승인</button></td>
-						</tr>
-						<tr>
-							<th scope="row">3</th>
-							<td>Larry</td>
-							<td>왕십리점</td>
-							<td>2019-3월 중</td>
-							<td><button class="btn btn-outline-warning btn-sm">승인</button></td>
-						</tr> -->
 					</tbody>
 					</c:if>
 					<c:if test="${waitSeller.size()==0 }">
@@ -108,18 +88,16 @@
 	<div class="col-md-4"></div> -->
 	<script>
 		$(function(){
-			$("#bootstrap-data-table-export").find("td").mouseenter(function(){
+			$("#waitSeller").find("td").mouseenter(function(){
 				$(this).parent().css({"color":"#9d9d9d","cursor":"pointer"});
 			}).mouseout(function(){
 				$(this).parent().css({"color":"#212529"});
 			}).click(function(){
 				var num=$(this).parent().children().eq(0).text();
 				console.log(num);
+				location.href='sellerDetail.ad?num='+num;
 			});
 		});
-		function admit(){
-			alert("클릭");
-		}
 	</script>
 	</div>
 </section>

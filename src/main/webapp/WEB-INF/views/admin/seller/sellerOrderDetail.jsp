@@ -40,7 +40,7 @@
 							<li class="member-li"><span>주문 상태</span>
 								<p>
 									<c:choose>
-										<c:when test="${orderOne.orderMStatus==1 }">주문완료</c:when>
+										<c:when test="${orderOne.orderMStatus==1 }">주문완료&nbsp; &nbsp;<button class="btn btn-sm btn-outline-warning" onclick="deliYes(${orderOne.comNo }, '${orderOne.orderMDate }', ${orderOne.orderMStatus })">배송 완료</button></c:when>
 										<c:when test="${orderOne.orderMStatus==2 }">배송완료</c:when>
 										<c:otherwise>수령완료</c:otherwise>
 									</c:choose>
@@ -50,7 +50,7 @@
 								<p>
 									<c:choose>
 										<c:when test="${orderOne.orderCal=='Y' }">정산완료</c:when>
-										<c:otherwise>미정산&nbsp; &nbsp;<button class="btn btn-sm btn-outline-warning">정산 완료</button></c:otherwise>
+										<c:otherwise>미정산</c:otherwise>
 									</c:choose>
 								</p>	
 							</li>
@@ -117,5 +117,30 @@
 			</div>
 		</div>
 	</div>
+	<script>
+		function deliYes(num1, date1, num2){
+			console.log("sellerOrderApply.ad?comNo="+num1+"&orderMDate="+date1+"&orderMStatus="+num2);
+			$.ajax({
+				url:"sellerOrderApply.ad",
+				type:"get",
+				async: false,
+				data:{comNo:num1,orderMDate:date1,orderMStatus:num2},
+				success:function(data){
+					console.log(data);
+					if(data==1){
+						console.log(data);
+						alert("배송완료 처리가 완료되었습니다.");
+						location.href='sellerOrderDetail.ad?comNo='+num1+'&orderMDate='+date1;
+					}else{
+						console.log(data);
+						alert("배송완료 처리가 실패했습니다. 다시 시도해주세요.");
+					}
+				},
+				error:function(data){
+					alert("배송완료 처리가 실패했습니다. 다시 시도해주세요.");
+				}
+			});
+		}
+	</script>
 </section>
 <jsp:include page="../common/footer.jsp"/>

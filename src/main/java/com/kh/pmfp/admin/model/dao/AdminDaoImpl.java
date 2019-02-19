@@ -753,6 +753,41 @@ public class AdminDaoImpl implements AdminDao {
 		return menuDetail;
 	}
 
+	//업체 승인용 
+	@Override
+	public int confirmSeller(SqlSessionTemplate sqlSession, AdminSeller seller) throws AdminUpdateException {
+		int result=-1;
+		result=sqlSession.update("Admin.confirmSeller", seller);
+		if(result<=0) {
+			throw new AdminUpdateException("업체 승인 실패");
+		}
+		return result;
+	}
+
+	//업체 주문 업데이트 대상 카운트용
+	@Override
+	public int selectsellerOrderApplyCount(SqlSessionTemplate sqlSession, AdminSellerOrder order)
+			throws AdminCountException {
+		int result=-1;
+		result=sqlSession.selectOne("Admin.selectSellerOrderApplyCount", order);
+		if(result<0) {
+			throw new AdminCountException("업데이트 대상 주문 카운트 실패");
+		}
+		return result;
+	}
+	
+	//업체 주문 업데이트용 - 목록  & 상세보기
+	@Override
+	public int sellerOrderApply(SqlSessionTemplate sqlSession, AdminSellerOrder order) throws AdminUpdateException {
+		int result=-1;
+		result=sqlSession.update("Admin.sellerOrderApply", order);
+		if(result<0) {
+			throw new AdminUpdateException("업체 주문 업데이트 실패");
+		}
+		return result;
+	}
+
+
 	
 	
 	

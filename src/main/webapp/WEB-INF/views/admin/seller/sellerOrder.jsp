@@ -21,20 +21,10 @@
 			
 			<!-- 업체 목록 영역 -->
 			<div class="row">
-				<div class="col-md-4"></div>
-				<div class="col-md-6">
-					<!-- <button class="btn btn-sm btn-link" disabled>선택한 주문을</button>
-					<select name="orderStatus">
-						<option>분류를 선택하세요</option>
-						<option value="delivery">주문상태</option>
-						<option value="calculate">정산상태</option>
-					</select>
-					<select name="orderStatus1">
-						<option>분류를 선택하세요</option>
-						<option value="delivery">발송완료</option>
-						<option value="calculate">정산완료</option>
-					</select>
-					<button class="btn btn-sm btn-outline-warning">로 상태변경</button> -->
+				<div class="col-md-7"></div>
+				<div class="col-md-3">
+					<button class="btn btn-sm btn-link" disabled>선택한 주문을</button>
+					<button class="btn btn-sm btn-outline-warning" onclick="selectDeliYes()">발송 완료</button>
 				</div>
 				<div class="col-md-2"></div>
 			</div>
@@ -43,18 +33,25 @@
 				<table class="table table-striped col-md-8" id="sellerOrder">
 					<thead>
 						<tr>
-							<!-- <th><input type="checkbox"></th> -->
+							<th scope="col"><input type="checkbox" onclick="checkAll();" name="checkAllRow"></th>
 							<th scope="col"></th>
 							<th scope="col">주문일자</th>
 							<th id="com" scope="col">지점</th>
 							<th scope="col">주문내역</th>
 							<th scope="col">진행상태</th>
-							<th scope="col">정산여부</th>
+							<th scope="col"></th>
 						</tr>
 					</thead>
 					<tbody>
 						<c:forEach items="${orderList }" var="order">
 							<tr>
+								<th>
+									<c:if test="${order.orderMStatus==3 }"></c:if>
+									<c:if test="${order.orderMStatus==2 }"></c:if>
+									<c:if test="${order.orderMStatus==1 }">
+										<input type="checkbox" name="checkOrder">
+									</c:if>
+								</th>
 								<td><input type="hidden" name="comNo" value="${order.comNo}"></td>
 								<td>${order.orderMDate.toString().substring(0,10) }</td>
 								<td>${order.comName }</td>
@@ -62,7 +59,7 @@
 								<c:choose>
 									<c:when test="${order.orderMStatus ==1}">
 										<td><input type="hidden" name="orderMStatus" value="${order.orderMStatus}">주문 완료</td>
-										<th><button class="btn btn-sm btn-outline-warning" type="button" onclick="orderMStatus();">배송완료</button></th>
+										<th><button class="btn btn-sm btn-outline-warning" type="button" onclick="orderMStatus(${order.comNo}, '${order.orderMDate}', ${order.orderMStatus});">배송완료</button></th>
 									</c:when>
 									<c:when test="${order.orderMStatus ==2}">
 										<td><input type="hidden" name="orderMStatus" value="${order.orderMStatus}">배송 완료</td>
@@ -136,17 +133,77 @@
 			}).mouseout(function(){
 				$(this).parent().css({"color":"#212529"});
 			}).click(function(){
-				var orderMDate=$(this).parent().children().eq(1).text();
-				var comNo=$(this).parent().children().eq(0).children().val();
+				var orderMDate=$(this).parent().children().eq(2).text();
+				var comNo=$(this).parent().children().eq(1).children().val();
 				location.href="sellerOrderDetail.ad?comNo="+comNo+"&orderMDate="+orderMDate;
 				console.log("sellerOrderDetail.ad?comNo="+comNo+"&orderMDate="+orderMDate);
 			});
 		});
-		function orderMStatus(){
-			var orderMDate=$("#sellerOrder").find("td").parent().children().eq(1).text();
-			var comNo=$("#sellerOrder").find("td").parent().children().eq(0).children().val();
-			var orderMStatus=$("#sellerOrder").find("td").parent().children().eq(4).children().eq(0).val();
-			location.href="sellerOrderApply.ad?comNo="+comNo+"&orderMDate="+orderMDate+"&orderMStatus="+orderMStatus;
+		function checkAll(){
+			if($("input[name='checkAllRow']").is(':checked')){
+				$("input[name=checkOrder]").prop("checked", true);
+			}else{
+				$("input[name=checkOrder]").prop("checked", false);
+			}
+		}
+		function orderMStatus(num1, date1, num2){
+			console.log("sellerOrderApply.ad?comNo="+num1+"&orderMDate="+date1+"&orderMStatus="+num2);
+
+			$.ajax({
+				url:"sellerOrderApply.ad",
+				type:"get",
+				async: false,
+				data:{comNo:num1,orderMDate:date1,orderMStatus:num2},
+				success:function(data){
+					console.log(data);
+					if(data==1){
+						console.log(data);
+						alert("정산 처리가 완료되었습니다.");
+						location.href='sellerOrder.ad';
+					}else{
+						console.log(data);
+						alert("정산 처리가 실패했습니다. 다시 시도해주세요.");
+					}
+				},
+				error:function(data){
+					alert("통신 실패했습니다. 다시 시도해주세요.");
+				}
+			});
+			//location.href="sellerOrderApply.ad?comNo="+comNo+"&orderMDate="+orderMDate+"&orderMStatus="+orderMStatus;
+		}
+		
+		function selectDeliYes(){
+			var checkOrderMDate= "";
+			var checkOrderMStatus= "";
+			var checkComNo="";
+			$( "input[name='checkOrder']:checked").each(function (){
+				checkOrderMDate=checkOrderMDate+$(this).parent().parent().children().eq(2).text()+",";
+				checkComNo=checkComNo+$(this).parent().parent().children().children().eq(1).val()+",";
+				checkOrderMStatus=checkOrderMStatus+$(this).parent().parent().children().eq(5).children().eq(0).val()+",";
+			});
+			checkOrderMDate = checkOrderMDate.substring(0,checkOrderMDate.lastIndexOf(","));
+			checkComNo = checkComNo.substring(0,checkComNo.lastIndexOf(","));
+			checkOrderMStatus = checkOrderMStatus.substring(0,checkOrderMStatus.lastIndexOf(","));
+			console.log(checkOrderMDate);
+			console.log(checkComNo);
+			console.log(checkOrderMStatus);
+			$.ajax({
+				url:"selectSellerOrderApply.ad",
+				type:"get",
+				async: false,
+				data:{orderMDate:checkOrderMDate,comNo:checkComNo,orderMStatus:checkOrderMStatus},
+				success:function(data){
+					if(data==1){
+						alert("배송완료 처리가 완료되었습니다.");
+						location.href='sellerOrder.ad';
+					}else{
+						alert("배송완료 처리가 실패했습니다. 다시 시도해주세요.");
+					}
+				},
+				error:function(data){
+					alert("배송완료 처리가 실패했습니다. 다시 시도해주세요.");
+				}
+			});
 		}
 	</script>
 	</div>
