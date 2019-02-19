@@ -57,88 +57,61 @@
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-menu" aria-controls="main-menu" aria-expanded="false" aria-label="Toggle navigation">
                     <i class="fa fa-bars"></i>
                 </button>
-                <a class="navbar-brand" href="goMain.com"><img style = "width : 20%" src="${contextPath }/resources/companyCss/images/pizzaLogo.png" alt="Logo">셀프 피자 제작소</a>
+                <a class="navbar-brand" href="goMain.com?memberNo=${sessionScope.loginUser.memberNo }"><img style = "width : 20%" src="${contextPath }/resources/companyCss/images/pizzaLogo.png" alt="Logo">셀프 피자 제작소</a>
                 
-                <a class="navbar-brand hidden" href="goMain.com"><img src="${contextPath }/resources/companyCss/images/pizzaLogo.png" alt="Logo"></a>
+                <a class="navbar-brand hidden" href="goMain.com?memberNo=${sessionScope.loginUser.memberNo }"><img src="${contextPath }/resources/companyCss/images/pizzaLogo.png" alt="Logo"></a>
                 
             </div>
 
             <div id="main-menu" class="main-menu collapse navbar-collapse">
                 <ul class="nav navbar-nav">
                     <li class="active">
-                        <a href="goMain.com"> <i class="menu-icon fa fa-dashboard"></i>Dashboard </a>
+                        <a href="goMain.com?memberNo=${sessionScope.loginUser.memberNo }"> <i class="menu-icon fa fa-home"></i>메인페이지 </a>
                     </li>
-                    <h3 class="menu-title">UI elements</h3><!-- /.menu-title -->
+                    <h3 class="menu-title">ORDER</h3><!-- /.menu-title -->
                     <li class="menu-item-has-children dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-laptop"></i>Components</a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-cutlery"></i>주문목록</a>
                         <ul class="sub-menu children dropdown-menu">
-                            <li><i class="fa fa-puzzle-piece"></i><a href="movePage.com?movePage=ui-buttons">Buttons</a></li>
-                            <li><i class="fa fa-id-badge"></i><a href="movePage.com?movePage=ui-badges">Badges</a></li>
-                            <li><i class="fa fa-bars"></i><a href="movePage.com?movePage=ui-tabs">Tabs</a></li>
-                            <li><i class="fa fa-share-square-o"></i><a href="movePage.com?movePage=ui-social-buttons">Social Buttons</a></li>
-                            <li><i class="fa fa-id-card-o"></i><a href="movePage.com?movePage=ui-cards">Cards</a></li>
-                            <li><i class="fa fa-exclamation-triangle"></i><a href="movePage.com?movePage=ui-alerts">Alerts</a></li>
-                            <li><i class="fa fa-spinner"></i><a href="movePage.com?movePage=ui-progressbar">Progress Bars</a></li>
-                            <li><i class="fa fa-fire"></i><a href="movePage.com?movePage=ui-modals">Modals</a></li>
-                            <li><i class="fa fa-book"></i><a href="movePage.com?movePage=ui-switches">Switches</a></li>
-                            <li><i class="fa fa-th"></i><a href="movePage.com?movePage=ui-grids">Grids</a></li>
-                            <li><i class="fa fa-file-word-o"></i><a href="movePage.com?movePage=ui-typgraphy">Typography</a></li>
+                            <li><i class="menu-icon fa fa-mobile-phone"></i><a href="orderWaiting.com?comNo=${sessionScope.loginUser.comNo }">주문 대기중 목록</a></li>
+                            <li><i class="menu-icon fa fa-spinner"></i><a href="orderMaking.com?comNo=${sessionScope.loginUser.comNo }">제조중 목록</a></li>
+                            <li><i class="menu-icon fa fa-truck"></i><a href="orderDelivering.com?comNo=${sessionScope.loginUser.comNo }">배달중 목록</a></li>
+                            <li><i class="menu-icon fa fa-thumbs-o-up"></i><a href="orderComplete.com?comNo=${sessionScope.loginUser.comNo }">배달완료 목록</a></li>
+                            <li><i class="menu-icon fa fa-trash-o"></i><a href="orderRefuseList.com?comNo=${sessionScope.loginUser.comNo }">거절&삭제 목록</a></li>
+
+                        </ul>
+                    </li>
+                   
+
+                    <h3 class="menu-title">RESOURCE</h3><!-- /.menu-title -->
+
+                    <li class="menu-item-has-children dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-group"></i>직원관리</a>
+                        <ul class="sub-menu children dropdown-menu">
+                            <li><i class="menu-icon fa fa-bars"></i><a href="selectEmployeeList.com?comNo=${sessionScope.loginUser.comNo }">직원 목록</a></li>
+                            <li><i class="menu-icon fa fa-edit"></i><a href="movePage.com?movePage=inputCompanyMember">직원 정보 입력</a></li>
+                        </ul>
+                    </li>
+                   <li class="menu-item-has-children dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-bar-chart"></i>재고관리</a>
+                        <ul class="sub-menu children dropdown-menu">
+                            <li><i class="menu-icon fa fa-line-chart"></i><a href="selectAllMaterialList.com?comNo=${sessionScope.loginUser.comNo }">재고 내역</a></li>
+                            <li><i class="menu-icon fa fa-area-chart"></i><a href="orderStrok.com">재고 신청</a></li>
+                            <li><i class="menu-icon fa fa-pie-chart"></i><a href="selectOrderStockList.com?comNo=${sessionScope.loginUser.comNo }">신청 내역</a></li>
+                            <li><i class="menu-icon fa fa-credit-card"></i><a href="selectReceiptList.com?comNo=${sessionScope.loginUser.comNo }">결제 예정 품목</a></li>
                         </ul>
                     </li>
                     <li class="menu-item-has-children dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-table"></i>Tables</a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-krw"></i>매출관리</a>
                         <ul class="sub-menu children dropdown-menu">
-                            <li><i class="fa fa-table"></i><a href="movePage.com?movePage=tables-basic">Basic Table</a></li>
-                            <li><i class="fa fa-table"></i><a href="movePage.com?movePage=tables-data">Data Table</a></li>
-                        </ul>
-                    </li>
-                    <li class="menu-item-has-children dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-th"></i>Forms</a>
-                        <ul class="sub-menu children dropdown-menu">
-                            <li><i class="menu-icon fa fa-th"></i><a href="movePage.com?movePage=forms-basic">Basic Form</a></li>
-                            <li><i class="menu-icon fa fa-th"></i><a href="movePage.com?movePage=forms-advanced">Advanced Form</a></li>
+                            <li><i class="menu-icon fa fa-line-chart"></i><a href="selectAllCompanySales.com?comNo=${sessionScope.loginUser.comNo }">매출 내역</a></li>
+                            <li><i class="menu-icon fa fa-area-chart"></i><a href="selectCompanySalesList.com?comNo=${sessionScope.loginUser.comNo }">매출 목록 리스트</a></li>
                         </ul>
                     </li>
 
-                    <h3 class="menu-title">Icons</h3><!-- /.menu-title -->
-
-                    <li class="menu-item-has-children dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-tasks"></i>Icons</a>
-                        <ul class="sub-menu children dropdown-menu">
-                            <li><i class="menu-icon fa fa-fort-awesome"></i><a href="movePage.com?movePage=font-fontawesome">Font Awesome</a></li>
-                            <li><i class="menu-icon ti-themify-logo"></i><a href="movePage.com?movePage=font-themify">Themefy Icons</a></li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="movePage.com?movePage=widgets"> <i class="menu-icon ti-email"></i>Widgets </a>
-                    </li>
-                    <li class="menu-item-has-children dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-bar-chart"></i>Charts</a>
-                        <ul class="sub-menu children dropdown-menu">
-                            <li><i class="menu-icon fa fa-line-chart"></i><a href="movePage.com?movePage=charts-chartjs">Chart JS</a></li>
-                            <li><i class="menu-icon fa fa-area-chart"></i><a href="movePage.com?movePage=charts-flot">Flot Chart</a></li>
-                            <li><i class="menu-icon fa fa-pie-chart"></i><a href="movePage.com?movePage=charts-peity">Peity Chart</a></li>
-                        </ul>
-                    </li>
-
-                    <li class="menu-item-has-children dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-area-chart"></i>Maps</a>
-                        <ul class="sub-menu children dropdown-menu">
-                            <li><i class="menu-icon fa fa-map-o"></i><a href="movePage.com?movePage=maps-gmap">Google Maps</a></li>
-                            <li><i class="menu-icon fa fa-street-view"></i><a href="movePage.com?movePage=maps-vector">Vector Maps</a></li>
-                        </ul>
-                    </li>
                     <h3 class="menu-title">Extras</h3><!-- /.menu-title -->
                     <li class="menu-item-has-children dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-glass"></i>Pages</a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-comments"></i>업체 후기</a>
                         <ul class="sub-menu children dropdown-menu">
-                            <li><i class="menu-icon fa fa-sign-in"></i><a href="movePage.com?movePage=page-login">Login</a></li>
-                            <li><i class="menu-icon fa fa-sign-in"></i><a href="movePage.com?movePage=page-register">Register</a></li>
-                            <li><i class="menu-icon fa fa-paper-plane"></i><a href="movePage.com?movePage=pages-forget">Forget Pass</a></li>
-                            <li><i class="menu-icon fa fa-paper-plane"></i><a href="orderWaiting.com?comNo=${sessionScope.loginUser.comNo }">주문신청 내역</a></li>
-                            <li><i class="menu-icon fa fa-paper-plane"></i><a href="selectEmployeeList.com?comNo=${sessionScope.loginUser.comNo }">업체 직원 관리</a></li>
-                            <li><i class="menu-icon fa fa-paper-plane"></i><a href="selectAllMaterialList.com?comNo=${sessionScope.loginUser.comNo }">업체 재고관리</a></li>
-                            <li><i class="menu-icon fa fa-paper-plane"></i><a href="selectAllCompanySales.com?comNo=${sessionScope.loginUser.comNo }">업체 매출관리</a></li>
                             <li><i class="menu-icon fa fa-paper-plane"></i><a href="selectCompanyReview.com?comNo=${sessionScope.loginUser.comNo }">업체 후기 작성</a></li>
                         </ul>
                     </li>

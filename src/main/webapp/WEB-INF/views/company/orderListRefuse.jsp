@@ -75,12 +75,13 @@
 									<thead>
 										<tr>
 											<th style = "width : 7%">번호</th>
-											<th style = "width : 9%">주문고객</th>
+											<th style = "width : 8%">주문<br>고객</th>
 											<th style = "width : 12%">고객번호</th>
 											<th style = "width : 15%">주소</th>
-											<th style = "width : 35%">추가토핑</th>
-											<th style = "width : 10%">주문시간</th>
-											<th style = "width : 12%">버튼</th>
+											<th style = "width : 32%">추가토핑</th>
+											<th style = "width : 8%">주문<br>시간</th>
+											<th style = "width : 8%">예약<br>시간</th>
+											<th style = "width : 10%">버튼</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -92,6 +93,7 @@
 												<td>${ value.deliveryAddress }</td>
 												<td>${ value.addTopping }</td>
 												<td>${ value.orderDate }</td>
+												<td>${ value.orderReserveTime }</td>
 												<td>
 													<button type="button" class="btn btn-danger btn-sm" onclick = "location.href = 'refuseListDelete.com?orderNo=${ value.orderNo }&comNo=${sessionScope.loginUser.comNo }'">삭제</button>
 												</td>
