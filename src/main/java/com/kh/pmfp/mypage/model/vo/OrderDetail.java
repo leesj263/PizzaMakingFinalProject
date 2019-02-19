@@ -19,6 +19,7 @@ public class OrderDetail implements java.io.Serializable{
 	private int orderTcount;
 	
 	private String materialName;
+	private String materialName2;
 	
 	private String deliveryName;
 	private String deliveryAddr;
@@ -43,10 +44,13 @@ public class OrderDetail implements java.io.Serializable{
 
 
 
+	
+	
+
 	public OrderDetail(int orderNo, int orderMethod, String orderReceiver, String orderRtel, Date orderDate,
 			int payPrice, int deliveryNo, int comNo, int memberNo, String orderIsize, int orderIcount, int orderTcount,
-			String materialName, String deliveryName, String deliveryAddr, String comName, int discount,
-			int couponCateg, String couponName, int rDiscount, int pDiscount) {
+			String materialName, String materialName2, String deliveryName, String deliveryAddr, String comName,
+			int discount, int couponCateg, String couponName, int rDiscount, int pDiscount) {
 		super();
 		this.orderNo = orderNo;
 		this.orderMethod = orderMethod;
@@ -61,6 +65,7 @@ public class OrderDetail implements java.io.Serializable{
 		this.orderIcount = orderIcount;
 		this.orderTcount = orderTcount;
 		this.materialName = materialName;
+		this.materialName2 = materialName2;
 		this.deliveryName = deliveryName;
 		this.deliveryAddr = deliveryAddr;
 		this.comName = comName;
@@ -72,6 +77,14 @@ public class OrderDetail implements java.io.Serializable{
 	}
 	
 	
+
+	public String getMaterialName2() {
+		return materialName2;
+	}
+
+	public void setMaterialName2(String materialName2) {
+		this.materialName2 = materialName2;
+	}
 
 	public int getrDiscount() {
 		return rDiscount;
@@ -259,10 +272,11 @@ public class OrderDetail implements java.io.Serializable{
 				+ ", orderRtel=" + orderRtel + ", orderDate=" + orderDate + ", payPrice=" + payPrice + ", deliveryNo="
 				+ deliveryNo + ", comNo=" + comNo + ", memberNo=" + memberNo + ", orderIsize=" + orderIsize
 				+ ", orderIcount=" + orderIcount + ", orderTcount=" + orderTcount + ", materialName=" + materialName
-				+ ", deliveryName=" + deliveryName + ", deliveryAddr=" + deliveryAddr + ", comName=" + comName
-				+ ", discount=" + discount + ", couponCateg=" + couponCateg + ", couponName=" + couponName
-				+ ", rDiscount=" + rDiscount + ", pDiscount=" + pDiscount + "]";
+				+ ", materialName2=" + materialName2 + ", deliveryName=" + deliveryName + ", deliveryAddr="
+				+ deliveryAddr + ", comName=" + comName + ", discount=" + discount + ", couponCateg=" + couponCateg
+				+ ", couponName=" + couponName + ", rDiscount=" + rDiscount + ", pDiscount=" + pDiscount + "]";
 	}
+
 
 	
 

@@ -118,10 +118,43 @@ public class MypageController {
 		}
 		
 		
-		String[] arr = orderDetailList.get(0).getMaterialName().split("/");
+		String orderMain="";
 		
+		
+		//주문내역 메인 문자열 split
+		String[] arr = orderDetailList.get(0).getMaterialName().split("/");
+		for(int i=0;i<3;i++) {
+			orderMain += arr[i].substring(0, arr[i].lastIndexOf("1")) + " / ";
+		}
+		
+		for(int k=3;k<arr.length;k++) {
+			if(k == arr.length-1) {
+				orderMain += arr[k];
+			}else {
+				orderMain += arr[k]+" / ";					
+			}
+		}
+		
+		System.out.println("orderMain : " + orderMain);
+		
+		//주문내역 사이드 문자열 split
+		String[] arr2 = orderDetailList.get(0).getMaterialName2().split("/");
+		System.out.println("orderDetailList.get(0).getMaterialName2() : " + orderDetailList.get(0).getMaterialName2());
+		String orderSide="";
+		String sideCount = "";
+		
+		for(int a=0;a<arr2.length;a++) {
+			orderSide += arr2[a].split(":")[0] +" ";
+			sideCount += arr2[a].split(":")[1] +" ";
+		}
+		
+		System.out.println("orderSide : " + orderSide);
+		System.out.println("sideCount : " + sideCount);
 		
 		model.addAttribute("orderDetailList",orderDetailList);
+		model.addAttribute("orderMain",orderMain);
+		model.addAttribute("orderSide",orderSide);
+		model.addAttribute("sideCount",sideCount);
 
 		return "mypage/orderDetail";
 	}
@@ -155,10 +188,15 @@ public class MypageController {
 	public @ResponseBody void comLatLon(@RequestParam String latlonVal, HttpServletResponse response){
 		response.setContentType("text/html; charset=utf-8");
 		
+		System.out.println("latlonVal : " + latlonVal);
+		
 		String[] latlonValArr = latlonVal.split(",");
 		
-		double userLat = Double.parseDouble(latlonValArr[0]);
-		double userLon = Double.parseDouble(latlonValArr[1]);
+		double userLat = Double.parseDouble(latlonValArr[1]);
+		double userLon = Double.parseDouble(latlonValArr[0]);
+		
+		System.out.println("userLat : " + userLat);
+		System.out.println("userLon : " + userLon);
 		
 		//지점 전체의 위도, 경도 얻기
 		ArrayList<Location> list = mps.selectComLocation();
@@ -167,7 +205,9 @@ public class MypageController {
 
 		//가까운곳 배정
 		for(int i=0;i<list.size();i++) {
-			new Distance();
+			//new Distance();
+			System.out.println(i +" : "+ list.get(i).getLat());
+			System.out.println(i +" : "+ list.get(i).getLon());
 			double locDistance = Distance.distance(list.get(i).getLat(), list.get(i).getLon(), userLat, userLon);
 			
 			locDistanceArr.add(new DistanceLoc(locDistance, list.get(i).getComNo()));
@@ -209,7 +249,7 @@ public class MypageController {
 		int result = mps.insertUserDelAddr(memberNo, finalDeliveryLoc, addr, deliName);
 		
 		if(result>0) {
-			System.out.println("성공직전");
+			
 			return "redirect:myPageDelAddr.mp";
 		}else {
 			//model.addAttribute("msg", "배송지 추가 실패");
