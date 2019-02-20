@@ -19,11 +19,11 @@
 				<div class="row">
 					<div class="col-md-8"></div>
 					<div class="col-md-4">
-						<button class="btn btn-sm btn-warning" onclick="location.href='statistics.ad'"disabled>전체매출</button>
+						<button class="btn btn-sm btn-outline-warning" onclick="location.href='statistics.ad'">전체매출</button>
 						&nbsp;&nbsp;
 						<button class="btn btn-sm btn-outline-primary" onclick="location.href='statisitcsCom.ad?comNo=1'">업체매출</button>
 						&nbsp;&nbsp;
-						<button class="btn btn-sm btn-outline-danger" onclick="location.href='statisticsMat.ad?materialNo=1'">토핑매출</button>
+						<button class="btn btn-sm btn-danger" onclick="location.href='statisticsMat.ad?materialNo=1'" disabled>토핑매출</button>
 					</div>
 				</div>
 				<div class="col-lg-10">
@@ -77,7 +77,7 @@
 		return year;
 	}
 	(function($) {
-
+/*
 		var salesListsize = "${fn:length(salesList)}";
 		var expenseListsize = "${fn:length(expenseList)}";
 		var salesList = "${salesList}".toString();
@@ -227,18 +227,18 @@
 		console.log(expenseList);
 		console.log(salesList);
 		
-
+*/
 		var ctx = $("#sales-chart");
 		ctx.height=150;
 		var myChart=new Chart(ctx, {
 			type : 'line',
 			data : {
-				labels : dayList,
+				labels : [ "2010", "2011", "2012", "2013", "2014", "2015", "2016" ],
 				type : 'line',
 				defaultFontFamily : 'Montserrat',
 				datasets : [ {
 					label : "업체 재고 주문",
-					data : expenseList,
+					data : [ 0, 30, 10, 120, 50, 63, 10 ],
 					backgroundColor : 'transparent',
 					borderColor : 'rgba(220,53,69,0.75)',
 					borderWidth : 3,
@@ -248,7 +248,7 @@
 					pointBackgroundColor : 'rgba(220,53,69,0.75)',
 				}, {
 					label : "고객 주문",
-					data : salesList, 
+					data : [ 0, 50, 40, 80, 40, 79, 120 ],
 					backgroundColor : 'transparent',
 					borderColor : 'rgba(40,167,69,0.75)',
 					borderWidth : 3,

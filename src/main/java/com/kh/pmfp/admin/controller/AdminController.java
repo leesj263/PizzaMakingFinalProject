@@ -944,4 +944,32 @@ public class AdminController {
 			return "common/errorPage";
 		}
 	}
+	
+	@RequestMapping(value="statisitcsCom.ad", method=RequestMethod.GET)
+	public String statisitcsCom(@RequestParam(value="comNo", required=false, defaultValue="1")int comNo, HttpServletRequest request) {
+		ArrayList<AdminSeller> sellerList=new ArrayList<AdminSeller>();
+		ArrayList<AdminSales> salesList=new ArrayList<AdminSales>();
+		ArrayList<AdminSales> expenseList=new ArrayList<AdminSales>();
+		AdminSales sales=new AdminSales(1, comNo);
+		AdminSales expense=new AdminSales(0, comNo);
+		try {
+			sellerList=as.selectSellerList();
+			salesList=as.selectComStatistics(sales);
+			expenseList=as.selectComStatistics(expense);
+			
+			request.setAttribute("salesList", salesList);
+			request.setAttribute("expenseList", expenseList);
+			request.setAttribute("sellerList", sellerList);
+			return "admin/sales/statistics/statisticsCom";
+		} catch (AdminSelectException e) {
+			request.setAttribute("msg", e.getMessage());
+			return "common/errorPage";
+		}
+	}
+	
+	@RequestMapping(value="statisticsMat.ad", method=RequestMethod.GET)
+	public String statisitcsMat(@RequestParam(value="materialNo", required=false, defaultValue="1")int materialNo, HttpServletRequest request) {
+		
+		return "admin/sales/statistics/statisticsMat";
+	}
 }
