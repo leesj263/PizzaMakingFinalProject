@@ -32,12 +32,8 @@ public class BoardServiceImpl implements BoardService {
 		int result=bd.insertqna(sqlSession, qna);
 		return result;
 	}
-//qna 수정
-	@Override
-	public int updateqna(Board qna) throws BoardException {
-		int result=bd.updateqna(sqlSession, qna);
-		return result;
-	}
+
+	
 //qna 리스트 글 수
 	@Override
 	public int selectQnaCount() throws BoardException {
@@ -78,10 +74,22 @@ public class BoardServiceImpl implements BoardService {
 	}
 	//qna삭제
 	@Override
-	public int deleteqna(int num) throws BoardException {
-		int result = bd.deleteqna(sqlSession, num);
+	public int deleteqna(int boardNo) throws BoardException {
+		int result = bd.deleteqna(sqlSession, boardNo);
 		return result;
 	}
+	//수정
+	@Override
+	public Board updateqna2(int boardNo) throws BoardException {
+		
+		return bd.updateqna2(sqlSession, boardNo);
+	}
+	@Override
+	public int qnaUpdateC(Board qna) throws BoardException {
+		int result= bd.qnaUpdateC(sqlSession, qna);
+		return result;
+	}
+	
 	
 	
 		

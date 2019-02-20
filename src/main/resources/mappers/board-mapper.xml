@@ -39,10 +39,18 @@
 		#{boardContent}, DEFAULT, #{memberNo}, SYSDATE, 1, NULL, DEFAULT, 'N', NULL) 
 	</insert>
 		<!-- qna 수정 -->
-	<update id="updateqna" parameterType="_int">
-		UPDATE BOARD SET BOARD_ANSWER='Y'
-		WHERE BOARD_NO=#{num}
-	</update>
+	 <update id="qnaUpdateC" parameterType="Board">
+		 UPDATE BOARD SET BOARD_CATEG=#{boardCateg}BOARD_TITLE=#{boardContent},BOARD_CONTENT=#{boardContent}
+		WHERE BOARD_NO=#{boardNo}
+	</update>  
+	
+	<select id="updateqna2" resultMap="boardResultSet" parameterType="Board">
+		SELECT B.*, M.MEMBER_NAME, M.MEMBER_NICKNAME, ROWNUM  
+		FROM BOARD B 
+		JOIN MEMBER M ON (B.MEMBER_NO=M.MEMBER_NO) 
+		WHERE B.BOARD_NO=#{boardNo} AND B.BOARD_STATUS='Y'
+	
+	</select>
 	
 	<!-- qna 글 수  -->
 	<select id="selectQnaCount" resultType="_int">
@@ -84,7 +92,7 @@
 		SELECT B.*, M.MEMBER_NAME, M.MEMBER_NICKNAME
 		FROM BOARD B 
 		JOIN MEMBER M ON (B.MEMBER_NO=M.MEMBER_NO) 
-		WHERE B.BOARD_REFNO=#{boardNo} AND B.BOARD_STATUS='Y'
+		WHERE B.BOARD_REFNO=#{boardNo} AND B.BOARD_STATUS='Y'AND B.BOARD_LEVEL=2
 	</select>
 
 

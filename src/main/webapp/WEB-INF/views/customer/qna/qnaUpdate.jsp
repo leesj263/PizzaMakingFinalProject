@@ -64,7 +64,7 @@
 				<div align="center">
 					
 					<button class="ui yellow button" type="submit" onclick="qnaUpdate();">수정하기</button>
-					<button class="ui grey button" type="button" onclick="qnaCancle();">취소하기</button>
+					<button class="ui grey button" type="button" onclick="location.href='qnaList.bo?'">취소하기</button>
 					
 				</div>
 			</form>
@@ -74,12 +74,9 @@
 	<script>
 		function qnaUpdate(){
 			var num=$("input[name='boardNo']").val();
-			location.href="qnaList.bo";
+			location.href="qnaUpdateC.bo";
 		  }
-		function qnaCancel(){
-			
-			location.href="qnaList.bo";
-		}
+		
 	
 	
 	</script>
