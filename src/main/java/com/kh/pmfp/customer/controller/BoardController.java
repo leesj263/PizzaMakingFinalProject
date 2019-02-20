@@ -48,16 +48,16 @@ public class BoardController {
 
 	// qna작성
 	@RequestMapping("qnaWrite.bo")
-	public String noticeWrite(@ModelAttribute Board qna, HttpServletRequest request, HttpServletResponse response, String category) {
+	public String noticeWrite(@ModelAttribute Board qna, HttpServletRequest request, HttpServletResponse response,
+			String category) {
 		System.out.println(qna);
 		System.out.println(category);
 		Integer.parseInt(category);
 		// 세션에서 memberNo 가져와서 넣기qna.setMemberNo(1);
 		HttpSession session = request.getSession();
-		Member loginUser= (Member) session.getAttribute("loginUser");
+		Member loginUser = (Member) session.getAttribute("loginUser");
 		qna.setMemberNo(loginUser.getMemberNo());
 		qna.setBoardCateg(Integer.parseInt(category));
-
 
 		try {
 			int result = bs.insertqna(qna);
@@ -73,29 +73,59 @@ public class BoardController {
 
 	// qna수정
 	@RequestMapping("qnaUpdate.bo")
-	public String qnaUpdate(@ModelAttribute Board qna, HttpServletRequest request, HttpServletResponse response) {
-		qna.setMemberNo(1);
+	public String qnaUpdate(@ModelAttribute Board qna, HttpServletRequest request, HttpServletResponse response,
+			String category) {
+		int boardNo = Integer.parseInt(request.getParameter("num"));
+//		qna= new Board();
+		/*qna.setBoardCateg(Integer.parseInt(category));*/
+		System.out.println("수정 넘버" + boardNo);
+
+		// qna.setBoardCateg(Integer.parseInt(category));
 
 		try {
-			int result = bs.updateqna(qna);
-			return "redirect:qnaList.bo";
+			qna = bs.updateqna2(boardNo);
+			
+			request.setAttribute("qna", qna);
+			return "customer/qna/qnaUpdate";
 		} catch (BoardException e) {
 			request.setAttribute("msg", e.getMessage());
 
 			return "common/errorPage";
 		}
+
+	}
+	@RequestMapping("qnaUpdateC.bo")
+	public String qnaUpdateC(@ModelAttribute Board qna, HttpServletRequest request, HttpServletResponse response,
+			String category) {
+		String title=request.getParameter("boardTitle");
+		String content= request.getParameter("boardContent");
 		
-	}	
-	//qna리스트
-	@RequestMapping("qnaList.bo")
-	public String qnaList(@RequestParam(value="currentPage", required=false, defaultValue="1")int currentPage, HttpServletRequest request, HttpServletResponse response) {
-		ArrayList<Board> qnaList=new ArrayList<Board>();
+		qna= new Board();
+		qna.setBoardTitle(title);
+		qna.setBoardCateg(Integer.parseInt(category));
+		qna.setBoardContent(content);
 		
 		
 		try {
+			int result= bs.qnaUpdateC(qna);
+			return "customer/qna/qnaList";
+		} catch (BoardException e) {
+			
+		request.setAttribute("msg", e.getMessage());
+		return "common/errorPage";
+		
+		}
+	}
+	// qna리스트
+	@RequestMapping("qnaList.bo")
+	public String qnaList(@RequestParam(value = "currentPage", required = false, defaultValue = "1") int currentPage,
+			HttpServletRequest request, HttpServletResponse response) {
+		ArrayList<Board> qnaList = new ArrayList<Board>();
+
+		try {
 			int listCount = bs.selectQnaCount();
-			PageInfo pi=Pagination.getPageInfo(currentPage, listCount);
-			qnaList=bs.selectqnaList(pi);
+			PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
+			qnaList = bs.selectqnaList(pi);
 			request.setAttribute("qnaList", qnaList);
 			request.setAttribute("pi", pi);
 			System.out.println(qnaList);
@@ -104,22 +134,21 @@ public class BoardController {
 			request.setAttribute("msg", e.getMessage());
 			return "common/errorPage";
 		}
-	
+
 	}
-	//qna 상세보기
-	@RequestMapping(value="qnaDetail.bo", method=RequestMethod.GET)
+
+	// qna 상세보기
+	@RequestMapping(value = "qnaDetail.bo", method = RequestMethod.GET)
 	public String selectQna(int num, HttpServletRequest request, HttpServletResponse response) {
-		System.out.println("게시글 번호 : "+num);
-		Board qna=new Board();
+		System.out.println("게시글 번호 : " + num);
+		Board qna = new Board();
 		qna.setBoardNo(num);
-		Board answer=new Board();
-		
-		
-		
+		Board answer = new Board();
+
 		try {
-			qna=bs.selectQna(num);
-			answer=bs.selectAnswer(num);
-			
+			qna = bs.selectQna(num);
+			answer = bs.selectAnswer(num);
+
 			request.setAttribute("qna", qna);
 			request.setAttribute("answer", answer);
 			return "customer/qna/qnaDetail";
@@ -127,17 +156,17 @@ public class BoardController {
 			request.setAttribute("msg", e.getMessage());
 			return "common/errorPage";
 		}
-		
-		
-	}
-	//qna 삭제용
-		@RequestMapping(value="qnaDelete.bo", method=RequestMethod.GET)
-		public String qnaDelete(@RequestParam int num, HttpServletRequest request, HttpServletResponse response) throws BoardException {
-			int boardNo = num;
-			int result =bs.deleteqna(boardNo);
-			
-			return "customer/qna/qnaList";
-	
-}
-}
 
+	}
+
+	// qna 삭제용
+	@RequestMapping(value = "qnaDelete.bo", method = RequestMethod.GET)
+	public String qnaDelete(@RequestParam int num, HttpServletRequest request, HttpServletResponse response)
+			throws BoardException {
+		int boardNo = num;
+		int result = bs.deleteqna(boardNo);
+
+		return "redirect:qnaList.bo";
+
+	}
+}

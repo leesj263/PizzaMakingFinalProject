@@ -12,8 +12,10 @@ public interface BoardService {
 	ArrayList<Board> selectfaqOrder() throws BoardException;
 	//qna작성하기
 	int insertqna(Board qna) throws BoardException;
-	//qna 수정하기
-	int updateqna(Board qna) throws BoardException;
+	//qna 수정하기 버튼눌렀을때
+	int qnaUpdateC(Board qna) throws BoardException;
+	//수정 창 띄우기
+	Board updateqna2(int boardNo) throws BoardException;
 	//qna 글 수 
 	int selectQnaCount() throws BoardException;
 	//qna페이징
@@ -23,7 +25,10 @@ public interface BoardService {
 	//qna답변
 	Board selectAnswer(int num) throws BoardException;
 	//qna삭제
-	int deleteqna(int num) throws BoardException;
+	int deleteqna(int boardNo) throws BoardException;
+	//
+	
+	
 	
 	
 

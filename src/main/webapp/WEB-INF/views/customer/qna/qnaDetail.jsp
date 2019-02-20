@@ -53,12 +53,12 @@
 						</c:choose>
 					</p></td>
 				<td rowspan="2"><b>작성자</b></td>
-				<td width="50"><p>${qna.memberNickname }</p></td>
-
-				<td align="center" width="76">조회수 :</td>
-				<td width="50"><p>${qna.boardDate }</p></td>
+				<td width="100"><p>${qna.memberNickname }</p></td>
 
 				<td align="center" width="76">작성일 :</td>
+				<td width="150"><p>${qna.boardDate }</p></td>
+
+				<td align="center" width="76">조회수 :</td>
 				<td width="150"><p>${qna.boardCount }</p></td>
 			</tr>
 		</table>
@@ -76,7 +76,7 @@
 		<div class="form-group">
 
 
-			<font size="4" color="red">댓글 ${rownum}</font>
+			<font size="4" color="red">댓글</font>
 
 			<hr>
 			</form>
@@ -106,32 +106,14 @@
 	</div>
 	<div align="center">
 	    <button class="ui grey button" onclick="location.href='qnaList.bo?'">목록</button>
-		<button class="ui yellow button" type="submit" onclick="qnaUpdate();">수정</button>
-		<button class="ui red button" type="submit" data-toggle="modal" data-target="#staticModal">삭제</button>
+		<button class="ui yellow button" onclick="qnaUpdate()">수정</button>
+		<button class="ui red button"onclick="qnaDelete()">삭제</button>
 		
 	</div>
 
 	<br>
 	<br>
-	<div class="modal fade" id="staticModal" tabindex="-1" role="dialog"
-		aria-labelledby="staticModalLabel" aria-hidden="true"
-		data-backdrop="static">
-		<div class="modal-dialog modal-sm" role="document">
-			<div class="modal-content">
-				<div class="modal-body">
-					<p> 공지사항을 정말 삭제하시겠습니까?</p>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="ui grey button" data-dismiss="modal">Cancel</button>
-					<button type="button" class="ui yellow button" onclick="qnaDelete();">Confirm</button>
-				</div>
-			</div>
-		</div>
-	</div>
-
-
-</body>
-<script>
+	<script>
 		
 		function qnaUpdate() {
 			var num=$("input[name='boardNo']").val();
@@ -142,6 +124,11 @@
 			var num=$("input[name='boardNo']").val();
 			console.log(num);
 			location.href="qnaDelete.bo?num="+num;
-		}
+		} 
+		</script>
+
+</body>
+
+		
 </html>
 

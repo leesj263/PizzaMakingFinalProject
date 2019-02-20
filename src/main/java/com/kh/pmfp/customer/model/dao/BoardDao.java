@@ -14,8 +14,9 @@ public interface BoardDao {
 //qna작성
 	int insertqna(SqlSessionTemplate sqlSession, Board qna) throws BoardException;
 //qna수정
-	int updateqna(SqlSessionTemplate sqlSession, Board qna) throws BoardException;
-//qna 글 수
+	
+	Board updateqna2(SqlSessionTemplate sqlSession, int boardNo) throws BoardException;
+	//qna 글 수
 	int selectQnaCount(SqlSessionTemplate sqlSession) throws BoardException;
 //qna리스트 
 	ArrayList<Board> selectqnaList(SqlSessionTemplate sqlSession, PageInfo pi) throws BoardException;
@@ -24,9 +25,12 @@ public interface BoardDao {
 //qna 조회수 증가
 	int updateBoardCount(SqlSessionTemplate sqlSession, int num) throws BoardException;
 //qna 삭제
-	int deleteqna(SqlSessionTemplate sqlSession, int num) throws BoardException;
+	int deleteqna(SqlSessionTemplate sqlSession, int boardNo) throws BoardException;
 //qna답변
 	Board selectAnswer(SqlSessionTemplate sqlSession, int num) throws BoardException;
+	//수정등록
+	int qnaUpdateC(SqlSessionTemplate sqlSession, Board qna) throws BoardException;
+	
 	
 	
 

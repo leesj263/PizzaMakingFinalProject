@@ -38,17 +38,7 @@ public class BoardDaoImpl implements BoardDao {
 		return result;
 	}
 
-	// qna수정
-	@Override
-	public int updateqna(SqlSessionTemplate sqlSession, Board qna) throws BoardException {
-		int result = 0;
-		result = sqlSession.update("Board.updateqna", qna);
-		if (result <= 0) {
-			throw new BoardException("qna 수정실패");
-		}
-		return result;
-	}
-
+	
 	// qna글 수
 	@Override
 	public int selectQnaCount(SqlSessionTemplate sqlSession) throws BoardException {
@@ -104,26 +94,43 @@ qna=sqlSession.selectOne("Board.selectQna", num);
 	}
 //qna삭제
 	@Override
-	public int deleteqna(SqlSessionTemplate sqlSession, int num) throws BoardException {
+	public int deleteqna(SqlSessionTemplate sqlSession, int boardNo) throws BoardException {
 		int result=0;
-		 result= sqlSession.update("Board.deleteqna",num);
+		 result= sqlSession.update("Board.deleteqna",boardNo);
 		 
 		 if(result<=0) {
 			 throw new BoardException("qna 삭제실패");
 		 }
 		 return result;
 	}
+	
 //qna답변
 	@Override
 	public Board selectAnswer(SqlSessionTemplate sqlSession, int num) throws BoardException {
 		Board answer= new Board();
 		answer=sqlSession.selectOne("Board.selectAnswer", num);
-		
+		/*
 		if(answer==null) {
 			throw new BoardException("조회실패");
 		}
-		
+		*/
 		return answer;
+	}
+//qna 수정
+	@Override
+	public Board updateqna2(SqlSessionTemplate sqlSession, int boardNo) throws BoardException {
+		return sqlSession.selectOne("Board.updateqna2", boardNo);
+	}
+
+	@Override
+	public int qnaUpdateC(SqlSessionTemplate sqlSession, Board qna) throws BoardException {
+		int result=0;
+		 result= sqlSession.update("Board.qnaUpdateC",qna);
+		
+		if(result<=0) {
+			throw new BoardException("수정실패");
+		}
+		return result;
 	}
 
 	
