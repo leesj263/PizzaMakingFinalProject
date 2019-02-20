@@ -68,7 +68,7 @@
 	<div class="col-md-1"><button class="btn btn-outline-warning" onclick="location.href='noticeWriteView.ad'">작성</button></div>
 	<!-- 검색 영역 -->
 	<div class="form-inline col-md-4">
-		<form class="search-form">
+<!-- 		<form class="search-form">
 			<select class="form-control" name="searchNotice" onChange="selectSearch(this.options[this.selectedIndex].value)">
 				<option value="name">제목</option>
 				<option value="userId">내용</option>
@@ -80,7 +80,7 @@
 		</form>
 		<button class="search-trigger" onclick="searchNotice();">
 			<i class="fa fa-search"></i>
-		</button>
+		</button> -->
 	</div>
 	<!-- 페이징 영역 -->
 	<div class="dataTables_paginate paging_simple_numbers col-md-4" id="bootstrap-data-table_paginate">

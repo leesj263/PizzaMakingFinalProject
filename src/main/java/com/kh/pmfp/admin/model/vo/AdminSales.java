@@ -8,6 +8,7 @@ public class AdminSales {
 	private int comNo;
 	private String comName;
 	private Date salesInputDate;
+	private String salesDate;
 	private int salesCate;
 	private int expenseNo;
 	private int orderNo;
@@ -19,14 +20,15 @@ public class AdminSales {
 		super();
 		this.salesCate=salesCate;
 	}
-	
-	public AdminSales(int salesNo, int comNo, String comName, Date salesInputDate, int salesCate, int expenseNo,
-			int orderNo, int salesPrice) {
+
+	public AdminSales(int salesNo, int comNo, String comName, Date salesInputDate, String salesDate, int salesCate,
+			int expenseNo, int orderNo, int salesPrice) {
 		super();
 		this.salesNo = salesNo;
 		this.comNo = comNo;
 		this.comName = comName;
 		this.salesInputDate = salesInputDate;
+		this.salesDate = salesDate;
 		this.salesCate = salesCate;
 		this.expenseNo = expenseNo;
 		this.orderNo = orderNo;
@@ -65,6 +67,14 @@ public class AdminSales {
 		this.salesInputDate = salesInputDate;
 	}
 
+	public String getSalesDate() {
+		return salesDate;
+	}
+
+	public void setSalesDate(String salesDate) {
+		this.salesDate = salesDate;
+	}
+
 	public int getSalesCate() {
 		return salesCate;
 	}
@@ -100,10 +110,9 @@ public class AdminSales {
 	@Override
 	public String toString() {
 		return "AdminSales [salesNo=" + salesNo + ", comNo=" + comNo + ", comName=" + comName + ", salesInputDate="
-				+ salesInputDate + ", salesCate=" + salesCate + ", expenseNo=" + expenseNo + ", orderNo=" + orderNo
-				+ ", salesPrice=" + salesPrice + "]";
+				+ salesInputDate + ", salesDate=" + salesDate + ", salesCate=" + salesCate + ", expenseNo=" + expenseNo
+				+ ", orderNo=" + orderNo + ", salesPrice=" + salesPrice + "]";
 	}
-	
 	
 
 }

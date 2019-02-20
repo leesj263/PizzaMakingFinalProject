@@ -67,21 +67,6 @@
 								</c:choose>
 							</tr>
 						</c:forEach>
-						<!-- <tr>
-							<td>[주문]</td>
-							<td>주변 매장이 없는데 멀리 배달 안되나요</td>
-							<td><button class="btn btn-sm btn-outline-warning" onclick="location.href="admin.ad?admin=board/qnaDetail";">답변하기</button></td>
-						</tr>
-						<tr>
-							<td>[이벤트]</td>
-							<td>베스트 토핑 됐는데 쿠폰 언제 주나요?</td>
-							<td><button class="btn btn-sm btn-outline-warning" onclick="location.href="admin.ad?admin=board/qnaDetail";">답변하기</button></td>
-						</tr>
-						<tr>
-							<td>[쿠폰]</td>
-							<td>쿠폰 사용 후 주문을 취소했는데...</td>
-							<td><button class="btn btn-sm btn-outline-secondary" disabled>답변완료</button></td>
-						</tr> -->
 					</tbody>
 				</table>
 				<div class="col-md-2"></div>
@@ -185,7 +170,7 @@
 			}).mouseout(function(){
 				$(this).parent().css({"color":"#212529"});
 			}).click(function(){
-				var num=$(this).parent().children().eq(0).text();
+				var num=$(this).parent().children().children().eq(0).val();
 				console.log(num);
 				location.href="qnaDetail.ad?num="+num;
 			});
