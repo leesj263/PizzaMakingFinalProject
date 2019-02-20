@@ -21,7 +21,10 @@ public interface BoardService {
 	//qna상세보기
 	Board selectQna(int num) throws BoardException;
 	//qna답변
-	Board selectAnswer(int num);
+	Board selectAnswer(int num) throws BoardException;
+	//qna삭제
+	int deleteqna(int num) throws BoardException;
+	
 	
 
 	

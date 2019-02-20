@@ -102,6 +102,29 @@ qna=sqlSession.selectOne("Board.selectQna", num);
 		}
 		return result;
 	}
+//qna삭제
+	@Override
+	public int deleteqna(SqlSessionTemplate sqlSession, int num) throws BoardException {
+		int result=0;
+		 result= sqlSession.update("Board.deleteqna",num);
+		 
+		 if(result<=0) {
+			 throw new BoardException("qna 삭제실패");
+		 }
+		 return result;
+	}
+//qna답변
+	@Override
+	public Board selectAnswer(SqlSessionTemplate sqlSession, int num) throws BoardException {
+		Board answer= new Board();
+		answer=sqlSession.selectOne("Board.selectAnswer", num);
+		
+		if(answer==null) {
+			throw new BoardException("조회실패");
+		}
+		
+		return answer;
+	}
 
 	
 

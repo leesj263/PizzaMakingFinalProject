@@ -111,15 +111,32 @@ public class BoardController {
 	public String selectQna(int num, HttpServletRequest request, HttpServletResponse response) {
 		System.out.println("게시글 번호 : "+num);
 		Board qna=new Board();
+		qna.setBoardNo(num);
 		Board answer=new Board();
-		//qna=bs.selectQna(num);
-		answer=bs.selectAnswer(num);
-		return "customer/qna/qnaDetail";
+		
+		
+		
+		try {
+			qna=bs.selectQna(num);
+			answer=bs.selectAnswer(num);
+			
+			request.setAttribute("qna", qna);
+			request.setAttribute("answer", answer);
+			return "customer/qna/qnaDetail";
+		} catch (BoardException e) {
+			request.setAttribute("msg", e.getMessage());
+			return "common/errorPage";
+		}
+		
+		
 	}
 	//qna 삭제용
-		@RequestMapping(value="noticeDelete.bo", method=RequestMethod.GET)
-		public String noticeDelete(@RequestParam int num, HttpServletRequest request, HttpServletResponse response) {
-			return null;
+		@RequestMapping(value="qnaDelete.bo", method=RequestMethod.GET)
+		public String qnaDelete(@RequestParam int num, HttpServletRequest request, HttpServletResponse response) throws BoardException {
+			int boardNo = num;
+			int result =bs.deleteqna(boardNo);
+			
+			return "customer/qna/qnaList";
 	
 }
 }

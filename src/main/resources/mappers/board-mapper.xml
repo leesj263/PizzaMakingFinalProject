@@ -48,7 +48,12 @@
 	<select id="selectQnaCount" resultType="_int">
 		SELECT COUNT(*) FROM BOARD WHERE BOARD_TYPE=3 AND BOARD_LEVEL=1 AND BOARD_STATUS='Y'
 	</select>
-	
+	<!-- 조회수증가 -->
+	<update id="updateBoardCount" parameterType="_int">
+	UPDATE BOARD SET BOARD_COUNT=(SELECT BOARD_COUNT FROM BOARD WHERE BOARD_NO=#{num})+1
+	WHERE BOARD_NO=#{num} AND BOARD_STATUS='Y'
+	</update
+	>
 	<!-- qna리스트 -->
 	<select id="selectqnaList" resultMap="boardResultSet">
 		select
@@ -60,7 +65,27 @@
 		where B.board_type =3 and B.board_status='Y' AND B.BOARD_LEVEL=1 
         ORDER BY B.BOARD_DATE DESC, B.BOARD_NO DESC
 	</select>
-
+	
+	<!-- qna삭제 -->
+	 <update id="deleteqna"  parameterType="_int">
+	UPDATE BOARD SET BOARD_STATUS='N' WHERE BOARD_NO=#{boardNo}
+	</update>  
+	
+	<!-- qna상세보기 -->
+	<select id="selectQna" resultMap="boardResultSet" parameterType="_int">
+		SELECT B.*, M.MEMBER_NAME, M.MEMBER_NICKNAME, ROWNUM  
+		FROM BOARD B 
+		JOIN MEMBER M ON (B.MEMBER_NO=M.MEMBER_NO) 
+		WHERE B.BOARD_NO=#{boardNo} AND B.BOARD_STATUS='Y'
+	</select>
+	
+	<!-- qna답변보기 -->
+	<select id="selectAnswer" resultMap="boardResultSet"  parameterType="_int">
+		SELECT B.*, M.MEMBER_NAME, M.MEMBER_NICKNAME
+		FROM BOARD B 
+		JOIN MEMBER M ON (B.MEMBER_NO=M.MEMBER_NO) 
+		WHERE B.BOARD_REFNO=#{boardNo} AND B.BOARD_STATUS='Y'
+	</select>
 
 
 </mapper>

@@ -69,10 +69,18 @@ public class BoardServiceImpl implements BoardService {
 		
 		return qna;
 	}
+	//qna답변
 	@Override
-	public Board selectAnswer(int num) {
-		// TODO Auto-generated method stub
-		return null;
+	public Board selectAnswer(int num) throws BoardException {
+		Board answer= new Board();
+		answer=bd.selectAnswer(sqlSession, num);
+		return answer;
+	}
+	//qna삭제
+	@Override
+	public int deleteqna(int num) throws BoardException {
+		int result = bd.deleteqna(sqlSession, num);
+		return result;
 	}
 	
 	

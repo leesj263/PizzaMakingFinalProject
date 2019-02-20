@@ -23,6 +23,10 @@ public interface BoardDao {
 	Board selectQna(SqlSessionTemplate sqlSession, int num) throws BoardException;
 //qna 조회수 증가
 	int updateBoardCount(SqlSessionTemplate sqlSession, int num) throws BoardException;
+//qna 삭제
+	int deleteqna(SqlSessionTemplate sqlSession, int num) throws BoardException;
+//qna답변
+	Board selectAnswer(SqlSessionTemplate sqlSession, int num) throws BoardException;
 	
 	
 
