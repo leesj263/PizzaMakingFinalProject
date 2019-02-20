@@ -97,11 +97,11 @@ public class MypageController {
 	
 	//주문내역 - 상세보기
 	@RequestMapping(value="mpOderDetail.mp")
-	public String mpOderDetail(HttpServletRequest request, int orderNo, Model model) {
+	public String mpOderDetail(HttpServletRequest request, @RequestParam(value="orderNo")int orderNo, Model model) {
 		HttpSession session = request.getSession();
 		Member loginUser = (Member)session.getAttribute("loginUser");
 		int memberNo = loginUser.getMemberNo();
-		
+
 		System.out.println("orderNo : " + orderNo);
 		
 		//사용쿠폰내역 카운트 조회
@@ -109,53 +109,77 @@ public class MypageController {
 		System.out.println("result : " + result);
 		
 		ArrayList<OrderDetail> orderDetailList;
+		
+		//model로 보낼것
+		ArrayList<OrderDetail> modelDetailList = new ArrayList<>();
+		
+		OrderDetail od = new OrderDetail();
+		String custom = "";
+		String custom2 = "";
+		int customPrice = 0;
+		int sidePrice = 0;
+		
+		
 		if(result>0) {
 			//쿠폰 사용내역 O - 상세보기
 			orderDetailList = mps.selectOrderDetailList2(orderNo);
+			
+			od.setCouponCateg(orderDetailList.get(0).getCouponCateg());
+			od.setCouponName(orderDetailList.get(0).getCouponName());
+			od.setrDiscount(orderDetailList.get(0).getrDiscount());
+			od.setpDiscount(orderDetailList.get(0).getpDiscount());
+			
 		}else {
 			//쿠폰 사용내역 X - 상세보기
 			orderDetailList = mps.selectOrderDetailList(orderNo);
-		}
-		
-		String orderMain="";
-		
-		//주문내역 메인 문자열 split
-		String[] arr = orderDetailList.get(0).getMaterialName().split("/");
-		for(int i=0;i<3;i++) {
-			//orderMain += arr[i].substring(0, arr[i].lastIndexOf("1")) + " / ";
-			System.out.println(arr[i].split(":")[0]);
-			System.out.println(arr[i].split(":")[1]);
-		}
-		
-		for(int k=3;k<arr.length;k++) {
-			if(k == arr.length-1) {
-				orderMain += arr[k];
-			}else {
-				orderMain += arr[k]+" / ";					
+		}	
+			od.setOrderDate(orderDetailList.get(0).getOrderDate());
+			od.setOrderReceiver(orderDetailList.get(0).getOrderReceiver());
+			od.setOrderRtel(orderDetailList.get(0).getOrderRtel());
+			
+			od.setDeliveryAddr(orderDetailList.get(0).getDeliveryAddr());
+			od.setComName(orderDetailList.get(0).getComName());
+			od.setOrderIsize(orderDetailList.get(0).getOrderIsize());
+			
+			for(int i=0;i<orderDetailList.size();i++) {
+				if(orderDetailList.get(i).getMaterialCateg() <= 3) {
+					custom += orderDetailList.get(i).getMaterialName() + " / ";
+					customPrice += orderDetailList.get(i).getMaterialSellprice() * orderDetailList.get(i).getOrderTcount();
+				}else if(orderDetailList.get(i).getMaterialCateg() == 4) {
+					custom2 += orderDetailList.get(i).getMaterialName() + " "+ orderDetailList.get(i).getOrderTcount() + " / ";
+					customPrice += orderDetailList.get(i).getMaterialSellprice() * orderDetailList.get(i).getOrderTcount();
+				}else if(orderDetailList.get(i).getMaterialCateg() == 5) {
+					OrderDetail side = new OrderDetail();
+					
+					side.setMaterialName(orderDetailList.get(i).getMaterialName());
+					side.setOrderTcount(orderDetailList.get(i).getOrderTcount());
+					side.setMaterialCateg(orderDetailList.get(i).getMaterialCateg());
+					side.setMaterialSellprice(orderDetailList.get(i).getMaterialSellprice());
+					
+					sidePrice += side.getMaterialSellprice() * orderDetailList.get(i).getOrderTcount();
+					
+					modelDetailList.add(side);
+				}
+				
 			}
-		}
-		
-		System.out.println("orderMain : " + orderMain);
-		
-		//주문내역 사이드 문자열 split
-		String[] arr2 = orderDetailList.get(0).getMaterialName2().split("/");
-		System.out.println("orderDetailList.get(0).getMaterialName2() : " + orderDetailList.get(0).getMaterialName2());
-		String orderSide="";
-		String sideCount = "";
-		
-		for(int a=0;a<arr2.length;a++) {
-			orderSide += arr2[a].split(":")[0] +" ";
-			sideCount += arr2[a].split(":")[1] +" ";
-		}
-		
-		System.out.println("orderSide : " + orderSide);
-		System.out.println("sideCount : " + sideCount);
-		
-		model.addAttribute("orderDetailList",orderDetailList);
-		model.addAttribute("orderMain",orderMain);
-		model.addAttribute("orderSide",orderSide);
-		model.addAttribute("sideCount",sideCount);
+			custom2 = custom2.substring(0, custom2.length()-2);
+			System.out.println("custom : " + custom);
+			System.out.println("customPrice : " + customPrice);
+			
+			od.setOrderTcount2(orderDetailList.get(0).getOrderTcount2());
+			od.setMaterialName(custom);
+			od.setMaterialName2(custom2);
+			od.setMaterialSellprice(customPrice);
+			
+			//총 가격(커스텀+사이드)
+			od.setPayPrice(customPrice+sidePrice);
+			
+			modelDetailList.add(od);
+			
+			System.out.println(modelDetailList);
 
+		model.addAttribute("modelDetailList",modelDetailList);
+		
 		return "mypage/orderDetail";
 	}
 	

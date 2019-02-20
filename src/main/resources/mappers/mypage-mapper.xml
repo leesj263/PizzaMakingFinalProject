@@ -21,17 +21,27 @@
 		<result property="payPrice" column="ORDER_PAYPRICE"/>
 		<result property="deliveryNo" column="DELIVERY_NO"/>
 		<result property="comNo" column="COM_NO"/>
+		<result property="memberNo" column="MEMBER_NO"/>
+		
 		<result property="orderIsize" column="ORDER_ISIZE"/>
-		<result property="orderIcount" column="ORDER_ICOUNT"/>
 		<result property="orderTcount" column="ORDER_TCOUNT"/>
-		<result property="materialName" column="ORDER_MATERIAL"/>
-		<result property="materialName2" column="ORDER_MATERIAL2"/>
+		<result property="orderTcount2" column="ORDER_TCOUNT2"/>
+		<result property="orderIsize" column="ORDER_ISIZE"/>
+		
+		<result property="materialCateg" column="MATERIAL_CATEG"/>
+		<result property="materialNo" column="MATERIAL_NO"/>
+		<result property="materialName" column="material_Name"/>
+		<result property="materialName2" column="material_Name2"/>
+		<result property="materialSellprice" column="MATERIAL_SELLPRICE"/>
+		
 		<result property="deliveryName" column="DELIVERY_NAME"/>
 		<result property="deliveryAddr" column="DELIVERY_ADDRESS"/>
 		<result property="comName" column="COM_NAME"/>
-		<result property="couponCateg" column="COUPON_CATEG"/>
 		
+		<result property="discount" column="DISCOUNT"/>	
+		<result property="couponCateg" column="COUPON_CATEG"/>	
 		<result property="couponName" column="COUPON_NAME"/>
+		
 		<result property="rDiscount" column="COUPON_RDISCOUNT"/>
 		<result property="pDiscount" column="COUPON_PDISCOUNT"/>
 	</resultMap>
@@ -195,61 +205,38 @@
 	
 	<select id="selectOrderDetailList" resultMap="mypageOrderDetailResultSet" parameterType="_int">
 		select om.order_date, om.order_receiver, om.order_rtel, 
-		LISTAGG(cast(ma.material_name||ot.order_tcount || ':' || ma.material_sellprice as VARCHAR(100)),'/') within group(order by ma.material_no) ORDER_MATERIAL,
-		oi.order_tcount,
-        
-		 (select LISTAGG(cast(ma.material_name||':'||ot.order_tcount || ':' || ma.material_sellprice as VARCHAR(100)),'/') within group(order by ma.material_no) ORDER_MATERIAL2
-            from order_main OM
-            join order_item OI on om.order_no = oi.order_no 
-            join order_topping OT on ot.order_ino = oi.order_ino 
-            join material MA on ot.material_no = ma.material_no
-            where om.order_no=#{orderNo} and ma.material_no >=49) ORDER_MATERIAL2,
-		
-		
-		om.order_payprice, d.delivery_name, d.delivery_address, c.com_name
+              ma.material_categ, ma.material_name, ma.material_sellprice,ot.order_tcount, oi.order_tcount order_tcount2,
+              om.order_payprice, d.delivery_name, d.delivery_address, c.com_name, oi.order_isize
 		from order_main OM
 		join order_item OI on om.order_no = oi.order_no 
 		join order_topping OT on ot.order_ino = oi.order_ino 
 		join material MA on ot.material_no = ma.material_no
 		join delivery d on d.delivery_no=om.delivery_no
 		join company c on c.com_no = om.com_no
-		where om.order_no=#{orderNo} and ma.material_no between 1 and 48 
-		group by om.order_date, om.order_receiver, om.order_rtel, oi.order_tcount,
-		om.order_payprice, d.delivery_name, d.delivery_address, c.com_name  
+		where om.order_no=#{orderNo}
+        order by ma.material_no 
 	</select>
 	
 	<select id="selectOrderDetailList2" resultMap="mypageOrderDetailResultSet" parameterType="_int">	
 		select om.order_date, om.order_receiver, om.order_rtel, 
-		LISTAGG(cast(ma.material_name||ot.order_tcount as VARCHAR(100)),'/') within group(order by ma.material_no) ORDER_MATERIAL,
-		
-		(select LISTAGG(cast(ma.material_name||':'||ot.order_tcount as VARCHAR(100)),'/') within group(order by ma.material_no) ORDER_MATERIAL2
-            from order_main OM
-            join order_item OI on om.order_no = oi.order_no 
-            join order_topping OT on ot.order_ino = oi.order_ino 
-            join material MA on ot.material_no = ma.material_no
-            where om.order_no=1 and ma.material_no >=49) ORDER_MATERIAL2,
-		
-		om.order_payprice, d.delivery_name, d.delivery_address, c.com_name, cp.coupon_categ, cp.coupon_name,
-		cp.coupon_rdiscount, cp.coupon_pdiscount,
-        
-        decode(cp.coupon_categ, 0, cp.coupon_rdiscount, 1, cp.coupon_pdiscount) discount
-
-        from order_main OM
+     	ma.material_categ, ma.material_name, ma.material_sellprice,ot.order_tcount, oi.order_tcount order_tcount2,
+     	om.order_payprice, d.delivery_name, d.delivery_address, c.com_name, oi.order_isize,
+      
+    	c.com_name, cp.coupon_categ, cp.coupon_name,
+     	cp.coupon_rdiscount, cp.coupon_pdiscount
+              
+		from order_main OM
 		join order_item OI on om.order_no = oi.order_no 
 		join order_topping OT on ot.order_ino = oi.order_ino 
 		join material MA on ot.material_no = ma.material_no
-		join coupon_issue ci on ci.order_no = om.order_no
 		join delivery d on d.delivery_no=om.delivery_no
 		join company c on c.com_no = om.com_no
-        join coupon cp on cp.coupon_no = ci.coupon_no
-		
-		where om.order_no=#{orderNo} and ma.material_no between 1 and 48 
-		
-		group by om.order_date, om.order_receiver, om.order_rtel, om.order_payprice, d.delivery_name, 
-		d.delivery_address, c.com_name, decode(cp.coupon_categ, 0, cp.coupon_rdiscount, 1, cp.coupon_pdiscount), cp.coupon_categ,
-		cp.coupon_name,cp.coupon_rdiscount, cp.coupon_pdiscount
         
-
+        join coupon_issue ci on ci.order_no = om.order_no
+        join coupon cp on cp.coupon_no = ci.coupon_no
+        
+		where om.order_no=#{orderNo}
+        order by ma.material_no 
 	</select>
 	
 	

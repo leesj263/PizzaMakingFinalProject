@@ -14,12 +14,14 @@ public class OrderDetail implements java.io.Serializable{
 	private int memberNo;
 	
 	private String orderIsize;
-	private int orderIcount;
-	
 	private int orderTcount;
+	private int orderTcount2;
 	
+	private int materialNo;
 	private String materialName;
 	private String materialName2;
+	private int materialSellprice;
+	private int materialCateg;
 	
 	private String deliveryName;
 	private String deliveryAddr;
@@ -39,19 +41,15 @@ public class OrderDetail implements java.io.Serializable{
 		this.orderNo = orderNo;
 		this.memberNo = memberNo;
 	}
-
-	
-
-
-
 	
 	
-
 	public OrderDetail(int orderNo, int orderMethod, String orderReceiver, String orderRtel, Date orderDate,
-			int payPrice, int deliveryNo, int comNo, int memberNo, String orderIsize, int orderIcount, int orderTcount,
-			String materialName, String materialName2, String deliveryName, String deliveryAddr, String comName,
-			int discount, int couponCateg, String couponName, int rDiscount, int pDiscount) {
+			int payPrice, int deliveryNo, int comNo, int memberNo, String orderIsize, int orderTcount, int orderTcount2,
+			String materialName, String materialName2, int materialSellprice, String deliveryName, String deliveryAddr,
+			String comName, int discount, int couponCateg, String couponName, int rDiscount, int pDiscount,int materialNo,int materialCateg) {
 		super();
+		this.materialCateg=materialCateg;
+		this.materialNo=materialNo;
 		this.orderNo = orderNo;
 		this.orderMethod = orderMethod;
 		this.orderReceiver = orderReceiver;
@@ -62,10 +60,11 @@ public class OrderDetail implements java.io.Serializable{
 		this.comNo = comNo;
 		this.memberNo = memberNo;
 		this.orderIsize = orderIsize;
-		this.orderIcount = orderIcount;
 		this.orderTcount = orderTcount;
+		this.orderTcount2 = orderTcount2;
 		this.materialName = materialName;
 		this.materialName2 = materialName2;
+		this.materialSellprice = materialSellprice;
 		this.deliveryName = deliveryName;
 		this.deliveryAddr = deliveryAddr;
 		this.comName = comName;
@@ -75,100 +74,24 @@ public class OrderDetail implements java.io.Serializable{
 		this.rDiscount = rDiscount;
 		this.pDiscount = pDiscount;
 	}
+
 	
 	
-
-	public String getMaterialName2() {
-		return materialName2;
+	public int getMaterialCateg() {
+		return materialCateg;
 	}
 
-	public void setMaterialName2(String materialName2) {
-		this.materialName2 = materialName2;
+	public void setMaterialCateg(int materialCateg) {
+		this.materialCateg = materialCateg;
 	}
 
-	public int getrDiscount() {
-		return rDiscount;
+	public int getMaterialNo() {
+		return materialNo;
 	}
 
-	public void setrDiscount(int rDiscount) {
-		this.rDiscount = rDiscount;
+	public void setMaterialNo(int materialNo) {
+		this.materialNo = materialNo;
 	}
-
-	public int getpDiscount() {
-		return pDiscount;
-	}
-
-	public void setpDiscount(int pDiscount) {
-		this.pDiscount = pDiscount;
-	}
-
-	public String getCouponName() {
-		return couponName;
-	}
-
-	public void setCouponName(String couponName) {
-		this.couponName = couponName;
-	}
-
-	public int getCouponCateg() {
-		return couponCateg;
-	}
-
-	public void setCouponCateg(int couponCateg) {
-		this.couponCateg = couponCateg;
-	}
-
-	public int getMemberNo() {
-		return memberNo;
-	}
-
-	public void setMemberNo(int memberNo) {
-		this.memberNo = memberNo;
-	}
-
-	public int getDiscount() {
-		return discount;
-	}
-
-	public void setDiscount(int discount) {
-		this.discount = discount;
-	}
-
-	public String getDeliveryName() {
-		return deliveryName;
-	}
-
-
-
-	public void setDeliveryName(String deliveryName) {
-		this.deliveryName = deliveryName;
-	}
-
-
-
-	public String getDeliveryAddr() {
-		return deliveryAddr;
-	}
-
-
-
-	public void setDeliveryAddr(String deliveryAddr) {
-		this.deliveryAddr = deliveryAddr;
-	}
-
-
-
-	public String getComName() {
-		return comName;
-	}
-
-
-
-	public void setComName(String comName) {
-		this.comName = comName;
-	}
-
-
 
 	public int getOrderNo() {
 		return orderNo;
@@ -234,20 +157,20 @@ public class OrderDetail implements java.io.Serializable{
 		this.comNo = comNo;
 	}
 
+	public int getMemberNo() {
+		return memberNo;
+	}
+
+	public void setMemberNo(int memberNo) {
+		this.memberNo = memberNo;
+	}
+
 	public String getOrderIsize() {
 		return orderIsize;
 	}
 
 	public void setOrderIsize(String orderIsize) {
 		this.orderIsize = orderIsize;
-	}
-
-	public int getOrderIcount() {
-		return orderIcount;
-	}
-
-	public void setOrderIcount(int orderIcount) {
-		this.orderIcount = orderIcount;
 	}
 
 	public int getOrderTcount() {
@@ -258,6 +181,14 @@ public class OrderDetail implements java.io.Serializable{
 		this.orderTcount = orderTcount;
 	}
 
+	public int getOrderTcount2() {
+		return orderTcount2;
+	}
+
+	public void setOrderTcount2(int orderTcount2) {
+		this.orderTcount2 = orderTcount2;
+	}
+
 	public String getMaterialName() {
 		return materialName;
 	}
@@ -266,21 +197,107 @@ public class OrderDetail implements java.io.Serializable{
 		this.materialName = materialName;
 	}
 
+	public String getMaterialName2() {
+		return materialName2;
+	}
+
+	public void setMaterialName2(String materialName2) {
+		this.materialName2 = materialName2;
+	}
+
+	public int getMaterialSellprice() {
+		return materialSellprice;
+	}
+
+	public void setMaterialSellprice(int materialSellprice) {
+		this.materialSellprice = materialSellprice;
+	}
+
+	public String getDeliveryName() {
+		return deliveryName;
+	}
+
+	public void setDeliveryName(String deliveryName) {
+		this.deliveryName = deliveryName;
+	}
+
+	public String getDeliveryAddr() {
+		return deliveryAddr;
+	}
+
+	public void setDeliveryAddr(String deliveryAddr) {
+		this.deliveryAddr = deliveryAddr;
+	}
+
+	public String getComName() {
+		return comName;
+	}
+
+	public void setComName(String comName) {
+		this.comName = comName;
+	}
+
+	public int getDiscount() {
+		return discount;
+	}
+
+	public void setDiscount(int discount) {
+		this.discount = discount;
+	}
+
+	public int getCouponCateg() {
+		return couponCateg;
+	}
+
+	public void setCouponCateg(int couponCateg) {
+		this.couponCateg = couponCateg;
+	}
+
+	public String getCouponName() {
+		return couponName;
+	}
+
+	public void setCouponName(String couponName) {
+		this.couponName = couponName;
+	}
+
+	public int getrDiscount() {
+		return rDiscount;
+	}
+
+	public void setrDiscount(int rDiscount) {
+		this.rDiscount = rDiscount;
+	}
+
+	public int getpDiscount() {
+		return pDiscount;
+	}
+
+	public void setpDiscount(int pDiscount) {
+		this.pDiscount = pDiscount;
+	}
+
 	@Override
 	public String toString() {
 		return "OrderDetail [orderNo=" + orderNo + ", orderMethod=" + orderMethod + ", orderReceiver=" + orderReceiver
 				+ ", orderRtel=" + orderRtel + ", orderDate=" + orderDate + ", payPrice=" + payPrice + ", deliveryNo="
 				+ deliveryNo + ", comNo=" + comNo + ", memberNo=" + memberNo + ", orderIsize=" + orderIsize
-				+ ", orderIcount=" + orderIcount + ", orderTcount=" + orderTcount + ", materialName=" + materialName
-				+ ", materialName2=" + materialName2 + ", deliveryName=" + deliveryName + ", deliveryAddr="
-				+ deliveryAddr + ", comName=" + comName + ", discount=" + discount + ", couponCateg=" + couponCateg
-				+ ", couponName=" + couponName + ", rDiscount=" + rDiscount + ", pDiscount=" + pDiscount + "]";
+				+ ", orderTcount=" + orderTcount + ", orderTcount2=" + orderTcount2 + ", materialNo=" + materialNo
+				+ ", materialName=" + materialName + ", materialName2=" + materialName2 + ", materialSellprice="
+				+ materialSellprice + ", materialCateg=" + materialCateg + ", deliveryName=" + deliveryName
+				+ ", deliveryAddr=" + deliveryAddr + ", comName=" + comName + ", discount=" + discount
+				+ ", couponCateg=" + couponCateg + ", couponName=" + couponName + ", rDiscount=" + rDiscount
+				+ ", pDiscount=" + pDiscount + "]";
 	}
-
+	
+	
 
 	
 
 
+
+	
+	
 
 	
 
