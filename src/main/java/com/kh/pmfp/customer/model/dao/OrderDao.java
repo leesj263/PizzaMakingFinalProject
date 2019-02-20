@@ -48,4 +48,14 @@ public interface OrderDao {
 
 	ArrayList<Coupon> selectCouponList(SqlSessionTemplate sqlSession, HashMap<String, Integer> condi) throws OrderException;
 
+	int insertUserDelAddr(SqlSessionTemplate sqlSession, int memberNo, int finalDeliveryLoc, String addr,
+			String deliName);
+
+	int insertNoUserDelAddr(SqlSessionTemplate sqlSession, int deliNo, int memberNo, int finalDeliveryLoc, String addr,
+			String deliName);
+
+	DeliveryCompany selectComTel(SqlSessionTemplate sqlSession, int finalDeliveryLoc);
+
+	int selectDeliNo(SqlSessionTemplate sqlSession);
+
 }

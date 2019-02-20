@@ -36,4 +36,11 @@ public interface OrderService {
 
 	ArrayList<Coupon> selectCouponList(HashMap<String, Integer> condi) throws OrderException;
 
+	int insertUserDelAddr(int memberNo, int finalDeliveryLoc, String addr, String deliName);
+
+	int insertNoUserDelAddr(int deliNo, int memberNo, int finalDeliveryLoc, String addr, String deliName);
+
+	DeliveryCompany selectComTel(int finalDeliveryLoc);
+
+	int selectDeliNo();
 }
