@@ -98,6 +98,12 @@ h1 {
 			<a href="main.t"><span>Self Pizza Shop</span></a>
 		</div>
 		<c:if test="${!empty sessionScope.loginUser}">
+			
+			<c:if test="${ sessionScope.loginUser.memberName == '관리자' }">
+				<button class="mini ui yellow basic button"
+				onclick="location.href='adminMain.ad'">관리자 페이지로 이동</button>
+				&nbsp;&nbsp;&nbsp;&nbsp;
+			</c:if>
 			<h5 style="display: inline; color: white">
 				<c:out value="${sessionScope.loginUser.memberName }님 환영합니다" />
 			</h5>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

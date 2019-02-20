@@ -117,14 +117,14 @@ public class MypageController {
 			orderDetailList = mps.selectOrderDetailList(orderNo);
 		}
 		
-		
 		String orderMain="";
-		
 		
 		//주문내역 메인 문자열 split
 		String[] arr = orderDetailList.get(0).getMaterialName().split("/");
 		for(int i=0;i<3;i++) {
-			orderMain += arr[i].substring(0, arr[i].lastIndexOf("1")) + " / ";
+			//orderMain += arr[i].substring(0, arr[i].lastIndexOf("1")) + " / ";
+			System.out.println(arr[i].split(":")[0]);
+			System.out.println(arr[i].split(":")[1]);
 		}
 		
 		for(int k=3;k<arr.length;k++) {

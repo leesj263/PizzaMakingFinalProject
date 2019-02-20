@@ -195,16 +195,17 @@
 	
 	<select id="selectOrderDetailList" resultMap="mypageOrderDetailResultSet" parameterType="_int">
 		select om.order_date, om.order_receiver, om.order_rtel, 
-		LISTAGG(cast(ma.material_name||ot.order_tcount as VARCHAR(100)),'/') within group(order by ma.material_no) ORDER_MATERIAL,
-		
-		 (select LISTAGG(cast(ma.material_name||':'||ot.order_tcount as VARCHAR(100)),'/') within group(order by ma.material_no) ORDER_MATERIAL2
+		LISTAGG(cast(ma.material_name||ot.order_tcount || ':' || ma.material_sellprice as VARCHAR(100)),'/') within group(order by ma.material_no) ORDER_MATERIAL,
+		oi.order_tcount,
+        
+		 (select LISTAGG(cast(ma.material_name||':'||ot.order_tcount || ':' || ma.material_sellprice as VARCHAR(100)),'/') within group(order by ma.material_no) ORDER_MATERIAL2
             from order_main OM
             join order_item OI on om.order_no = oi.order_no 
             join order_topping OT on ot.order_ino = oi.order_ino 
             join material MA on ot.material_no = ma.material_no
-            where om.order_no=1 and ma.material_no >=49) ORDER_MATERIAL2,
+            where om.order_no=#{orderNo} and ma.material_no >=49) ORDER_MATERIAL2,
 		
-		oi.order_tcount,
+		
 		om.order_payprice, d.delivery_name, d.delivery_address, c.com_name
 		from order_main OM
 		join order_item OI on om.order_no = oi.order_no 
