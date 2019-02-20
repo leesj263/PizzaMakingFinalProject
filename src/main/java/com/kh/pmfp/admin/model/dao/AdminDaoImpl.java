@@ -28,7 +28,6 @@ import com.kh.pmfp.common.model.vo.PageInfo;
 @Repository
 public class AdminDaoImpl implements AdminDao {
 
-	
 	//회원 페이징 -카운트 조회용
 	@Override
 	public int selectUserCount(SqlSessionTemplate sqlSession, AdminMember member) throws AdminCountException {
@@ -790,13 +789,57 @@ public class AdminDaoImpl implements AdminDao {
 
 	//일간 통계 출력용 - 주문/업체주문
 	@Override
-	public ArrayList<AdminSales> selectStatistics(SqlSessionTemplate sqlSession, AdminSales sales)
+	public ArrayList<AdminSales> selectOrderStatistics(SqlSessionTemplate sqlSession, AdminSales sales)
 			throws AdminSelectException {
 		ArrayList<AdminSales> salesList=new ArrayList<AdminSales> ();
-		salesList=(ArrayList)sqlSession.selectList("Admin.selectStatList", sales);
+		salesList=(ArrayList)sqlSession.selectList("Admin.selectOrderStatList", sales);
 		if(salesList==null) {
 			throw new AdminSelectException("일별 통계 조회 실패");
 		}
+		return salesList;
+	}
+
+
+	@Override
+	public ArrayList<AdminSales> selectComStatistics(SqlSessionTemplate sqlSession, AdminSales sales)
+			throws AdminSelectException {
+		ArrayList<AdminSales> salesList=new ArrayList<AdminSales> ();
+		salesList=(ArrayList)sqlSession.selectList("Admin.selectComStatList", sales);
+		if(salesList==null) {
+			throw new AdminSelectException("일별 통계 조회 실패");
+		}
+		return salesList;
+	}
+
+	@Override
+	public ArrayList<AdminSeller> selectSellerList(SqlSessionTemplate sqlSession) throws AdminSelectException {
+		ArrayList<AdminSeller> sellerList=new ArrayList<AdminSeller>();
+		sellerList=(ArrayList)sqlSession.selectList("Admin.selectSellerList");
+		if(sellerList==null) {
+			throw new AdminSelectException("업체 목록 조회 실패");
+		}
+		return sellerList;
+	}
+
+	@Override
+	public ArrayList<AdminSales> selectOrderStat(SqlSessionTemplate sqlSession, AdminSales sales)
+			throws AdminSelectException {
+		ArrayList<AdminSales> salesList=new ArrayList<AdminSales>();
+		salesList=(ArrayList)sqlSession.selectList("Admin.selectOrderStat", sales);
+		/*if(salesList==null) {
+			throw new AdminSelectException("업체 매출 목록 조회 실패");
+		}*/
+		return salesList;
+	}
+
+	@Override
+	public ArrayList<AdminSales> selectComStat(SqlSessionTemplate sqlSession, AdminSales sales)
+			throws AdminSelectException {
+		ArrayList<AdminSales> salesList=new ArrayList<AdminSales>();
+		salesList=(ArrayList)sqlSession.selectList("Admin.selectComStat", sales);
+		/*if(salesList==null) {
+			throw new AdminSelectException("업체 매출 목록 조회 실패");
+		}*/
 		return salesList;
 	}
 

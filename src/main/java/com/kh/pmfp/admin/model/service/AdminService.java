@@ -188,6 +188,13 @@ public interface AdminService {
 	//통계 출력용 - 주문/업체주문
 	ArrayList<AdminSales> selectStatistics(AdminSales sales) throws AdminSelectException;
 
+	//통계 출력용 업체 리스트
+	ArrayList<AdminSeller> selectSellerList() throws AdminSelectException;
+
+	//통계 출력용 --- 업체 통계
+	ArrayList<AdminSales> selectComStatistics(AdminSales sales) throws AdminSelectException;
+
+
 	
 	
 

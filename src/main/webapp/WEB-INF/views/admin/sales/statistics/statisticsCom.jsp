@@ -6,6 +6,11 @@
 <jsp:include page="../../common/header.jsp" />
 <style>
 #timeSelect {
+	float: right;
+	border: 3px solid #F7D358;
+	border-radius: 5px;
+}
+#comSelect{
 	float: left;
 	border: 3px solid #F7D358;
 	border-radius: 5px;
@@ -17,11 +22,11 @@
 		<div class="card">
 			<div class="card-body">
 				<div class="row">
-					<div class="col-md-8"></div>
-					<div class="col-md-4">
-						<button class="btn btn-sm btn-warning" onclick="location.href='statistics.ad'"disabled>전체매출</button>
+					<div class="col-md-4"></div>
+					<div class="col-md-8">
+						<button class="btn btn-sm btn-outline-warning" onclick="location.href='statistics.ad'">전체매출</button>
 						&nbsp;&nbsp;
-						<button class="btn btn-sm btn-outline-primary" onclick="location.href='statisitcsCom.ad?comNo=1'">업체매출</button>
+						<button class="btn btn-sm btn-primary" onclick="location.href='statisitcsCom.ad?comNo=1'" disabled>업체매출</button>
 						&nbsp;&nbsp;
 						<button class="btn btn-sm btn-outline-danger" onclick="location.href='statisticsMat.ad?materialNo=1'">토핑매출</button>
 					</div>
@@ -30,6 +35,11 @@
 					<div class="card">
 						<div class="card-body">
 							<div class="row">
+								<div class="col-md-8">
+									<button id="comSelect" class="btn btn-sm btn-outline-warning" value="${comNo }" type="button" data-toggle="modal" data-target="#smallmodal">
+										지점 선택
+									</button>
+								</div>
 								<div class="col-md-4">
 									<select id="timeSelect" class="form-class">
 										<option value="yearly" onclick="yearly()">연간 매출</option>
@@ -37,12 +47,34 @@
 										<option value="daily" onclick="daily()" selected>일간 매출</option>
 									</select>
 								</div>
-								<div clss="col-md-6"></div>
 							</div>
 							<h4 class="mb-3" id="chartBefore"></h4>
 							<canvas id="sales-chart"></canvas>
 						</div>
 					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade" id="smallmodal" tabindex="-1" role="dialog" aria-labelledby="smallmodalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-sm" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="smallmodalLabel">Small Modal</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<c:forEach var="seller" items="${sellerList }">
+						<ul>
+							<li value="${seller.comNo }" onclick="comStat(${seller.comNo})" <c:if test="${seller.comNo==1 }">selected</c:if>>${seller.comName }점</li>
+						</ul>
+					</c:forEach>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+					<button type="button" class="btn btn-primary">Confirm</button>
 				</div>
 			</div>
 		</div>
@@ -76,6 +108,11 @@
 		
 		return year;
 	}
+	$("#comSelect").change(function(){
+		var selectVal =  $(this).val();
+		console.log("selectVal : " + selectVal);
+	});
+	
 	(function($) {
 
 		var salesListsize = "${fn:length(salesList)}";

@@ -22,6 +22,11 @@ public class AdminSales {
 		this.salesCate=salesCate;
 	}
 
+	public AdminSales(int salesCate, int comNo) {
+		super();
+		this.salesCate=salesCate;
+		this.comNo=comNo;
+	}
 	public AdminSales(int salesNo, int comNo, String comName, Date salesInputDate, String salesDate, int salesCate,
 			int expenseNo, int orderNo, int salesPrice) {
 		super();

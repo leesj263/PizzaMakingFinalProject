@@ -526,10 +526,37 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public ArrayList<AdminSales> selectStatistics(AdminSales sales) throws AdminSelectException {
 		ArrayList<AdminSales>  salesList=new ArrayList<AdminSales>();
-		salesList=ad.selectStatistics(sqlSession, sales);
+		if(sales.getSalesCate()==1) {			
+			salesList=ad.selectOrderStatistics(sqlSession, sales);
+		}
+		if(sales.getSalesCate()==0) {
+			salesList=ad.selectComStatistics(sqlSession, sales);
+		}
+		
 		return salesList;
 	}
 
+	//통계 출력용 업체 리스트
+	@Override
+	public ArrayList<AdminSeller> selectSellerList() throws AdminSelectException {
+		return ad.selectSellerList(sqlSession);
+	}
+
+	//통계 출력용 --- 업체 통계
+	@Override
+	public ArrayList<AdminSales> selectComStatistics(AdminSales sales) throws AdminSelectException {
+		ArrayList<AdminSales>  salesList=new ArrayList<AdminSales>();
+		if(sales.getSalesCate()==1) {			
+			salesList=ad.selectOrderStat(sqlSession, sales);
+		}
+		if(sales.getSalesCate()==0) {
+			salesList=ad.selectComStat(sqlSession, sales);
+		}
+		
+		return salesList;
+	}
+
+	
 
 	
 	
