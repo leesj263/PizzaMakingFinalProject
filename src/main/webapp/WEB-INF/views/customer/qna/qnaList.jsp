@@ -161,7 +161,7 @@ $(function(){
 	$("#qnaList tr").click(function(){
 		var num=$(this).find("#boardNo").val();
 		console.log(num);
-		location.href="./qnaDetail.bo";
+		location.href="./qnaDetail.bo?num="+num;
 	});
 });
 
