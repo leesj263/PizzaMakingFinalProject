@@ -58,24 +58,24 @@ public class MypageController {
 		System.out.println("orderList : " + orderList);
 		
 		//주문 토핑 split(도우,소스,크러스트는 수량 없애기)
-		String[] arr;
+		String[] splitArr;
 		String arr1 = ""; //도우,소스,크러스트
 		String arr2 = ""; //나머지 토핑
 		
 		for(int i=0;i<orderList.size();i++) {
-			arr = orderList.get(i).getOrderMaterial().split("/");
+			splitArr = orderList.get(i).getOrderMaterial().split("/");
 			for(int j=0;j<3;j++) {
 				if(j == 2) {
-					arr1 += arr[j].substring(0, arr[j].lastIndexOf("1"));
+					arr1 += splitArr[j].substring(0, splitArr[j].lastIndexOf("1"));
 				}else {
-					arr1 += arr[j].substring(0, arr[j].lastIndexOf("1")) + " / ";
+					arr1 += splitArr[j].substring(0, splitArr[j].lastIndexOf("1")) + " / ";
 				}
 			}
-			for(int k=3;k<arr.length;k++) {
-				if(k == arr.length-1) {
-					arr2 += arr[k];
+			for(int k=3;k<splitArr.length;k++) {
+				if(k == splitArr.length-1) {
+					arr2 += splitArr[k];
 				}else {
-					arr2 += arr[k]+" / ";					
+					arr2 += splitArr[k]+" / ";					
 				}
 			}
 			
@@ -107,18 +107,18 @@ public class MypageController {
 		//사용쿠폰내역 카운트 조회
 		int result = mps.selectUseCouponList(memberNo, orderNo);
 		System.out.println("result : " + result);
-		
-		ArrayList<OrderDetail> orderDetailList;
-		
+
 		//model로 보낼것
 		ArrayList<OrderDetail> modelDetailList = new ArrayList<>();
 		
-		OrderDetail od = new OrderDetail();
-		String custom = "";
-		String custom2 = "";
-		int customPrice = 0;
-		int sidePrice = 0;
 		
+		String custom = ""; //토우,소스,엣지
+		String custom2 = ""; //나머지 토핑
+		int customPrice = 0; //커스텀만 합친 가격
+		int sidePrice = 0; //사이드만 합친 가격
+		
+		ArrayList<OrderDetail> orderDetailList;
+		OrderDetail od = new OrderDetail();
 		
 		if(result>0) {
 			//쿠폰 사용내역 O - 상세보기
@@ -142,13 +142,13 @@ public class MypageController {
 			od.setOrderIsize(orderDetailList.get(0).getOrderIsize());
 			
 			for(int i=0;i<orderDetailList.size();i++) {
-				if(orderDetailList.get(i).getMaterialCateg() <= 3) {
+				if(orderDetailList.get(i).getMaterialCateg() <= 3) { //도우,소스,엣지
 					custom += orderDetailList.get(i).getMaterialName() + " / ";
 					customPrice += orderDetailList.get(i).getMaterialSellprice() * orderDetailList.get(i).getOrderTcount();
-				}else if(orderDetailList.get(i).getMaterialCateg() == 4) {
+				}else if(orderDetailList.get(i).getMaterialCateg() == 4) { //토핑
 					custom2 += orderDetailList.get(i).getMaterialName() + " "+ orderDetailList.get(i).getOrderTcount() + " / ";
 					customPrice += orderDetailList.get(i).getMaterialSellprice() * orderDetailList.get(i).getOrderTcount();
-				}else if(orderDetailList.get(i).getMaterialCateg() == 5) {
+				}else if(orderDetailList.get(i).getMaterialCateg() == 5) { //사이드메뉴
 					OrderDetail side = new OrderDetail();
 					
 					side.setMaterialName(orderDetailList.get(i).getMaterialName());
@@ -166,13 +166,13 @@ public class MypageController {
 			System.out.println("custom : " + custom);
 			System.out.println("customPrice : " + customPrice);
 			
-			od.setOrderTcount2(orderDetailList.get(0).getOrderTcount2());
-			od.setMaterialName(custom);
-			od.setMaterialName2(custom2);
-			od.setMaterialSellprice(customPrice);
+			od.setOrderTcount2(orderDetailList.get(0).getOrderTcount2()); //완전체(도우,엣지,소스,토핑들 다 합친 것) 개수
+			od.setMaterialName(custom); //줄바꿈 처리하려고 따로 했음
+			od.setMaterialName2(custom2); //줄바꿈 처리하려고 따로 했음
+			od.setMaterialSellprice(customPrice); //완전체 '하나' 가격
 			
 			//총 가격(커스텀+사이드)
-			od.setPayPrice(customPrice+sidePrice);
+			od.setPayPrice((customPrice * orderDetailList.get(0).getOrderTcount2())+sidePrice);
 			
 			modelDetailList.add(od);
 			
