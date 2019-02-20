@@ -1,7 +1,6 @@
 package com.kh.pmfp.admin.model.dao;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import org.mybatis.spring.SqlSessionTemplate;
 
@@ -11,7 +10,6 @@ import com.kh.pmfp.admin.model.exception.AdminInsertException;
 import com.kh.pmfp.admin.model.exception.AdminSelectException;
 import com.kh.pmfp.admin.model.exception.AdminUpdateException;
 import com.kh.pmfp.admin.model.vo.AdminBoard;
-import com.kh.pmfp.admin.model.vo.AdminBoard2;
 import com.kh.pmfp.admin.model.vo.AdminCalculate;
 import com.kh.pmfp.admin.model.vo.AdminCalculateList;
 import com.kh.pmfp.admin.model.vo.AdminMaterial;
@@ -23,13 +21,13 @@ import com.kh.pmfp.admin.model.vo.AdminSales;
 import com.kh.pmfp.admin.model.vo.AdminSeller;
 import com.kh.pmfp.admin.model.vo.AdminSellerOrder;
 import com.kh.pmfp.admin.model.vo.AdminSellerOrderList;
-import com.kh.pmfp.admin.model.vo.AdminStatistics;
 import com.kh.pmfp.common.model.vo.PageInfo;
 
 public interface AdminDao {
 
 	//회원 페이징 -카운트 조회용
 	int selectUserCount(SqlSessionTemplate sqlSession, AdminMember member) throws AdminCountException;
+	
 	
 	//회원 목록 조회용
 	ArrayList<AdminMember> selectUserList(SqlSessionTemplate sqlSession, PageInfo pi) throws AdminSelectException;
@@ -214,8 +212,8 @@ public interface AdminDao {
 	//업체 주문 업데이트용 - 목록  & 상세보기
 	int sellerOrderApply(SqlSessionTemplate sqlSession, AdminSellerOrder order) throws AdminUpdateException;
 
-	//일간 통계 출력용 - 주문/업체주문
-	HashMap<String, AdminStatistics> selectDayStatistics(SqlSessionTemplate sqlSession, AdminSales sales) throws AdminSelectException;
+	//통계 출력용 - 주문/업체주문
+	ArrayList<AdminSales> selectStatistics(SqlSessionTemplate sqlSession, AdminSales sales) throws AdminSelectException;
 
 	
 

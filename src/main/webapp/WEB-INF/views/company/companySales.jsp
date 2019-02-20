@@ -79,9 +79,10 @@
 	$(function(){
 		var listSize = "${fn:length(list)}";
 		var salesList = "${list}";
-		//console.log(salesList);
+		console.log(salesList);
 		
 		var splitArr = salesList.split(',');
+		console.log(splitArr);
 		//console.log(typeof splitArr)
 		var categoryIndex = 3;
 		var plusIndex = 0;

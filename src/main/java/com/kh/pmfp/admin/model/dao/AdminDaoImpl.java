@@ -1,7 +1,6 @@
 package com.kh.pmfp.admin.model.dao;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -13,7 +12,6 @@ import com.kh.pmfp.admin.model.exception.AdminInsertException;
 import com.kh.pmfp.admin.model.exception.AdminSelectException;
 import com.kh.pmfp.admin.model.exception.AdminUpdateException;
 import com.kh.pmfp.admin.model.vo.AdminBoard;
-import com.kh.pmfp.admin.model.vo.AdminBoard2;
 import com.kh.pmfp.admin.model.vo.AdminCalculate;
 import com.kh.pmfp.admin.model.vo.AdminCalculateList;
 import com.kh.pmfp.admin.model.vo.AdminMaterial;
@@ -25,12 +23,12 @@ import com.kh.pmfp.admin.model.vo.AdminSales;
 import com.kh.pmfp.admin.model.vo.AdminSeller;
 import com.kh.pmfp.admin.model.vo.AdminSellerOrder;
 import com.kh.pmfp.admin.model.vo.AdminSellerOrderList;
-import com.kh.pmfp.admin.model.vo.AdminStatistics;
 import com.kh.pmfp.common.model.vo.PageInfo;
 
 @Repository
 public class AdminDaoImpl implements AdminDao {
 
+	
 	//회원 페이징 -카운트 조회용
 	@Override
 	public int selectUserCount(SqlSessionTemplate sqlSession, AdminMember member) throws AdminCountException {
@@ -792,18 +790,14 @@ public class AdminDaoImpl implements AdminDao {
 
 	//일간 통계 출력용 - 주문/업체주문
 	@Override
-	public HashMap<String, AdminStatistics> selectDayStatistics(SqlSessionTemplate sqlSession, AdminSales sales)
+	public ArrayList<AdminSales> selectStatistics(SqlSessionTemplate sqlSession, AdminSales sales)
 			throws AdminSelectException {
-		HashMap<String, AdminStatistics> dayStat=new HashMap<String, AdminStatistics>();
-		ArrayList<AdminStatistics> statList=new ArrayList<AdminStatistics>();
-		statList=(ArrayList)sqlSession.selectList("Admin.selectDayStatList", sales);
-		if(statList==null) {
+		ArrayList<AdminSales> salesList=new ArrayList<AdminSales> ();
+		salesList=(ArrayList)sqlSession.selectList("Admin.selectStatList", sales);
+		if(salesList==null) {
 			throw new AdminSelectException("일별 통계 조회 실패");
 		}
-		for(int i=0;i<statList.size();i++) {
-			dayStat.put(statList.get(i).getMonth(), statList.get(i));
-		}
-		return dayStat;
+		return salesList;
 	}
 
 

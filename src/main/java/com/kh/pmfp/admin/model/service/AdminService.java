@@ -1,7 +1,6 @@
 package com.kh.pmfp.admin.model.service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import com.kh.pmfp.admin.model.exception.AdminCountException;
 import com.kh.pmfp.admin.model.exception.AdminDeleteException;
@@ -20,7 +19,6 @@ import com.kh.pmfp.admin.model.vo.AdminSales;
 import com.kh.pmfp.admin.model.vo.AdminSeller;
 import com.kh.pmfp.admin.model.vo.AdminSellerOrder;
 import com.kh.pmfp.admin.model.vo.AdminSellerOrderList;
-import com.kh.pmfp.admin.model.vo.AdminStatistics;
 import com.kh.pmfp.common.model.vo.PageInfo;
 
 public interface AdminService {
@@ -187,9 +185,10 @@ public interface AdminService {
 	//업체 주문 업데이트용 
 	int sellerOrderApply(AdminSellerOrder order) throws AdminUpdateException, AdminCountException;
 
-	//일간 통계 출력용 - 주문/업체주문
-	HashMap<String, AdminStatistics> selectDayStatistics(AdminSales sales) throws AdminSelectException;
+	//통계 출력용 - 주문/업체주문
+	ArrayList<AdminSales> selectStatistics(AdminSales sales) throws AdminSelectException;
 
+	
 	
 
 	
