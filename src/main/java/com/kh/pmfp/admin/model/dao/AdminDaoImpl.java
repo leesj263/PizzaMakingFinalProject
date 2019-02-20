@@ -28,6 +28,7 @@ import com.kh.pmfp.common.model.vo.PageInfo;
 @Repository
 public class AdminDaoImpl implements AdminDao {
 
+	
 	//회원 페이징 -카운트 조회용
 	@Override
 	public int selectUserCount(SqlSessionTemplate sqlSession, AdminMember member) throws AdminCountException {

@@ -4,6 +4,7 @@ import java.sql.Date;
 
 public class AdminSales {
 	
+	
 	private int salesNo;
 	private int comNo;
 	private String comName;

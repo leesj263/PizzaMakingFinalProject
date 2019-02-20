@@ -189,6 +189,7 @@ public interface AdminService {
 	ArrayList<AdminSales> selectStatistics(AdminSales sales) throws AdminSelectException;
 
 	
+	
 
 	
 

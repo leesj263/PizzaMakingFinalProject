@@ -1,7 +1,5 @@
 package com.kh.pmfp.admin.model.vo;
 
-import java.sql.Date;
-
 public class AdminStatistics {
 
 	private String month;

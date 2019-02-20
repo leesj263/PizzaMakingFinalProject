@@ -28,6 +28,7 @@ public interface AdminDao {
 	//회원 페이징 -카운트 조회용
 	int selectUserCount(SqlSessionTemplate sqlSession, AdminMember member) throws AdminCountException;
 	
+	
 	//회원 목록 조회용
 	ArrayList<AdminMember> selectUserList(SqlSessionTemplate sqlSession, PageInfo pi) throws AdminSelectException;
 

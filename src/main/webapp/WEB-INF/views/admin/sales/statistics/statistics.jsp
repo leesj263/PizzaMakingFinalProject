@@ -181,6 +181,7 @@
 			times++;
 			lineDate.setDate((lineDate.getDate()+1));
 		}
+		
 		dayList[times]=format(endDate);
 		for(var i=0;i<expenseDateArr.length;i++){	
 			if(format(lineDate)==expenseDateArr[i]){

@@ -931,6 +931,7 @@ public class AdminController {
 		AdminSales sales=new AdminSales(1);
 		AdminSales expense=new AdminSales(0);
 		try {
+			
 			salesList=as.selectStatistics(sales);
 			expenseList=as.selectStatistics(expense);
 			request.setAttribute("salesList", salesList);

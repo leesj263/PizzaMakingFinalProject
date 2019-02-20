@@ -211,6 +211,7 @@
 		<result property="salesPrice" column="SALES_PRICE" />
 	</resultMap>
 	
+	
 	<resultMap type="com.kh.pmfp.admin.model.vo.AdminStatistics" id="adminStatisticsResultSet">
 		<id property="month" column="MONTH"/>
 		<result property="one" column="ONE"/>
