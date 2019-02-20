@@ -108,7 +108,7 @@
 
 	<select id="selectOrderList" resultMap="mypageOrderResultSet" parameterType="_int">
 		SELECT om.order_no,
-      			 LISTAGG(cast(m.material_name || ot.order_tcount as VARCHAR(100)),'/') within group(order by m.material_no) ORDER_MATERIAL,
+      			 LISTAGG(cast(m.material_name || ot.order_tcount as VARCHAR(100)),' / ') within group(order by m.material_no) ORDER_MATERIAL,
       			 om.order_method, com.com_name, om.order_payprice
 		FROM order_main OM 
 			JOIN company COM ON om.com_no=com.com_no 

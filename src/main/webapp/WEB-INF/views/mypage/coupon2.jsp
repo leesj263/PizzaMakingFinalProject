@@ -10,38 +10,10 @@
 <body>
 	
 	<%@ include file="/WEB-INF/views/main/menubar.jsp"%>
+	
+	<%@ include file="/WEB-INF/views/main/mypageMenubar.jsp"%>
 
-	<div class="ui small vertical menu" style="float: left; width:20%; margin-top: 70px; width:150px;">
-		<a class="item" href="mypage.mp">
-		    주문내역
-		  </a>
-		  <a class="item" href="myPageMyMenu.mp">
-		    나만의 메뉴
-		  </a>
-		  <a class="item" href="myPageDelAddr.mp">
-		    배송지 관리
-		  </a>
-		  <a class="item active" href="myPageCoupon.mp">
-		    쿠폰함
-		  </a>
-		  <a class="item" href="myPageShare.mp">
-		    내 작성글
-		  </a>
-		  <a class="item" href="myPageMemModify.t">
-		   회원정보 수정
-		  </a>
-		  <a class="item" href="myPageMemLeave.t">
-		    회원탈퇴
-		 </a>
-	</div>
-	
-	
-	
-	
 	<div style="float: left; width:80%; padding:20px; margin-top: 50px;">
-		
-		
-		
 		<div class="ui top attached tabular menu">
 		  <a class="item" data-tab="first" href="myPageCoupon.mp">사용 가능 쿠폰</a>
 		  <a class="active item" data-tab="second" href="myPageCouponTimeOut.mp">기간 만료 쿠폰</a>
@@ -88,7 +60,11 @@
 		  
 		  
 	</div>
-	
+	<script>
+		$(function(){
+			$("#list4").attr("class", "item active");
+		});
+	</script>
 	
 
 </body>

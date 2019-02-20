@@ -11,33 +11,7 @@
 	
 	<%@ include file="/WEB-INF/views/main/menubar.jsp"%>
 
-	<div class="ui small vertical menu" style="float: left; width:20%; margin-top: 70px; width:150px;">
-		<a class="item" href="mypage.mp">
-		    주문내역
-		  </a>
-		  <a class="item" href="myPageMyMenu.mp">
-		    나만의 메뉴
-		  </a>
-		  <a class="item active" href="myPageDelAddr.mp">
-		    배송지 관리
-		  </a>
-		  <a class="item" href="myPageCoupon.mp">
-		    쿠폰함
-		  </a>
-		  <a class="item" href="myPageShare.mp">
-		    내 작성글
-		  </a>
-		  <a class="item" href="myPageMemModify.t">
-		   회원정보 수정
-		  </a>
-		  <a class="item" href="myPageMemLeave.t">
-		    회원탈퇴
-		 </a>
- 
-	</div>
-	
-	
-	
+	<%@ include file="/WEB-INF/views/main/mypageMenubar.jsp"%>
 	
 	<div style="float: left; width:80%; padding:20px; margin-top: 50px;" align="center">
 		
@@ -68,6 +42,11 @@
 	</div>
 	
 	<script>
+		$(function(){
+			$("#list3").attr("class", "item active");
+		});
+	
+	
 		//배송지 추가 팝업 설정
 		var screenW = screen.availWidth; // 스크린 가로사이즈
 		var screenH = screen.availHeight; // 스크린 세로사이즈
@@ -82,15 +61,6 @@
 			 window.open('myPageDelPopup.mp','',',width='+ popW +',height='+ popH +',top='+ posT +',left='+ posL +',resizable=no,scrollbars=no');
 		
 		});
-		
-		
-		
-		
-		
-		
-		
-		
-		
 		
 		
 		

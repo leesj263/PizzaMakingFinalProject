@@ -7,12 +7,18 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<style>
+		td:hover{
+		cursor: pointer;
+	}
+	
+</style>
 </head>
 <body>
 	
 	<%@ include file="/WEB-INF/views/main/menubar.jsp"%>
-
-	<div class="ui small vertical menu" style="float: left; width:20%; margin-top: 70px; width:150px;">
+	<%@ include file="/WEB-INF/views/main/mypageMenubar.jsp"%>
+	<!-- <div class="ui small vertical menu" style="float: left; width:20%; margin-top: 70px; width:150px;">
 		<a class="item active" href="mypage.mp">
 		    주문내역
 		  </a>
@@ -35,7 +41,7 @@
 		    회원탈퇴
 		 </a>
  
-	</div>
+	</div> -->
 	
 	
 	
@@ -80,6 +86,10 @@
 	
 	
 	<script>
+		$(function(){
+			$("#list1").attr("class", "item active");
+		});
+	
 		$("td").click(function(){
 			var orderNo = $(this).parent().children("td").eq(0).text();
 
