@@ -40,7 +40,7 @@ div.radio label:hover {
 	min-height: 79px;
 }
 
-.delivery-table tbody tr td:last-child {
+.delivery-table tbody tr td:last-child:not(:first-child) {
 	text-align: right;
 }
 
@@ -214,7 +214,7 @@ div.radio label:hover {
 					<h2>도착예정시간</h2>
 					<div class="ui divider"></div>
 					
-					<div class="two blue ui attached buttons" style="margin-bottom: 50px;">
+					<div class="two inverted orange ui attached buttons" style="margin-bottom: 50px;">
 						<button class="ui button active reservationBtn" onclick="noReservation(this);">바로주문</button>
 						<button class="ui button reservationBtn" onclick="reservation(this);">당일예약</button>
 					</div>
@@ -391,6 +391,8 @@ div.radio label:hover {
 				$("#orderMethod").val(2);
 				$("#oaTopLeft").append($("<h3>").text("매장"));
 				$("#oaTopRight").append($("<button class='ui button brown' onclick='comPop();'>").text("매장 선택"));
+				$("#comTable").empty();
+				$("#comTable").append($("<tr>").append($("<td>")));
 				$("#deliveryNo").val("");
 				$("#comNo").val("");
 				$("#addressTable").hide();
@@ -434,6 +436,8 @@ div.radio label:hover {
 				$("#oaTopRight").append($("<button class='ui button brown' onclick='comPop();'>").text("매장 선택"));
 				$(".addrSel").removeClass("active").removeClass("black").removeClass("grey");
 				$(".addrSel").addClass("grey");
+				$("#comTable").empty();
+				$("#comTable").append($("<tr>").append($("<td>")));
 				$("#deliveryNo").val("");
 				$("#comNo").val("");
 				$("#addressTable").hide();
@@ -479,8 +483,8 @@ div.radio label:hover {
 			var popW = 550;  //팝업 가로사이즈
 			var popH = 240;  //팝업 세로사이즈
 			
-			var posL=( screenW-popW ) / 2;   // 띄울창의 가로 포지션 
-			var posT=( screenH-popH ) / 2;   // 띄울창의 세로 포지션 
+			var posL=( screenW-popW ) / 2;   // 띄울창의 가로 포지션
+			var posT=( screenH-popH ) / 2;   // 띄울창의 세로 포지션
 		
 			window.open('myPageDelPopup.cor?loginCateg='+loginCateg,'',',width='+ popW +',height='+ popH +',top='+ posT +',left='+ posL +',resizable=no,scrollbars=no');
 		}
@@ -493,10 +497,22 @@ div.radio label:hover {
 			var popW = 800;  //팝업 가로사이즈
 			var popH = 600;  //팝업 세로사이즈
 			
-			var posL=( screenW-popW ) / 2;   // 띄울창의 가로 포지션 
-			var posT=( screenH-popH ) / 2;   // 띄울창의 세로 포지션 
+			var posL=( screenW-popW ) / 2;   // 띄울창의 가로 포지션
+			var posT=( screenH-popH ) / 2;   // 띄울창의 세로 포지션
 		
 			window.open('comPop.cor','',',width='+ popW +',height='+ popH +',top='+ posT +',left='+ posL +',resizable=no,scrollbars=no');
+		}
+		
+		//매장 선택
+		function selectCom(comNo, comName, comTel, comLocation){
+			$("#comNo").val(comNo);
+			var $table = $("#comTable tbody");
+			$table.empty();
+			
+			var $tr = $("<tr>");
+			var $td1 = $("<td>").html(comLocation + "<br><b>" + comName + " (" + comTel + ")" + "</b>");
+			$tr.append($td1);
+			$table.append($tr);
 		}
 		
 		var mateMap;
@@ -785,11 +801,7 @@ div.radio label:hover {
 			var orderMethod = $("#orderMethod").val();
 			var deliveryNo = $("#deliveryNo").val();
 			var comNo = $("#comNo").val();
-			var issueNo;
-			
-			if($("#issueNo").val() != ""){
-				issueNo = $("#issueNo").val();
-			}
+			var issueNo = $("#issueNo").val();
 			
 			var regExp1 = /\d\d\d-\d\d\d-\d\d\d\d/;
 			var regExp2 = /\d\d\d-\d\d\d\d-\d\d\d\d/;
@@ -829,7 +841,7 @@ div.radio label:hover {
 			
 			
 			//예약시간
-			var orderReservetime;
+			var orderReservetime = "";
 			if($("#reservationCondition").val() == 2){
 				if($("#reserveHours").val() != null && $("#reserveMinutes").val() != null){
 					orderReservetime = $("#reserveHours").val() + ":" + $("#reserveMinutes").val();

@@ -3,10 +3,12 @@ package com.kh.pmfp.customer.model.dao;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.kh.pmfp.common.model.vo.Member;
+import com.kh.pmfp.common.model.vo.PageInfo;
 import com.kh.pmfp.customer.model.exception.OrderException;
 import com.kh.pmfp.customer.model.vo.BasicMenu;
 import com.kh.pmfp.customer.model.vo.BasicTopping;
@@ -148,6 +150,34 @@ public class OrderDaoImpl implements OrderDao {
 	@Override
 	public int selectDeliNo(SqlSessionTemplate sqlSession) {
 		return sqlSession.selectOne("CustomerOrder.selectDeliNo");
+	}
+
+	//업체 리스트 카운트
+	@Override
+	public int getSearchResultListCount(SqlSessionTemplate sqlSession, String search) {
+		return sqlSession.selectOne("CustomerOrder.getSearchResultListCount", search);
+	}
+
+	//업체 검색 조회
+	@Override
+	public ArrayList<DeliveryCompany> selectSearchResultList(SqlSessionTemplate sqlSession, String search,
+			PageInfo pi) throws OrderException {
+		ArrayList<DeliveryCompany> list = null;
+		
+		int offset = (pi.getCurrentPage() - 1) * pi.getLimit();
+		RowBounds rb = new RowBounds(offset, pi.getLimit());
+		
+		list = (ArrayList)sqlSession.selectList("CustomerOrder.selectSearchResultList", search, rb);
+		
+		if(list == null) throw new OrderException("업체 목록 가져오기 오류 발생!");
+		
+		return list;
+	}
+
+	//업체 상세 정보
+	@Override
+	public DeliveryCompany getComDetail(SqlSessionTemplate sqlSession, String comNo) {
+		return sqlSession.selectOne("CustomerOrder.getComDetail", comNo);
 	}
 
 

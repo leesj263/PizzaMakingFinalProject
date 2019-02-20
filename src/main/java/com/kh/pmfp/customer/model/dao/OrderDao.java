@@ -6,6 +6,7 @@ import java.util.HashMap;
 import org.mybatis.spring.SqlSessionTemplate;
 
 import com.kh.pmfp.common.model.vo.Member;
+import com.kh.pmfp.common.model.vo.PageInfo;
 import com.kh.pmfp.customer.model.exception.OrderException;
 import com.kh.pmfp.customer.model.vo.BasicMenu;
 import com.kh.pmfp.customer.model.vo.BasicTopping;
@@ -57,5 +58,11 @@ public interface OrderDao {
 	DeliveryCompany selectComTel(SqlSessionTemplate sqlSession, int finalDeliveryLoc);
 
 	int selectDeliNo(SqlSessionTemplate sqlSession);
+
+	int getSearchResultListCount(SqlSessionTemplate sqlSession, String search);
+
+	ArrayList<DeliveryCompany> selectSearchResultList(SqlSessionTemplate sqlSession, String search, PageInfo pi) throws OrderException;
+
+	DeliveryCompany getComDetail(SqlSessionTemplate sqlSession, String comNo);
 
 }

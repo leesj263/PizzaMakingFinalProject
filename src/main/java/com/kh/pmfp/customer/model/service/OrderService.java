@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.kh.pmfp.common.model.vo.Member;
+import com.kh.pmfp.common.model.vo.PageInfo;
 import com.kh.pmfp.customer.model.exception.OrderException;
 import com.kh.pmfp.customer.model.vo.BasicMenu;
 import com.kh.pmfp.customer.model.vo.BasicTopping;
@@ -43,4 +44,10 @@ public interface OrderService {
 	DeliveryCompany selectComTel(int finalDeliveryLoc);
 
 	int selectDeliNo();
+
+	int getSearchResultListCount(String search);
+
+	ArrayList<DeliveryCompany> selectSearchResultList(String search, PageInfo pi) throws OrderException;
+
+	DeliveryCompany getComDetail(String comNo);
 }
