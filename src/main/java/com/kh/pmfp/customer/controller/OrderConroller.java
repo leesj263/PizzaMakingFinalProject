@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.kh.pmfp.common.model.vo.Member;
+import com.kh.pmfp.common.model.vo.PageInfo;
+import com.kh.pmfp.common.model.vo.Pagination3;
 import com.kh.pmfp.customer.model.exception.OrderException;
 import com.kh.pmfp.customer.model.service.OrderService;
 import com.kh.pmfp.customer.model.vo.BasicMenu;
@@ -476,8 +478,35 @@ public class OrderConroller {
 	
 	//매장 선택 팝업
 	@RequestMapping(value="/comPop.cor")
-	public String comPop() {
-		return "customer/order/companyPopup";
+	public String comPop(Model model, @RequestParam(required=false) String currentPage, @RequestParam(required=false) String search) {
+		int currPage = 1;
+		if(currentPage != null) currPage = Integer.parseInt(currentPage);
+		if(search == null) search = "";
+		
+		int listCount = os.getSearchResultListCount(search);
+		
+		PageInfo pi = Pagination3.getPageInfo(currPage, listCount);
+		try {
+			ArrayList<DeliveryCompany> list = os.selectSearchResultList(search, pi);
+			
+			//System.out.println(list);
+			
+			model.addAttribute("list", list);
+			model.addAttribute("pi", pi);
+			model.addAttribute("search", search);
+			
+			return "customer/order/companyPopup";
+		} catch (OrderException e) {
+			e.printStackTrace();
+			
+			return "customer/order/companyPopup";
+		}
+	}
+	
+	//업체 상세 정보
+	@RequestMapping(value="/comDetail.cor")
+	public @ResponseBody DeliveryCompany getComDetail(@RequestParam String comNo) {
+		return os.getComDetail(comNo);
 	}
 	
 }

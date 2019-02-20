@@ -174,6 +174,7 @@
 		AND M.MATERIAL_CATEG = 5
 	</select>
 	
+	<!-- 회원 배송지 정보 가져오기 -->
 	<select id="selectDeliveryCompanyList" resultMap="deliveryCompanyResultSet" parameterType="_int">
 		SELECT DE.DELIVERY_NO, DE.MEMBER_NO, DE.COM_NO, DE.DELIVERY_ADDRESS, DE.DELIVERY_NAME, DE.DELIVERY_STATUS,
 			CO.COM_NAME, CO.COM_ADDRESS, CO.COM_TEL, CO.COM_LISENSENO, CO.COM_STATUS, CO.COM_DATE, CO.COM_SALESTIME,
@@ -184,6 +185,7 @@
 		AND DE.MEMBER_NO = #{ memberNo }
 	</select>
 	
+	<!-- 최근의 주문 정보에서 수령자 정보 가져오기 -->
 	<select id="selectRecentReceiver" resultMap="orderMainResultMap" parameterType="_int">
 		SELECT ORDER_RECEIVER, ORDER_RTEL
 		FROM ORDER_MAIN
@@ -193,6 +195,7 @@
 		    WHERE MEMBER_NO = #{ memberNo })
 	</select>
 	
+	<!-- 쿠폰 목록 가져오기 -->
 	<select id="selectCouponList" resultMap="couponResultMap">
 		SELECT CP.COUPON_NO, CP.COUPON_NAME, CP.COUPON_CATEG, CP.COUPON_CONDITION, CP.COUPON_CDATE, CP.COUPON_EDATE, CP.COUPON_RDISCOUNT, CP.COUPON_PDISCOUNT,
 		    CI.ISSUE_NO, CI.MEMBER_NO, CI.ISSUE_CDATE, CI.ISSUE_EDATE, CI.ORDER_NO
@@ -203,20 +206,48 @@
 		AND CP.COUPON_CONDITION <![CDATA[ <= ]]> #{ totalPrice }
 	</select>
 	
+	<!-- 회원 배송지 정보 저장하기 -->
 	<select id="insertUserDelAddr" parameterType="com.kh.pmfp.mypage.model.vo.DelList">
 		INSERT INTO DELIVERY VALUES(SEQ_DNO.NEXTVAL, #{memberNo}, #{comNo},#{delAddr},#{delName}, default)
 	</select>
 	
+	<!-- 비회원 deliNo 가져오기 -->
 	<select id="selectDeliNo" resultType="_int">
 		SELECT SEQ_DNO.NEXTVAL FROM DUAL
 	</select>
 	
+	<!-- 비회원 배송지 정보 저장하기 -->
 	<select id="insertNoUserDelAddr" parameterType="com.kh.pmfp.mypage.model.vo.DelList">
 		INSERT INTO DELIVERY VALUES(#{delNo}, 0, #{comNo},#{delAddr},#{delName}, default)
 	</select>
 	
+	<!-- 비회원 배송지 업체정보 가져오기 -->
 	<select id="selectComTel" resultMap="deliveryCompanyResultSet" parameterType="_int">
 		SELECT * FROM COMPANY WHERE COM_NO = #{ finalDeliveryLoc }
+	</select>
+	
+	<!-- 업체 리스트 카운트 -->
+	<select id="getSearchResultListCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM COMPANY
+		WHERE COM_STATUS = 'Y'
+		AND (COM_NAME LIKE '%' || #{search} || '%' OR COM_ADDRESS LIKE '%' || #{search} || '%')
+	</select>
+	
+	<!-- 업체 목록 가져오기 -->
+	<select id="selectSearchResultList" resultMap="deliveryCompanyResultSet">
+		SELECT *
+		FROM COMPANY
+		WHERE COM_STATUS = 'Y'
+		AND (COM_NAME LIKE '%' || #{search} || '%' OR COM_ADDRESS LIKE '%' || #{search} || '%')
+	</select>
+	
+	<!-- 업체 상세 정보 -->
+	<select id="getComDetail" resultMap="deliveryCompanyResultSet">
+		SELECT *
+		FROM COMPANY
+		WHERE COM_STATUS = 'Y'
+		AND COM_NO = #{comNo}
 	</select>
 	
 </mapper>

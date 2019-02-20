@@ -7,6 +7,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.kh.pmfp.common.model.vo.PageInfo;
 import com.kh.pmfp.customer.model.dao.OrderDao;
 import com.kh.pmfp.customer.model.exception.OrderException;
 import com.kh.pmfp.customer.model.vo.BasicMenu;
@@ -122,5 +123,23 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public int selectDeliNo() {
 		return od.selectDeliNo(sqlSession);
+	}
+
+	//업체 리스트 카운트
+	@Override
+	public int getSearchResultListCount(String search) {
+		return od.getSearchResultListCount(sqlSession, search);
+	}
+
+	//업체 검색 조회
+	@Override
+	public ArrayList<DeliveryCompany> selectSearchResultList(String search, PageInfo pi) throws OrderException {
+		return od.selectSearchResultList(sqlSession, search, pi);
+	}
+
+	//매장 상세 정보
+	@Override
+	public DeliveryCompany getComDetail(String comNo) {
+		return od.getComDetail(sqlSession, comNo);
 	}
 }
