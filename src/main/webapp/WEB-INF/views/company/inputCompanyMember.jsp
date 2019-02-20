@@ -92,7 +92,7 @@
                                     <small class="form-text text-muted">ex. 2019-01-27</small>
                                 </div>
                                 <button id = "employeeAddBtn" type="button" class="btn btn-primary" onclick = "inputEmployeeInfo()"><i class="fa fa-sign-in"></i>&nbsp; 입력</button>
-                       			<button id = "backBtn" type="button" class="btn btn-secondary" onclick = "location.href = 'movePage.com?movePage=CompanyEmployeeList'"><i class="fa fa-mail-reply"></i>&nbsp; 취소</button>
+                       			<button id = "backBtn" type="button" class="btn btn-secondary" onclick = "location.href = 'selectEmployeeList.com?comNo=${sessionScope.loginUser.comNo }'"><i class="fa fa-mail-reply"></i>&nbsp; 취소</button>
                             </div>
                         </div>
                     </div>

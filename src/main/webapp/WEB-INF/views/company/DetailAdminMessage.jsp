@@ -77,7 +77,7 @@
 
 			</div>
 			<button id="backBtn" type="button" class="btn btn-primary"
-				onclick="location.href = 'goMain.com'">
+				onclick="location.href='goMain.com?memberNo=${sessionScope.loginUser.memberNo }'">
 				<i class="fa fa-mail-forward"></i>&nbsp; 돌아가기
 			</button>
 		</div>
