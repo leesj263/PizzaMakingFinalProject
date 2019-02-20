@@ -94,11 +94,6 @@ div.radio label:hover {
 <body>
 	<%@ include file="/WEB-INF/views/main/menubar.jsp"%>
 	
-	<%-- <c:if test="${empty sessionScope.loginUser and empty sessionScope.noLoginUser}">
-		<c:set var="msg" value="잘못된 접근입니다." scope="page"/>
-		<jsp:forward page="views/common/errorPage.jsp"/>
-	</c:if> --%>
-	
 	<div class="content-box">
 
 		<h1 align="center">주문서 작성</h1>
@@ -129,6 +124,7 @@ div.radio label:hover {
 			<table class="ui very basic table delivery-table" id="addressTable">
 				<tbody>
 					<!-- 주소 -->
+					<tr><td></td></tr>
 				</tbody>
 			</table>
 			
@@ -314,42 +310,6 @@ div.radio label:hover {
 		
 	</div>
 
-	<!-- 주소 모달 -->
-	<div class="ui longer modal" id="addressModal">
-		<div class="header">할인 선택</div>
-		<div class="content">
-			<table class="ui fixed table">
-				<thead>
-					<tr>
-						<th>쿠폰명</th>
-						<th>쿠폰설명</th>
-						<th>할인</th>
-						<th>유효기간</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-
-		<div class="actions">
-			<div class="ui positive approve button">선택</div>
-			<div class="ui negative cancel button">취소</div>
-		</div>
-	</div>
-
 	<!-- 쿠폰 모달 -->
 	<div class="ui longer modal" id="couponModal">
 		<div class="header">할인 선택</div>
@@ -395,7 +355,7 @@ div.radio label:hover {
 				$("#orderMethod").val(1);
 				$("#oaTopLeft").append($("<h3>").text("배달주소"));
 				$("#oaTopRight").append(
-						$("<button class='ui button brown'>").text("배달주소 등록"));
+						$("<button class='ui button brown' onclick='deliPop(1);'>").text("배달주소 등록"));
 				
 				$.ajax({
 					url: "getDeliveryInfo.cor",
@@ -430,7 +390,7 @@ div.radio label:hover {
 			} else {
 				$("#orderMethod").val(2);
 				$("#oaTopLeft").append($("<h3>").text("매장"));
-				$("#oaTopRight").append($("<button class='ui button brown'>").text("매장 선택"));
+				$("#oaTopRight").append($("<button class='ui button brown' onclick='comPop();'>").text("매장 선택"));
 				$("#deliveryNo").val("");
 				$("#comNo").val("");
 				$("#addressTable").hide();
@@ -439,16 +399,18 @@ div.radio label:hover {
 			
 		}
 	
+		
+		
 	</script>
 	</c:if>
 	
 	<!-- 비로그인 유저 -->
-	<c:if test="${!empty sessionScope.noLoginUser}">
+	<c:if test="${!empty sessionScope.noUserLogin}">
 	<script>
 		//비로그인 유저 정보
 		$(function(){
-			$("#orderMemberName").val("${sessionScope.noLoginUser.memberName}");
-			$("#orderMemberPhone").val("${sessionScope.noLoginUser.memberPhone}");
+			$("#orderMemberName").val("${sessionScope.noUserLogin.memberName}");
+			$("#orderMemberPhone").val("${sessionScope.noUserLogin.memberPhone}");
 		});
 	
 		//주문방법 선택
@@ -459,44 +421,42 @@ div.radio label:hover {
 				$("#orderMethod").val(1);
 				$("#oaTopLeft").append($("<h3>").text("배달주소"));
 				$("#oaTopRight").append(
-						$("<button class='ui button brown'>").text("배달주소 등록"));
+						$("<button class='ui button brown' onclick='deliPop(2);'>").text("배달주소 등록"));
 				
-				$.ajax({
-					url: "getDeliveryInfo.cor",
-					type: "POST",
-					success: function(data){
-						//console.log(data);
-						
-						var $table = $("#addressTable tbody");
-						$table.empty();
-						
-						for(var i=0; i<data.length; i++){
-							var $tr = $("<tr>");
-							var $td1 = $("<td>").html(data[i].deliveryAddress + "<br><b>" + data[i].comName + " (" + data[i].comTel + ")" + "</b>");
-							var $td2 = $("<td>").append($("<button class='ui grey button addrSel' onclick='addressSelect(this,"+data[i].deliveryNo+","+data[i].comNo+")'>").text("선택"));
-							$tr.append($td1).append($td2);
-							$table.append($tr);
-						}
-						
-						$("#deliveryNo").val("");
-						$("#comNo").val("");
-						$("#comTable").hide();
-						$("#addressTable").show();
-						
-					}, error: function(data){
-						console.log("배송지 정보 가져오기 실패!");
-					}
-				});
+				$("#deliveryNo").val("");
+				$("#comNo").val("");
+				$("#comTable").hide();
+				$("#addressTable").show();
+				
 			} else {
 				$("#orderMethod").val(2);
 				$("#oaTopLeft").append($("<h3>").text("매장"));
-				$("#oaTopRight").append($("<button class='ui button brown'>").text("매장 등록"));
+				$("#oaTopRight").append($("<button class='ui button brown' onclick='comPop();'>").text("매장 선택"));
+				$(".addrSel").removeClass("active").removeClass("black").removeClass("grey");
+				$(".addrSel").addClass("grey");
 				$("#deliveryNo").val("");
 				$("#comNo").val("");
 				$("#addressTable").hide();
 				$("#comTable").show();
 			}
 			
+		}
+		
+		function noUserAddress(deliveryAddress, comName, comTel, comNo, deliveryNo){
+			var $table = $("#addressTable tbody");
+			$table.empty();
+			
+			var $tr = $("<tr>");
+			var $td1 = $("<td>").html(deliveryAddress + "<br><b>" + comName + " (" + comTel + ")" + "</b>");
+			var $td2 = $("<td>").append($("<button class='ui grey button addrSel' onclick='addressSelect(this,"+deliveryNo+","+comNo+")'>").text("선택"));
+			$tr.append($td1).append($td2);
+			$table.append($tr);
+			
+			
+			$("#deliveryNo").val("");
+			$("#comNo").val("");
+			$("#comTable").hide();
+			$("#addressTable").show();
 		}
 	</script>
 	</c:if>
@@ -509,6 +469,34 @@ div.radio label:hover {
 			$("#deliveryNo").val(deliveryNo);
 			$("#comNo").val(comNo);
 			$(btn).removeClass("grey").addClass("black active");
+		}
+		
+		//배송지 추가 팝업 설정
+		function deliPop(loginCateg){
+			var screenW = screen.availWidth; // 스크린 가로사이즈
+			var screenH = screen.availHeight; // 스크린 세로사이즈
+			
+			var popW = 550;  //팝업 가로사이즈
+			var popH = 240;  //팝업 세로사이즈
+			
+			var posL=( screenW-popW ) / 2;   // 띄울창의 가로 포지션 
+			var posT=( screenH-popH ) / 2;   // 띄울창의 세로 포지션 
+		
+			window.open('myPageDelPopup.cor?loginCateg='+loginCateg,'',',width='+ popW +',height='+ popH +',top='+ posT +',left='+ posL +',resizable=no,scrollbars=no');
+		}
+		
+		//매장 선택 팝업
+		function comPop(){
+			var screenW = screen.availWidth; // 스크린 가로사이즈
+			var screenH = screen.availHeight; // 스크린 세로사이즈
+			
+			var popW = 800;  //팝업 가로사이즈
+			var popH = 600;  //팝업 세로사이즈
+			
+			var posL=( screenW-popW ) / 2;   // 띄울창의 가로 포지션 
+			var posT=( screenH-popH ) / 2;   // 띄울창의 세로 포지션 
+		
+			window.open('comPop.cor','',',width='+ popW +',height='+ popH +',top='+ posT +',left='+ posL +',resizable=no,scrollbars=no');
 		}
 		
 		var mateMap;
@@ -582,7 +570,7 @@ div.radio label:hover {
 						$tr.append($("<td>"));
 						$tr.append($("<td>").html(cartList[cart].pizzaName));
 						$tr.append($("<td>").append($("<span class='amount'>").text(cartList[cart].amount)));
-						$tr.append($("<td>").text(numComma(mateMap[cartList[cart].toppings[0].topping].materialSellprice)));
+						$tr.append($("<td>").text(numComma(mateMap[cartList[cart].toppings[0].topping].materialSellprice*cartList[cart].amount)));
 						
 						$cartTable.append($tr);
 					}

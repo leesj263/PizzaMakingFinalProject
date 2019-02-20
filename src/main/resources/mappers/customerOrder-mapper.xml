@@ -136,8 +136,8 @@
 		SELECT SEQ_MYPZNO.NEXTVAL FROM DUAL
 	</select>
 	<insert id="insertRecipeOrderItem" parameterType="com.kh.pmfp.customer.model.vo.OrderItem">
-		INSERT INTO ORDER_ITEM(ORDER_INO,ORDER_NO,ORDER_ICATEG,ORDER_ISIZE)
-	    VALUES(#{orderIno},0,0,#{orderIsize})
+		INSERT INTO ORDER_ITEM(ORDER_INO,ORDER_NO,ORDER_ICATEG,ORDER_ISIZE,ORDER_TCOUNT)
+	    VALUES(#{orderIno},0,0,#{orderIsize},1)
 	</insert>
 	<insert id="insertRecipeOrderTopping" parameterType="com.kh.pmfp.customer.model.vo.OrderTopping">
 		INSERT INTO ORDER_TOPPING(ORDER_INO,MATERIAL_NO,ORDER_TCOUNT)
@@ -149,7 +149,7 @@
 	</insert>
 	<insert id="insertRecipeImage" parameterType="com.kh.pmfp.customer.model.vo.Image">
 		INSERT INTO IMAGE(IMG_NO,IMG_CATEG,IMG_ORIGINNAME,IMG_CHANGENAME,IMG_FILEPATH,IMG_UPLOADDATE,IMG_STATUS,BOARD_NO,MATERIAL_NO,MYPIZZA_NO,EVENT_NO,BASIC_NO)
-    	VALUES(SEQ_IMGNO.NEXTVAL,4,#{imgOriginname},#{imgChangename},#{imgFilepath},SYSDATE,'Y',null,null,#{mypizzaNo},null,null)
+    	VALUES(SEQ_IMGNO.NEXTVAL,3,#{imgOriginname},#{imgChangename},#{imgFilepath},SYSDATE,'Y',null,null,#{mypizzaNo},null,null)
 	</insert>
 	
 	<!-- 내 레시피 목록 가져오기 -->
@@ -203,5 +203,20 @@
 		AND CP.COUPON_CONDITION <![CDATA[ <= ]]> #{ totalPrice }
 	</select>
 	
+	<select id="insertUserDelAddr" parameterType="com.kh.pmfp.mypage.model.vo.DelList">
+		INSERT INTO DELIVERY VALUES(SEQ_DNO.NEXTVAL, #{memberNo}, #{comNo},#{delAddr},#{delName}, default)
+	</select>
+	
+	<select id="selectDeliNo" resultType="_int">
+		SELECT SEQ_DNO.NEXTVAL FROM DUAL
+	</select>
+	
+	<select id="insertNoUserDelAddr" parameterType="com.kh.pmfp.mypage.model.vo.DelList">
+		INSERT INTO DELIVERY VALUES(#{delNo}, 0, #{comNo},#{delAddr},#{delName}, default)
+	</select>
+	
+	<select id="selectComTel" resultMap="deliveryCompanyResultSet" parameterType="_int">
+		SELECT * FROM COMPANY WHERE COM_NO = #{ finalDeliveryLoc }
+	</select>
 	
 </mapper>

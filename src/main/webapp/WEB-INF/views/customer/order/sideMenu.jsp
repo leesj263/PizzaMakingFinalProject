@@ -61,12 +61,12 @@
 		</div>
 		
 		<div class="ui container center aligned">
-			<c:if test="${ empty sessionScope.loginUser and empty sessionScope.noLoginUser }">
+			<c:if test="${ empty sessionScope.loginUser and empty sessionScope.noUserLogin }">
 				<button class="ui blue button" style="width: 150px;" onclick="alert('로그인이 필요합니다.'); $('html,body').scrollTop(0); login();">
 					주문하기
 				</button>
 			</c:if>
-			<c:if test="${ !empty sessionScope.loginUser or empty !sessionScope.noLoginUser }">
+			<c:if test="${ !empty sessionScope.loginUser or empty !sessionScope.noUserLogin }">
 				<button class="ui blue button" style="width: 150px;" onclick="orderBtn();">
 					주문하기
 				</button>
@@ -189,7 +189,7 @@
 						$tr.append($("<td>").append($("<span class='amount'>").text(cartList[cart].amount))
 								.append($("<div class='mini-button' onclick='cartAmountPlus("+cart+", this);'>").text("＋"))
 								.append($("<div class='mini-button' onclick='cartAmountMinus("+cart+", this);'>").text("－")));
-						$tr.append($("<td>").text(numComma(mateMap[cartList[cart].toppings[0].topping].materialSellprice)));
+						$tr.append($("<td>").text(numComma(mateMap[cartList[cart].toppings[0].topping].materialSellprice*cartList[cart].amount)));
 						
 						$cartTable.append($tr);
 					}

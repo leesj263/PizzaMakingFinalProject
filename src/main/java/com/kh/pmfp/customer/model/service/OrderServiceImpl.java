@@ -100,4 +100,27 @@ public class OrderServiceImpl implements OrderService {
 	public ArrayList<Coupon> selectCouponList(HashMap<String, Integer> condi) throws OrderException {
 		return od.selectCouponList(sqlSession, condi);
 	}
+
+	//배송지 추가
+	@Override
+	public int insertUserDelAddr(int memberNo, int finalDeliveryLoc, String addr, String deliName) {
+		return od.insertUserDelAddr(sqlSession, memberNo, finalDeliveryLoc, addr, deliName);
+	}
+
+	//비회원 배송지 추가
+	@Override
+	public int insertNoUserDelAddr(int deliNo, int memberNo, int finalDeliveryLoc, String addr, String deliName) {
+		return od.insertNoUserDelAddr(sqlSession, deliNo, memberNo, finalDeliveryLoc, addr, deliName);
+	}
+
+	//업체 정보 가져오기
+	@Override
+	public DeliveryCompany selectComTel(int finalDeliveryLoc) {
+		return od.selectComTel(sqlSession, finalDeliveryLoc);
+	}
+	//deliNo 가져오기
+	@Override
+	public int selectDeliNo() {
+		return od.selectDeliNo(sqlSession);
+	}
 }

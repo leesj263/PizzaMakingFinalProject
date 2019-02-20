@@ -18,6 +18,7 @@ import com.kh.pmfp.customer.model.vo.MyPizza;
 import com.kh.pmfp.customer.model.vo.OrderItem;
 import com.kh.pmfp.customer.model.vo.OrderMain;
 import com.kh.pmfp.customer.model.vo.OrderTopping;
+import com.kh.pmfp.mypage.model.vo.DelList;
 
 @Repository
 public class OrderDaoImpl implements OrderDao {
@@ -118,6 +119,35 @@ public class OrderDaoImpl implements OrderDao {
 		ArrayList<Coupon> cpList = (ArrayList)sqlSession.selectList("CustomerOrder.selectCouponList", condi);
 		if(cpList == null) throw new OrderException("쿠폰 목록 가져오기 오류 발생!");
 		return cpList;
+	}
+
+	//배송지 추가
+	@Override
+	public int insertUserDelAddr(SqlSessionTemplate sqlSession, int memberNo, int finalDeliveryLoc, String addr,
+			String deliName) {
+		DelList del = new DelList(memberNo, finalDeliveryLoc, addr, deliName);
+		return sqlSession.insert("CustomerOrder.insertUserDelAddr", del);
+	}
+
+	//비회원 배송지 추가
+	@Override
+	public int insertNoUserDelAddr(SqlSessionTemplate sqlSession, int deliNo, int memberNo, int finalDeliveryLoc, String addr,
+			String deliName) {
+		DelList del = new DelList(memberNo, finalDeliveryLoc, addr, deliName);
+		del.setDelNo(deliNo);
+		return sqlSession.insert("CustomerOrder.insertNoUserDelAddr", del);
+	}
+
+	//업체 정보 가져오기
+	@Override
+	public DeliveryCompany selectComTel(SqlSessionTemplate sqlSession, int finalDeliveryLoc) {
+		return sqlSession.selectOne("CustomerOrder.selectComTel", finalDeliveryLoc);
+	}
+
+	//deliNo 가져오기
+	@Override
+	public int selectDeliNo(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("CustomerOrder.selectDeliNo");
 	}
 
 

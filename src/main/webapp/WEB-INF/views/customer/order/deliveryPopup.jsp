@@ -57,7 +57,7 @@
 </div>
 
 <br><br>
-<button class="fluid ui button" onclick="addAddr()">등록하기</button>
+<button class="fluid ui button" onclick="addAddr(${ param.loginCateg })">등록하기</button>
 
 
 <!-- <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script> -->
@@ -157,7 +157,7 @@
     
     
     //배송지 등록하기 버튼
-    function addAddr(){
+    function addAddr(loginCateg){
     	var roadAddress = $("#roadAddress").val();
     	var detailAddress = $("#detailAddress").val();
     	var deliName = $("#deliveryName").val();
@@ -178,11 +178,39 @@
 	    			if(data == "실패"){
 	    				alert("배달 가능 매장이 없습니다");
 	    			}else{
-		    			var addr = roadAddress + "+" + detailAddress
+		    			var addr = roadAddress + " " + detailAddress
 	
-		    			window.close();
-	
-		    			opener.location.href="deliveryAdd.mp?finalDeliveryLoc=" + data + "&addr=" + addr + "&deliName=" + deliName;
+		    			//location.href="deliveryAdd.cor?finalDeliveryLoc=" + data + "&addr=" + addr + "&deliName=" + deliName;
+		    			
+		    			if(loginCateg == 1){
+		    				$.ajax({
+			    				url: "deliveryAdd.cor",
+			    				data: {finalDeliveryLoc: data,
+			    					addr: addr,
+			    					deliName: deliName},
+			    				type: "POST",
+			    				success: function(data2){
+			    					window.close();
+			    					opener.orderMethodSel(1);
+			    				}, error: function(data2){
+			    					console.log("등록 실패");
+			    				}
+			    			});
+		    			} else if(loginCateg == 2){
+		    				$.ajax({
+			    				url: "deliveryAddNoUser.cor",
+			    				data: {finalDeliveryLocStr: data,
+			    					addr: addr,
+			    					deliName: deliName},
+			    				type: "POST",
+			    				success: function(data2){
+			    					window.close();
+			    					opener.noUserAddress(data2.deliveryAddress, data2.comName, data2.comTel, data2.comNo, data2.deliveryNo);
+			    				}, error: function(data2){
+			    					console.log("등록 실패");
+			    				}
+			    			});
+		    			}
 	    			}
 	    		},
 	    		error:function(data){

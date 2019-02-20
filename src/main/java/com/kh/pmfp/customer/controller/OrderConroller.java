@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -420,4 +421,63 @@ public class OrderConroller {
 		}
 		return "성공";
 	}
+	
+	//배송지 추가 팝업
+	@RequestMapping(value="/myPageDelPopup.cor")
+	public String delPopup() {
+		return "customer/order/deliveryPopup";
+	}
+	
+	//배송지 추가
+	@RequestMapping(value="/deliveryAdd.cor")
+	public @ResponseBody String deliveryAdd(HttpServletRequest request, String finalDeliveryLoc, String addr, String deliName ,Model model) {
+		HttpSession session = request.getSession();
+		Member loginUser = (Member)session.getAttribute("loginUser");
+		int memberNo = loginUser.getMemberNo();
+		
+		//System.out.println(finalDeliveryLoc+":"+addr+":"+deliName);
+		
+		int result = os.insertUserDelAddr(memberNo, Integer.parseInt(finalDeliveryLoc), addr, deliName);
+		
+		if(result>0) {
+			
+			return "성공";
+		}else {
+			//model.addAttribute("msg", "배송지 추가 실패");
+			//return "common/errorPage";
+			return null;
+		}
+	}
+	
+	//비회원 배송지 추가
+	@RequestMapping(value="/deliveryAddNoUser.cor")
+	public @ResponseBody DeliveryCompany deliveryAddNoUser(HttpServletRequest request, String finalDeliveryLocStr, String addr, String deliName ,Model model) {
+		/*HttpSession session = request.getSession();
+		Member loginUser = (Member)session.getAttribute("loginUser");
+		int memberNo = loginUser.getMemberNo();*/
+		int finalDeliveryLoc = Integer.parseInt(finalDeliveryLocStr);
+		System.out.println(finalDeliveryLoc+":"+addr+":"+deliName);
+		
+		int deliNo = os.selectDeliNo();
+		int result = os.insertNoUserDelAddr(deliNo, 0, finalDeliveryLoc, addr, deliName);
+		DeliveryCompany data = os.selectComTel(finalDeliveryLoc);
+		data.setDeliveryAddress(addr);
+		data.setDeliveryNo(deliNo);
+		
+		if(result>0) {
+			
+			return data;
+		}else {
+			//model.addAttribute("msg", "배송지 추가 실패");
+			//return "common/errorPage";
+			return null;
+		}
+	}
+	
+	//매장 선택 팝업
+	@RequestMapping(value="/comPop.cor")
+	public String comPop() {
+		return "customer/order/companyPopup";
+	}
+	
 }
