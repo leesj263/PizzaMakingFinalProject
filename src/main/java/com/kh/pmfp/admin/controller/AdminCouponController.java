@@ -18,6 +18,7 @@ import com.kh.pmfp.admin.model.exception.AdminSelectException;
 import com.kh.pmfp.admin.model.service.AdminCouponService;
 import com.kh.pmfp.admin.model.vo.AdminCoupon;
 import com.kh.pmfp.admin.model.vo.AdminCoupon2;
+import com.kh.pmfp.admin.model.vo.AdminCouponIssue;
 import com.kh.pmfp.common.model.vo.PageInfo;
 import com.kh.pmfp.common.model.vo.Pagination;
 
@@ -93,6 +94,25 @@ public class AdminCouponController {
 			
 			//return null;
 		}
+		
+	//발급된 쿠폰 목록 전체 조회
+		@RequestMapping("lssuingCouponManageMent.co")
+		public String lssuingCoupon(@RequestParam(value="currentPage", required=false, defaultValue="1")int currentPage,HttpServletRequest request,
+				HttpServletResponse response) {
+			
+			ArrayList<AdminCouponIssue> issuingCouponAllList = new ArrayList<>();
+			
+			int issuingCouponCount = cs.selectIssuingCouponCount();
+			PageInfo pi = Pagination.getPageInfo(currentPage, issuingCouponCount);
+			System.out.println(issuingCouponCount);
+			System.out.println(pi);
+			
+			issuingCouponAllList=cs.selectIssuingCouponAllList();
+			request.setAttribute("issuingCouponAllList", issuingCouponAllList);
+			request.setAttribute("pi", pi);
+			System.out.println(issuingCouponAllList);
+			return "admin/coupon/lssuingCouponManageMent";
+		}
 	
 	//생성된 쿠폰 검색(이름, 내용)
 	@RequestMapping("searchTwoCoupon.co")
@@ -102,28 +122,50 @@ public class AdminCouponController {
 		System.out.println(searchContent);
 		
 		//searchType,searchContent 를 담아서 arrayList에 담아오기
-		if(searchType.equals("1")) {
-			System.out.println("여기루 오닝");
-			//searchType=0이면 쿠폰 번호 검색 searchContent
+		if(searchType.equals("1")) {	//1일때 쿠폰 내용 검색
+			//System.out.println("1 여기루 오닝");
 			ArrayList<AdminCoupon> searchCouponNameList = new ArrayList<>();
 			AdminCoupon coupon = new AdminCoupon();
 			coupon.setCouponName(searchContent);
-			
 			searchCouponNameList = cs.selectListCouponName(coupon);
 			
-			System.out.println(searchCouponNameList);
+			//페이징 숫자 받아오기
+			int couponNameCount = cs.selectcouponNameCount(coupon);
+			PageInfo pi = Pagination.getPageInfo(currentPage, couponNameCount);
 			
-		}else if(searchType.equals("0")) {
-			//searchType=1이면 쿠폰 내용 검색 searchContent
+			//System.out.println(searchCouponNameList);
+			//System.out.println(pi);
+			
+			request.setAttribute("searchCouponListAll", searchCouponNameList);
+			request.setAttribute("pi", pi);
+			request.setAttribute("searchContent", searchContent);
+			request.setAttribute("searchType", searchType);
+			return "admin/coupon/searchCoupon2";
+			
+			
+			
+		}else if(searchType.equals("0")) {	//0일때 쿠폰 번호 검색
+			//System.out.println("2 여기루 오닝");
+			ArrayList<AdminCoupon> searchCouponCodeList = new ArrayList<>();
+			AdminCoupon coupon = new AdminCoupon();
+			coupon.setCouponNo(Integer.parseInt(searchContent));
+			searchCouponCodeList = cs.selectListCouponCode(coupon);
+			
+			int couponCodeCount = cs.selectCouponCodeCount(coupon);
+			PageInfo pi = Pagination.getPageInfo(currentPage, couponCodeCount);
+			
+			request.setAttribute("searchCouponListAll", searchCouponCodeList);
+			request.setAttribute("pi", pi);
+			request.setAttribute("searchContent", searchContent);
+			request.setAttribute("searchType", searchType);
+			
+			System.out.println(searchCouponCodeList);
+			return "admin/coupon/searchCoupon2";
+			
 			
 		}
 		
-		
-		
-		
-		
-		
-		return null;
+		return "common/errorPage";
 	}
 
 	

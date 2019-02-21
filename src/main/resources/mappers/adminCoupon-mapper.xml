@@ -15,6 +15,31 @@
 		<result property="couponRdiscount" column="COUPON_RDISCOUNT"/>
 		<result property="couponPdiscount" column="COUPON_PDISCOUNT"/>
 	</resultMap>
+	<resultMap type="com.kh.pmfp.admin.model.vo.AdminCouponIssue" id="adminCouponIssueResultSet">
+		<id property="issueNo" column="ISSUE_NO"/>
+		<result property="couponNo" column="COUPON_NO"/>
+		<result property="memberNo" column="MEMBER_NO"/>
+		<result property="issueCdate" column="ISSUE_CDATE"/>
+		<result property="issueEdate" column="ISSUE_EDATE"/>
+		<result property="issueStatus" column="ISSUE_STATUS"/>
+		<result property="orderNo" column="ORDER_NO"/>
+	</resultMap>
+	<resultMap type="com.kh.pmfp.admin.model.vo.AdminCouponIssue2" id="adminCouponIssueResultSet2">
+		<id property="issueNo" column="ISSUE_NO"/>
+		<result property="couponNo" column="COUPON_NO"/>
+		<result property="memberNo" column="MEMBER_NO"/>
+		<result property="issueCdate" column="ISSUE_CDATE"/>
+		<result property="issueEdate" column="ISSUE_EDATE"/>
+		<result property="issueStatus" column="ISSUE_STATUS"/>
+		<result property="orderNo" column="ORDER_NO"/>
+		<result property="couponName" column="COUPON_NAME"/>
+		<result property="couponCateg" column="COUPON_CATEG"/>
+		<result property="couponCondition" column="COUPON_CONDITION"/>
+		<result property="couponCdate" column="COUPON_CDATE"/>
+		<result property="couponEdate" column="COUPON_EDATE"/>
+		<result property="couponRdiscount" column="COUPON_RDISCOUNT"/>
+		<result property="couponPdiscount" column="COUPON_PDISCOUNT"/>
+	</resultMap>
 	
 	<select id="selectListCount" resultType="_int">
 		SELECT COUNT(*)
@@ -24,7 +49,8 @@
 	
 	<select id="selectSearchCouponList" resultMap="adminCouponResultSet">
 		SELECT *
-		FROM COUPON ORDER BY COUPON_NO DESC
+		FROM COUPON 
+		ORDER BY COUPON_NO DESC
 	</select>
 	
 	<insert id="insertCreateCoupon" parameterType="AdminCoupon">
@@ -36,11 +62,39 @@
 	
 	<select id="selectListCouponName" resultMap="adminCouponResultSet" parameterType="AdminCoupon">
 		SELECT *
-		FROM COUPON WHERE COUPON_NAME LIKE '%'||#{couponName}||'%'
+		FROM COUPON 
+		WHERE COUPON_NAME LIKE '%'||#{couponName}||'%'
 	</select>
 	
+	<select id="selectListCouponCode" resultMap="adminCouponResultSet" parameterType="AdminCoupon">
+		SELECT * 
+		FROM COUPON
+		WHERE COUPON_NO LIKE '%'||#{couponNo}||'%'
+	</select>
 	
+	<select id="selectcouponNameCount" resultType="_int" parameterType="AdminCoupon">
+		SELECT COUNT(*)
+		FROM COUPON 
+		WHERE COUPON_NAME LIKE '%'||#{couponName}||'%'
+	</select>
 	
+	<select id="selectCouponCodeCount" resultType="_int" parameterType="AdminCoupon" >
+		SELECT COUNT(*) 
+		FROM COUPON
+		WHERE COUPON_NO LIKE '%'||#{couponNo}||'%'
+	</select>
 	
+	<select id="selectIssuingCouponCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM COUPON_ISSUE
+	
+	</select>
+	
+	<select id="selectIssuingCouponAllList" resultMap="adminCouponIssueResultSet2">
+		SELECT *
+		FROM COUPON_ISSUE CS 
+        JOIN COUPON C ON (CS.COUPON_NO=C.COUPON_NO)
+		ORDER BY ISSUE_NO DESC
+	</select>
  
  </mapper>

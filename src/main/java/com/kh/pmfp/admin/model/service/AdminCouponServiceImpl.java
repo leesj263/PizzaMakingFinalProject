@@ -2,6 +2,7 @@ package com.kh.pmfp.admin.model.service;
 
 import java.util.ArrayList;
 
+import org.apache.ibatis.session.SqlSession;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,6 +11,7 @@ import com.kh.pmfp.admin.model.dao.AdminCouponDao;
 import com.kh.pmfp.admin.model.exception.AdminCountException;
 import com.kh.pmfp.admin.model.exception.AdminSelectException;
 import com.kh.pmfp.admin.model.vo.AdminCoupon;
+import com.kh.pmfp.admin.model.vo.AdminCouponIssue;
 import com.kh.pmfp.common.model.vo.PageInfo;
 
 @Service
@@ -54,6 +56,47 @@ public class AdminCouponServiceImpl implements AdminCouponService{
 		
 		ArrayList<AdminCoupon> searchCouponNameList = cd.selectListCouponName(sqlSession,coupon);
 		return searchCouponNameList;
+	}
+
+	//쿠폰 번호 검색
+	@Override
+	public ArrayList<AdminCoupon> selectListCouponCode(AdminCoupon coupon) {
+		
+		ArrayList<AdminCoupon> searchCouponCodeList = cd.selectListCouponCode(sqlSession,coupon);
+		
+		return searchCouponCodeList;
+	}
+
+	//쿠폰 이름검색 Count
+	@Override
+	public int selectcouponNameCount(AdminCoupon coupon) {
+		
+		int result = cd.selectcouponNameCount(sqlSession,coupon);
+		
+		return result;
+	}
+
+	//쿠폰 번호검색 Count
+	@Override
+	public int selectCouponCodeCount(AdminCoupon coupon) {
+		
+		return cd.selectCouponCodeCount(sqlSession,coupon);
+	}
+
+	//발급된 쿠폰 전체 목록 Count
+	@Override
+	public int selectIssuingCouponCount() {
+		
+		return cd.selectIssuingCouponCount(sqlSession);
+	}
+
+	//발급된 쿠폰 전체 목록 조회
+	@Override
+	public ArrayList<AdminCouponIssue> selectIssuingCouponAllList() {
+		
+		ArrayList<AdminCouponIssue> issuingCouponAllList = cd.selectIssuingCouponAllList(sqlSession);
+		
+		return issuingCouponAllList;
 	}
 	
 	
