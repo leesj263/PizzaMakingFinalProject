@@ -10,6 +10,7 @@ import com.kh.pmfp.admin.model.exception.AdminUpdateException;
 import com.kh.pmfp.admin.model.vo.AdminBoard;
 import com.kh.pmfp.admin.model.vo.AdminCalculate;
 import com.kh.pmfp.admin.model.vo.AdminCalculateList;
+import com.kh.pmfp.admin.model.vo.AdminMSales;
 import com.kh.pmfp.admin.model.vo.AdminMaterial;
 import com.kh.pmfp.admin.model.vo.AdminMember;
 import com.kh.pmfp.admin.model.vo.AdminMenu;
@@ -191,11 +192,15 @@ public interface AdminService {
 	//통계 출력용 업체 리스트
 	ArrayList<AdminSeller> selectSellerList() throws AdminSelectException;
 
-	//통계 출력용 --- 업체 통계
+	//통계 출력용 --- 업체 통계 -- 한 업체
 	ArrayList<AdminSales> selectComStatistics(AdminSales sales) throws AdminSelectException;
 
 	//통계 출력용 토핑 리스트
 	ArrayList<AdminMaterial> selectMaterialList() throws AdminSelectException;
+
+	//통계 출력용 -- 토핑
+	ArrayList<AdminMSales> selectOrderMStat(int materialCate) throws AdminSelectException;
+
 
 
 	

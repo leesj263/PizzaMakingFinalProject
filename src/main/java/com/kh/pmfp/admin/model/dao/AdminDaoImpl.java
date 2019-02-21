@@ -14,6 +14,7 @@ import com.kh.pmfp.admin.model.exception.AdminUpdateException;
 import com.kh.pmfp.admin.model.vo.AdminBoard;
 import com.kh.pmfp.admin.model.vo.AdminCalculate;
 import com.kh.pmfp.admin.model.vo.AdminCalculateList;
+import com.kh.pmfp.admin.model.vo.AdminMSales;
 import com.kh.pmfp.admin.model.vo.AdminMaterial;
 import com.kh.pmfp.admin.model.vo.AdminMember;
 import com.kh.pmfp.admin.model.vo.AdminMenu;
@@ -800,6 +801,7 @@ public class AdminDaoImpl implements AdminDao {
 	}
 
 
+	//통계용 업체 리스트 
 	@Override
 	public ArrayList<AdminSales> selectComStatistics(SqlSessionTemplate sqlSession, AdminSales sales)
 			throws AdminSelectException {
@@ -810,7 +812,7 @@ public class AdminDaoImpl implements AdminDao {
 		}
 		return salesList;
 	}
-
+	//통계 출력용 --- 업체 통계
 	@Override
 	public ArrayList<AdminSeller> selectSellerList(SqlSessionTemplate sqlSession) throws AdminSelectException {
 		ArrayList<AdminSeller> sellerList=new ArrayList<AdminSeller>();
@@ -821,6 +823,7 @@ public class AdminDaoImpl implements AdminDao {
 		return sellerList;
 	}
 
+	//통계 출력용 --- 업체 통계
 	@Override
 	public ArrayList<AdminSales> selectOrderStat(SqlSessionTemplate sqlSession, AdminSales sales)
 			throws AdminSelectException {
@@ -832,11 +835,36 @@ public class AdminDaoImpl implements AdminDao {
 		return salesList;
 	}
 
+	//통계 출력용 --- 업체 통계
 	@Override
 	public ArrayList<AdminSales> selectComStat(SqlSessionTemplate sqlSession, AdminSales sales)
 			throws AdminSelectException {
 		ArrayList<AdminSales> salesList=new ArrayList<AdminSales>();
 		salesList=(ArrayList)sqlSession.selectList("Admin.selectComStat", sales);
+		/*if(salesList==null) {
+			throw new AdminSelectException("업체 매출 목록 조회 실패");
+		}*/
+		return salesList;
+	}
+	
+	//통계 출력용 --- 업체 통계
+	@Override
+	public ArrayList<AdminSales> selectOrderTStat(SqlSessionTemplate sqlSession, AdminSales sales)
+			throws AdminSelectException {
+		ArrayList<AdminSales> salesList=new ArrayList<AdminSales>();
+		salesList=(ArrayList)sqlSession.selectList("Admin.selectOrderTStat", sales);
+		/*if(salesList==null) {
+			throw new AdminSelectException("업체 매출 목록 조회 실패");
+		}*/
+		return salesList;
+	}
+	
+	//통계 출력용 --- 업체 통계
+	@Override
+	public ArrayList<AdminSales> selectComTStat(SqlSessionTemplate sqlSession, AdminSales sales)
+			throws AdminSelectException {
+		ArrayList<AdminSales> salesList=new ArrayList<AdminSales>();
+		salesList=(ArrayList)sqlSession.selectList("Admin.selectComTStat", sales);
 		/*if(salesList==null) {
 			throw new AdminSelectException("업체 매출 목록 조회 실패");
 		}*/
@@ -852,6 +880,18 @@ public class AdminDaoImpl implements AdminDao {
 			throw new AdminSelectException("재료 목록 조회 실패");
 		}
 		return matList;
+	}
+
+	//통계 출력용 -- 토핑
+	@Override
+	public ArrayList<AdminMSales> selectOrderMStat(SqlSessionTemplate sqlSession, int materialCate)
+			throws AdminSelectException {
+		ArrayList<AdminMSales> salesList=new ArrayList<AdminMSales>();
+		salesList=(ArrayList)sqlSession.selectList("Admin.selectOrderMStat", materialCate);
+		if(salesList==null) {
+			throw new AdminSelectException("업체 매출 목록 조회 실패");
+		}
+		return salesList;
 	}
 
 

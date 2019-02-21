@@ -212,39 +212,22 @@
 	</resultMap>
 	
 	
-	<resultMap type="com.kh.pmfp.admin.model.vo.AdminStatistics" id="adminStatisticsResultSet">
-		<id property="month" column="MONTH"/>
-		<result property="one" column="ONE"/>
-		<result property="two" column="TWO" />
-		<result property="three" column="THREE" />
-		<result property="four" column="FOUR" />
-		<result property="five" column="FIVE" />
-		<result property="six" column="SIX" />
-		<result property="seven" column="SEVEN" />
-		<result property="eight" column="EIGHT" />
-		<result property="nine" column="NINE" />
-		<result property="ten" column="TEN"/>
-		<result property="eleven" column="ELEVEN" />
-		<result property="twelve" column="TWELVE" />
-		<result property="thirteen" column="THIRTEEN" />
-		<result property="fourteen" column="FOURTEEN" />
-		<result property="fifteen" column="FIFTEEN" />
-		<result property="sixteen" column="SIXTEEN" />
-		<result property="seventeen" column="SEVENTEEN" />
-		<result property="eighteen" column="EIGHTEEN" />
-		<result property="nineteen=" column="NINETEEN"/>
-		<result property="twenty" column="TWENTY" />
-		<result property="twentyone" column="TWENTYONE" />
-		<result property="twentytwo" column="TWENTYTWO" />
-		<result property="twentythree" column="TWENTYTHREE" />
-		<result property="twentyfour" column="TWENTYFOUR" />
-		<result property="twentyfive" column="TWENTYFIVE" />
-		<result property="twentysix" column="TWENTYSIX" />
-		<result property="twentyseven" column="TWENTYSEVEN" />
-		<result property="twentyeight" column="TWENTYEIGHT" />
-		<result property="twentynine" column="TWENTYNINE" />
-		<result property="thirty" column="THIRTY" />
-		<result property="thirtyone" column="THIRTYONE" />
+	<resultMap type="com.kh.pmfp.admin.model.vo.AdminMSales" id="adminMSalesResultSet">
+		<id property="salesNo" column="SALES_NO"/>
+		<result property="comNo" column="COM_NO"/>
+		<result property="comName" column="COM_NAME" />
+		<result property="salesInputDate" column="SALES_INPUTDATE" />
+		<result property="salesDate" column="SALESDATE" />
+		<result property="salesCate" column="SALES_CATEG" />
+		<result property="expenseNo" column="EXPENSE_NO" />
+		<result property="orderNo" column="ORDER_NO" />
+		<result property="salesPrice" column="SALES_PRICE" />
+		<result property="mNo" column="MATERIAL_NO" />
+		<result property="mCate" column="MATERIAL_CATEG"/>
+		<result property="mName" column="MATERIAL_NAME" />
+		<result property="mSize" column="MATERIAL_SIZE" />
+		<result property="tCount" column="ORDER_TCOUNT" />
+		<result property="mPrice" column="MPRICE" />
 	</resultMap>
 	
 	
@@ -806,6 +789,23 @@
 		ORDER BY S.SALES_INPUTDATE DESC
 	</select>
 	
+	<select id="selectOrderTStat" parameterType="AdminSales" resultMap="adminSalesResultSet">
+		SELECT S.SALES_NO, S.COM_NO, C.COM_NAME, S.SALES_INPUTDATE, TO_CHAR(S.SALES_INPUTDATE, 'RRRR-MM-DD HH24:MI:SS') SALESDATE, S.SALES_CATEG, S.EXPENSE_NO, S.ORDER_NO, S.SALES_PRICE 
+		FROM SALES S 
+		JOIN COMPANY C ON (S.COM_NO=C.COM_NO) 
+		WHERE S.SALES_CATEG=#{salesCate} 
+		ORDER BY S.SALES_INPUTDATE DESC
+	</select>
+	
+	<select id="selectComTStat" parameterType="AdminSales" resultMap="adminSalesResultSet">
+		SELECT S.SALES_NO, S.COM_NO, C.COM_NAME, S.SALES_INPUTDATE, TO_CHAR(S.SALES_INPUTDATE, 'RRRR-MM-DD HH24:MI:SS') SALESDATE, S.SALES_CATEG, S.EXPENSE_NO, S.ORDER_NO, S.SALES_PRICE 
+		FROM SALES S 
+		JOIN COMPANY C ON (S.COM_NO=C.COM_NO) 
+		JOIN EXPENSE E ON (S.EXPENSE_NO=E.EXPENSE_NO) 
+		WHERE S.SALES_CATEG=#{salesCate} AND E.EXPENSE_CATEG=2 
+		ORDER BY S.SALES_INPUTDATE DESC
+	</select>
+	
 	<select id="selectMatList" resultMap="adminMaterialResultSet">
 		SELECT M.MATERIAL_CATEG, M.MATERIAL_NAME, 
 		LISTAGG(CAST(M.MATERIAL_NO AS VARCHAR(300)) , ',') WITHIN GROUP (ORDER BY M.MATERIAL_NO) AS MATERIAL_SIZE 
@@ -813,5 +813,19 @@
 		WHERE M.MATERIAL_STATUS='Y' AND NOT M.MATERIAL_CATEG=6 
 		GROUP BY M.MATERIAL_CATEG, M.MATERIAL_NAME 
 		ORDER BY M.MATERIAL_CATEG ASC, MATERIAL_SIZE ASC
+	</select>
+	
+	<select id="selectOrderMStat" resultMap="adminMSalesResultSet" parameterType="_int">
+		SELECT S.SALES_NO, S.SALES_INPUTDATE, TO_CHAR(S.SALES_INPUTDATE, 'RR/MM/DD HH24:MI:SS') SALESDATE, 
+		S.COM_NO, C.COM_NAME, S.SALES_CATEG, S.ORDER_NO, S.SALES_PRICE, M.MATERIAL_CATEG, OT.MATERIAL_NO, 
+		M.MATERIAL_NAME||' '||M.MATERIAL_SIZE AS MATERIAL_NAME, OT.ORDER_TCOUNT, (M.MATERIAL_SELLPRICE*OT.ORDER_TCOUNT) MPRICE 
+		FROM SALES S 
+		JOIN ORDER_MAIN OM ON (S.ORDER_NO=OM.ORDER_NO) 
+		JOIN ORDER_ITEM OI ON (OM.ORDER_NO=OI.ORDER_NO) 
+		JOIN ORDER_TOPPING OT ON (OI.ORDER_INO=OT.ORDER_INO)
+		JOIN MATERIAL M ON (M.MATERIAL_NO=OT.MATERIAL_NO) 
+		JOIN COMPANY C ON (S.COM_NO=C.COM_NO) 
+		WHERE M.MATERIAL_CATEG=#{materialCate}  
+		ORDER BY S.SALES_NO ASC, M.MATERIAL_CATEG ASC
 	</select>
 </mapper>
