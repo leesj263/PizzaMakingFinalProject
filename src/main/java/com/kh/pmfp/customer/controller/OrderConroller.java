@@ -4,8 +4,11 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -407,23 +410,6 @@ public class OrderConroller {
 		}
 	}
 	
-	//주문하기
-	@RequestMapping(value="/insertOrder.cor")
-	public @ResponseBody String insertOrder(HttpServletRequest request, @RequestBody HashMap<String, Object> jsonData) {
-		//System.out.println(jsonData);
-		for(String key: jsonData.keySet()) {
-			if(key.equals("orderItem")) {
-				ArrayList list = (ArrayList)jsonData.get(key);
-				for(int i=0; i<list.size(); i++) {
-					System.out.println("orderItem: " + list.get(i));
-				}
-			} else {
-				System.out.println(key + ": "+ jsonData.get(key));
-			}
-		}
-		return "성공";
-	}
-	
 	//배송지 추가 팝업
 	@RequestMapping(value="/myPageDelPopup.cor")
 	public String delPopup() {
@@ -507,6 +493,111 @@ public class OrderConroller {
 	@RequestMapping(value="/comDetail.cor")
 	public @ResponseBody DeliveryCompany getComDetail(@RequestParam String comNo) {
 		return os.getComDetail(comNo);
+	}
+	
+	//주문번호 가져오기
+	@RequestMapping(value="/selectOrderNo.cor")
+	public @ResponseBody String selectOrderNo(HttpServletRequest request) throws OrderException {
+		if(request.getSession().getAttribute("loginUser") == null && request.getSession().getAttribute("noUserLogin") == null) {
+			return "fail";
+		}
+		return os.selectOrderNo();
+	}
+	
+	//주문하기
+	@RequestMapping(value="/insertOrder.cor")
+	public @ResponseBody String insertOrder(HttpServletRequest request, @RequestBody HashMap<String, Object> jsonData) {
+		//System.out.println(jsonData);
+		OrderMain om = new OrderMain();
+		Coupon cp = new Coupon();
+		ArrayList<OrderItem> oiList = new ArrayList<OrderItem>();
+		
+		if(request.getSession().getAttribute("loginUser") != null) {
+			om.setMemberNo(((Member)request.getSession().getAttribute("loginUser")).getMemberNo());
+		} else if(request.getSession().getAttribute("noUserLogin") != null) {
+			om.setMemberNo(0);
+		}
+		
+		for(String key: jsonData.keySet()) {
+			if(key.equals("orderItem")) {
+				ArrayList list = (ArrayList)jsonData.get(key);
+				
+				for(int i=0; i<list.size(); i++) {
+					//System.out.println("orderItem: " + list.get(i));
+					HashMap<String, Object> hmap = (HashMap<String, Object>)list.get(i);
+					OrderItem oi = new OrderItem();
+					oi.setOrderIcateg(Integer.parseInt((String)hmap.get("orderIcateg")));
+					if((String)hmap.get("orderIsize") != "") oi.setOrderIsize((String)hmap.get("orderIsize"));
+					oi.setOrderTcount(Integer.parseInt((String)hmap.get("orderTcount")));
+					
+					ArrayList<OrderTopping> otList = new ArrayList<OrderTopping>();
+					ArrayList<HashMap<String, String>> tpList = (ArrayList)hmap.get("orderTopping");
+					for(int j=0; j<tpList.size(); j++) {
+						OrderTopping ot = new OrderTopping();
+						HashMap<String, String> tpHmap = (HashMap<String, String>)tpList.get(j);
+						ot.setMaterialNo(Integer.parseInt(tpHmap.get("materialNo")));
+						ot.setOrderTcount(Integer.parseInt(tpHmap.get("orderTcount")));
+						otList.add(ot);
+					}
+					oi.setOrderTopping(otList);
+					oiList.add(oi);
+				}
+			} else {
+				//System.out.println(key + ": "+ jsonData.get(key));
+				if(key.equals("orderMethod")) {
+					om.setOrderMethod(Integer.parseInt((String)jsonData.get(key)));
+				} else if(key.equals("orderReceiver")) {
+					om.setOrderReceiver((String)jsonData.get(key));
+				} else if(key.equals("orderRtel")) {
+					om.setOrderRtel((String)jsonData.get(key));
+				} else if(key.equals("orderReservetime")) {
+					if((String)jsonData.get(key) != "") {
+						String reserve = (String)jsonData.get(key);
+						Calendar time = Calendar.getInstance();
+						time.set(Calendar.HOUR_OF_DAY, Integer.parseInt(reserve.split(":")[0]));
+						time.set(Calendar.MINUTE, Integer.parseInt(reserve.split(":")[1]));
+						time.set(Calendar.SECOND, 0);
+						om.setOrderReservetime(new Date(time.getTimeInMillis()));
+						//System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(om.getOrderReservetime()));
+					}
+				} else if(key.equals("orderPayprice")) {
+					om.setOrderPayprice(Integer.parseInt((String)jsonData.get(key)));
+				} else if(key.equals("deliveryNo")) {
+					if((String)jsonData.get(key) != "") om.setDeliveryNo(Integer.parseInt((String)jsonData.get(key)));
+				} else if(key.equals("comNo")) {
+					om.setComNo(Integer.parseInt((String)jsonData.get(key)));
+				} else if(key.equals("issueNo")) {
+					if((String)jsonData.get(key) != "") cp.setIssueNo(Integer.parseInt((String)jsonData.get(key)));
+				} else if(key.equals("orderNo")) {
+					om.setOrderNo(Integer.parseInt((String)jsonData.get(key)));
+				} else if(key.equals("orderPayno")) {
+					om.setOrderPayno((String)jsonData.get(key));
+				}
+			}
+		}
+		
+		for(int i=0; i<oiList.size(); i++) {
+			oiList.get(i).setOrderNo(om.getOrderNo());
+		}
+		
+		System.out.println("OrderMain: " + om);
+		System.out.println("Coupon: " + cp);
+		System.out.println("OrderItemList: " + oiList);
+		
+		int result = os.insertOrder(om, cp, oiList);
+		
+		System.out.println(result);
+		
+		if(result < 1) {
+			return "fail";
+		} else {
+			return "success";
+		}
+	}
+	
+	@RequestMapping(value="/orderComplete.cor")
+	public String orderComplete() {
+		return "customer/order/orderComplete";
 	}
 	
 }

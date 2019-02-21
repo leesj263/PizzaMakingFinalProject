@@ -793,6 +793,14 @@ div.radio label:hover {
 			}
 		});
 		
+	</script>
+	
+	<!-- 아임포트 API -->
+	<script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
+	<script>
+		var IMP = window.IMP; // 생략가능
+		IMP.init('???'); // 'iamport' 대신 부여받은 "가맹점 식별코드"를 사용
+	
 		//주문하기
 		function order(){
 			var orderReceiver = $("#orderMemberName").val();
@@ -860,41 +868,45 @@ div.radio label:hover {
 				
 				if(cartList[no].categ == 1){
 					orderTopping.push({
-						materialNo: cartList[no].dough,
-						orderTcount: 1
+						materialNo: String(cartList[no].dough),
+						orderTcount: "1"
 					});
 					orderTopping.push({
-						materialNo: cartList[no].sauce,
-						orderTcount: 1
+						materialNo: String(cartList[no].sauce),
+						orderTcount: "1"
 					});
 					orderTopping.push({
-						materialNo: cartList[no].edge,
-						orderTcount: 1
+						materialNo: String(cartList[no].edge),
+						orderTcount: "1"
 					});
 				}
 				
 				for(var i=0; i<cartList[no].toppings.length; i++){
 					if(cartList[no].categ == 1){
 						orderTopping.push({
-							materialNo: cartList[no].toppings[i].materialNo,
-							orderTcount: cartList[no].toppings[i].amount
+							materialNo: String(cartList[no].toppings[i].materialNo),
+							orderTcount: String(cartList[no].toppings[i].amount)
 						});
 					} else if(cartList[no].categ == 2){
 						orderTopping.push({
-							materialNo: cartList[no].toppings[i].topping,
-							orderTcount: cartList[no].toppings[i].amount
+							materialNo: String(cartList[no].toppings[i].topping),
+							orderTcount: String(cartList[no].toppings[i].amount)
 						});
 					}
 				}
 				
 				orderItem.push({
-					orderIcateg: cartList[no].categ,
+					orderIcateg: String(cartList[no].categ),
 					orderIsize: cartList[no].size,
-					orderTcount: cartList[no].amount,
+					orderTcount: String(cartList[no].amount),
 					orderTopping: orderTopping
 				});
 			}
 			
+
+			var orderName = cartList[cartNoList[0]].pizzaName + "(" + cartList[cartNoList[0]].size + ") 외 " + (cartNoList.length - 1) + "건";
+			
+			/* console.log(orderName);
 			console.log(orderItem);
 			console.log("orderMethod: " + orderMethod);
 			console.log("orderReceiver: "+orderReceiver);
@@ -903,32 +915,119 @@ div.radio label:hover {
 			console.log("orderPayprice: "+orderPayprice);
 			console.log("deliveryNo: "+deliveryNo);
 			console.log("comNo: "+comNo);
-			console.log("issueNo: "+issueNo);
+			console.log("issueNo: "+issueNo); */
 			
-			var jsonData = JSON.stringify({
-					orderItem: orderItem,
-					orderMethod: orderMethod,
-					orderReceiver: orderReceiver,
-					orderRtel: orderRtel,
-					orderReservetime: orderReservetime,
-					orderPayprice: orderPayprice,
-					deliveryNo: deliveryNo,
-					comNo: comNo,
-					issueNo: issueNo
-			});
-			
+			var orderNo;
+			var orderPayno;
+			//주문 번호 가져오기
 			$.ajax({
-				url: "insertOrder.cor",
+				url: "selectOrderNo.cor",
 				type: "post",
-				contentType:"application/json;charset=UTF-8",
-				data: jsonData,
-				success: function(data){
-					console.log("성공");
+				success: function(dataOrderNo){
+					if(dataOrderNo == "fail") {
+						alert("데이터베이스 연결에 실패하였습니다.");
+						return;
+					}
+					
+					orderNo = dataOrderNo;
+					
+					var orderNoStr = orderNo+"";
+					for(var i=orderNoStr.length+1; i<=10; i++){
+						orderNoStr = "0" + orderNoStr;
+					}
+					
+					//결제
+					var pay = function(){
+						IMP.request_pay({
+						    pg : 'kakaopay',
+						    pay_method : 'card',
+						    merchant_uid : 'PMFP'+orderNoStr+'_' + new Date().getTime(),
+						    name : orderName,
+						    amount : 10,
+						    //buyer_email : 'iamport@siot.do',
+						    buyer_name : orderReceiver,
+						    buyer_tel : orderRtel,
+						    //buyer_addr : '서울특별시 강남구 삼성동',
+						    //buyer_postcode : '123-456'
+						}, function(rsp) {
+						    if ( rsp.success ) {
+						    	//[1] 서버단에서 결제정보 조회를 위해 jQuery ajax로 imp_uid 전달하기
+						    	jQuery.ajax({
+						    		url: "orderComplete.cor", //cross-domain error가 발생하지 않도록 주의해주세요
+						    		type: 'POST',
+						    		dataType: 'json',
+						    		data: {
+							    		imp_uid : rsp.imp_uid
+							    		//기타 필요한 데이터가 있으면 추가 전달
+						    		}
+						    	}).done(function(data) {
+						    		//[2] 서버에서 REST API로 결제정보확인 및 서비스루틴이 정상적인 경우
+						    		if ( everythings_fine ) {
+						    			var msg = '결제가 완료되었습니다.';
+						    			msg += '\n고유ID : ' + rsp.imp_uid;
+						    			orderPayno = rsp.imp_uid;
+						    			msg += '\n상점 거래ID : ' + rsp.merchant_uid;
+						    			msg += '\결제 금액 : ' + rsp.paid_amount;
+						    			msg += '카드 승인번호 : ' + rsp.apply_num;
+						    			
+						    			alert(msg);
+						    		} else {
+						    			//[3] 아직 제대로 결제가 되지 않았습니다.
+						    			//[4] 결제된 금액이 요청한 금액과 달라 결제를 자동취소처리하였습니다.
+						    		}
+						    		
+						    		
+						    		var jsonData = JSON.stringify({
+										orderItem: orderItem,
+										orderMethod: orderMethod,
+										orderReceiver: orderReceiver,
+										orderRtel: orderRtel,
+										orderReservetime: orderReservetime,
+										orderPayprice: orderPayprice,
+										deliveryNo: deliveryNo,
+										comNo: comNo,
+										issueNo: issueNo,
+										orderNo: orderNo,
+										orderPayno: orderPayno
+									});
+									
+									$.ajax({
+										url: "insertOrder.cor",
+										type: "post",
+										contentType:"application/json;charset=UTF-8",
+										data: jsonData,
+										success: function(data2){
+											//console.log("성공");
+											if(data2 == "fail") {
+												alert("데이터베이스 연결에 실패하였습니다.");
+												return;
+											}
+											
+											alert("데이터 베이스 입력 완료!");
+											
+										}, error: function(data2){
+											alert("주문 정보 입력에 실패하였습니다.");
+										}
+									});
+						    		
+						    	});
+						    } else {
+						        var msg = '결제에 실패하였습니다.';
+						        msg += '에러내용 : ' + rsp.error_msg;
+						        
+						        alert(msg);
+						    }
+						});
+					}
+					
+					pay().then(function(){
+						
+					});
+					
 				}, error: function(data){
-					console.log("주문 실패!");
+					alert("데이터베이스 연결에 실패하였습니다.");
 				}
 			});
-			
 		}
 	</script>
 

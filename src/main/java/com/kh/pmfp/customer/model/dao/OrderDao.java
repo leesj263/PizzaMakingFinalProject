@@ -27,7 +27,7 @@ public interface OrderDao {
 
 	ArrayList<BasicTopping> selectBasicToppingList(SqlSessionTemplate sqlSession) throws OrderException;
 
-	int selectOrderIno(SqlSessionTemplate sqlSession) throws OrderException;
+	int selectOrderIno(SqlSessionTemplate sqlSession);
 
 	int selectMypizzaNo(SqlSessionTemplate sqlSession) throws OrderException;
 	
@@ -64,5 +64,13 @@ public interface OrderDao {
 	ArrayList<DeliveryCompany> selectSearchResultList(SqlSessionTemplate sqlSession, String search, PageInfo pi) throws OrderException;
 
 	DeliveryCompany getComDetail(SqlSessionTemplate sqlSession, String comNo);
+
+	String selectOrderNo(SqlSessionTemplate sqlSession);
+
+	int insertOrderMain(SqlSessionTemplate sqlSession, OrderMain om);
+
+	int insertOrderItem(SqlSessionTemplate sqlSession, OrderItem orderItem);
+
+	int insertOrderTopping(SqlSessionTemplate sqlSession, OrderTopping orderTopping);
 
 }
