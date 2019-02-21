@@ -35,8 +35,8 @@
 						<th scope="col">
 							<div class="col-12 col-md-3">
 								<select name="searchType" id="select" class="form-control">
-									<option value="0">번호 검색</option>
-									<option value="1">이름 검색</option>
+									<option value="0">이름 검색</option>
+									<option value="1">내용 검색</option>
 								</select>
 							</div>
 

@@ -47,4 +47,11 @@ public class AdminCouponDaoImpl implements AdminCouponDao{
 		return sqlSession.insert("Coupon.insertCreateCoupon",couponCreate);
 	}
 
+	//쿠폰 이름 검색하기
+	@Override
+	public ArrayList<AdminCoupon> selectListCouponName(SqlSessionTemplate sqlSession, AdminCoupon coupon) {
+	
+		return (ArrayList)sqlSession.selectList("Coupon.selectListCouponName",coupon);
+	}
+
 }

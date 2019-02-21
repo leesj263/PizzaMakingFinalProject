@@ -48,5 +48,13 @@ public class AdminCouponServiceImpl implements AdminCouponService{
 		return result;
 	}
 	
+	//쿠폰 이름 검색
+	@Override
+	public ArrayList<AdminCoupon> selectListCouponName(AdminCoupon coupon) {
+		
+		ArrayList<AdminCoupon> searchCouponNameList = cd.selectListCouponName(sqlSession,coupon);
+		return searchCouponNameList;
+	}
+	
 	
 }

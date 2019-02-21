@@ -34,6 +34,11 @@
 		
 	</insert>
 	
+	<select id="selectListCouponName" resultMap="adminCouponResultSet" parameterType="AdminCoupon">
+		SELECT *
+		FROM COUPON WHERE COUPON_NAME LIKE '%'||#{couponName}||'%'
+	</select>
+	
 	
 	
 	

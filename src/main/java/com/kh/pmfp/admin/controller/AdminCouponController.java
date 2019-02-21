@@ -96,9 +96,31 @@ public class AdminCouponController {
 	
 	//생성된 쿠폰 검색(이름, 내용)
 	@RequestMapping("searchTwoCoupon.co")
-	public String searchTwoCoupon(@RequestParam String searchType,@RequestParam String searchContent) {
+	public String searchTwoCoupon(@RequestParam(value="currentPage",required=false,defaultValue="1")int currentPage,HttpServletRequest request,
+						 HttpServletResponse response,@RequestParam String searchType,@RequestParam String searchContent) {
 		System.out.println(searchType);
 		System.out.println(searchContent);
+		
+		//searchType,searchContent 를 담아서 arrayList에 담아오기
+		if(searchType.equals("1")) {
+			System.out.println("여기루 오닝");
+			//searchType=0이면 쿠폰 번호 검색 searchContent
+			ArrayList<AdminCoupon> searchCouponNameList = new ArrayList<>();
+			AdminCoupon coupon = new AdminCoupon();
+			coupon.setCouponName(searchContent);
+			
+			searchCouponNameList = cs.selectListCouponName(coupon);
+			
+			System.out.println(searchCouponNameList);
+			
+		}else if(searchType.equals("0")) {
+			//searchType=1이면 쿠폰 내용 검색 searchContent
+			
+		}
+		
+		
+		
+		
 		
 		
 		return null;

@@ -18,6 +18,9 @@ public interface AdminCouponService {
 	//쿠폰 생성하기
 	int insertCreateCoupon(AdminCoupon couponCreate);
 
+	//쿠폰 이름으로 검색하고 가져오기
+	ArrayList<AdminCoupon> selectListCouponName(AdminCoupon coupon);
+
 	
 	
 
