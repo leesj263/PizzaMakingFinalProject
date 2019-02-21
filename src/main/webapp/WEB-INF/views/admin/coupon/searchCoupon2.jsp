@@ -35,7 +35,7 @@
 						<th scope="col">
 							<div class="col-12 col-md-3">
 								<select name="searchType" id="select" class="form-control">
-									<option value="0">이름 검색</option>
+									<option value="0">번호 검색</option>
 									<option value="1">내용 검색</option>
 								</select>
 							</div>
@@ -111,7 +111,7 @@
 							</tr>
 						</thead>
 						<tbody>
-						<c:forEach var="cList" items="${searchCouponList}" varStatus="varStatus">
+						<c:forEach var="cList" items="${searchCouponListAll}" varStatus="varStatus">
 							<tr class="listAreaTr">
 								<th scope="row">${varStatus.count }</th>
 								<td>${cList.couponNo }</td>
@@ -135,6 +135,8 @@
 								<c:if test="${pi.currentPage >1}">
 									<c:url var="btnList" value="${ addr }">
 										<c:param name="currentPage" value="${pi.currentPage-1}" />
+										<c:param name="searchContent" value="${searchContent }"/>
+										<c:param name="searchType" value="${searchType }"/>
 									</c:url>
 									<li class="paginate_button page-item previous"
 										id="bootstrap-data-table_previous"><a href="${btnList }"
@@ -161,6 +163,8 @@
 									<c:if test="${ p ne pi.currentPage }">
 										<c:url var="btnList" value="${ addr }">
 											<c:param name="currentPage" value="${ p }" />
+											<c:param name="searchContent" value="${searchContent }"/>
+											<c:param name="searchType" value="${searchType }"/>
 										</c:url>
 										<li class="paginate_button page-item"><a
 											href="${btnList }" aria-controls="bootstrap-data-table"
@@ -171,6 +175,8 @@
 								<c:if test="${pi.currentPage <pi.maxPage}">
 									<c:url var="btnList" value="${ addr }">
 										<c:param name="currentPage" value="${pi.currentPage+1}" />
+										<c:param name="searchContent" value="${searchContent }"/>
+										<c:param name="searchType" value="${searchType }"/>
 									</c:url>
 									<li class="paginate_button page-item next"
 										id="bootstrap-data-table_next"><a href="${btnList }"

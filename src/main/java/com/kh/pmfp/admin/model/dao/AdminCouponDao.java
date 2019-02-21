@@ -7,6 +7,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import com.kh.pmfp.admin.model.exception.AdminCountException;
 import com.kh.pmfp.admin.model.exception.AdminSelectException;
 import com.kh.pmfp.admin.model.vo.AdminCoupon;
+import com.kh.pmfp.admin.model.vo.AdminCouponIssue;
 import com.kh.pmfp.common.model.vo.PageInfo;
 
 public interface AdminCouponDao {
@@ -22,5 +23,20 @@ public interface AdminCouponDao {
 
 	//쿠폰 이름 검색하기
 	ArrayList<AdminCoupon> selectListCouponName(SqlSessionTemplate sqlSession, AdminCoupon coupon);
+
+	//쿠폰 번호 검색하기
+	ArrayList<AdminCoupon> selectListCouponCode(SqlSessionTemplate sqlSession, AdminCoupon coupon);
+
+	//쿠폰 이름 검색 Count
+	int selectcouponNameCount(SqlSessionTemplate sqlSession, AdminCoupon coupon);
+
+	//쿠폰 번호 검색 Count
+	int selectCouponCodeCount(SqlSessionTemplate sqlSession, AdminCoupon coupon);
+
+	//발급된 쿠폰 전체 목록 Count
+	int selectIssuingCouponCount(SqlSessionTemplate sqlSession);
+
+	//발급된 쿠폰 전체 목록 조회
+	ArrayList<AdminCouponIssue> selectIssuingCouponAllList(SqlSessionTemplate sqlSession);
 
 }
