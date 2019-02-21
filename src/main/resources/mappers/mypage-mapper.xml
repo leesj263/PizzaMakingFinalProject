@@ -194,6 +194,7 @@
 		join image img 
 		on img.mypizza_no = mp.mypizza_no
 		where mp.member_no=#{memberNo} and img.img_categ=3 and img.img_status='Y'
+		order by mp.mypizza_no
 	</select>
 	
 	
@@ -239,7 +240,9 @@
         order by ma.material_no 
 	</select>
 	
-	
+	<select id="selectMypizzaCount" parameterType="_int" resultType="_int">
+		select count(*) from my_pizza where member_no=#{memberNo} order by mypizza_no
+	</select>
 	
 	
 	

@@ -28,17 +28,9 @@
 		</button>
 		
 		<script>
-			$("#findList").click(function(){
-				if($("#selectBox").val() == "qna"){
-					location.href="myPageQna.mp"
-				}else if($("#selectBox").val() == "review"){
-					location.href="myPageReview.mp"
-				}else if($("#selectBox").val() == "share"){
-					location.href="myPageShare.mp"
-				}
-			});
-		
 			$(function(){
+				$("#list5").attr("class", "item active");
+				
 				if(${boardType == 3}){
 					$("#selectBox").val("qna").prop("selected",true);
 				}
@@ -49,7 +41,19 @@
 					$("#selectBox").val("share").prop("selected",true);
 				}
 				
-			})
+			});
+			
+			
+			$("#findList").click(function(){
+				if($("#selectBox").val() == "qna"){
+					location.href="myPageQna.mp"
+				}else if($("#selectBox").val() == "review"){
+					location.href="myPageReview.mp"
+				}else if($("#selectBox").val() == "share"){
+					location.href="myPageShare.mp"
+				}
+			});
+		
 		</script>
 		
 
@@ -202,17 +206,7 @@
 		</div> 
 		
 		--%>
-	 
-	 
-	 <script>
-	 	$(function(){
-			$("#list5").attr("class", "item active");
-		});
-	 </script>
-	 
-	 
-	 
-	 
+
 	
 </div>
 </body>

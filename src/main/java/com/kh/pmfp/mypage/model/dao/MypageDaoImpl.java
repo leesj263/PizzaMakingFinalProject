@@ -1,7 +1,6 @@
 package com.kh.pmfp.mypage.model.dao;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -9,6 +8,8 @@ import org.springframework.stereotype.Repository;
 
 import com.kh.pmfp.common.model.vo.PageInfo;
 import com.kh.pmfp.customer.model.vo.MyPizza;
+import com.kh.pmfp.mypage.model.exception.MypageCountException;
+import com.kh.pmfp.mypage.model.exception.MypageListException;
 import com.kh.pmfp.mypage.model.vo.Coupon;
 import com.kh.pmfp.mypage.model.vo.DelList;
 import com.kh.pmfp.mypage.model.vo.Location;
@@ -21,21 +22,17 @@ public class MypageDaoImpl implements MypageDao{
 
 	//마이페이지 메인 - 주문내역
 	@Override
-	public ArrayList<OrderList> selectOrderList(SqlSessionTemplate sqlSession, int memberNo) {
+	public ArrayList<OrderList> selectOrderList(SqlSessionTemplate sqlSession, int memberNo) throws MypageListException{
 		ArrayList<OrderList> orderList = new ArrayList<OrderList>();
 		
 		orderList = (ArrayList)sqlSession.selectList("Mypage.selectOrderList", memberNo);
-		
-		if(orderList==null) {
-			System.out.println("예외처리 하기: 주문내역 조회 실패");
-		}
-		
+
 		return orderList;
 	}
 	
 	//사용쿠폰내역 카운트 조회
 	@Override
-	public int selectUseCouponList(SqlSessionTemplate sqlSession, int memberNo, int orderNo) {
+	public int selectUseCouponList(SqlSessionTemplate sqlSession, int memberNo, int orderNo) throws MypageCountException{
 		OrderDetail od = new OrderDetail(orderNo, memberNo);
 		int result = sqlSession.selectOne("Mypage.selectUseCouponList", od);
 		return result;
@@ -43,7 +40,7 @@ public class MypageDaoImpl implements MypageDao{
 	
 	//쿠폰 사용내역 X - 상세보기
 	@Override
-	public ArrayList<OrderDetail> selectOrderDetailList(SqlSessionTemplate sqlSession, int orderNo) {
+	public ArrayList<OrderDetail> selectOrderDetailList(SqlSessionTemplate sqlSession, int orderNo) throws MypageListException{
 		ArrayList<OrderDetail> orderDetailList = (ArrayList)sqlSession.selectList("Mypage.selectOrderDetailList", orderNo);
 		System.out.println("주문 상세정보 dao1 : " + orderDetailList);
 		return orderDetailList;
@@ -51,7 +48,7 @@ public class MypageDaoImpl implements MypageDao{
 	
 	//쿠폰 사용내역 O - 상세보기
 	@Override
-	public ArrayList<OrderDetail> selectOrderDetailList2(SqlSessionTemplate sqlSession, int orderNo) {
+	public ArrayList<OrderDetail> selectOrderDetailList2(SqlSessionTemplate sqlSession, int orderNo) throws MypageListException{
 		ArrayList<OrderDetail> orderDetailList = (ArrayList)sqlSession.selectList("Mypage.selectOrderDetailList2", orderNo);
 		System.out.println("주문 상세정보 dao2 : " + orderDetailList);
 		return orderDetailList;
@@ -59,12 +56,8 @@ public class MypageDaoImpl implements MypageDao{
 
 	//배송지 내역
 	@Override
-	public ArrayList<DelList> selectDelList(SqlSessionTemplate sqlSession, int memberNo) {
+	public ArrayList<DelList> selectDelList(SqlSessionTemplate sqlSession, int memberNo) throws MypageListException{
 		ArrayList<DelList> delList = (ArrayList)sqlSession.selectList("Mypage.selectDelList", memberNo);
-		
-		if(delList==null) {
-			System.out.println("예외처리 하기: 배송지내역 조회 실패");
-		}
 		
 		System.out.println("dao : " + delList);
 		
@@ -73,12 +66,8 @@ public class MypageDaoImpl implements MypageDao{
 
 	//쿠폰함 - 사용가능쿠폰
 	@Override
-	public ArrayList<Coupon> selectPCouponList(SqlSessionTemplate sqlSession, int memberNo) {
+	public ArrayList<Coupon> selectPCouponList(SqlSessionTemplate sqlSession, int memberNo) throws MypageListException{
 		ArrayList<Coupon> pCouponList = (ArrayList)sqlSession.selectList("Mypage.selectPCouponList", memberNo);
-		
-		if(pCouponList==null) {
-			System.out.println("예외처리 하기: 사용가능 쿠폰 조회 실패");
-		}
 		
 		System.out.println("dao : " + pCouponList);
 		
@@ -87,12 +76,8 @@ public class MypageDaoImpl implements MypageDao{
 
 	//쿠폰함 - 사용만료쿠폰
 	@Override
-	public ArrayList<Coupon> selectICouponList(SqlSessionTemplate sqlSession, int memberNo) {
+	public ArrayList<Coupon> selectICouponList(SqlSessionTemplate sqlSession, int memberNo) throws MypageListException{
 		ArrayList<Coupon> iCouponList = (ArrayList)sqlSession.selectList("Mypage.selectICouponList", memberNo);
-		
-		if(iCouponList==null) {
-			System.out.println("예외처리 하기: 사용만료 쿠폰 조회 실패");
-		}
 		
 		System.out.println("dao : " + iCouponList);
 		
@@ -101,7 +86,7 @@ public class MypageDaoImpl implements MypageDao{
 
 	//내 작성글 - 문의
 	@Override
-	public ArrayList<MyWriting> selectMyWritingList(SqlSessionTemplate sqlSession, int memberNo, PageInfo pi) {
+	public ArrayList<MyWriting> selectMyWritingList(SqlSessionTemplate sqlSession, int memberNo, PageInfo pi) throws MypageListException{
 		ArrayList<MyWriting> myWritingList = null;
 		
 		int offset = (pi.getCurrentPage() -1) * pi.getLimit();
@@ -109,51 +94,41 @@ public class MypageDaoImpl implements MypageDao{
 		
 		myWritingList = (ArrayList)sqlSession.selectList("Mypage.selectMyWritingList", memberNo, rowBounds);
 		
-		if(myWritingList==null) {
-			System.out.println("예외처리 하기: 내 작성글 - 문의내역 조회 실패");
-		}
-
 		return myWritingList;
 		
 	}
 
 	//내 작성글 - 후기
 	@Override
-	public ArrayList<MyWriting> selectMyWritingReviewList(SqlSessionTemplate sqlSession, int memberNo, PageInfo pi) {
+	public ArrayList<MyWriting> selectMyWritingReviewList(SqlSessionTemplate sqlSession, int memberNo, PageInfo pi) throws MypageListException{
 		ArrayList<MyWriting> myWritingList = null;
 		
 		int offset = (pi.getCurrentPage() -1) * pi.getLimit();
 		RowBounds rowBounds = new RowBounds(offset, pi.getLimit());
 		
 		myWritingList = (ArrayList)sqlSession.selectList("Mypage.selectMyWritingReviewList", memberNo, rowBounds);
-		
-		if(myWritingList==null) {
-			System.out.println("예외처리 하기: 내 작성글 - 후기 조회 실패");
-		}
+		System.out.println("selectMyWritingReviewList : " + myWritingList);
 
 		return myWritingList;
 	}
 
 	//내 작성글 - 공유
 	@Override
-	public ArrayList<MyWriting> selectMyWritingShareList(SqlSessionTemplate sqlSession, int memberNo, PageInfo pi) {
+	public ArrayList<MyWriting> selectMyWritingShareList(SqlSessionTemplate sqlSession, int memberNo, PageInfo pi) throws MypageListException{
 		ArrayList<MyWriting> myWritingList = null;
 				
 		int offset = (pi.getCurrentPage() -1) * pi.getLimit();
 		RowBounds rowBounds = new RowBounds(offset, pi.getLimit());
 		
 		myWritingList = (ArrayList)sqlSession.selectList("Mypage.selectMyWritingShareList", memberNo, rowBounds);
-		
-		if(myWritingList==null) {
-			System.out.println("예외처리 하기: 내 작성글 - 후기 조회 실패");
-		}
+		System.out.println("selectMyWritingShareList : " + myWritingList);
 		
 		return myWritingList;
 	}
 
 	//글 목록수 조회
 	@Override
-	public int selectListCount(SqlSessionTemplate sqlSession, int memberNo, int boardType) {
+	public int selectListCount(SqlSessionTemplate sqlSession, int memberNo, int boardType) throws MypageCountException{
 		MyWriting mw = new MyWriting(memberNo, boardType);
 		
 		int listCount = sqlSession.selectOne("Mypage.selectListCount", mw);
@@ -182,8 +157,7 @@ public class MypageDaoImpl implements MypageDao{
 
 	//배송지 추가
 	@Override
-	public int insertUserDelAddr(SqlSessionTemplate sqlSession, int memberNo, int finalDeliveryLoc, String addr,
-			String deliName) {
+	public int insertUserDelAddr(SqlSessionTemplate sqlSession, int memberNo, int finalDeliveryLoc, String addr, String deliName) {
 		DelList del = new DelList(memberNo, finalDeliveryLoc, addr, deliName);
 
 		return sqlSession.insert("Mypage.insertUserDelAddr", del);
@@ -191,14 +165,23 @@ public class MypageDaoImpl implements MypageDao{
 
 	//내피자
 	@Override
-	public ArrayList<MyPizza> selectMypizzaList(SqlSessionTemplate sqlSession, int memberNo) {
+	public ArrayList<MyPizza> selectMypizzaList(SqlSessionTemplate sqlSession, int memberNo, PageInfo pi) throws MypageListException{
 		System.out.println("memberNo : " + memberNo);
 		
-		ArrayList<MyPizza> list = (ArrayList)sqlSession.selectList("Mypage.selectMypizza", memberNo);
+		int offset = (pi.getCurrentPage() -1)*pi.getLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getLimit());
+		
+		ArrayList<MyPizza> list = (ArrayList)sqlSession.selectList("Mypage.selectMypizza", memberNo, rowBounds);
 		
 		System.out.println("내 피자 dao : " + list);
 		
 		return list;
+	}
+
+	//내피자 카운트
+	@Override
+	public int selectMypizzaCount(SqlSessionTemplate sqlSession, int memberNo) throws MypageCountException {
+		return sqlSession.selectOne("Mypage.selectMypizzaCount", memberNo);
 	}
 	
 

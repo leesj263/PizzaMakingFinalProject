@@ -42,7 +42,7 @@
 		  <tbody>
 		    <tr>
 		      <td class="tableHead">이름</td>
-		      <td>맛있는 조합</td>
+		      <td id="test"></td>
 		    </tr>
 		    <tr>
 		      <td class="tableHead">가격</td>
