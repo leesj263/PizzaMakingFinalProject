@@ -950,13 +950,19 @@ public class AdminController {
 		ArrayList<AdminSeller> sellerList=new ArrayList<AdminSeller>();
 		ArrayList<AdminSales> salesList=new ArrayList<AdminSales>();
 		ArrayList<AdminSales> expenseList=new ArrayList<AdminSales>();
+		AdminSeller selectSeller=new AdminSeller();
 		AdminSales sales=new AdminSales(1, comNo);
 		AdminSales expense=new AdminSales(0, comNo);
 		try {
 			sellerList=as.selectSellerList();
 			salesList=as.selectComStatistics(sales);
 			expenseList=as.selectComStatistics(expense);
-			
+			for(int i=0;i<sellerList.size();i++) {
+				if(sellerList.get(i).getComNo()==comNo) {
+					selectSeller=sellerList.get(i);
+				}
+			}
+			request.setAttribute("selectSeller", selectSeller);
 			request.setAttribute("salesList", salesList);
 			request.setAttribute("expenseList", expenseList);
 			request.setAttribute("sellerList", sellerList);
@@ -968,8 +974,17 @@ public class AdminController {
 	}
 	
 	@RequestMapping(value="statisticsMat.ad", method=RequestMethod.GET)
-	public String statisitcsMat(@RequestParam(value="materialNo", required=false, defaultValue="1")int materialNo, HttpServletRequest request) {
+	public String statisitcsMat(@RequestParam(value="materialCate", required=false, defaultValue="1")int materialCate, HttpServletRequest request) {
+		ArrayList<AdminMaterial> matList=new ArrayList<AdminMaterial>();
+		try {
+			matList=as.selectMaterialList();
+			request.setAttribute("materialCate", materialCate);
+			request.setAttribute("matList", matList);
+			return "admin/sales/statistics/statisticsMat";
+		} catch (AdminSelectException e) {
+			request.setAttribute("msg", e.getMessage());
+			return "common/errorPage";
+		}
 		
-		return "admin/sales/statistics/statisticsMat";
 	}
 }

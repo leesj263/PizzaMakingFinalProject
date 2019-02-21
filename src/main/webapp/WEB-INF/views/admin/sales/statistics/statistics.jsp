@@ -13,17 +13,16 @@
 </style>
 <section>
 	<div class="right-panel">
-		<p>statistics.jsp</p>
 		<div class="card">
 			<div class="card-body">
 				<div class="row">
-					<div class="col-md-8"></div>
-					<div class="col-md-4">
+					<div class="col-md-4"></div>
+					<div class="col-md-8">
 						<button class="btn btn-sm btn-warning" onclick="location.href='statistics.ad'"disabled>전체매출</button>
 						&nbsp;&nbsp;
 						<button class="btn btn-sm btn-outline-primary" onclick="location.href='statisitcsCom.ad?comNo=1'">업체매출</button>
 						&nbsp;&nbsp;
-						<button class="btn btn-sm btn-outline-danger" onclick="location.href='statisticsMat.ad?materialNo=1'">토핑매출</button>
+						<button class="btn btn-sm btn-outline-danger" onclick="location.href='statisticsMat.ad?materialCate=1'">토핑매출</button>
 					</div>
 				</div>
 				<div class="col-lg-10">
