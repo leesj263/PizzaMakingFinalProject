@@ -30,6 +30,8 @@ public interface BoardDao {
 	Board selectAnswer(SqlSessionTemplate sqlSession, int num) throws BoardException;
 	//수정등록
 	int qnaUpdateC(SqlSessionTemplate sqlSession, Board qna) throws BoardException;
+//review리스트
+	ArrayList<Board> selectReviewList(SqlSessionTemplate sqlSession, PageInfo pi) throws BoardException;
 	
 	
 	

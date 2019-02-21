@@ -169,4 +169,24 @@ public class BoardController {
 		return "redirect:qnaList.bo";
 
 	}
+//review리스트
+@RequestMapping("reviewList.bo")
+public String reviewList(@RequestParam(value = "currentPage", required = false, defaultValue = "1") int currentPage,
+		HttpServletRequest request, HttpServletResponse response) {
+	ArrayList<Board> reviewList = new ArrayList<Board>();
+
+	try {
+		int listCount = bs.selectQnaCount();
+		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
+		reviewList = bs.selectReviewList(pi);
+		request.setAttribute("reviewList", reviewList);
+		request.setAttribute("pi", pi);
+		System.out.println(reviewList);
+		return "customer/review/reviewList";
+	} catch (BoardException e) {
+		request.setAttribute("msg", e.getMessage());
+		return "common/errorPage";
+	}
+
+}
 }

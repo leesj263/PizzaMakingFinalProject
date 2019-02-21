@@ -35,7 +35,7 @@
 
 </head>
 <body>
-	<%-- <%@ include file="../common/menubar.jsp" %> --%>
+	 <%@ include file="/WEB-INF/views/main/menubar.jsp"%> 
 	<%-- <% if(loginUser != null){%> --%>
 	<div class="outer">
 		<br>

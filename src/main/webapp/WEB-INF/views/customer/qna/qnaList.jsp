@@ -147,8 +147,7 @@
 				</button>
 
 				<div class="col-md-1">
-					<button class="btn btn-outline-warning"
-						><a href="./qnaWrite.t">글 작성</a></button>
+					<button class="btn btn-outline-warning"><a href="./qnaWrite.t">글 작성</a></button>
 				</div>
 
 			</div>
