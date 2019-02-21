@@ -99,9 +99,11 @@ public class BoardServiceImpl implements BoardService {
 		
 		return reviewList;
 	}
-	
-	
-	
-		
+	//review작성
+	@Override
+	public int insertReview(Board review) throws BoardException {
+		int result= bd.insertReview(sqlSession,review);
+		return result;
+	}
 
 }

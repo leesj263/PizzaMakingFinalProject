@@ -70,6 +70,26 @@ public class BoardController {
 			return "common/errorPage";
 		}
 	}
+	//review작성
+	@RequestMapping("reviewWrite.bo")
+	public String reviewWrite(@ModelAttribute Board review, HttpServletRequest request, HttpServletResponse response) {
+		System.out.println(review);
+		
+	
+		HttpSession session = request.getSession();
+		Member loginUser = (Member) session.getAttribute("loginUser");
+		review.setMemberNo(loginUser.getMemberNo());
+		try {
+			int result = bs.insertReview(review);
+			System.out.println("작성한 review 개수: " + result);
+
+			return "redirect:reviewList.bo";
+		} catch (BoardException e) {
+			request.setAttribute("msg", e.getMessage());
+
+			return "common/errorPage";
+		}
+	}
 
 	// qna수정
 	@RequestMapping("qnaUpdate.bo")
@@ -136,6 +156,26 @@ public class BoardController {
 		}
 
 	}
+	//review리스트
+	@RequestMapping("reviewList.bo")
+	public String reviewList(@RequestParam(value = "currentPage", required = false, defaultValue = "1") int currentPage,
+			HttpServletRequest request, HttpServletResponse response) {
+		ArrayList<Board> reviewList = new ArrayList<Board>();
+
+		try {
+			int listCount = bs.selectQnaCount();
+			PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
+			reviewList = bs.selectReviewList(pi);
+			request.setAttribute("reviewList", reviewList);
+			request.setAttribute("pi", pi);
+			System.out.println(reviewList);
+			return "customer/review/reviewList";
+		} catch (BoardException e) {
+			request.setAttribute("msg", e.getMessage());
+			return "common/errorPage";
+		}
+
+	}
 
 	// qna 상세보기
 	@RequestMapping(value = "qnaDetail.bo", method = RequestMethod.GET)
@@ -169,24 +209,5 @@ public class BoardController {
 		return "redirect:qnaList.bo";
 
 	}
-//review리스트
-@RequestMapping("reviewList.bo")
-public String reviewList(@RequestParam(value = "currentPage", required = false, defaultValue = "1") int currentPage,
-		HttpServletRequest request, HttpServletResponse response) {
-	ArrayList<Board> reviewList = new ArrayList<Board>();
 
-	try {
-		int listCount = bs.selectQnaCount();
-		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
-		reviewList = bs.selectReviewList(pi);
-		request.setAttribute("reviewList", reviewList);
-		request.setAttribute("pi", pi);
-		System.out.println(reviewList);
-		return "customer/review/reviewList";
-	} catch (BoardException e) {
-		request.setAttribute("msg", e.getMessage());
-		return "common/errorPage";
-	}
-
-}
 }
