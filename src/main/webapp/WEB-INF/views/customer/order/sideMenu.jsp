@@ -66,7 +66,7 @@
 					주문하기
 				</button>
 			</c:if>
-			<c:if test="${ !empty sessionScope.loginUser or empty !sessionScope.noUserLogin }">
+			<c:if test="${ !empty sessionScope.loginUser or !empty sessionScope.noUserLogin }">
 				<button class="ui blue button" style="width: 150px;" onclick="orderBtn();">
 					주문하기
 				</button>

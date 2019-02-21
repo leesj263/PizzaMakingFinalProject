@@ -73,4 +73,6 @@ public interface OrderDao {
 
 	int insertOrderTopping(SqlSessionTemplate sqlSession, OrderTopping orderTopping);
 
+	int updateCouponIssue(SqlSessionTemplate sqlSession, Coupon cp);
+
 }

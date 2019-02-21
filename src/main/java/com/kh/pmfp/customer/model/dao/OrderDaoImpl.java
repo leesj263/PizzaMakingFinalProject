@@ -202,4 +202,10 @@ public class OrderDaoImpl implements OrderDao {
 		return sqlSession.insert("CustomerOrder.insertOrderTopping", orderTopping);
 	}
 
+	//CouponIssue update
+	@Override
+	public int updateCouponIssue(SqlSessionTemplate sqlSession, Coupon cp) {
+		return sqlSession.insert("CustomerOrder.updateCouponIssue", cp);
+	}
+
 }

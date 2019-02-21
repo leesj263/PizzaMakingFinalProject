@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.support.SessionStatus;
 
 import com.kh.pmfp.common.model.vo.Member;
 import com.kh.pmfp.common.model.vo.PageInfo;
@@ -557,7 +558,7 @@ public class OrderConroller {
 						time.set(Calendar.HOUR_OF_DAY, Integer.parseInt(reserve.split(":")[0]));
 						time.set(Calendar.MINUTE, Integer.parseInt(reserve.split(":")[1]));
 						time.set(Calendar.SECOND, 0);
-						om.setOrderReservetime(new Date(time.getTimeInMillis()));
+						om.setOrderReservetime(new java.sql.Date(time.getTimeInMillis()));
 						//System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(om.getOrderReservetime()));
 					}
 				} else if(key.equals("orderPayprice")) {
@@ -580,13 +581,13 @@ public class OrderConroller {
 			oiList.get(i).setOrderNo(om.getOrderNo());
 		}
 		
-		System.out.println("OrderMain: " + om);
+		/*System.out.println("OrderMain: " + om);
 		System.out.println("Coupon: " + cp);
-		System.out.println("OrderItemList: " + oiList);
+		System.out.println("OrderItemList: " + oiList);*/
 		
 		int result = os.insertOrder(om, cp, oiList);
 		
-		System.out.println(result);
+		//System.out.println(result);
 		
 		if(result < 1) {
 			return "fail";
@@ -595,9 +596,9 @@ public class OrderConroller {
 		}
 	}
 	
-	@RequestMapping(value="/orderComplete.cor")
+	//주문완료 페이지
+	@RequestMapping(value="orderComplete.cor")
 	public String orderComplete() {
 		return "customer/order/orderComplete";
 	}
-	
 }

@@ -155,22 +155,31 @@ public class OrderServiceImpl implements OrderService {
 		int result = 0;
 		
 		int resultOM = od.insertOrderMain(sqlSession, om);
+		//System.out.println("OrderMain Insert: " + resultOM);
 		int resultOI = 0;
 		for(int i=0; i<oiList.size(); i++) {
 			int orderIno = od.selectOrderIno(sqlSession);
 			oiList.get(i).setOrderIno(orderIno);
 			int result1 = od.insertOrderItem(sqlSession, oiList.get(i));
+			//System.out.println("OrderItem Insert: " + result1);
 			
 			int result2 = 0;
 			for(int j=0; j<oiList.get(i).getOrderTopping().size(); j++) {
 				oiList.get(i).getOrderTopping().get(j).setOrderIno(orderIno);
 				result2 += od.insertOrderTopping(sqlSession, oiList.get(i).getOrderTopping().get(j));
 			}
-			
+			//System.out.println("OrderTopping Insert: " + result2);
 			if(result1 == 1 && result2 == oiList.get(i).getOrderTopping().size()) resultOI++;
 		}
 		
-		if(resultOM == 1 && resultOI == oiList.size()) result = 1;
+		int resultCP = 0;
+		if(cp.getIssueNo() != 0) {
+			resultCP = od.updateCouponIssue(sqlSession, cp);
+		} else {
+			resultCP = 1;
+		}
+		
+		if(resultOM == 1 && resultOI == oiList.size() && resultCP == 1) result = 1;
 		return result;
 	}
 }

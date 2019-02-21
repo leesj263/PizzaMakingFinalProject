@@ -15,10 +15,17 @@
 </head>
 <body>
 	<%@ include file="/WEB-INF/views/main/menubar.jsp" %>
-
-	<div style="margin: auto;">
-		<h1>주문이 완료되었습니다.</h1>
+	
+	<div style="position: absolute; left:40%; top:40%;">
+		<h2>주문이 완료되었습니다.</h2>
+		<c:if test="${ !empty sessionScope.loginUser }">
+		<button class="ui button green attached" style="margin-left: 60px;" onclick="location.href='mypage.mp'">마이페이지로</button>
+		</c:if>
+		<c:if test="${ !empty sessionScope.noUserLogin }">
+		<button class="ui button green attached" style="margin-left: 60px;" onclick="location.href='main.t'">메인페이지로</button>
+		</c:if>
 	</div>
+	
 
 	<script src="/pmfp/resources/main/assets/js/semantic/semantic.min.js"></script>
 </body>
