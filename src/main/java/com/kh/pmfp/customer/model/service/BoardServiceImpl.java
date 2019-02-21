@@ -89,6 +89,16 @@ public class BoardServiceImpl implements BoardService {
 		int result= bd.qnaUpdateC(sqlSession, qna);
 		return result;
 	}
+	//review리스트
+	@Override
+	public ArrayList<Board> selectReviewList(PageInfo pi) throws BoardException {
+		ArrayList<Board> reviewList=new ArrayList<Board>();
+	
+			reviewList=bd.selectReviewList(sqlSession, pi);
+		
+		
+		return reviewList;
+	}
 	
 	
 	

@@ -159,7 +159,7 @@ h1 {
 				<ul id="down1" style="display: none">
 					<li><a href="shareList.t">토핑공유</a></li>
 					<br>
-					<li><a href="reviewList.t">후기</a></li>
+					<li><a href="reviewList.bo">제작후기</a></li>
 				</ul></li>
 
 			<li><a id="menuList2">고객센터</a>

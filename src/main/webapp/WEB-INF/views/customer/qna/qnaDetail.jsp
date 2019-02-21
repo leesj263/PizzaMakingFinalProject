@@ -19,9 +19,8 @@
 	<br>
 
 	<div class="container" style="width: 50%; margin-left: 30%">
-		<p text-align="center">
-		<h2>Q&A상세보기</h2>
-		</p>
+		<p align="center">
+		<h2>Q&A상세보기</h2></p>
 		<hr>
 
 		<caption>
@@ -79,9 +78,9 @@
 			<font size="4" color="red">댓글</font>
 
 			<hr>
-			</form>
+			
 		</div>
-		</table>
+		
 		<br>
 		<br>
 		<!-- 댓글 란 -->

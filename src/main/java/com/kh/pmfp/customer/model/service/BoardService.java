@@ -26,7 +26,8 @@ public interface BoardService {
 	Board selectAnswer(int num) throws BoardException;
 	//qna삭제
 	int deleteqna(int boardNo) throws BoardException;
-	//
+	//review 리스트
+	ArrayList<Board> selectReviewList(PageInfo pi) throws BoardException;
 	
 	
 	
