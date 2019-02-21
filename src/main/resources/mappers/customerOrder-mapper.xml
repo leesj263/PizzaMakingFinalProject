@@ -257,19 +257,35 @@
 	
 	<!-- OrderMain Insert-->
 	<insert id="insertOrderMain" parameterType="com.kh.pmfp.customer.model.vo.OrderMain">
-		INSERT INTO ORDER_MAIN(ORDER_NO,MEMBER_NO,ORDER_METHOD,ORDER_RECEIVER,ORDER_RTEL,ORDER_DATE,ORDER_RESERVETIME,ORDER_PAYNO,ORDER_PAYPRICE,ORDER_STATUS,DELIVERY_NO,EMP_NO,COM_NO)
-    	VALUES(#{orderNo},#{memberNo},#{orderMethod},#{orderReceiver},#{orderRtel},SYSDATE,#{orderReservetime},#{orderPayno},#{orderPayprice},1,#{deliveryNo},null,#{comNo})
+		INSERT INTO ORDER_MAIN(ORDER_NO,MEMBER_NO,ORDER_METHOD,
+			ORDER_RECEIVER,ORDER_RTEL,ORDER_DATE,
+			<if test="orderReservetime != null">ORDER_RESERVETIME,</if>
+			ORDER_PAYNO,ORDER_PAYPRICE,ORDER_STATUS,
+			<if test="deliveryNo != 0">DELIVERY_NO,</if>EMP_NO,COM_NO)
+    	VALUES(#{orderNo},#{memberNo},#{orderMethod},
+    		#{orderReceiver},#{orderRtel},SYSDATE,
+    		<if test="orderReservetime != null">#{orderReservetime},</if>
+    		#{orderPayno},#{orderPayprice},1,
+    		<if test="deliveryNo != 0">#{deliveryNo},</if>null,#{comNo})
 	</insert>
 	
 	<!-- OrderItem Insert -->
 	<insert id="insertOrderItem" parameterType="com.kh.pmfp.customer.model.vo.OrderItem">
-		INSERT INTO ORDER_ITEM(ORDER_INO,ORDER_NO,ORDER_ICATEG,ORDER_ISIZE,ORDER_TCOUNT)
-    	VALUES(#{orderIno},#{orderNo},#{orderIcateg},#{orderIsize},#{orderTcount})
+		INSERT INTO ORDER_ITEM(ORDER_INO,ORDER_NO,ORDER_ICATEG,
+			<if test="orderIsize != null">ORDER_ISIZE,</if>ORDER_TCOUNT)
+    	VALUES(#{orderIno},#{orderNo},#{orderIcateg},
+    		<if test="orderIsize != null">#{orderIsize},</if>#{orderTcount})
 	</insert>
 	
 	<!-- OrderTopping Insert -->
 	<insert id="insertOrderTopping" parameterType="com.kh.pmfp.customer.model.vo.OrderTopping">
 		INSERT INTO ORDER_TOPPING(ORDER_INO,MATERIAL_NO,ORDER_TCOUNT)
-    	VALUES(#{orderIno},#{materialNo},#{orderTcount})
+    		VALUES(#{orderIno},#{materialNo},#{orderTcount})
 	</insert>
+	
+	<!-- CouponIssue Update -->
+	<update id="updateCouponIssue" parameterType="com.kh.pmfp.customer.model.vo.Coupon">
+		UPDATE COUPON_ISSUE SET ISSUE_STATUS = 'N' WHERE ISSUE_NO = #{issueNo}
+	</update>
+	
 </mapper>

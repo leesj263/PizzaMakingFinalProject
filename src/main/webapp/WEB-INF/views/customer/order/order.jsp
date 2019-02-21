@@ -678,28 +678,30 @@ div.radio label:hover {
 		
 		//쿠폰 적용
 		function addCoupon(issueNo, couponDiscount){
-			$("#issueNo").val(issueNo);
-			$("#couponDiscount").val(couponDiscount);
-			//console.log($("#couponDiscount").val());
-			
-			if(issueNo != ""){				
-				var detail = $(".issueNo" + issueNo).children().eq(0).text() + " (" + $(".issueNo" + issueNo).children().eq(1).text() + ")";
-				$("#discountDetail").html("* 할인내역<br><br><span class='discountText'>- " +detail+ "</span>");
-			} else {
-				$("#discountDetail").html("* 할인내역<br><br><span class='discountText'>&nbsp;</span>");
-			}
-			
-			var totalPrice = Number($("#cartTotalPrice").val());
-			
-			if(couponDiscount > 1){
-				$(".discountPrice").text(numComma(couponDiscount) + " 원");
-				$(".finalPrice").text(numComma(totalPrice-couponDiscount) + " 원");
-				$("#finalPrice").val(totalPrice-couponDiscount);
-			} else {
-				var discount = Math.ceil(totalPrice*couponDiscount/10)*10;
-				$(".discountPrice").text(numComma(discount) + " 원");
-				$(".finalPrice").text(numComma(totalPrice-discount) + " 원");
-				$("#finalPrice").val(totalPrice-discount);
+			if(issueNo != null){
+				$("#issueNo").val(issueNo);
+				$("#couponDiscount").val(couponDiscount);
+				//console.log($("#couponDiscount").val());
+				
+				if(issueNo != ""){				
+					var detail = $(".issueNo" + issueNo).children().eq(0).text() + " (" + $(".issueNo" + issueNo).children().eq(1).text() + ")";
+					$("#discountDetail").html("* 할인내역<br><br><span class='discountText'>- " +detail+ "</span>");
+				} else {
+					$("#discountDetail").html("* 할인내역<br><br><span class='discountText'>&nbsp;</span>");
+				}
+				
+				var totalPrice = Number($("#cartTotalPrice").val());
+				
+				if(couponDiscount > 1){
+					$(".discountPrice").text(numComma(couponDiscount) + " 원");
+					$(".finalPrice").text(numComma(totalPrice-couponDiscount) + " 원");
+					$("#finalPrice").val(totalPrice-couponDiscount);
+				} else {
+					var discount = Math.ceil(totalPrice*couponDiscount/10)*10;
+					$(".discountPrice").text(numComma(discount) + " 원");
+					$(".finalPrice").text(numComma(totalPrice-discount) + " 원");
+					$("#finalPrice").val(totalPrice-discount);
+				}
 			}
 		}
 		
@@ -816,6 +818,11 @@ div.radio label:hover {
 			var regExp3 = /\d\d-\d\d\d\d-\d\d\d\d/;
 			var regExp4 = /\d\d-\d\d\d-\d\d\d\d/;
 			
+			if(orderReceiver == ""){
+				alert("이름을 입력해주세요.");
+				return;
+			}
+			
 			var orderToday = new Date();
 			if(orderToday.getHours() >= 21){
 				alert("주문은 저녁 9시까지 가능합니다.");
@@ -904,8 +911,26 @@ div.radio label:hover {
 			}
 			
 
-			var orderName = cartList[cartNoList[0]].pizzaName + "(" + cartList[cartNoList[0]].size + ") 외 " + (cartNoList.length - 1) + "건";
-			
+			var orderName = "";
+			if(cartNoList.length > 1){
+				var chk = true;
+				for(var no in cartList){
+					if(cartList[no].categ == 1) {
+						orderName = cartList[no].pizzaName + "(" + cartList[no].size + ") 외 " + (cartNoList.length - 1) + "건";
+						chk = false;
+						break;
+					}
+				}
+				if(chk){
+					orderName = cartList[cartNoList[0]].pizzaName + " 외 " + (cartNoList.length - 1) + "건";
+				}
+			} else if(cartNoList.length == 1){
+				if(cartList[cartNoList[0]].size == ""){
+					orderName = cartList[cartNoList[0]].pizzaName;
+				} else {
+					orderName = cartList[cartNoList[0]].pizzaName + "(" + cartList[cartNoList[0]].size + ")";
+				}
+			}
 			/* console.log(orderName);
 			console.log(orderItem);
 			console.log("orderMethod: " + orderMethod);
@@ -951,7 +976,47 @@ div.radio label:hover {
 						    //buyer_postcode : '123-456'
 						}, function(rsp) {
 						    if ( rsp.success ) {
-						    	//[1] 서버단에서 결제정보 조회를 위해 jQuery ajax로 imp_uid 전달하기
+						    	orderPayno = rsp.imp_uid;
+						    	
+						    	var jsonData = JSON.stringify({
+									orderItem: orderItem,
+									orderMethod: orderMethod,
+									orderReceiver: orderReceiver,
+									orderRtel: orderRtel,
+									orderReservetime: orderReservetime,
+									orderPayprice: orderPayprice,
+									deliveryNo: deliveryNo,
+									comNo: comNo,
+									issueNo: issueNo,
+									orderNo: orderNo,
+									orderPayno: orderPayno
+								});
+								
+								$.ajax({
+									url: "insertOrder.cor",
+									type: "post",
+									contentType:"application/json;charset=UTF-8",
+									data: jsonData,
+									success: function(data2){
+										//console.log("성공");
+										if(data2 == "fail") {
+											alert("데이터베이스 연결에 실패하였습니다.");
+											return;
+										}
+										
+										for(var cart in cartNoList){
+											$.removeCookie("cartNo"+cart);
+										}
+										$.removeCookie("cartNoList");
+										
+										location.href = "orderComplete.cor";
+										
+									}, error: function(data2){
+										alert("주문 정보 입력에 실패하였습니다.");
+									}
+								});
+						    	
+						    	/* //[1] 서버단에서 결제정보 조회를 위해 jQuery ajax로 imp_uid 전달하기
 						    	jQuery.ajax({
 						    		url: "orderComplete.cor", //cross-domain error가 발생하지 않도록 주의해주세요
 						    		type: 'POST',
@@ -965,7 +1030,6 @@ div.radio label:hover {
 						    		if ( everythings_fine ) {
 						    			var msg = '결제가 완료되었습니다.';
 						    			msg += '\n고유ID : ' + rsp.imp_uid;
-						    			orderPayno = rsp.imp_uid;
 						    			msg += '\n상점 거래ID : ' + rsp.merchant_uid;
 						    			msg += '\결제 금액 : ' + rsp.paid_amount;
 						    			msg += '카드 승인번호 : ' + rsp.apply_num;
@@ -975,42 +1039,7 @@ div.radio label:hover {
 						    			//[3] 아직 제대로 결제가 되지 않았습니다.
 						    			//[4] 결제된 금액이 요청한 금액과 달라 결제를 자동취소처리하였습니다.
 						    		}
-						    		
-						    		
-						    		var jsonData = JSON.stringify({
-										orderItem: orderItem,
-										orderMethod: orderMethod,
-										orderReceiver: orderReceiver,
-										orderRtel: orderRtel,
-										orderReservetime: orderReservetime,
-										orderPayprice: orderPayprice,
-										deliveryNo: deliveryNo,
-										comNo: comNo,
-										issueNo: issueNo,
-										orderNo: orderNo,
-										orderPayno: orderPayno
-									});
-									
-									$.ajax({
-										url: "insertOrder.cor",
-										type: "post",
-										contentType:"application/json;charset=UTF-8",
-										data: jsonData,
-										success: function(data2){
-											//console.log("성공");
-											if(data2 == "fail") {
-												alert("데이터베이스 연결에 실패하였습니다.");
-												return;
-											}
-											
-											alert("데이터 베이스 입력 완료!");
-											
-										}, error: function(data2){
-											alert("주문 정보 입력에 실패하였습니다.");
-										}
-									});
-						    		
-						    	});
+						    	}); */
 						    } else {
 						        var msg = '결제에 실패하였습니다.';
 						        msg += '에러내용 : ' + rsp.error_msg;
@@ -1018,11 +1047,7 @@ div.radio label:hover {
 						        alert(msg);
 						    }
 						});
-					}
-					
-					pay().then(function(){
-						
-					});
+					}();
 					
 				}, error: function(data){
 					alert("데이터베이스 연결에 실패하였습니다.");
