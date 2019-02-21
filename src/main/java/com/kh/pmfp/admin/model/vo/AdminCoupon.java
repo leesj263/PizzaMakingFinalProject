@@ -16,7 +16,7 @@ public class AdminCoupon implements Serializable{
 	private Date couponEdate;	//유효기간
 	private double couponRdiscount;	//할인율
 	private int couponPdiscount;	//할인금액
-	
+
 
 	
 	public AdminCoupon() {}

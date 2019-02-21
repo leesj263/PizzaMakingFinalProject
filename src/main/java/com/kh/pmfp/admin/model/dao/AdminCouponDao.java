@@ -20,4 +20,7 @@ public interface AdminCouponDao {
 	//쿠폰 생성하기
 	int insertCreateCoupon(SqlSessionTemplate sqlSession, AdminCoupon couponCreate);
 
+	//쿠폰 이름 검색하기
+	ArrayList<AdminCoupon> selectListCouponName(SqlSessionTemplate sqlSession, AdminCoupon coupon);
+
 }
