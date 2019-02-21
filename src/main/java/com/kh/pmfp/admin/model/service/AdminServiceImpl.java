@@ -556,6 +556,12 @@ public class AdminServiceImpl implements AdminService {
 		return salesList;
 	}
 
+	//통계 출력용 토핑 리스트
+	@Override
+	public ArrayList<AdminMaterial> selectMaterialList() throws AdminSelectException {
+		return ad.selectMaterialList(sqlSession);
+	}
+
 	
 
 	

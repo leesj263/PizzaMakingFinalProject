@@ -6,30 +6,49 @@
 <jsp:include page="../../common/header.jsp" />
 <style>
 #timeSelect {
+	float: right;
+	border: 3px solid #F7D358;
+	border-radius: 5px;
+}
+#matSelect{
 	float: left;
 	border: 3px solid #F7D358;
 	border-radius: 5px;
 }
+div.modal-body{
+	padding:20px 75px;
+}
+#matNoList{
+	width:150px;
+}
 </style>
 <section>
 	<div class="right-panel">
-		<p>statistics.jsp</p>
 		<div class="card">
 			<div class="card-body">
 				<div class="row">
-					<div class="col-md-8"></div>
-					<div class="col-md-4">
+					<div class="col-md-4"></div>
+					<div class="col-md-8">
 						<button class="btn btn-sm btn-outline-warning" onclick="location.href='statistics.ad'">전체매출</button>
 						&nbsp;&nbsp;
 						<button class="btn btn-sm btn-outline-primary" onclick="location.href='statisitcsCom.ad?comNo=1'">업체매출</button>
 						&nbsp;&nbsp;
-						<button class="btn btn-sm btn-danger" onclick="location.href='statisticsMat.ad?materialNo=1'" disabled>토핑매출</button>
+						<button class="btn btn-sm btn-danger" onclick="location.href='statisticsMat.ad?materialCate=1'" disabled>토핑매출</button>
 					</div>
 				</div>
 				<div class="col-lg-10">
 					<div class="card">
 						<div class="card-body">
 							<div class="row">
+								<div class="col-md-8">
+									<button id="matSelect" class="btn btn-sm btn-outline-warning" value="${materialCate }" type="button" data-toggle="modal" data-target="#smallModal">
+										<c:if test="${materialCate==1 }">도우</c:if>
+										<c:if test="${materialCate==2 }">소스</c:if>
+										<c:if test="${materialCate==3 }">엣지</c:if>
+										<c:if test="${materialCate==4 }">토핑</c:if>
+										<c:if test="${materialCate==5 }">사이드메뉴</c:if>
+									</button>
+								</div>
 								<div class="col-md-4">
 									<select id="timeSelect" class="form-class">
 										<option value="yearly" onclick="yearly()">연간 매출</option>
@@ -37,12 +56,43 @@
 										<option value="daily" onclick="daily()" selected>일간 매출</option>
 									</select>
 								</div>
-								<div clss="col-md-6"></div>
 							</div>
 							<h4 class="mb-3" id="chartBefore"></h4>
 							<canvas id="sales-chart"></canvas>
 						</div>
 					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade" id="smallModal" tabindex="-1" role="dialog" aria-labelledby="smallModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-sm" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="smallModalLabel">토핑 선택</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+ 				<div class="modal-body">
+					<select id="matNoList" name="matNoList" size="8">
+						<option value="1" onclick="matStat(1)"<c:if test="${materialCate==1 }">selected</c:if>>도우</option>
+						<option value="2" onclick="matStat(2)"<c:if test="${materialCate==2 }">selected</c:if>>소스</option>
+						<option value="3" onclick="matStat(3)"<c:if test="${materialCate==3 }">selected</c:if>>엣지</option>
+						<option value="4" onclick="matStat(4)"<c:if test="${materialCate==4 }">selected</c:if>>토핑</option>
+						<option value="5" onclick="matStat(5)"<c:if test="${materialCate==5 }">selected</c:if>>사이드</option>
+					</select>
+					<select id="matNoList" name="matNoList" size="8">
+						<option value="1" onclick="matStat(1)"<c:if test="${materialCate==1 }">selected</c:if>>도우</option>
+						<option value="2" onclick="matStat(2)"<c:if test="${materialCate==2 }">selected</c:if>>소스</option>
+						<option value="3" onclick="matStat(3)"<c:if test="${materialCate==3 }">selected</c:if>>엣지</option>
+						<option value="4" onclick="matStat(4)"<c:if test="${materialCate==4 }">selected</c:if>>토핑</option>
+						<option value="5" onclick="matStat(5)"<c:if test="${materialCate==5 }">selected</c:if>>사이드</option>
+					</select>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-outline-secondary" data-dismiss="modal">취소</button>
+					<button type="button" class="btn btn-outline-warning" onclick="goMatStat()">선택</button>
 				</div>
 			</div>
 		</div>
@@ -77,6 +127,7 @@
 		return year;
 	}
 	(function($) {
+		var mCate="${materialCate}";
 /*
 		var salesListsize = "${fn:length(salesList)}";
 		var expenseListsize = "${fn:length(expenseList)}";
@@ -228,6 +279,10 @@
 		console.log(salesList);
 		
 */
+		var labelArr=["업체 재고 주문", "고객 주문", "그냥"];
+		var dataArr=[[ 0, 30, 10, 120, 50, 63, 10 ], [ 0, 50, 40, 80, 40, 79, 120 ], [ 8, 10, 60, 20, 90, 56, 73 ]];
+		var colorArr=['rgba(220,53,69,0.75)', 'rgba(40,167,69,0.75)', 'rgb(167,69,255)'];
+		
 		var ctx = $("#sales-chart");
 		ctx.height=150;
 		var myChart=new Chart(ctx, {
@@ -236,7 +291,23 @@
 				labels : [ "2010", "2011", "2012", "2013", "2014", "2015", "2016" ],
 				type : 'line',
 				defaultFontFamily : 'Montserrat',
-				datasets : [ {
+				datasets : [ 
+					<%for(int i=0;i<3;i++){%>
+						{
+							label : labelArr[<%=i%>],
+							data : dataArr[<%=i%>],
+							backgroundColor : 'transparent',
+							borderColor : colorArr[<%=i%>],
+							borderWidth : 2,
+							pointStyle : 'circle',
+							pointRadius : 3,
+							pointBorderColor : 'transparent',
+							pointBackgroundColor : colorArr[<%=i%>],
+						},
+					<%}%>
+					
+					
+					/* {
 					label : "업체 재고 주문",
 					data : [ 0, 30, 10, 120, 50, 63, 10 ],
 					backgroundColor : 'transparent',
@@ -256,7 +327,8 @@
 					pointRadius : 5,
 					pointBorderColor : 'transparent',
 					pointBackgroundColor : 'rgba(40,167,69,0.75)',
-				} ]
+				},  */
+				]
 			},
 			options : {
 				responsive : true,

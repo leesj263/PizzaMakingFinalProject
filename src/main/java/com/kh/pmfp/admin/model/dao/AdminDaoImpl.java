@@ -843,6 +843,17 @@ public class AdminDaoImpl implements AdminDao {
 		return salesList;
 	}
 
+	//통계 출력용 토핑 리스트
+	@Override
+	public ArrayList<AdminMaterial> selectMaterialList(SqlSessionTemplate sqlSession) throws AdminSelectException {
+		ArrayList<AdminMaterial> matList=new ArrayList<AdminMaterial>();
+		matList=(ArrayList)sqlSession.selectList("Admin.selectMatList");
+		if(matList==null) {
+			throw new AdminSelectException("재료 목록 조회 실패");
+		}
+		return matList;
+	}
+
 
 	
 	

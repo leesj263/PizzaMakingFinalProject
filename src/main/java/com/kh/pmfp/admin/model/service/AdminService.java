@@ -194,6 +194,9 @@ public interface AdminService {
 	//통계 출력용 --- 업체 통계
 	ArrayList<AdminSales> selectComStatistics(AdminSales sales) throws AdminSelectException;
 
+	//통계 출력용 토핑 리스트
+	ArrayList<AdminMaterial> selectMaterialList() throws AdminSelectException;
+
 
 	
 	
