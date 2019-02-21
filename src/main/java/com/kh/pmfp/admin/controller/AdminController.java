@@ -25,6 +25,7 @@ import com.kh.pmfp.admin.model.service.AdminService;
 import com.kh.pmfp.admin.model.vo.AdminBoard;
 import com.kh.pmfp.admin.model.vo.AdminCalculate;
 import com.kh.pmfp.admin.model.vo.AdminCalculateList;
+import com.kh.pmfp.admin.model.vo.AdminMSales;
 import com.kh.pmfp.admin.model.vo.AdminMaterial;
 import com.kh.pmfp.admin.model.vo.AdminMember;
 import com.kh.pmfp.admin.model.vo.AdminMenu;
@@ -963,6 +964,7 @@ public class AdminController {
 				}
 			}
 			request.setAttribute("selectSeller", selectSeller);
+			request.setAttribute("selectComNo", comNo);
 			request.setAttribute("salesList", salesList);
 			request.setAttribute("expenseList", expenseList);
 			request.setAttribute("sellerList", sellerList);
@@ -974,11 +976,14 @@ public class AdminController {
 	}
 	
 	@RequestMapping(value="statisticsMat.ad", method=RequestMethod.GET)
-	public String statisitcsMat(@RequestParam(value="materialCate", required=false, defaultValue="1")int materialCate, HttpServletRequest request) {
+	public String statisitcsMat(@RequestParam(value="mCate", required=false, defaultValue="1")int materialCate, HttpServletRequest request) {
 		ArrayList<AdminMaterial> matList=new ArrayList<AdminMaterial>();
+		ArrayList<AdminMSales> salesList=new ArrayList<AdminMSales>();
 		try {
 			matList=as.selectMaterialList();
+			salesList=as.selectOrderMStat(materialCate);
 			request.setAttribute("materialCate", materialCate);
+			request.setAttribute("salesList", salesList);
 			request.setAttribute("matList", matList);
 			return "admin/sales/statistics/statisticsMat";
 		} catch (AdminSelectException e) {

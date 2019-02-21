@@ -12,6 +12,7 @@ import com.kh.pmfp.admin.model.exception.AdminUpdateException;
 import com.kh.pmfp.admin.model.vo.AdminBoard;
 import com.kh.pmfp.admin.model.vo.AdminCalculate;
 import com.kh.pmfp.admin.model.vo.AdminCalculateList;
+import com.kh.pmfp.admin.model.vo.AdminMSales;
 import com.kh.pmfp.admin.model.vo.AdminMaterial;
 import com.kh.pmfp.admin.model.vo.AdminMember;
 import com.kh.pmfp.admin.model.vo.AdminMenu;
@@ -226,9 +227,18 @@ public interface AdminDao {
 
 	//통계 출력용 --- 업체 통계
 	ArrayList<AdminSales> selectComStat(SqlSessionTemplate sqlSession, AdminSales sales) throws AdminSelectException;
+	
+	//통계 출력용 --- 업체 통계
+	ArrayList<AdminSales> selectOrderTStat(SqlSessionTemplate sqlSession, AdminSales sales) throws AdminSelectException;
+	
+	//통계 출력용 --- 업체 통계
+	ArrayList<AdminSales> selectComTStat(SqlSessionTemplate sqlSession, AdminSales sales) throws AdminSelectException;
 
 	//통계 출력용 토핑 리스트
 	ArrayList<AdminMaterial> selectMaterialList(SqlSessionTemplate sqlSession) throws AdminSelectException;
+
+	//통계 출력용 -- 토핑
+	ArrayList<AdminMSales> selectOrderMStat(SqlSessionTemplate sqlSession, int materialCate) throws AdminSelectException;
 
 
 	

@@ -15,6 +15,7 @@ import com.kh.pmfp.admin.model.exception.AdminUpdateException;
 import com.kh.pmfp.admin.model.vo.AdminBoard;
 import com.kh.pmfp.admin.model.vo.AdminCalculate;
 import com.kh.pmfp.admin.model.vo.AdminCalculateList;
+import com.kh.pmfp.admin.model.vo.AdminMSales;
 import com.kh.pmfp.admin.model.vo.AdminMaterial;
 import com.kh.pmfp.admin.model.vo.AdminMember;
 import com.kh.pmfp.admin.model.vo.AdminMenu;
@@ -547,10 +548,18 @@ public class AdminServiceImpl implements AdminService {
 	public ArrayList<AdminSales> selectComStatistics(AdminSales sales) throws AdminSelectException {
 		ArrayList<AdminSales>  salesList=new ArrayList<AdminSales>();
 		if(sales.getSalesCate()==1) {			
-			salesList=ad.selectOrderStat(sqlSession, sales);
+			if(sales.getComNo()==0) {
+				salesList=ad.selectOrderTStat(sqlSession,sales);
+			}else {
+				salesList=ad.selectOrderStat(sqlSession, sales);
+			}
 		}
 		if(sales.getSalesCate()==0) {
-			salesList=ad.selectComStat(sqlSession, sales);
+			if(sales.getComNo()==0) {
+				salesList=ad.selectComTStat(sqlSession,sales);
+			}else {
+				salesList=ad.selectComStat(sqlSession, sales);
+			}
 		}
 		
 		return salesList;
@@ -560,6 +569,12 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public ArrayList<AdminMaterial> selectMaterialList() throws AdminSelectException {
 		return ad.selectMaterialList(sqlSession);
+	}
+
+	//통계 출력용 -- 토핑
+	@Override
+	public ArrayList<AdminMSales> selectOrderMStat(int materialCate) throws AdminSelectException {
+		return ad.selectOrderMStat(sqlSession, materialCate);
 	}
 
 	

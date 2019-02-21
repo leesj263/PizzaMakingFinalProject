@@ -22,7 +22,7 @@
 						&nbsp;&nbsp;
 						<button class="btn btn-sm btn-outline-primary" onclick="location.href='statisitcsCom.ad?comNo=1'">업체매출</button>
 						&nbsp;&nbsp;
-						<button class="btn btn-sm btn-outline-danger" onclick="location.href='statisticsMat.ad?materialCate=1'">토핑매출</button>
+						<button class="btn btn-sm btn-outline-danger" onclick="location.href='statisticsMat.ad?mCate=1'">토핑매출</button>
 					</div>
 				</div>
 				<div class="col-lg-10">
