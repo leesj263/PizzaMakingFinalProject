@@ -32,6 +32,8 @@ public interface BoardDao {
 	int qnaUpdateC(SqlSessionTemplate sqlSession, Board qna) throws BoardException;
 //review리스트
 	ArrayList<Board> selectReviewList(SqlSessionTemplate sqlSession, PageInfo pi) throws BoardException;
+//review작성
+	int insertReview(SqlSessionTemplate sqlSession, Board review) throws BoardException;
 	
 	
 	

@@ -28,6 +28,8 @@ public interface BoardService {
 	int deleteqna(int boardNo) throws BoardException;
 	//review 리스트
 	ArrayList<Board> selectReviewList(PageInfo pi) throws BoardException;
+	//review작성하기
+	int insertReview(Board review) throws BoardException;
 	
 	
 	

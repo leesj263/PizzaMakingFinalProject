@@ -23,7 +23,7 @@
 		<br>
 		<br>
 		<div class="tableArea">
-			<form action="<%-- <%= request.getContextPath() %>/insert.bo --%>" method="post">
+			<form action="reviewWrite.bo" method="post">
 				<table align="center">
 					
 					<tr></tr>
@@ -31,7 +31,7 @@
 					<tr>
 						<td><b>제목</b></td>
 						<td colspan="3">
-							<input type="text" size="60" name="title">
+							<input type="text" size="60" name="boardTitle">
 						</td>
 					</tr>
 					<tr></tr>
@@ -39,13 +39,13 @@
 					<tr>
 						<td><b>내용</b></td>
 						<td>
-							<textarea name="content" cols="100" rows="25" style="resize:none;"></textarea>
+							<textarea name="boardContent" cols="100" rows="25" style="resize:none;"></textarea>
 						</td>
 					</tr>
 					<tr>
 						<td><b>파일첨부</b></td>
 						<td colspan="3">
-							<input type="file" size="60" name="title">
+							<input type="file" size="60" name="boardFile">
 						</td>
 					</tr>					
 				</table>

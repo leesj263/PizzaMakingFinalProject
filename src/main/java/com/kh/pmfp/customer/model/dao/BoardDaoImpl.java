@@ -143,4 +143,14 @@ public class BoardDaoImpl implements BoardDao {
 			}
 			return reviewList;
 	}
+//review작성
+	@Override
+	public int insertReview(SqlSessionTemplate sqlSession, Board review) throws BoardException {
+		int result=0;
+		 result = sqlSession.insert("Board.insertreview",review);
+		if(result<=0) {
+			throw new BoardException("review작성실패");
+		}
+		return result;
+	}
 }

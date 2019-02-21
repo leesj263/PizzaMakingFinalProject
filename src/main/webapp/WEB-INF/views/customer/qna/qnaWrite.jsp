@@ -56,12 +56,7 @@
 					</tr>
 					<tr></tr>
 					<tr></tr>
-					<!-- <tr>
-						<td><b>파일첨부</b></td>
-						<td colspan="3">
-							<input type="file" size="60" name="title">
-						</td>
-					</tr>	 -->				
+									
 				</table>
 				<br>
 				<div align="center">
