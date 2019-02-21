@@ -60,8 +60,8 @@
 				<form id="reviewAnswerWrite" action="reviewAnswerWrite.bo" method="post" style="border:solid 1px red;" >
 					
 					<input type="hidden" name="boardRefNo" value="${review.boardNo }">
-					<input type="hidden" name="boardType" value="${review.boardType }">
-					<input type="hidden" name="boardCate" value="${review.boardCate }">
+					<input type="hidden" name="boardRefNo" value="${review.boardNo }">
+					<input type="hidden" name="boardRefNo" value="${review.boardNo }">
 					<textarea class="form-control" cols="80" rows="2" id="reviewAnswerWrite" name="reviewAnswerWrite"></textarea>
 				
 				<div class="col-md-2"></div>
