@@ -250,4 +250,26 @@
 		AND COM_NO = #{comNo}
 	</select>
 	
+	<!-- 주문번호 가져오기 -->
+	<select id="selectOrderNo" resultType="java.lang.String">
+		SELECT SEQ_ODMANO.NEXTVAL FROM DUAL
+	</select>
+	
+	<!-- OrderMain Insert-->
+	<insert id="insertOrderMain" parameterType="com.kh.pmfp.customer.model.vo.OrderMain">
+		INSERT INTO ORDER_MAIN(ORDER_NO,MEMBER_NO,ORDER_METHOD,ORDER_RECEIVER,ORDER_RTEL,ORDER_DATE,ORDER_RESERVETIME,ORDER_PAYNO,ORDER_PAYPRICE,ORDER_STATUS,DELIVERY_NO,EMP_NO,COM_NO)
+    	VALUES(#{orderNo},#{memberNo},#{orderMethod},#{orderReceiver},#{orderRtel},SYSDATE,#{orderReservetime},#{orderPayno},#{orderPayprice},1,#{deliveryNo},null,#{comNo})
+	</insert>
+	
+	<!-- OrderItem Insert -->
+	<insert id="insertOrderItem" parameterType="com.kh.pmfp.customer.model.vo.OrderItem">
+		INSERT INTO ORDER_ITEM(ORDER_INO,ORDER_NO,ORDER_ICATEG,ORDER_ISIZE,ORDER_TCOUNT)
+    	VALUES(#{orderIno},#{orderNo},#{orderIcateg},#{orderIsize},#{orderTcount})
+	</insert>
+	
+	<!-- OrderTopping Insert -->
+	<insert id="insertOrderTopping" parameterType="com.kh.pmfp.customer.model.vo.OrderTopping">
+		INSERT INTO ORDER_TOPPING(ORDER_INO,MATERIAL_NO,ORDER_TCOUNT)
+    	VALUES(#{orderIno},#{materialNo},#{orderTcount})
+	</insert>
 </mapper>

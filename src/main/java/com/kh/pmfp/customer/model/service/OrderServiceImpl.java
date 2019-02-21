@@ -142,4 +142,35 @@ public class OrderServiceImpl implements OrderService {
 	public DeliveryCompany getComDetail(String comNo) {
 		return od.getComDetail(sqlSession, comNo);
 	}
+
+	//주문번호 가져오기
+	@Override
+	public String selectOrderNo() {
+		return od.selectOrderNo(sqlSession);
+	}
+
+	//주문정보 입력하기
+	@Override
+	public int insertOrder(OrderMain om, Coupon cp, ArrayList<OrderItem> oiList) {
+		int result = 0;
+		
+		int resultOM = od.insertOrderMain(sqlSession, om);
+		int resultOI = 0;
+		for(int i=0; i<oiList.size(); i++) {
+			int orderIno = od.selectOrderIno(sqlSession);
+			oiList.get(i).setOrderIno(orderIno);
+			int result1 = od.insertOrderItem(sqlSession, oiList.get(i));
+			
+			int result2 = 0;
+			for(int j=0; j<oiList.get(i).getOrderTopping().size(); j++) {
+				oiList.get(i).getOrderTopping().get(j).setOrderIno(orderIno);
+				result2 += od.insertOrderTopping(sqlSession, oiList.get(i).getOrderTopping().get(j));
+			}
+			
+			if(result1 == 1 && result2 == oiList.get(i).getOrderTopping().size()) resultOI++;
+		}
+		
+		if(resultOM == 1 && resultOI == oiList.size()) result = 1;
+		return result;
+	}
 }

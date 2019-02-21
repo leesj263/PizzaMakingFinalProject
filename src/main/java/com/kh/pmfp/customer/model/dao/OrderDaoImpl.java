@@ -51,10 +51,8 @@ public class OrderDaoImpl implements OrderDao {
 
 	//주문항목 pk 가져오기
 	@Override
-	public int selectOrderIno(SqlSessionTemplate sqlSession) throws OrderException {
-		int orderIno = sqlSession.selectOne("CustomerOrder.selectOrderIno");
-		if(orderIno == 0) throw new OrderException("ORDER_INO을 가져올 수 없습니다.");
-		return orderIno;
+	public int selectOrderIno(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("CustomerOrder.selectOrderIno");
 	}
 
 	//내 피자 pk 가져오기
@@ -180,5 +178,28 @@ public class OrderDaoImpl implements OrderDao {
 		return sqlSession.selectOne("CustomerOrder.getComDetail", comNo);
 	}
 
+	//주문번호 가져오기
+	@Override
+	public String selectOrderNo(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("CustomerOrder.selectOrderNo");
+	}
+
+	//OrderMain Insert
+	@Override
+	public int insertOrderMain(SqlSessionTemplate sqlSession, OrderMain om) {
+		return sqlSession.insert("CustomerOrder.insertOrderMain", om);
+	}
+
+	//OrderItem Insert
+	@Override
+	public int insertOrderItem(SqlSessionTemplate sqlSession, OrderItem orderItem) {
+		return sqlSession.insert("CustomerOrder.insertOrderItem", orderItem);
+	}
+
+	//OrderTopping Insert
+	@Override
+	public int insertOrderTopping(SqlSessionTemplate sqlSession, OrderTopping orderTopping) {
+		return sqlSession.insert("CustomerOrder.insertOrderTopping", orderTopping);
+	}
 
 }

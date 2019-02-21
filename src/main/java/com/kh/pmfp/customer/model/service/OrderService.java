@@ -50,4 +50,8 @@ public interface OrderService {
 	ArrayList<DeliveryCompany> selectSearchResultList(String search, PageInfo pi) throws OrderException;
 
 	DeliveryCompany getComDetail(String comNo);
+
+	String selectOrderNo();
+
+	int insertOrder(OrderMain om, Coupon cp, ArrayList<OrderItem> oiList);
 }
