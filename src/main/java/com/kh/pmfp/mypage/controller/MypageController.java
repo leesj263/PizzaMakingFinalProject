@@ -1,14 +1,8 @@
 package com.kh.pmfp.mypage.controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,23 +11,26 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.kh.pmfp.common.model.vo.CommonUtils;
 import com.kh.pmfp.common.model.vo.Distance;
 import com.kh.pmfp.common.model.vo.Member;
 import com.kh.pmfp.common.model.vo.PageInfo;
 import com.kh.pmfp.common.model.vo.Pagination;
+import com.kh.pmfp.common.model.vo.Pagination8;
 import com.kh.pmfp.customer.model.vo.MyPizza;
+import com.kh.pmfp.mypage.model.exception.MypageCountException;
+import com.kh.pmfp.mypage.model.exception.MypageListException;
 import com.kh.pmfp.mypage.model.service.MypageService;
 import com.kh.pmfp.mypage.model.vo.Coupon;
 import com.kh.pmfp.mypage.model.vo.DelList;
 import com.kh.pmfp.mypage.model.vo.DistanceLoc;
 import com.kh.pmfp.mypage.model.vo.Location;
 import com.kh.pmfp.mypage.model.vo.MyWriting;
+import com.kh.pmfp.mypage.model.vo.Mypizza;
 import com.kh.pmfp.mypage.model.vo.OrderDetail;
 import com.kh.pmfp.mypage.model.vo.OrderList;
 
@@ -54,44 +51,51 @@ public class MypageController {
 		ArrayList<String> baseList = new ArrayList<>();
 		ArrayList<String> toppingList = new ArrayList<>();
 		
-		orderList = mps.selectOrderList(memberNo);
-		System.out.println("orderList : " + orderList);
+		try {
+			orderList = mps.selectOrderList(memberNo);
 		
-		//주문 토핑 split(도우,소스,크러스트는 수량 없애기)
-		String[] splitArr;
-		String arr1 = ""; //도우,소스,크러스트
-		String arr2 = ""; //나머지 토핑
-		
-		for(int i=0;i<orderList.size();i++) {
-			splitArr = orderList.get(i).getOrderMaterial().split("/");
-			for(int j=0;j<3;j++) {
-				if(j == 2) {
-					arr1 += splitArr[j].substring(0, splitArr[j].lastIndexOf("1"));
-				}else {
-					arr1 += splitArr[j].substring(0, splitArr[j].lastIndexOf("1")) + " / ";
-				}
-			}
-			for(int k=3;k<splitArr.length;k++) {
-				if(k == splitArr.length-1) {
-					arr2 += splitArr[k];
-				}else {
-					arr2 += splitArr[k]+" / ";					
-				}
-			}
+			System.out.println("orderList : " + orderList);
 			
-			//orderList.get(i).setOrderMaterial(arr1+"\n"+arr2);
-			baseList.add(arr1);
-			toppingList.add(arr2);
+			//주문 토핑 split(도우,소스,크러스트는 수량 없애기)
+			String[] splitArr;
+			String arr1 = ""; //도우,소스,크러스트
+			String arr2 = ""; //나머지 토핑
 			
-			arr1="";
-			arr2="";
-		}
-
-		model.addAttribute("baseList",baseList);
-		model.addAttribute("toppingList",toppingList);
-		model.addAttribute("orderList",orderList);
-
-		return "mypage/orderList";
+			for(int i=0;i<orderList.size();i++) {
+				splitArr = orderList.get(i).getOrderMaterial().split("/");
+				for(int j=0;j<3;j++) {
+					if(j == 2) {
+						arr1 += splitArr[j].substring(0, splitArr[j].lastIndexOf("1"));
+					}else {
+						arr1 += splitArr[j].substring(0, splitArr[j].lastIndexOf("1")) + " / ";
+					}
+				}
+				for(int k=3;k<splitArr.length;k++) {
+					if(k == splitArr.length-1) {
+						arr2 += splitArr[k];
+					}else {
+						arr2 += splitArr[k]+" / ";					
+					}
+				}
+				
+				//orderList.get(i).setOrderMaterial(arr1+"\n"+arr2);
+				baseList.add(arr1);
+				toppingList.add(arr2);
+				
+				arr1="";
+				arr2="";
+			}
+	
+			model.addAttribute("baseList",baseList);
+			model.addAttribute("toppingList",toppingList);
+			model.addAttribute("orderList",orderList);
+			
+			return "mypage/orderList";
+			
+		} catch (MypageListException e) {
+			request.setAttribute("msg", "주문 내역 목록 조회 실패");
+			return "common/errooPage";
+		}	
 	}
 	
 	
@@ -104,35 +108,38 @@ public class MypageController {
 
 		System.out.println("orderNo : " + orderNo);
 		
-		//사용쿠폰내역 카운트 조회
-		int result = mps.selectUseCouponList(memberNo, orderNo);
-		System.out.println("result : " + result);
+		try {
+			//사용쿠폰내역 카운트 조회
+			int result = mps.selectUseCouponList(memberNo, orderNo);
+			System.out.println("result : " + result);
+	
+			//model로 보낼것
+			ArrayList<OrderDetail> modelDetailList = new ArrayList<>();
+			
+			
+			String custom = ""; //토우,소스,엣지
+			String custom2 = ""; //나머지 토핑
+			int customPrice = 0; //커스텀만 합친 가격
+			int sidePrice = 0; //사이드만 합친 가격
+		
+			ArrayList<OrderDetail> orderDetailList = new ArrayList<>();
+			OrderDetail od = new OrderDetail();
+			
+			if(result>0) {
+				//쿠폰 사용내역 O - 상세보기
+				orderDetailList = mps.selectOrderDetailList2(orderNo);
+				
+				od.setCouponCateg(orderDetailList.get(0).getCouponCateg());
+				od.setCouponName(orderDetailList.get(0).getCouponName());
+				od.setrDiscount(orderDetailList.get(0).getrDiscount());
+				od.setpDiscount(orderDetailList.get(0).getpDiscount());
+			} 
 
-		//model로 보낼것
-		ArrayList<OrderDetail> modelDetailList = new ArrayList<>();
-		
-		
-		String custom = ""; //토우,소스,엣지
-		String custom2 = ""; //나머지 토핑
-		int customPrice = 0; //커스텀만 합친 가격
-		int sidePrice = 0; //사이드만 합친 가격
-		
-		ArrayList<OrderDetail> orderDetailList;
-		OrderDetail od = new OrderDetail();
-		
-		if(result>0) {
-			//쿠폰 사용내역 O - 상세보기
-			orderDetailList = mps.selectOrderDetailList2(orderNo);
+			else {
+				//쿠폰 사용내역 X - 상세보기
+				orderDetailList = mps.selectOrderDetailList(orderNo);
+			}	
 			
-			od.setCouponCateg(orderDetailList.get(0).getCouponCateg());
-			od.setCouponName(orderDetailList.get(0).getCouponName());
-			od.setrDiscount(orderDetailList.get(0).getrDiscount());
-			od.setpDiscount(orderDetailList.get(0).getpDiscount());
-			
-		}else {
-			//쿠폰 사용내역 X - 상세보기
-			orderDetailList = mps.selectOrderDetailList(orderNo);
-		}	
 			od.setOrderDate(orderDetailList.get(0).getOrderDate());
 			od.setOrderReceiver(orderDetailList.get(0).getOrderReceiver());
 			od.setOrderRtel(orderDetailList.get(0).getOrderRtel());
@@ -178,9 +185,17 @@ public class MypageController {
 			
 			System.out.println(modelDetailList);
 
-		model.addAttribute("modelDetailList",modelDetailList);
-		
-		return "mypage/orderDetail";
+			model.addAttribute("modelDetailList",modelDetailList);
+			
+			return "mypage/orderDetail";
+			
+		} catch (MypageCountException e1) {
+			request.setAttribute("msg", "주문 상세보기 - 쿠폰 사용여부 조회 실패");
+			return "common/errorPage";
+		} catch (MypageListException e2) {
+			request.setAttribute("msg", "주문 상세보기  조회 실패");
+			return "common/errorPage";
+		}
 	}
 	
 	
@@ -194,11 +209,19 @@ public class MypageController {
 		int memberNo = loginUser.getMemberNo();
 		
 		ArrayList<DelList> delList = new ArrayList<DelList>();
-		delList = mps.selectDelList(memberNo);
 		
-		model.addAttribute("delList", delList);
+		try {
+			delList = mps.selectDelList(memberNo);
+			
+			model.addAttribute("delList", delList);
+			
+			return "mypage/deliList";
+			
+		} catch (MypageListException e) {
+			request.setAttribute("msg", "배송지 내역  조회 실패");
+			return "common/errorPage";
+		}
 		
-		return "mypage/deliList";
 	}
 	
 	//배송지 추가 팝업
@@ -295,11 +318,18 @@ public class MypageController {
 		Member loginUser = (Member) session.getAttribute("loginUser");
 		int memberNo = loginUser.getMemberNo();
 		
-		ArrayList<Coupon> pCouponList = mps.selectPCouponList(memberNo);
-	
-		model.addAttribute("pCouponList", pCouponList);
-		
-		return "mypage/coupon";
+		ArrayList<Coupon> pCouponList;
+		try {
+			pCouponList = mps.selectPCouponList(memberNo);
+			
+			model.addAttribute("pCouponList", pCouponList);
+			
+			return "mypage/coupon";
+			
+		} catch (MypageListException e) {
+			request.setAttribute("msg", "사용가능쿠폰 조회 실패");
+			return "common/errorPage";
+		}
 	}
 	
 	//쿠폰함 - 사용만료쿠폰
@@ -309,11 +339,18 @@ public class MypageController {
 		Member loginUser = (Member) session.getAttribute("loginUser");
 		int memberNo = loginUser.getMemberNo();
 		
-		ArrayList<Coupon> iCouponList = mps.selectICouponList(memberNo);
+		ArrayList<Coupon> iCouponList;
+		try {
+			iCouponList = mps.selectICouponList(memberNo);
+			model.addAttribute("iCouponList", iCouponList);
+			
+			return "mypage/coupon2";
+			
+		} catch (MypageListException e) {
+			request.setAttribute("msg", "사용가능쿠폰 조회 실패");
+			return "common/errorPage";
+		}
 		
-		model.addAttribute("iCouponList", iCouponList);
-		
-		return "mypage/coupon2";
 	}
 	
 	
@@ -325,16 +362,32 @@ public class MypageController {
 		Member loginUser = (Member)session.getAttribute("loginUser");
 		int memberNo = loginUser.getMemberNo();
 		
-		int listCount = mps.selectListCount(memberNo, 0);
-		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
+		try {
+			int listCount = mps.selectListCount(memberNo, 3);
+			
+			if(listCount>0) {
+				PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
+				
+				ArrayList<MyWriting> myWritingList;
+				myWritingList = mps.selectMyWritingList(memberNo, pi);
+				
+				model.addAttribute("myWritingList", myWritingList);
+				model.addAttribute("boardType", myWritingList.get(0).getBoardType());
+				model.addAttribute("pi", pi);
+			}else {
+				model.addAttribute("boardType", 3);
+			}
+			
+			return "mypage/qnaList";
+			
+		} catch (MypageListException e) {
+			request.setAttribute("msg", "내 문의글 조회 실패 ");
+			return "mypage/qnaErrorPage";
+		} catch (MypageCountException e) {
+			request.setAttribute("msg", "내 후기글 카운트 조회 실패 ");
+			return "mypage/qnaErrorPage";
+		}
 		
-		ArrayList<MyWriting> myWritingList = mps.selectMyWritingList(memberNo, pi);
-		
-		model.addAttribute("myWritingList", myWritingList);
-		model.addAttribute("boardType", myWritingList.get(0).getBoardType());
-		model.addAttribute("pi", pi);
-		
-		return "mypage/qnaList";
 	}
 	
 	//내 작성글 - 후기
@@ -344,16 +397,32 @@ public class MypageController {
 		Member loginUser = (Member)session.getAttribute("loginUser");
 		int memberNo = loginUser.getMemberNo();
 		
-		int listCount = mps.selectListCount(memberNo, 0);
-		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
-		
-		ArrayList<MyWriting> myWritingList = mps.selectMyWritingReviewList(memberNo, pi);
-		
-		model.addAttribute("myWritingList", myWritingList);
-		model.addAttribute("boardType", myWritingList.get(0).getBoardType());
-		model.addAttribute("pi", pi);
-		
-		return "mypage/qnaList";
+		try {
+			int listCount = mps.selectListCount(memberNo, 0);
+			
+			if(listCount>0) {
+				PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
+				
+				ArrayList<MyWriting> myWritingList;
+			
+				myWritingList = mps.selectMyWritingReviewList(memberNo, pi);
+				
+				model.addAttribute("myWritingList", myWritingList);
+				model.addAttribute("pi", pi);
+				model.addAttribute("boardType", myWritingList.get(0).getBoardType());
+				
+			}else {
+				model.addAttribute("boardType", 0);
+			}
+				return "mypage/qnaList";
+				
+			} catch (MypageListException e) {
+				request.setAttribute("msg", "내 후기글 조회 실패 ");
+				return "mypage/qnaErrorPage";
+			} catch (MypageCountException e) {
+				request.setAttribute("msg", "내 후기글 카운트 조회 실패 ");
+				return "mypage/qnaErrorPage";
+			} 
 	}
 	
 	//내 작성글 - 공유
@@ -363,34 +432,72 @@ public class MypageController {
 		Member loginUser = (Member)session.getAttribute("loginUser");
 		int memberNo = loginUser.getMemberNo();
 		
-		int listCount = mps.selectListCount(memberNo, 1);
-		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
+		try {
+			int listCount = mps.selectListCount(memberNo, 1);
+			
+			if(listCount>0) {
+				PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
+				
+				ArrayList<MyWriting> myWritingList;
+				myWritingList = mps.selectMyWritingShareList(memberNo, pi);
+				
+				model.addAttribute("myWritingList", myWritingList);
+				model.addAttribute("boardType", myWritingList.get(0).getBoardType());
+				model.addAttribute("pi", pi);
+				
+			}else {
+				model.addAttribute("boardType", 1);
+			}
+			
+			return "mypage/qnaList";
+			
+		} catch (MypageListException e) {
+			request.setAttribute("msg", "내 공유글 조회 실패 ");
+			return "mypage/qnaErrorPage";
+		} catch (MypageCountException e) {
+			request.setAttribute("msg", "내 후기글 카운트 조회 실패 ");
+			return "mypage/qnaErrorPage";
+		} 
 		
-		ArrayList<MyWriting> myWritingList = mps.selectMyWritingShareList(memberNo, pi);
-		
-		model.addAttribute("myWritingList", myWritingList);
-		model.addAttribute("boardType", myWritingList.get(0).getBoardType());
-		model.addAttribute("pi", pi);
-		
-		return "mypage/qnaList";
 	}
 	
 	//내피자
 	@RequestMapping(value="myPageMyMenu.mp")
-	public String myPizzaList(HttpServletRequest request, Model model) {
+	public String myPizzaList(HttpServletRequest request, Model model, @RequestParam(value="currentPage", required=false, defaultValue="1")int currentPage) {
 		HttpSession session = request.getSession();
 		Member loginUser = (Member)session.getAttribute("loginUser");
 		int memberNo = loginUser.getMemberNo();
 		
-		ArrayList<MyPizza> myPizzaList = mps.selectMypizzaList(memberNo);
+		try {
+			int listCount = mps.selectMypizzaCount(memberNo);
+			
+			PageInfo pi = Pagination8.getPageInfo(currentPage, listCount);
+			
+			ArrayList<MyPizza> myPizzaList;
+			myPizzaList = mps.selectMypizzaList(memberNo, pi);
+			
+			model.addAttribute("myPizzaList",myPizzaList);
+			model.addAttribute("pi",pi);
+			
+			return "mypage/myMenu";
+			
+		} catch (MypageListException e) {
+			request.setAttribute("msg", "내 피자 조회 실패 ");
+			return "mypage/errorPage";
+		} catch (MypageCountException e) {
+			request.setAttribute("msg", "내 피자 카운트 조회 실패 ");
+			return "mypage/errorPage";
+		}
 		
-		model.addAttribute("myPizzaList",myPizzaList);
-		
-		return "mypage/myMenu";
 	}
 	
-	
-	
+	//내피자 상세보기 - 팝업
+	@RequestMapping(value="myPageMyMenuPop.mp")
+	public String mypizzaPopup(int mypizzaNo, Model model) {
+		System.out.println("m넘겼는디... :" + mypizzaNo);
+		//model.addAttribute("mypizzaNo", mypizzaNo);
+		return "mypage/myMenuPopup";
+	}
 	
 	
 }
