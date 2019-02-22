@@ -235,7 +235,7 @@ public interface AdminDao {
 	ArrayList<AdminSales> selectComTStat(SqlSessionTemplate sqlSession, AdminSales sales) throws AdminSelectException;
 
 	//통계 출력용 토핑 리스트
-	ArrayList<AdminMaterial> selectMaterialList(SqlSessionTemplate sqlSession) throws AdminSelectException;
+	ArrayList<AdminMaterial> selectMaterialList(SqlSessionTemplate sqlSession, int materialCate) throws AdminSelectException;
 
 	//통계 출력용 -- 토핑
 	ArrayList<AdminMSales> selectOrderMStat(SqlSessionTemplate sqlSession, int materialCate) throws AdminSelectException;
@@ -246,6 +246,7 @@ public interface AdminDao {
 	
 
 
+	
 
 
 

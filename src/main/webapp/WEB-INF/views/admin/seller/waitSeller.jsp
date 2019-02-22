@@ -20,6 +20,7 @@
 			</div>
 			<div class="card-body">
 			
+			
 			<!-- 업체 목록 영역 -->
 			<div class="row">
 				<div class="col-md-2"></div>

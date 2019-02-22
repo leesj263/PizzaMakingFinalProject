@@ -3,7 +3,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-
+<c:set var="comSize" value="${sellerList.size()}"/>
+<%
+int comSize=(Integer)pageContext.getAttribute("comSize"); 
+%>
 <jsp:include page="../../common/header.jsp" />
 <style>
 #timeSelect {
@@ -75,12 +78,11 @@ div.modal-body{
 				</div>
 				<div class="modal-body">
 					<select id="comNoList" name="comNoList" size="8">
-						<option value="0" onclick="comStat(0)" <c:if test="${selectComNo==0 }">selected</c:if>>전체</option>
+						<option value="0" <c:if test="${selectComNo==0 }">selected</c:if>>전체</option>
 						<c:forEach var="seller" items="${sellerList }">
-							<option value="${seller.comNo }" onclick="comStat(${seller.comNo})" <c:if test="${seller.comNo==selectComNo}">selected</c:if>>${seller.comName }점</option>
+							<option value="${seller.comNo }" <c:if test="${seller.comNo==selectComNo}">selected</c:if>>${seller.comName }점</option>
 						</c:forEach>
 					</select>
-					</div>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-outline-secondary" data-dismiss="modal">취소</button>
@@ -117,6 +119,15 @@ div.modal-body{
 		year = d.getFullYear();
 		
 		return year;
+	}
+	
+	function getRandomColor(){
+		var letters = '0123456789ABCDEF'.split('');
+		var color = '#';
+		for (var i = 0; i < 6; i++) {
+			color += letters[Math.floor(Math.random() * 16)];
+		}
+		return color;
 	}
 	$("#comSelect").change(function(){
 		var selectVal =  $(this).val();
@@ -424,14 +435,14 @@ div.modal-body{
 				//console.log(salesList2);
 				
 				console.log(sellerListsize);
-				var colorList=[
-					'#FF8F00',
-					'#E16BB6',
-					'#7CE16B',
-					'#D0BDFF',
-					'#FFFBBD',
-					'#7C6BE1'
-				];
+				var colorList=[];
+				var comName=[];
+				for(var i=0;i<<%=comSize%>;i++){
+					colorList[i]=getRandomColor();
+				}
+				
+			
+				
 				var ctx = $("#sales-chart");
 				ctx.height=150;
 				var myChart=new Chart(ctx, {
@@ -441,9 +452,9 @@ div.modal-body{
 						type : 'line',
 						defaultFontFamily : 'Montserrat',
 						datasets : [ 
-					<%for(int i=0;i<6;i++){%>		
+					<%for(int i=0;i<comSize;i++){%>		
 							{
-							label : "${sellerList[i].comName}점",
+							label : comName[<%=i%>],
 							data : salesList[<%=i%>],
 							backgroundColor : 'transparent',
 							borderColor : colorList[<%=i%>],
@@ -521,12 +532,12 @@ div.modal-body{
 							label :  "${sellerList[i].comName}점",
 							data : expenseList[<%=i%>],
 							backgroundColor : 'transparent',
-							borderColor : colorList[<%=i%>],
+							borderColor : getRandomColor(),
 							borderWidth : 3,
 							pointStyle : 'circle',
 							pointRadius : 5,
 							pointBorderColor : 'transparent',
-							pointBackgroundColor : colorList[<%=i%>],
+							pointBackgroundColor : getRandomColor(),
 						}, 
 					<%}%>
 					]
@@ -581,215 +592,7 @@ div.modal-body{
 						}
 					}
 				});
-			
 			}
-			
-			$("#timeSelect").change(function(){
-				$("#sales-chart").remove();
-				$("#chartBefore").after("<canvas id='sales-chart'></canvas>");
-				
-				var selectVal =  $(this).val();
-				console.log("selectVal : " + selectVal);
-				
-				var k = 0;
-				var changeDay = [];
-				var changeExpensePrice = [];
-				var changeSalesPrice = [];
-				    
-				if(selectVal=="daily"){
-					changeDay=dayList;
-					changeExpensePrice=expenseList;
-					changeSalesPrice=salesList;
-				}
-				
-				 
-			    if(selectVal=="monthly"){
-			    	times=0;
-			    	startDate = new Date(firstDate);
-					endDate = new Date(lastDate);
-					lineDate=new Date(firstDate);
-					
-					while(formatM(lineDate)!=formatM(endDate)){
-						monthList[times]=formatM(lineDate);
-						expenseMonth[times]=0;
-						salesMonth[times]=0;
-						
-						for(var i=0;i<expenseDateArr.length;i++){	
-							if(expenseDateArr[i].substring(0, 7)==formatM(lineDate)){
-								expenseMonth[times]+=Number(expensePriceArr[i]);
-							}
-						}
-						for(var i=0;i<salesDateArr.length;i++){	
-							if(salesDateArr[i].substring(0, 7)==formatM(lineDate)){
-								salesMonth[times]+=Number(salesPriceArr[i]);
-							}
-						}
-						times++;
-						lineDate.setMonth((lineDate.getMonth()+1));
-					}
-					
-					
-					monthList[times]=formatM(endDate);
-					expenseMonth[times]=0;
-					salesMonth[times]=0;
-					
-					for(var i=0;i<expenseDateArr.length;i++){	
-						if(expenseDateArr[i].substring(0, 7)==formatM(lineDate)){
-							expenseMonth[times]+=Number(expensePriceArr[i]);
-						}
-					}
-					for(var i=0;i<salesDateArr.length;i++){	
-						if(salesDateArr[i].substring(0, 7)==formatM(lineDate)){
-							salesMonth[times]+=Number(salesPriceArr[i]);
-						}
-					}
-				
-					console.log(monthList);
-					console.log(expenseMonth);
-					console.log(salesMonth);
-					
-			    	changeDay=monthList;
-			    	changeExpensePrice=expenseMonth;
-			    	changeSalesPrice=salesMonth;
-			    	
-			    }
-			    
-			    if(selectVal == "yearly"){
-			    	
-			    	times=0;
-			    	startDate = new Date(firstDate);
-					endDate = new Date(lastDate);
-					lineDate=new Date(firstDate);
-					
-					console.log(formatY(endDate));
-					while(formatY(lineDate)!=formatY(endDate)){
-						yearList[times]=formatY(lineDate);
-						expenseYear[times]=0;
-						salesYear[times]=0;
-						
-						for(var i=0;i<expenseDateArr.length;i++){	
-							if(expenseDateArr[i].substring(0, 4)==formatY(lineDate)){
-								expenseYear[times]+=Number(expensePriceArr[i]);
-							}
-						}
-						for(var i=0;i<salesDateArr.length;i++){	
-							if(salesDateArr[i].substring(0, 4)==formatY(lineDate)){
-								salesYear[times]+=Number(salesPriceArr[i]);
-							}
-						}
-						times++;
-						lineDate.setYear((lineDate.getFullYear()+1));
-					}
-					
-					
-					yearList[times]=formatY(endDate);
-					expenseYear[times]=0;
-					salesYear[times]=0;
-					
-					for(var i=0;i<expenseDateArr.length;i++){	
-						if(expenseDateArr[i].substring(0, 4)==formatY(lineDate)){
-							expenseYear[times]+=Number(expensePriceArr[i]);
-						}
-					}
-					for(var i=0;i<salesDateArr.length;i++){	
-						if(salesDateArr[i].substring(0, 4)==formatY(lineDate)){
-							salesYear[times]+=Number(salesPriceArr[i]);
-						}
-					}
-				
-					console.log(yearList);
-					console.log(expenseYear);
-					console.log(salesYear);
-			    	
-			    	changeDay=yearList;
-			    	changeExpensePrice=expenseYear;
-			    	changeSalesPrice=salesYear;
-			    	
-			    }
-			    
-			    var ctx = $("#sales-chart");
-				ctx.height = 150;
-				var myChart = new Chart(ctx, {
-					type : 'line',
-					data : {
-						labels : changeDay,
-						type : 'line',
-						defaultFontFamily : 'Montserrat',
-						datasets : [ {
-							label : "업체 재고 주문",
-							data : changeExpensePrice,
-							backgroundColor : 'transparent',
-							borderColor : 'rgba(220,53,69,0.75)',
-							borderWidth : 3,
-							pointStyle : 'circle',
-							pointRadius : 5,
-							pointBorderColor : 'transparent',
-							pointBackgroundColor : 'rgba(220,53,69,0.75)',
-						}, {
-							label : "고객 주문",
-							data : changeSalesPrice, 
-							backgroundColor : 'transparent',
-							borderColor : 'rgba(40,167,69,0.75)',
-							borderWidth : 3,
-							pointStyle : 'circle',
-							pointRadius : 5,
-							pointBorderColor : 'transparent',
-							pointBackgroundColor : 'rgba(40,167,69,0.75)',
-						} ]
-					},
-					options : {
-						responsive : true,
-						tooltips : {
-							mode : 'index',
-							titleFontSize : 12,
-							titleFontColor : '#000',
-							bodyFontColor : '#000',
-							backgroundColor : '#fff',
-							titleFontFamily : 'Montserrat',
-							bodyFontFamily : 'Montserrat',
-							cornerRadius : 3,
-							intersect : false,
-						},
-						legend : {
-							display : false,
-							labels : {
-								usePointStyle : true,
-								fontFamily : 'Montserrat',
-							},
-						},
-						scales : {
-							xAxes : [ {
-								display : true,
-								gridLines : {
-									display : true,
-									drawBorder : true
-								},
-								scaleLabel : {
-									display : true,
-									labelString : 'Date'
-								}
-							} ],
-							yAxes : [ {
-								display : true,
-								gridLines : {
-									display : true,
-									drawBorder : true
-								},
-								scaleLabel : {
-									display : true,
-									labelString : 'price'
-								}
-							} ]
-						},
-						title : {
-							display : false,
-							text : 'Normal Legend'
-						}
-					}
-				});
-			    
-			
-			});
 		}else{
 			
 			if(${salesList.size()==0} && ${expenseList.size()==0}){
