@@ -11,7 +11,9 @@ import com.kh.pmfp.admin.model.dao.AdminCouponDao;
 import com.kh.pmfp.admin.model.exception.AdminCountException;
 import com.kh.pmfp.admin.model.exception.AdminSelectException;
 import com.kh.pmfp.admin.model.vo.AdminCoupon;
+import com.kh.pmfp.admin.model.vo.AdminCoupon2;
 import com.kh.pmfp.admin.model.vo.AdminCouponIssue;
+import com.kh.pmfp.admin.model.vo.AdminCouponIssue2;
 import com.kh.pmfp.common.model.vo.PageInfo;
 
 @Service
@@ -97,6 +99,46 @@ public class AdminCouponServiceImpl implements AdminCouponService{
 		ArrayList<AdminCouponIssue> issuingCouponAllList = cd.selectIssuingCouponAllList(sqlSession);
 		
 		return issuingCouponAllList;
+	}
+
+	//발급쿠폰 검색-번호
+	@Override
+	public ArrayList<AdminCouponIssue2> selectIssuingCouponCode(AdminCouponIssue2 coupon) {
+		
+		ArrayList<AdminCouponIssue2> list = cd.selectIssuingCouponCode(sqlSession,coupon);
+		
+		return list;
+	}
+
+	//발급쿠폰 검색 -번호 Count
+	@Override
+	public int selectlssuingCouponCodeCount(AdminCouponIssue2 coupon) {
+		
+		return cd.selectlssuingCouponCodeCount(sqlSession,coupon);
+	}
+	
+	//발급쿠폰 검색 -이름
+	@Override
+	public ArrayList<AdminCouponIssue2> selectIssuingCouponName(AdminCouponIssue2 coupon) {
+		
+		ArrayList<AdminCouponIssue2> list = cd.selectIssuingCouponName(sqlSession,coupon);
+		return list;
+	}
+
+	//발급쿠폰 검색 -이름 Count
+	@Override
+	public int selectlssuingCouponCodeName(AdminCouponIssue2 coupon) {
+		
+		return cd.selectlssuingCouponCodeName(sqlSession,coupon);
+	}
+
+	//모든 쿠폰 불러오기
+	@Override
+	public ArrayList<AdminCoupon> selectAllCouponList() {
+		
+		ArrayList<AdminCoupon> list = cd.selectAllCouponList(sqlSession);
+		
+		return list;
 	}
 	
 	

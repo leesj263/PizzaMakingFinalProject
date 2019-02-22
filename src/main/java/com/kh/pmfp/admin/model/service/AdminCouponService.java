@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import com.kh.pmfp.admin.model.exception.AdminCountException;
 import com.kh.pmfp.admin.model.exception.AdminSelectException;
 import com.kh.pmfp.admin.model.vo.AdminCoupon;
+import com.kh.pmfp.admin.model.vo.AdminCoupon2;
 import com.kh.pmfp.admin.model.vo.AdminCouponIssue;
+import com.kh.pmfp.admin.model.vo.AdminCouponIssue2;
 import com.kh.pmfp.common.model.vo.PageInfo;
 
 public interface AdminCouponService {
@@ -36,6 +38,21 @@ public interface AdminCouponService {
 
 	//발급된 쿠폰 전체 목록 조회
 	ArrayList<AdminCouponIssue> selectIssuingCouponAllList();
+
+	//발급쿠폰 번호 검색
+	ArrayList<AdminCouponIssue2> selectIssuingCouponCode(AdminCouponIssue2 coupon);
+
+	//발급쿠폰 검색-번호 Count
+	int selectlssuingCouponCodeCount(AdminCouponIssue2 coupon);
+
+	//발급쿠폰 검색-이름 
+	ArrayList<AdminCouponIssue2> selectIssuingCouponName(AdminCouponIssue2 coupon);
+	
+	//발급쿠폰 검색-이름 Count
+	int selectlssuingCouponCodeName(AdminCouponIssue2 coupon);
+
+	//모든 쿠폰 조회해오기
+	ArrayList<AdminCoupon> selectAllCouponList();
 
 	
 	

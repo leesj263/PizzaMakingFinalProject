@@ -19,6 +19,7 @@ import com.kh.pmfp.admin.model.service.AdminCouponService;
 import com.kh.pmfp.admin.model.vo.AdminCoupon;
 import com.kh.pmfp.admin.model.vo.AdminCoupon2;
 import com.kh.pmfp.admin.model.vo.AdminCouponIssue;
+import com.kh.pmfp.admin.model.vo.AdminCouponIssue2;
 import com.kh.pmfp.common.model.vo.PageInfo;
 import com.kh.pmfp.common.model.vo.Pagination;
 
@@ -118,8 +119,8 @@ public class AdminCouponController {
 	@RequestMapping("searchTwoCoupon.co")
 	public String searchTwoCoupon(@RequestParam(value="currentPage",required=false,defaultValue="1")int currentPage,HttpServletRequest request,
 						 HttpServletResponse response,@RequestParam String searchType,@RequestParam String searchContent) {
-		System.out.println(searchType);
-		System.out.println(searchContent);
+		//System.out.println(searchType);
+		//System.out.println(searchContent);
 		
 		//searchType,searchContent 를 담아서 arrayList에 담아오기
 		if(searchType.equals("1")) {	//1일때 쿠폰 내용 검색
@@ -166,6 +167,98 @@ public class AdminCouponController {
 		}
 		
 		return "common/errorPage";
+	}
+	
+	//발급쿠폰 검색
+	@RequestMapping("lssuingCouponSearch.co")
+	public String lssuingCouponSearch(@RequestParam(value="currentPage",required=false,defaultValue="1")int currentPage,HttpServletRequest request,
+			 HttpServletResponse response,@RequestParam String searchType,@RequestParam String searchContent) {
+		//System.out.println(searchType+searchContent);
+		if(searchType.equals("0")) {
+			ArrayList<AdminCouponIssue2> list = new ArrayList<>();
+			AdminCouponIssue2 coupon = new AdminCouponIssue2();
+			coupon.setCouponNo(Integer.parseInt(searchContent));
+			list=cs.selectIssuingCouponCode(coupon);
+			
+			int count = cs.selectlssuingCouponCodeCount(coupon);
+			PageInfo pi = Pagination.getPageInfo(currentPage, count);
+			
+			request.setAttribute("list", list);
+			request.setAttribute("pi", pi);
+			request.setAttribute("searchContent", searchContent);
+			request.setAttribute("searchType", searchType);
+			
+			//System.out.println(list);
+			return "admin/coupon/lssuingCouponManageMent2";
+		}else if(searchType.equals("1")) {
+			ArrayList<AdminCouponIssue2> list = new ArrayList<>();
+			AdminCouponIssue2 coupon = new AdminCouponIssue2();
+			coupon.setCouponName(searchContent);
+			System.out.println(coupon);
+			list=cs.selectIssuingCouponName(coupon);
+			
+			int count = cs.selectlssuingCouponCodeName(coupon);
+			PageInfo pi = Pagination.getPageInfo(currentPage, count);
+			
+			request.setAttribute("list", list);
+			request.setAttribute("pi", pi);
+			request.setAttribute("searchContent", searchContent);
+			request.setAttribute("searchType", searchType);
+			
+			//System.out.println(list);
+			return "admin/coupon/lssuingCouponManageMent2";
+		}
+		return "common/errorPage";
+	}
+	
+	//쿠폰선택 후 발급버튼
+	@RequestMapping("checkedCouponIssuing.co")
+	public String checkedCouponIssuing(HttpServletRequest request, HttpServletResponse response) {
+		//모든 쿠폰 목록 불러오깅
+		ArrayList<AdminCoupon> list = new ArrayList<>();
+		AdminCoupon coupon = new AdminCoupon();
+		
+		list = cs.selectAllCouponList();
+		System.out.println(list);
+		request.setAttribute("list", list);
+		
+		
+		return "admin/coupon/lssuingCoupon";
+	}
+	
+	//사이드바에서 쿠폰 발급하기 클릭
+	@RequestMapping("issuingCouponEnter.co")
+	public String issuingCouponEnter(HttpServletRequest request, HttpServletResponse response) {
+		//모든 쿠폰 목록 불러오깅
+		ArrayList<AdminCoupon> list = new ArrayList<>();
+		AdminCoupon coupon = new AdminCoupon();
+				
+		list = cs.selectAllCouponList();
+		//System.out.println(list);
+		request.setAttribute("list", list);
+				
+				
+		return "admin/coupon/lssuingCoupon";
+		
+		
+	}
+	
+	//쿠폰 발급하기
+	@RequestMapping("issuingCoupon.co")
+	public String issuingCoupon(HttpServletRequest request, HttpServletResponse response) {
+		
+		//모든회원이냐
+			//회원 정보 모두 받아와서-서비스에서 insert
+			
+			//쿠폰 목록 모두 받아오고
+			//쿠폰 발급
+		//특정회원이냐
+			//회원이름 클릭후 회원아이디 조회 -ox
+			//쿠폰 목록 모두 받아오고
+			//회원 목록은 
+		
+		
+		return null;
 	}
 
 	
