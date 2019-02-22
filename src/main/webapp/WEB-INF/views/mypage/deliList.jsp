@@ -26,7 +26,11 @@
 		  <tbody>
 		    <c:forEach items="${ delList }" var="d">
 		    	<tr>
-		    		<td><input type="checkbox" name="chk"></td>
+		    		
+		    		<td>
+		    			<input type="hidden" value="${ d.delNo }" name="delNo">
+		    			<input type="checkbox" name="chk">
+		    		</td>
 		    		<td>${ d.delName }</td>
 		    		<td>${ d.delAddr }</td>
 		    		<td>${ d.comName }점</td>
@@ -37,8 +41,7 @@
 		
 		<button class="ui yellow button" id="pop">추가</button>
 		<!-- <button class="ui yellow basic button">수정</button> -->
-		<button class="ui yellow basic button">삭제</button>
-
+		<button class="ui yellow basic button" onclick="deleteOne()">삭제</button>
 	</div>
 	
 	<script>
@@ -94,6 +97,14 @@
 			}
 			
 		});	
+		
+		function deleteOne(){
+			//var delNoList = $("input[name=chk]:checked").parent().children().eq(0).val();
+			var delNoList = $("input[name=chk]:checked").parents()
+			
+			console.log(delNoList);
+			
+		}
 			
 	</script>
 	

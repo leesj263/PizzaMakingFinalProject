@@ -1,6 +1,8 @@
 package com.kh.pmfp.mypage.model.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.TreeMap;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -9,11 +11,13 @@ import org.springframework.stereotype.Repository;
 import com.kh.pmfp.common.model.vo.PageInfo;
 import com.kh.pmfp.customer.model.vo.MyPizza;
 import com.kh.pmfp.mypage.model.exception.MypageCountException;
+import com.kh.pmfp.mypage.model.exception.MypageInsertException;
 import com.kh.pmfp.mypage.model.exception.MypageListException;
 import com.kh.pmfp.mypage.model.vo.Coupon;
 import com.kh.pmfp.mypage.model.vo.DelList;
 import com.kh.pmfp.mypage.model.vo.Location;
 import com.kh.pmfp.mypage.model.vo.MyWriting;
+import com.kh.pmfp.mypage.model.vo.MypizzaPopup;
 import com.kh.pmfp.mypage.model.vo.OrderDetail;
 import com.kh.pmfp.mypage.model.vo.OrderList;
 
@@ -157,7 +161,7 @@ public class MypageDaoImpl implements MypageDao{
 
 	//배송지 추가
 	@Override
-	public int insertUserDelAddr(SqlSessionTemplate sqlSession, int memberNo, int finalDeliveryLoc, String addr, String deliName) {
+	public int insertUserDelAddr(SqlSessionTemplate sqlSession, int memberNo, int finalDeliveryLoc, String addr, String deliName) throws MypageInsertException{
 		DelList del = new DelList(memberNo, finalDeliveryLoc, addr, deliName);
 
 		return sqlSession.insert("Mypage.insertUserDelAddr", del);
@@ -182,6 +186,16 @@ public class MypageDaoImpl implements MypageDao{
 	@Override
 	public int selectMypizzaCount(SqlSessionTemplate sqlSession, int memberNo) throws MypageCountException {
 		return sqlSession.selectOne("Mypage.selectMypizzaCount", memberNo);
+	}
+
+	//내피자 상세보기 - 팝업
+	@Override
+	public HashMap<Integer, MypizzaPopup> selectMypizzaPopup(SqlSessionTemplate sqlSession, int mypizzaNo) throws MypageListException{
+		HashMap<Integer, MypizzaPopup> hmap = (HashMap)sqlSession.selectMap("Mypage.selectMypizzaPopup", mypizzaNo, "materialNo");
+
+		System.out.println("hamp : " + hmap);
+		
+		return hmap;
 	}
 	
 

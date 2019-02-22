@@ -37,6 +37,7 @@
 		<typeAlias type="com.kh.pmfp.mypage.model.vo.Location" alias="Location"/>
 		<typeAlias type="com.kh.pmfp.customer.model.vo.Board" alias="Board"/>
 		<typeAlias type="com.kh.pmfp.mypage.model.vo.OrderDetail" alias="OrderDetail"/>
+		<typeAlias type="com.kh.pmfp.mypage.model.vo.MypizzaPopup" alias="MypizzaPopup"/>
 	</typeAliases>
 	
 	

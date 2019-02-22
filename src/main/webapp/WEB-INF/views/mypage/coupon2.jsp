@@ -15,7 +15,7 @@
 
 	<div style="float: left; width:80%; padding:20px; margin-top: 50px;">
 		<div class="ui top attached tabular menu">
-		  <a class="item" data-tab="first" href="myPageCoupon.mp">사용 가능 쿠폰</a>
+		  <a class="item" data-tab="first" href="myPageCoupon.mp">쿠폰</a>
 		  <a class="active item" data-tab="second" href="myPageCouponTimeOut.mp">기간 만료 쿠폰</a>
 
 		</div>

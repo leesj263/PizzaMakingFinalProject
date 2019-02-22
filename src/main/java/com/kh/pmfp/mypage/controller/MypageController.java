@@ -3,6 +3,9 @@ package com.kh.pmfp.mypage.controller;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.TreeMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -11,7 +14,6 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -23,6 +25,7 @@ import com.kh.pmfp.common.model.vo.Pagination;
 import com.kh.pmfp.common.model.vo.Pagination8;
 import com.kh.pmfp.customer.model.vo.MyPizza;
 import com.kh.pmfp.mypage.model.exception.MypageCountException;
+import com.kh.pmfp.mypage.model.exception.MypageInsertException;
 import com.kh.pmfp.mypage.model.exception.MypageListException;
 import com.kh.pmfp.mypage.model.service.MypageService;
 import com.kh.pmfp.mypage.model.vo.Coupon;
@@ -30,7 +33,7 @@ import com.kh.pmfp.mypage.model.vo.DelList;
 import com.kh.pmfp.mypage.model.vo.DistanceLoc;
 import com.kh.pmfp.mypage.model.vo.Location;
 import com.kh.pmfp.mypage.model.vo.MyWriting;
-import com.kh.pmfp.mypage.model.vo.Mypizza;
+import com.kh.pmfp.mypage.model.vo.MypizzaPopup;
 import com.kh.pmfp.mypage.model.vo.OrderDetail;
 import com.kh.pmfp.mypage.model.vo.OrderList;
 
@@ -293,20 +296,28 @@ public class MypageController {
 		Member loginUser = (Member)session.getAttribute("loginUser");
 		int memberNo = loginUser.getMemberNo();
 		
-		int result = mps.insertUserDelAddr(memberNo, finalDeliveryLoc, addr, deliName);
-		
-		if(result>0) {
-			
-			return "redirect:myPageDelAddr.mp";
-		}else {
-			//model.addAttribute("msg", "배송지 추가 실패");
-			//return "common/errorPage";
-			return null;
+		int result;
+		try {
+			result = mps.insertUserDelAddr(memberNo, finalDeliveryLoc, addr, deliName);
+			if(result>0) {
+				return "redirect:myPageDelAddr.mp";
+			}else {
+				System.out.println("배송지 insert 실패");
+				return null;
+			}
+		} catch (MypageInsertException e) {
+			model.addAttribute("msg", "배송지 추가 실패");
+			return "common/errorPage";
 		}
+		
 	}
 	
-	
-	
+	//배송지 삭제
+	@RequestMapping(value="deliveryDelete.mp")
+	public String deliveryDelete() {
+		
+		return null;
+	}
 	
 	
 	
@@ -382,10 +393,10 @@ public class MypageController {
 			
 		} catch (MypageListException e) {
 			request.setAttribute("msg", "내 문의글 조회 실패 ");
-			return "mypage/qnaErrorPage";
+			return "common/qnaErrorPage";
 		} catch (MypageCountException e) {
 			request.setAttribute("msg", "내 후기글 카운트 조회 실패 ");
-			return "mypage/qnaErrorPage";
+			return "common/errorPage";
 		}
 		
 	}
@@ -418,10 +429,10 @@ public class MypageController {
 				
 			} catch (MypageListException e) {
 				request.setAttribute("msg", "내 후기글 조회 실패 ");
-				return "mypage/qnaErrorPage";
+				return "common/errorPage";
 			} catch (MypageCountException e) {
 				request.setAttribute("msg", "내 후기글 카운트 조회 실패 ");
-				return "mypage/qnaErrorPage";
+				return "common/errorPage";
 			} 
 	}
 	
@@ -453,10 +464,10 @@ public class MypageController {
 			
 		} catch (MypageListException e) {
 			request.setAttribute("msg", "내 공유글 조회 실패 ");
-			return "mypage/qnaErrorPage";
+			return "common/errorPage";
 		} catch (MypageCountException e) {
 			request.setAttribute("msg", "내 후기글 카운트 조회 실패 ");
-			return "mypage/qnaErrorPage";
+			return "common/errorPage";
 		} 
 		
 	}
@@ -483,20 +494,69 @@ public class MypageController {
 			
 		} catch (MypageListException e) {
 			request.setAttribute("msg", "내 피자 조회 실패 ");
-			return "mypage/errorPage";
+			return "common/errorPage";
 		} catch (MypageCountException e) {
 			request.setAttribute("msg", "내 피자 카운트 조회 실패 ");
-			return "mypage/errorPage";
+			return "common/errorPage";
 		}
 		
 	}
 	
 	//내피자 상세보기 - 팝업
 	@RequestMapping(value="myPageMyMenuPop.mp")
-	public String mypizzaPopup(int mypizzaNo, Model model) {
-		System.out.println("m넘겼는디... :" + mypizzaNo);
-		//model.addAttribute("mypizzaNo", mypizzaNo);
-		return "mypage/myMenuPopup";
+	public String mypizzaPopup(@RequestParam(value="mypizzaNo")int mypizzaNo, String mypizzaName, String mypizzaImgChangeName, Model model, HttpServletRequest request) {
+		System.out.println("mypizzaNo :" + mypizzaNo);
+		System.out.println("mypizzaName :" + mypizzaName);
+		System.out.println("mypizzaImgChangeName :" + mypizzaImgChangeName);
+		
+		//내피자 상세보기 - 팝업
+		try {
+			Map<Integer, MypizzaPopup> hmap = mps.selectMypizzaPopup(mypizzaNo);
+			TreeMap<Integer, MypizzaPopup> tmap = new TreeMap<>(hmap); 
+
+			Iterator<Integer> i = tmap.keySet().iterator();
+			
+			int priceSum = 0;
+			ArrayList<String> toppingList = new ArrayList<>();
+			
+			System.out.println("i는 뭐지 : " + i);
+			
+			while(i.hasNext()) {
+				int k = i.next();
+				MypizzaPopup v = tmap.get(k);
+				
+				System.out.println("key : " + k);
+				System.out.println("value : " + v);
+				System.out.println("길이는 과연....! : " + tmap.size());
+				
+				priceSum += v.getMaterialSellprice() * v.getMaterialCount();
+				System.out.println("재료번호&키값 " + v.getMaterialNo());
+				
+				if(v.getMaterialNo() <= 14) {
+					System.out.println("데헷 : "+v.getMaterialNameAndCount().substring(0, v.getMaterialNameAndCount().lastIndexOf("1")));
+					toppingList.add(v.getMaterialNameAndCount().substring(0, v.getMaterialNameAndCount().lastIndexOf("1")));
+				}else if(v.getMaterialNo() > 14) {
+					System.out.println("흠 : "+v.getMaterialNameAndCount());
+					toppingList.add(v.getMaterialNameAndCount());
+				}
+				
+			}
+			System.out.println("priceSum : " + priceSum);
+			System.out.println("toppingList : " + toppingList);
+			
+			model.addAttribute("mypizzaNo",mypizzaNo);
+			model.addAttribute("mypizzaName",mypizzaName);
+			model.addAttribute("mypizzaImgChangeName",mypizzaImgChangeName);
+			
+			model.addAttribute("priceSum",priceSum);
+			model.addAttribute("toppingList",toppingList);
+			
+			return "mypage/myMenuPopup";
+			
+		} catch (MypageListException e) {
+			request.setAttribute("msg", "내피자 상세보기 실패");
+			return "common/errorPage";
+		}
 	}
 	
 	

@@ -7,6 +7,7 @@
 <title>Insert title here</title>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
@@ -28,36 +29,31 @@
 
 </head>
 <body>
-<div id="all">
-	<div style="float: left; width:30%; padding:20px;" align="center">
-		이미지<br>
-		<button class="ui yellow button">삭제</button>
+<div>
+	<!-- <div style="float: left; width:40%; padding-top:20px; padding-left: 20px;"> -->
+	<div style="float: left; width:40%; padding-top:20px; text-align: center; padding-left: 15px">
+		<img src="resources/customer/images/myPizza/${mypizzaImgChangeName }" width="200px" height="200px" ><br>
+		<button class="ui yellow button" >삭제</button>
 	</div>
 	
-	<div style="float: left; width:70%; padding:20px;">
-	
-		
-		
-		<table class="ui celled table" style="width:300px;">
+	<!-- <div style="float: left; width:60%; padding:20px;"> -->
+	<div style="float: left; width:60%; padding-top:20px; padding-right: 20px; ">
+		<table class="ui celled table" style="width:250px;" align="right">
 		  <tbody>
 		    <tr>
 		      <td class="tableHead">이름</td>
-		      <td id="test"></td>
+		      <td id="test">${ mypizzaName }</td>
 		    </tr>
 		    <tr>
 		      <td class="tableHead">가격</td>
-		      <td>35,000원</td>
+		      <td><fmt:formatNumber value="${ priceSum }"/>원</td>
 		    </tr>
 		    <tr>
 		      <td class="tableHead">커스텀</td>
  			  <td>
- 			  		도우 : 씬<br>
-					사이즈 : L<br>
-					엣지 : 크러스트<br>
-					소스  : 불고기소스<br>
-					토핑 : 치킨3<br>
-					올리브3<br>
-					버섯1<br>
+		  		<c:forEach items="${ toppingList }" var="list">
+		  			${ list }<br>
+		  		</c:forEach>
  			  </td>
 		    </tr>
 		  </tbody>

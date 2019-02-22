@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -76,7 +77,7 @@
 		    		</c:if>
 		    		
 		    		<td>${ o.comName }점</td>
-		    		<td>${ o.payPrice }원</td>
+		    		<td><fmt:formatNumber value="${ o.payPrice }"/>원</td>
 		    	</tr>
 		    </c:forEach>
 		    

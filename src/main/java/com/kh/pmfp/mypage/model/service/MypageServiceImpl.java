@@ -1,6 +1,8 @@
 package com.kh.pmfp.mypage.model.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.TreeMap;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,11 +12,13 @@ import com.kh.pmfp.common.model.vo.PageInfo;
 import com.kh.pmfp.customer.model.vo.MyPizza;
 import com.kh.pmfp.mypage.model.dao.MypageDao;
 import com.kh.pmfp.mypage.model.exception.MypageCountException;
+import com.kh.pmfp.mypage.model.exception.MypageInsertException;
 import com.kh.pmfp.mypage.model.exception.MypageListException;
 import com.kh.pmfp.mypage.model.vo.Coupon;
 import com.kh.pmfp.mypage.model.vo.DelList;
 import com.kh.pmfp.mypage.model.vo.Location;
 import com.kh.pmfp.mypage.model.vo.MyWriting;
+import com.kh.pmfp.mypage.model.vo.MypizzaPopup;
 import com.kh.pmfp.mypage.model.vo.OrderDetail;
 import com.kh.pmfp.mypage.model.vo.OrderList;
 
@@ -114,7 +118,7 @@ public class MypageServiceImpl implements MypageService{
 
 	//배송지 추가
 	@Override
-	public int insertUserDelAddr(int memberNo, int finalDeliveryLoc, String addr, String deliName) {
+	public int insertUserDelAddr(int memberNo, int finalDeliveryLoc, String addr, String deliName) throws MypageInsertException {
 		int result = md.insertUserDelAddr(sqlSession, memberNo, finalDeliveryLoc, addr, deliName);
 		return result;
 	}
@@ -130,6 +134,12 @@ public class MypageServiceImpl implements MypageService{
 	@Override
 	public int selectMypizzaCount(int memberNo) throws MypageCountException {
 		return md.selectMypizzaCount(sqlSession, memberNo);
+	}
+
+	//내피자 상세보기 - 팝업
+	@Override
+	public HashMap<Integer, MypizzaPopup> selectMypizzaPopup(int mypizzaNo) throws MypageListException{
+		return md.selectMypizzaPopup(sqlSession, mypizzaNo);
 	}
 
 	
