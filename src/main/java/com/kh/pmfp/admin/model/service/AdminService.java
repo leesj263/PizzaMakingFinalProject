@@ -196,7 +196,7 @@ public interface AdminService {
 	ArrayList<AdminSales> selectComStatistics(AdminSales sales) throws AdminSelectException;
 
 	//통계 출력용 토핑 리스트
-	ArrayList<AdminMaterial> selectMaterialList() throws AdminSelectException;
+	ArrayList<AdminMaterial> selectMaterialList(int materialCate) throws AdminSelectException;
 
 	//통계 출력용 -- 토핑
 	ArrayList<AdminMSales> selectOrderMStat(int materialCate) throws AdminSelectException;

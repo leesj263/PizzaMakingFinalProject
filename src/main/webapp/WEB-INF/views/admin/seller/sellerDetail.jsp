@@ -285,7 +285,7 @@
 		});
 		
 		function getLatLon(value){
-			var geocode = "https://maps.googleapis.com/maps/api/geocode/json?address="+value+"&key=AIzaSyCbicS4cErqcGQUcYybf3OWZAZZWZRP5Lk";
+			var geocode = "https://maps.googleapis.com/maps/api/geocode/json?address="+value+"&key=";
 	        var tag = "";
 	        jQuery.ajax({
 	            url: geocode,

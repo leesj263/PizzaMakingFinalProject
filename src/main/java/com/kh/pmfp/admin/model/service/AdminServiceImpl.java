@@ -567,8 +567,8 @@ public class AdminServiceImpl implements AdminService {
 
 	//통계 출력용 토핑 리스트
 	@Override
-	public ArrayList<AdminMaterial> selectMaterialList() throws AdminSelectException {
-		return ad.selectMaterialList(sqlSession);
+	public ArrayList<AdminMaterial> selectMaterialList(int materialCate) throws AdminSelectException {
+		return ad.selectMaterialList(sqlSession, materialCate);
 	}
 
 	//통계 출력용 -- 토핑

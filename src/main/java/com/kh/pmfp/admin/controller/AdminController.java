@@ -980,7 +980,7 @@ public class AdminController {
 		ArrayList<AdminMaterial> matList=new ArrayList<AdminMaterial>();
 		ArrayList<AdminMSales> salesList=new ArrayList<AdminMSales>();
 		try {
-			matList=as.selectMaterialList();
+			matList=as.selectMaterialList(materialCate);
 			salesList=as.selectOrderMStat(materialCate);
 			request.setAttribute("materialCate", materialCate);
 			request.setAttribute("salesList", salesList);
