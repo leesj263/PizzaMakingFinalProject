@@ -580,6 +580,7 @@ public class OrderConroller {
 		for(int i=0; i<oiList.size(); i++) {
 			oiList.get(i).setOrderNo(om.getOrderNo());
 		}
+		cp.setOrderNo(om.getOrderNo());
 		
 		/*System.out.println("OrderMain: " + om);
 		System.out.println("Coupon: " + cp);

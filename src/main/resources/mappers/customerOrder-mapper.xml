@@ -285,7 +285,7 @@
 	
 	<!-- CouponIssue Update -->
 	<update id="updateCouponIssue" parameterType="com.kh.pmfp.customer.model.vo.Coupon">
-		UPDATE COUPON_ISSUE SET ISSUE_STATUS = 'N' WHERE ISSUE_NO = #{issueNo}
+		UPDATE COUPON_ISSUE SET ISSUE_STATUS = 'N', ORDER_NO = #{orderNo} WHERE ISSUE_NO = #{issueNo}
 	</update>
 	
 </mapper>
