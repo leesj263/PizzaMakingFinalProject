@@ -23,7 +23,7 @@
 		<br>
 		<br>
 		<div class="tableArea">
-			<form action="reviewWrite.bo" method="post">
+			<form action="reviewWrite.bo" method="post" encType="multipart/form-data">
 				<table align="center">
 					
 					<tr></tr>

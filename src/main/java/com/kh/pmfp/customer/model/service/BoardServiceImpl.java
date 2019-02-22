@@ -102,7 +102,12 @@ public class BoardServiceImpl implements BoardService {
 	//review작성
 	@Override
 	public int insertReview(Board review) throws BoardException {
-		int result= bd.insertReview(sqlSession,review);
+		int result= -1;
+		int result1=bd.insertReview(sqlSession,review);
+		int result2=-1;
+		if(result1>0) {
+		/*	result2=bd.insertFile(sqlSession,review);*/
+		}
 		return result;
 	}
 

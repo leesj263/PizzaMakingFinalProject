@@ -22,10 +22,14 @@
 		<result property="boardAnswer" column="BOARD_ANSWER" />
 		<result property="boardComNo" column="BOARD_COMNO" />
 		<result property="rownum" column="ROWNUM" />
+		<result property="imgNo" column="IMG_NO" />
+		<result property="imgCateg" column="IMG_CATEG" />
+		<result property="imgFilepath" column="IMG_FILEPATH" />
+		<result property="imgChangeName" column="IMG_CHANGENAME" />
+		<result property="imgStatus" column="IMG_STATUS" />
 	</resultMap>
 
 	
-
 	<!-- boardDaoimpl에 쓴 board.####나타냄 --> 
 	<select id="selectfaqOrder" resultMap="boardResultSet">
 		select
@@ -107,11 +111,10 @@
         ORDER BY B.BOARD_DATE DESC, B.BOARD_NO DESC
 	</select>
 	<!-- review작성 -->
-	
 	<insert id="insertreview" parameterType="Board">
-		INSERT INTO BOARD VALUES (SEQ_BONO.NEXTVAL,1,NULL, #{boardTitle},#{boardContent},DEFAULT,#{memberNo},SYSDATE,1,NULL,DEFAULT,'Y',NULL)
+		INSERT INTO BOARD VALUES (SEQ_BONO.NEXTVAL,1,NULL, #{boardTitle},#{boardContent},DEFAULT,#{memberNo},SYSDATE,1,NULL,DEFAULT,DEFAULT,NULL)
 	</insert>
-
+	
 
 </mapper>
 
