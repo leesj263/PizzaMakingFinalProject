@@ -40,6 +40,18 @@
 		<result property="couponRdiscount" column="COUPON_RDISCOUNT"/>
 		<result property="couponPdiscount" column="COUPON_PDISCOUNT"/>
 	</resultMap>
+	<resultMap type="com.kh.pmfp.common.model.vo.Member" id="memberResultSet">
+		<id property="memberNo" column="MEMBER_NO"/>
+		<result property="memberCateg" column="MEMBER_CATEG"/>
+		<result property="memberId" column="MEMBER_ID"/>
+		<result property="memberPwd" column="MEMBER_PWD"/>
+		<result property="memberName" column="MEMBER_NAME"/>
+		<result property="memberNickName" column="MEMBER_NICKNAME"/>
+		<result property="memberEmail" column="MEMBER_EMAIL"/>
+		<result property="memberEnroll" column="MEMBER_ENROLL"/>
+		<result property="memberStatus" column="MEMBER_STATUS"/>
+		<result property="comNo" column="COM_NO"/>
+	</resultMap>
 	
 	<select id="selectListCount" resultType="_int">
 		SELECT COUNT(*)
@@ -96,5 +108,47 @@
         JOIN COUPON C ON (CS.COUPON_NO=C.COUPON_NO)
 		ORDER BY ISSUE_NO DESC
 	</select>
- 
+	
+	<!-- 발급쿠폰 검색-쿠폰코드 -->
+	<select id="selectIssuingCouponCode" parameterType="AdminCouponIssue2" resultMap="adminCouponIssueResultSet2">
+		SELECT *
+		FROM COUPON_ISSUE CS 
+        JOIN COUPON C ON (CS.COUPON_NO=C.COUPON_NO)
+		WHERE C.COUPON_NO LIKE '%'||#{couponNo}||'%'
+	
+	</select>
+	
+	<!-- 발급쿠폰 검색-쿠폰코드 Count -->
+	<select id="selectlssuingCouponCodeCount" parameterType="AdminCouponIssue2" resultType="_int">
+		SELECT COUNT(*)
+		FROM COUPON_ISSUE CS 
+        JOIN COUPON C ON (CS.COUPON_NO=C.COUPON_NO)
+		WHERE C.COUPON_NO LIKE '%'||#{couponNo}||'%'
+	
+	</select>
+	
+	<!-- 발급쿠폰 검색 -이름  -->
+	<select id="selectIssuingCouponName"  parameterType="AdminCouponIssue2" resultMap="adminCouponIssueResultSet2">
+		SELECT *
+		FROM COUPON_ISSUE CS 
+        JOIN COUPON C ON (CS.COUPON_NO=C.COUPON_NO)
+		WHERE C.COUPON_NAME LIKE '%'||#{couponName}||'%'
+	</select>
+	
+	<!-- 발급쿠폰 검색 -이름  Count-->
+	<select id="selectlssuingCouponCodeName" parameterType="AdminCouponIssue2" resultType="_int">
+		SELECT COUNT(*)
+		FROM COUPON_ISSUE CS 
+        JOIN COUPON C ON (CS.COUPON_NO=C.COUPON_NO)
+		WHERE C.COUPON_NAME LIKE '%'||#{couponName}||'%'
+	</select>
+	
+	
+	<!-- 발급-모든 쿠폰 불러오기 -->
+	<select id="selectAllCouponList" resultMap="adminCouponResultSet">
+		SELECT *
+		FROM COUPON
+	</select>
+	
+	
  </mapper>

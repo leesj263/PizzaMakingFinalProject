@@ -9,7 +9,9 @@ import org.springframework.stereotype.Repository;
 import com.kh.pmfp.admin.model.exception.AdminCountException;
 import com.kh.pmfp.admin.model.exception.AdminSelectException;
 import com.kh.pmfp.admin.model.vo.AdminCoupon;
+import com.kh.pmfp.admin.model.vo.AdminCoupon2;
 import com.kh.pmfp.admin.model.vo.AdminCouponIssue;
+import com.kh.pmfp.admin.model.vo.AdminCouponIssue2;
 import com.kh.pmfp.common.model.vo.PageInfo;
 
 @Repository
@@ -88,6 +90,42 @@ public class AdminCouponDaoImpl implements AdminCouponDao{
 	public ArrayList<AdminCouponIssue> selectIssuingCouponAllList(SqlSessionTemplate sqlSession) {
 		
 		return (ArrayList)sqlSession.selectList("Coupon.selectIssuingCouponAllList");
+	}
+
+	//발급 쿠폰 번호 검색
+	@Override
+	public ArrayList<AdminCouponIssue2> selectIssuingCouponCode(SqlSessionTemplate sqlSession, AdminCouponIssue2 coupon) {
+
+		return (ArrayList)sqlSession.selectList("Coupon.selectIssuingCouponCode",coupon);
+	}
+
+	//발급 쿠폰 번호 Count
+	@Override
+	public int selectlssuingCouponCodeCount(SqlSessionTemplate sqlSession, AdminCouponIssue2 coupon) {
+		
+		return sqlSession.selectOne("Coupon.selectlssuingCouponCodeCount",coupon);
+	}
+
+	//발급쿠폰 검색 -이름 
+	@Override
+	public ArrayList<AdminCouponIssue2> selectIssuingCouponName(SqlSessionTemplate sqlSession,
+			AdminCouponIssue2 coupon) {
+		
+		return (ArrayList)sqlSession.selectList("Coupon.selectIssuingCouponName",coupon);
+	}
+
+	//발급쿠폰 검색 -이름 Count
+	@Override
+	public int selectlssuingCouponCodeName(SqlSessionTemplate sqlSession, AdminCouponIssue2 coupon) {
+		
+		return sqlSession.selectOne("Coupon.selectlssuingCouponCodeName",coupon);
+	}
+
+	//쿠폰 발급하기-모든 쿠폰 불러오기
+	@Override
+	public ArrayList<AdminCoupon> selectAllCouponList(SqlSessionTemplate sqlSession) {
+		
+		return (ArrayList)sqlSession.selectList("Coupon.selectAllCouponList");
 	}
 
 }

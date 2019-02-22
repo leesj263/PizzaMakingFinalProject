@@ -114,7 +114,7 @@
                      </tr>
                   </thead>
                   <tbody>
-                  <c:forEach var="cList" items="${issuingCouponAllList}" varStatus="varStatus">
+                  <c:forEach var="cList" items="${list}" varStatus="varStatus">
               
                      <tr class="listAreaTr">
                         <th scope="row">${varStatus.count }</th>

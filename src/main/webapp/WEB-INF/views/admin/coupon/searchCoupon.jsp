@@ -221,7 +221,7 @@
 		
 		$("#couponLissuingBtn").click(function(){
 			console.log(couponNo);
-			location.href='admin.ad?admin=coupon/lssuingCoupon&couponNo='+couponNo;
+			location.href='checkedCouponIssuing.co?couponNo='+couponNo;
 		});
 
 

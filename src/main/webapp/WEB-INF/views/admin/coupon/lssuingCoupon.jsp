@@ -20,7 +20,7 @@
 				</div>
 				<hr>
 				<div class="card-body card-block">
-					<form action="" method="post" enctype="multipart/form-data"
+					<form action="issuingCoupon.co" method="post" enctype="multipart/form-data"
 						class="form-horizontal">
 
 
@@ -31,23 +31,23 @@
 							<div class="col col-md-9">
 								<div class="form-check-inline form-check">
 									<label for="inline-radio1" class="form-check-label "> <input
-										type="radio" id="inline-radio1" name="inline-radios"
+										type="radio" checked id="inline-radio1" name="inline-radios"
 										value="option1" class="form-check-input">모든 회원
 									</label> &nbsp;&nbsp;&nbsp; <label for="inline-radio2"
-										class="form-check-label "> <input type="radio"
+										class="form-check-label "> <input type="radio" 
 										id="inline-radio2" name="inline-radios" value="option2"
 										class="form-check-input">특정 회원
 									</label> &nbsp;&nbsp;&nbsp;
 									<div class="row form-group">
 										<div class="col-3 col-md-12">
-											<input type="text" id="text-input" name="text-input"
+											<input type="text" id="text-input" name="memberId"
 												placeholder="" class="form-control">
 										</div>
 									</div>
 									&nbsp;&nbsp;&nbsp;
-									<button type="button" class="btn btn-outline-secondary btn-sm">
+									<div onclick="return memberIdSearch()" class="btn btn-outline-secondary btn-sm">
 										<i class="fa fa-magic"></i>&nbsp; 회원 아이디 조회
-									</button>
+									</div>
 								</div>
 
 							</div>
@@ -60,12 +60,9 @@
 							<div class="col-12 col-md-9">
 								<select name="selectSm" id="SelectLm"
 									class="form-control-sm form-control">
-									<option value="0">쿠폰 목록</option>
-									<option value="1">회원가입 쿠폰</option>
-									<option value="2">로그인 쿠폰</option>
-									<option value="3">30% 쿠폰</option>
-									<option value="4">설 맞이 쿠폰</option>
-									<option value="5">50% 쿠폰</option>
+									<c:forEach var="cList" items="${list }" varStatus="varStatus">
+									<option value="${varStatus.count }">${cList.couponName }</option>
+									</c:forEach>
 								</select>
 							</div>
 						</div>
@@ -78,10 +75,18 @@
 									목록</label>
 							</div>
 
-							<div class="col col-md-9">
+						
+								<div class="col col-md-9"  id="AllMemberDiv">
 								<select name="multiple-select" id="multiple-select" multiple=""
 									class="form-control" style="height:300px">
-									<option value="0">----------회원 목록-----------</option>
+									<option value="0">-------------------------------- 모든 회원입니다---------------------------------</option>
+								</select>
+							</div>
+							
+						<div class="col col-md-9" style="display: none;" id="specialMemberDiv">
+								<select name="multiple-select2" id="multiple-select2" multiple=""
+									class="form-control" style="height:300px">
+									<option value="0">----------회원 목록 입니다.-----------</option>
 									<option value="1">이석주</option>
 									<option value="2">김미정</option>
 									<option value="3">유솔이</option>
@@ -89,17 +94,16 @@
 									<option value="5">정은수</option>
 									<option value="6">황민규</option>
 								</select>
-							</div>
+							</div> 
 
 						</div>
 
 						<div class="row justify-content-md-center">
-							<button type="button" class="btn btn-outline-secondary btn-lg" data-toggle="modal"
+							<button type="submit" class="btn btn-outline-secondary btn-lg" data-toggle="modal"
 							data-target="#lssuingModal">
 								<i class="fa fa-search"></i>&nbsp;쿠폰 발급하기
 							</button>
 						</div>
-
 
 
 
@@ -132,5 +136,26 @@
 	</div>
 	
 </section>
+	<script>
+	//모든회원, 특정회원 
+		$(document).ready(function(){
+			$("input:radio[id=inline-radio2]").change(function(){
+			console.log("클릭되닝");	
+			$("#specialMemberDiv").toggle();
+			$("#AllMemberDiv").toggle();
+			})
+			$("input:radio[id=inline-radio1]").change(function(){
+				console.log("모든 회원 클릭");
+				$("#specialMemberDiv").toggle();
+				$("#AllMemberDiv").toggle();
+			})
+			
+		});
+	function memberIdSearch(){
+		console.log("회원아이디조회")
+	}
+	
+	</script>
+
 <jsp:include page="../common/footer.jsp" />
 
