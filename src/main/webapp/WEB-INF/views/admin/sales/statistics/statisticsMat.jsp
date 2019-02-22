@@ -489,6 +489,7 @@ div.modal-body {
 		    	
 		    }
 		    
+		    
 		    var ctx = $("#sales-chart");
 			ctx.height = 150;
 			var myChart = new Chart(ctx, {

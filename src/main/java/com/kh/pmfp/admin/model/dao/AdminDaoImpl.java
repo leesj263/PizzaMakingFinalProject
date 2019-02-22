@@ -871,6 +871,7 @@ public class AdminDaoImpl implements AdminDao {
 		return salesList;
 	}
 
+	
 	//통계 출력용 토핑 리스트
 	@Override
 	public ArrayList<AdminMaterial> selectMaterialList(SqlSessionTemplate sqlSession, int materialCate) throws AdminSelectException {
@@ -882,6 +883,7 @@ public class AdminDaoImpl implements AdminDao {
 		return matList;
 	}
 
+	
 	//통계 출력용 -- 토핑
 	@Override
 	public ArrayList<AdminMSales> selectOrderMStat(SqlSessionTemplate sqlSession, int materialCate)
