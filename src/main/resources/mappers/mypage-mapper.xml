@@ -54,7 +54,7 @@
 		<result property="delName" column="DELIVERY_NAME"/>
 		<result property="comNo" column="COM_NO"/>
 	</resultMap>
-	
+
 	<!-- <resultMap type="com.kh.pmfp.mypage.model.vo.DelList" id="mypageDelResultSet2">
 		<result property="memberNo" column="MEMBER_NO"/>
 		<result property="comNo" column="COM_NO"/>
@@ -102,6 +102,16 @@
 		<result property="imgFilepath" column="IMG_FILEPATH"/>
 	</resultMap>
 
+	<resultMap type="com.kh.pmfp.mypage.model.vo.MypizzaPopup" id="mypageMypizzaPopupResultSet">
+		<id property="materialNo" column="MATERIAL_NO"/>
+		<result property="materialSellprice" column="MATERIAL_SELLPRICE"/>
+		<result property="materialCount" column="ORDER_TCOUNT"/>
+		<result property="materialNameAndCount" column="MATERIAL_NAME"/>
+		
+	</resultMap>
+	
+	
+	
 	
 
 
@@ -121,12 +131,11 @@
 	
 	
 	<select id="selectDelList" resultMap="mypageDelResultSet" parameterType="_int">
-		SELECT d.DELIVERY_NAME, d.DELIVERY_ADDRESS, c.COM_Name
+		SELECT d.delivery_no, d.DELIVERY_NAME, d.DELIVERY_ADDRESS, c.COM_Name
 		FROM DELIVERY d 
 		JOIN company c ON c.com_no = d.com_no
-		WHERE MEMBER_NO = #{memberNo}
-		order by d.delivery_no
-		
+		WHERE MEMBER_NO = #{memberNo} and d.delivery_status='Y'
+		order by d.delivery_no 
 	</select>
 	
 	
@@ -244,6 +253,14 @@
 		select count(*) from my_pizza where member_no=#{memberNo} order by mypizza_no
 	</select>
 	
+	<select id="selectMypizzaPopup" parameterType="_int" resultMap="mypageMypizzaPopupResultSet">
+		select mt.material_no,mt.material_sellprice, ot.order_tcount, mt.material_name|| ot.order_tcount as material_name
+		from my_pizza m
+		join order_item oi on m.order_ino = oi.order_ino
+		join order_topping ot on ot.order_ino = oi.order_ino
+		join material mt on mt.material_no = ot.material_no
+		where m.mypizza_no=#{mypizzaNo}
+	</select>
 	
 	
 	

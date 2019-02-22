@@ -1,17 +1,21 @@
 package com.kh.pmfp.mypage.model.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.TreeMap;
 
 import org.mybatis.spring.SqlSessionTemplate;
 
 import com.kh.pmfp.common.model.vo.PageInfo;
 import com.kh.pmfp.customer.model.vo.MyPizza;
 import com.kh.pmfp.mypage.model.exception.MypageCountException;
+import com.kh.pmfp.mypage.model.exception.MypageInsertException;
 import com.kh.pmfp.mypage.model.exception.MypageListException;
 import com.kh.pmfp.mypage.model.vo.Coupon;
 import com.kh.pmfp.mypage.model.vo.DelList;
 import com.kh.pmfp.mypage.model.vo.Location;
 import com.kh.pmfp.mypage.model.vo.MyWriting;
+import com.kh.pmfp.mypage.model.vo.MypizzaPopup;
 import com.kh.pmfp.mypage.model.vo.OrderDetail;
 import com.kh.pmfp.mypage.model.vo.OrderList;
 
@@ -54,14 +58,16 @@ public interface MypageDao {
 	ArrayList<Location> selectComLocation(SqlSessionTemplate sqlSession);
 
 	//배송지 추가
-	int insertUserDelAddr(SqlSessionTemplate sqlSession, int memberNo, int finalDeliveryLoc, String addr,
-			String deliName);
+	int insertUserDelAddr(SqlSessionTemplate sqlSession, int memberNo, int finalDeliveryLoc, String addr, String deliName) throws MypageInsertException;
 
 	//내피자
 	ArrayList<MyPizza> selectMypizzaList(SqlSessionTemplate sqlSession, int memberNo,PageInfo pi) throws MypageListException;
 
 	//내피자 카운트
 	int selectMypizzaCount(SqlSessionTemplate sqlSession, int memberNo) throws MypageCountException;
+
+	//내피자 상세보기 - 팝업
+	HashMap<Integer, MypizzaPopup> selectMypizzaPopup(SqlSessionTemplate sqlSession, int mypizzaNo) throws MypageListException;
 
 	
 	

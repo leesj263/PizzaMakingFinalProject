@@ -50,14 +50,12 @@
 									<div class="ui card" style="width: 250px;">
 									  <div class="content">
 									    <div align='center'>${ m.mypizzaName }</div>
-									  <input id="mypizzaNo" type="hidden" value="${ m.mypizzaNo }">
 									  </div>
 									  <div class="image">
-									    <img src="resources/customer/images/myPizza/${m.imgChangeName }" style="height: 150px;">
+									    <img src="resources/customer/images/myPizza/${m.imgChangeName }" style="height: 250px;width: 250px">
 									  </div>
 									  <div class="content" align="center">
-									<%-- <button class="ui secondary basic button" onclick="mypizzaDetail(${ m.mypizzaNo })">상세보기</button> --%>
-									 <button class="ui secondary basic button" onclick="mypizzaDetail()">상세보기</button>
+									<button class="ui secondary basic button" onclick="mypizzaDetail(${ m.mypizzaNo }, '${ m.mypizzaName }','${m.imgChangeName }' );">상세보기</button>
 									  </div>
 									</div>
 								</td>
@@ -122,18 +120,13 @@
 		<script>
 			 $(function(){
 				$("#list2").attr("class", "item active");
-				
-				
-				console.log(JSON.stringify([1,2,3]));
-				
-				
 			});
 			
 			var screenW = screen.availWidth; // 스크린 가로사이즈
 			var screenH = screen.availHeight; // 스크린 세로사이즈
 				
 			var popW = 500;  //팝업 가로사이즈
-			var popH = 500;  //팝업 세로사이즈
+			var popH = 420;  //팝업 세로사이즈
 			
 			var posL=( screenW-popW ) / 2;   // 띄울창의 가로 포지션 
 			var posT=( screenH-popH ) / 2;   // 띄울창의 세로 포지션 
@@ -141,11 +134,13 @@
 			var url = 'myPageMyMenuPop.mp?mypizzaNo=';
 			var option = 'width='+ popW +',height='+ popH +',top='+ posT +',left='+ posL +',resizable=no,scrollbars=no';
 			 
-			function mypizzaDetail(value){
-				console.log(value);
-				var a = "${m}";
+			function mypizzaDetail(value1, value2, value3){
+				console.log(typeof(value1));
+				console.log(typeof(value2));
+				console.log(typeof(value3));
+				/* var a = "${m}"; */
 				
-				window.open(url+value,"",option);
+				window.open(url+value1+"&mypizzaName="+value2 +"&mypizzaImgChangeName="+value3,"",option);
 			}
 			 
 		</script>
