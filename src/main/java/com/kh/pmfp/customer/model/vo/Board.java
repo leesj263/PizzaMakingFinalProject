@@ -21,11 +21,18 @@ public class Board implements Serializable {
 	private int boardComNo;
 	private int rownum;
 	
+	private int imgNo;
+	private int imgCateg;
+	private String imgFilepath;
+	private String imgChangeName;
+	private String imgStatus;
+	
 	public Board() {}
 
 	public Board(int boardNo, int boardType, int boardCateg, String boardTitle, String boardContent, int boardCount,
 			int memberNo, String memberName, String memberNickname, Date boardDate, int boardLevel, int boardRefNo,
-			String boardStatus, String boardAnswer, int boardComNo, int rownum) {
+			String boardStatus, String boardAnswer, int boardComNo, int rownum, int imgNo, int imgCateg,
+			String imgFilepath, String imgChangeName, String imgStatus) {
 		super();
 		this.boardNo = boardNo;
 		this.boardType = boardType;
@@ -43,6 +50,12 @@ public class Board implements Serializable {
 		this.boardAnswer = boardAnswer;
 		this.boardComNo = boardComNo;
 		this.rownum = rownum;
+		
+		this.imgNo = imgNo;
+		this.imgCateg = imgCateg;
+		this.imgFilepath = imgFilepath;
+		this.imgChangeName = imgChangeName;
+		this.imgStatus = imgStatus;
 	}
 
 	public int getBoardNo() {
@@ -173,6 +186,46 @@ public class Board implements Serializable {
 		this.rownum = rownum;
 	}
 
+	public int getImgNo() {
+		return imgNo;
+	}
+
+	public void setImgNo(int imgNo) {
+		this.imgNo = imgNo;
+	}
+
+	public int getImgCateg() {
+		return imgCateg;
+	}
+
+	public void setImgCateg(int imgCateg) {
+		this.imgCateg = imgCateg;
+	}
+
+	public String getImgFilepath() {
+		return imgFilepath;
+	}
+
+	public void setImgFilepath(String imgFilepath) {
+		this.imgFilepath = imgFilepath;
+	}
+
+	public String getImgChangeName() {
+		return imgChangeName;
+	}
+
+	public void setImgChangeName(String imgChangeName) {
+		this.imgChangeName = imgChangeName;
+	}
+
+	public String getImgStatus() {
+		return imgStatus;
+	}
+
+	public void setImgStatus(String imgStatus) {
+		this.imgStatus = imgStatus;
+	}
+
 	@Override
 	public String toString() {
 		return "Board [boardNo=" + boardNo + ", boardType=" + boardType + ", boardCateg=" + boardCateg + ", boardTitle="
@@ -180,8 +233,11 @@ public class Board implements Serializable {
 				+ memberNo + ", memberName=" + memberName + ", memberNickname=" + memberNickname + ", boardDate="
 				+ boardDate + ", boardLevel=" + boardLevel + ", boardRefNo=" + boardRefNo + ", boardStatus="
 				+ boardStatus + ", boardAnswer=" + boardAnswer + ", boardComNo=" + boardComNo + ", rownum=" + rownum
-				+ "]";
+				+ ", imgNo=" + imgNo + ", imgCateg=" + imgCateg + ", imgFilepath=" + imgFilepath + ", imgChangeName="
+				+ imgChangeName + ", imgStatus=" + imgStatus + "]";
 	}
+
+	
 
 	
 
