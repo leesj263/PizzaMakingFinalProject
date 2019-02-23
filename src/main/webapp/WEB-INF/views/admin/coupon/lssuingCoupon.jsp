@@ -3,6 +3,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <jsp:include page="../common/header.jsp" />
 
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
 
 <style>
 #main {
@@ -20,8 +22,8 @@
 				</div>
 				<hr>
 				<div class="card-body card-block">
-					<form action="issuingCoupon.co" method="post" enctype="multipart/form-data"
-						class="form-horizontal">
+					<form action="issuingCoupon.co" method="post" class="form-horizontal"><!--  enctype="multipart/form-data" -->
+						
 
 
 						<div class="row form-group">
@@ -31,16 +33,16 @@
 							<div class="col col-md-9">
 								<div class="form-check-inline form-check">
 									<label for="inline-radio1" class="form-check-label "> <input
-										type="radio" checked id="inline-radio1" name="inline-radios"
+										type="radio" checked id="inline-radio1" name="AllMemberRadios"
 										value="option1" class="form-check-input">모든 회원
 									</label> &nbsp;&nbsp;&nbsp; <label for="inline-radio2"
 										class="form-check-label "> <input type="radio" 
-										id="inline-radio2" name="inline-radios" value="option2"
+										id="inline-radio2" name="AllMemberRadios" value="option2"
 										class="form-check-input">특정 회원
 									</label> &nbsp;&nbsp;&nbsp;
 									<div class="row form-group">
 										<div class="col-3 col-md-12">
-											<input type="text" id="text-input" name="memberId"
+											<input type="text" id="memberIdSearch" name="memberId"
 												placeholder="" class="form-control">
 										</div>
 									</div>
@@ -60,12 +62,27 @@
 							<div class="col-12 col-md-9">
 								<select name="selectSm" id="SelectLm"
 									class="form-control-sm form-control">
-									<c:forEach var="cList" items="${list }" varStatus="varStatus">
-									<option value="${varStatus.count }">${cList.couponName }</option>
+									<c:forEach var="cList" items="${list }">
+									<option value="${cList.couponNo }">${cList.couponName }</option>
 									</c:forEach>
 								</select>
 							</div>
 						</div>
+						<tr>
+						<div class="row form-group">
+							<td>
+								<label for="select" class=" form-control-label"><strong>유효기간</strong></label>
+							</td>
+							<td>
+								<select name="issueEdate" id="select" class="form-control">
+									<option value="1">30일</option>
+									<option value="2">60일</option>
+									<option value="3">90일</option>
+									<option value="4">120일</option>
+								</select>
+							</td>
+						</div>
+					</tr>
 
 
 
@@ -84,15 +101,10 @@
 							</div>
 							
 						<div class="col col-md-9" style="display: none;" id="specialMemberDiv">
-								<select name="multiple-select2" id="multiple-select2" multiple=""
+								<select id="memberListStart" multiple=""  name="memberNameArr"
 									class="form-control" style="height:300px">
 									<option value="0">----------회원 목록 입니다.-----------</option>
-									<option value="1">이석주</option>
-									<option value="2">김미정</option>
-									<option value="3">유솔이</option>
-									<option value="4">예솔쓰</option>
-									<option value="5">정은수</option>
-									<option value="6">황민규</option>
+								
 								</select>
 							</div> 
 
@@ -152,7 +164,27 @@
 			
 		});
 	function memberIdSearch(){
-		console.log("회원아이디조회")
+		console.log("회원아이디조회");
+		var memberId = $("#memberIdSearch").val();
+		var memberListStart = $("#memberListStart");
+		console.log(memberId);
+		
+		$.ajax({
+			url:"memberIdSearch.co",
+			type:"post",
+			data:{"memberId":memberId},
+			success:function(data){
+				console.log(data);
+				if(data.memberName==null){
+					swal("아이디가 없듬");
+				}else{
+				swal("아이디가 있습니다!");
+				memberListStart.append('<option value="'+data.memberName+'" selected>'+data.memberName+'</option>');
+				}
+			},error:function(data){
+				console.log("데이터 통신 실팽");
+			}
+		});
 	}
 	
 	</script>

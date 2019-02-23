@@ -10,6 +10,7 @@ import com.kh.pmfp.admin.model.vo.AdminCoupon;
 import com.kh.pmfp.admin.model.vo.AdminCoupon2;
 import com.kh.pmfp.admin.model.vo.AdminCouponIssue;
 import com.kh.pmfp.admin.model.vo.AdminCouponIssue2;
+import com.kh.pmfp.common.model.vo.Member;
 import com.kh.pmfp.common.model.vo.PageInfo;
 
 public interface AdminCouponDao {
@@ -55,5 +56,14 @@ public interface AdminCouponDao {
 
 	//모든 쿠폰 불러오기
 	ArrayList<AdminCoupon> selectAllCouponList(SqlSessionTemplate sqlSession);
+
+	//쿠폰 발급하기-회원 아이디 조회
+	Member memberIdSearch(SqlSessionTemplate sqlSession,String memberId);
+
+	//모든 회원 검색
+	ArrayList<Member> selectAllMember(SqlSessionTemplate sqlSession);
+
+	//모든 회원에게 쿠폰 등록
+	int insertCouponIssuing(SqlSessionTemplate sqlSession, AdminCouponIssue coupon);
 
 }
