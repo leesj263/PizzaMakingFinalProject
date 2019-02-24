@@ -63,7 +63,14 @@ public interface AdminCouponDao {
 	//모든 회원 검색
 	ArrayList<Member> selectAllMember(SqlSessionTemplate sqlSession);
 
-	//모든 회원에게 쿠폰 등록
+	//회원에게 쿠폰 등록
 	int insertCouponIssuing(SqlSessionTemplate sqlSession, AdminCouponIssue coupon);
 
+	//쿠폰 내역 불러오기
+	AdminCoupon selectCouponContent(SqlSessionTemplate sqlSession, String couponNo);
+
+	//쿠폰 수정하기
+	int updateCoupon(SqlSessionTemplate sqlSession, AdminCoupon coupon);
+
+	
 }

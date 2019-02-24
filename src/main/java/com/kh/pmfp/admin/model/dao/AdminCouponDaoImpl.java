@@ -150,5 +150,19 @@ public class AdminCouponDaoImpl implements AdminCouponDao{
 		return sqlSession.insert("Coupon.insertCouponIssuing",coupon);
 	}
 
-	
+	//쿠폰 내역 불러오기
+	@Override
+	public AdminCoupon selectCouponContent(SqlSessionTemplate sqlSession, String couponNo) {
+		
+		return sqlSession.selectOne("Coupon.selectCouponContent",couponNo);
+	}
+
+	//쿠폰 수정하기
+	@Override
+	public int updateCoupon(SqlSessionTemplate sqlSession, AdminCoupon coupon) {
+
+		return sqlSession.update("Coupon.updateCoupon",coupon);
+	}
+
+
 }
