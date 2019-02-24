@@ -34,6 +34,8 @@ public interface BoardDao {
 	ArrayList<Board> selectReviewList(SqlSessionTemplate sqlSession, PageInfo pi) throws BoardException;
 //review작성
 	int insertReview(SqlSessionTemplate sqlSession, Board review) throws BoardException;
+//
+	int deleteReview(SqlSessionTemplate sqlSession, int boardNo);
 	
 	
 	

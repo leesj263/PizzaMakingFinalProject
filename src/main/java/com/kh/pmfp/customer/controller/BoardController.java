@@ -1,5 +1,10 @@
 package com.kh.pmfp.customer.controller;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,6 +17,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.kh.pmfp.admin.model.exception.AdminInsertException;
 import com.kh.pmfp.admin.model.vo.AdminBoard;
@@ -90,7 +96,41 @@ public class BoardController {
 			return "common/errorPage";
 		}
 	}
+	//이미지 파일 생성
+		@RequestMapping(value="/reviewImgUpload.bo")
+		public @ResponseBody String reviewImgUpload(HttpServletRequest request,
+				@RequestParam String img) {
+	//이미지 파일 생성
+			String base64Image = img.split(",")[1];//파일이름
 
+			String root = request.getSession().getServletContext().getRealPath("resources");
+			String filePath = root + "\\customer\\images\\myPizza";
+			long currentTime = System.currentTimeMillis();
+			SimpleDateFormat ft = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+			String randomNum = String.format("%07d",(int)(Math.random() * 1000000));
+			String fileName = ft.format(new java.util.Date(currentTime)) + randomNum + ".png";
+			
+			File file = new File(filePath, fileName);
+			BufferedOutputStream bos = null;
+			try {
+				bos = new BufferedOutputStream(new FileOutputStream(file));
+				
+				bos.write(imageBytes);
+				bos.flush();
+			} catch (IOException e) {
+				e.printStackTrace();
+				if(file.exists()) file.delete();
+				return "fileError";
+			} finally {
+				try {
+					if(bos != null) bos.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			
+			return "complete";
+		}
 	// qna수정
 	@RequestMapping("qnaUpdate.bo")
 	public String qnaUpdate(@ModelAttribute Board qna, HttpServletRequest request, HttpServletResponse response,
@@ -114,6 +154,7 @@ public class BoardController {
 		}
 
 	}
+	//qna업데이트등록
 	@RequestMapping("qnaUpdateC.bo")
 	public String qnaUpdateC(@ModelAttribute Board qna, HttpServletRequest request, HttpServletResponse response,
 			String category) {
@@ -136,6 +177,50 @@ public class BoardController {
 		
 		}
 	}
+	// review수정
+		@RequestMapping("reviewUpdate.bo")
+		public String reviewUpdate(@ModelAttribute Board review, HttpServletRequest request, HttpServletResponse response
+				) {
+			int boardNo = Integer.parseInt(request.getParameter("num"));
+
+			System.out.println("후기수정 넘버" + boardNo);
+
+			// qna.setBoardCateg(Integer.parseInt(category));
+
+			try {
+				review = bs.updateReview(boardNo);
+				
+				request.setAttribute("review", review);
+				return "customer/review/reviewUpdate";
+			} catch (BoardException e) {
+				request.setAttribute("msg", e.getMessage());
+
+				return "common/errorPage";
+			}
+
+		}
+		//review업데이트등록
+		@RequestMapping("reviewUpdateC.bo")
+		public String reviewUpdateC(@ModelAttribute Board review, HttpServletRequest request, HttpServletResponse response
+				) {
+			String title=request.getParameter("boardTitle");
+			String content= request.getParameter("boardContent");
+			
+			review= new Board();
+			review.setBoardTitle(title);
+			review.setBoardContent(content);
+			
+			
+			try {
+				int result= bs.reviewUpdateC(review);
+				return "customer/review/reviewList";
+			} catch (BoardException e) {
+				
+			request.setAttribute("msg", e.getMessage());
+			return "common/errorPage";
+			
+			}
+		}
 	// qna리스트
 	@RequestMapping("qnaList.bo")
 	public String qnaList(@RequestParam(value = "currentPage", required = false, defaultValue = "1") int currentPage,
@@ -198,6 +283,28 @@ public class BoardController {
 		}
 
 	}
+	// review 상세보기
+		@RequestMapping(value = "reviewDetail.bo", method = RequestMethod.GET)
+		public String selectReview(int num, HttpServletRequest request, HttpServletResponse response) {
+			System.out.println("게시글 번호 : " + num);
+			Board review = new Board();
+			review.setBoardNo(num);
+			Board answer = new Board();
+
+			try {
+				review = bs.selectReview(num);
+				answer = bs.selectAnswer(num);
+
+				request.setAttribute("review", review);
+				request.setAttribute("answer", answer);
+				return "customer/review/reviewDetail";
+			} catch (BoardException e) {
+				request.setAttribute("msg", e.getMessage());
+				return "common/errorPage";
+			}
+
+		}
+
 
 	// qna 삭제용
 	@RequestMapping(value = "qnaDelete.bo", method = RequestMethod.GET)
@@ -209,5 +316,16 @@ public class BoardController {
 		return "redirect:qnaList.bo";
 
 	}
+	// qna 삭제용
+		@RequestMapping(value = "reviewDelete.bo", method = RequestMethod.GET)
+		public String reviewDelete(@RequestParam int num, HttpServletRequest request, HttpServletResponse response)
+				throws BoardException {
+			int boardNo = num;
+			int result = bs.deleteReview(boardNo);
+
+			return "redirect:reviewList.bo";
+		}
+		
+	
 
 }

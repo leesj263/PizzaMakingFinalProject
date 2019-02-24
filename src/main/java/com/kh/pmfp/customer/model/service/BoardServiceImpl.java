@@ -64,7 +64,21 @@ public class BoardServiceImpl implements BoardService {
 		}
 		
 		return qna;
+		
 	}
+	//review작성
+		@Override
+		public int insertReview(Board review) throws BoardException {
+			int result= -1;
+			int result1=bd.insertReview(sqlSession,review);
+			int result2=-1;
+			if(result1>0) {
+				result2=bd.insertFile(sqlSession,review);
+			
+				
+				}
+			return result;
+		}
 	//qna답변
 	@Override
 	public Board selectAnswer(int num) throws BoardException {
@@ -78,12 +92,13 @@ public class BoardServiceImpl implements BoardService {
 		int result = bd.deleteqna(sqlSession, boardNo);
 		return result;
 	}
-	//수정
+	//qna수정
 	@Override
 	public Board updateqna2(int boardNo) throws BoardException {
 		
 		return bd.updateqna2(sqlSession, boardNo);
 	}
+	//qna수정등록
 	@Override
 	public int qnaUpdateC(Board qna) throws BoardException {
 		int result= bd.qnaUpdateC(sqlSession, qna);
@@ -99,15 +114,26 @@ public class BoardServiceImpl implements BoardService {
 		
 		return reviewList;
 	}
-	//review작성
+	
+	//review상세보기
 	@Override
-	public int insertReview(Board review) throws BoardException {
-		int result= -1;
-		int result1=bd.insertReview(sqlSession,review);
-		int result2=-1;
-		if(result1>0) {
-		/*	result2=bd.insertFile(sqlSession,review);*/
-		}
+	public Board selectReview(int num) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public Board updateReview(int boardNo) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public int reviewUpdateC(Board review) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	@Override
+	public int deleteReview(int boardNo) {
+		int result = bd.deleteReview(sqlSession, boardNo);
 		return result;
 	}
 
