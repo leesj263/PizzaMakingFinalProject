@@ -153,4 +153,10 @@ public class BoardDaoImpl implements BoardDao {
 		}
 		return result;
 	}
+
+	@Override
+	public int deleteReview(SqlSessionTemplate sqlSession, int boardNo) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }

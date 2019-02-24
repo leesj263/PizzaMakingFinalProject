@@ -30,6 +30,11 @@ public interface BoardService {
 	ArrayList<Board> selectReviewList(PageInfo pi) throws BoardException;
 	//review작성하기
 	int insertReview(Board review) throws BoardException;
+	//review상세보기
+	Board selectReview(int num);
+	Board updateReview(int boardNo);
+	int reviewUpdateC(Board review);
+	int deleteReview(int boardNo);
 	
 	
 	
