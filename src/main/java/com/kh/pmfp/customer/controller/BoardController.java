@@ -102,7 +102,8 @@ public class BoardController {
 				@RequestParam String img) {
 	//이미지 파일 생성
 			String base64Image = img.split(",")[1];//파일이름
-
+			byte[] imageBytes = javax.xml.bind.DatatypeConverter.parseBase64Binary(base64Image);
+			
 			String root = request.getSession().getServletContext().getRealPath("resources");
 			String filePath = root + "\\customer\\images\\myPizza";
 			long currentTime = System.currentTimeMillis();
