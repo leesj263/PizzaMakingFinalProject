@@ -104,11 +104,12 @@
                      <tr>
                         <th scope="col"></th>
                         <th scope="col">쿠폰코드</th>
+                        <th scope="col">회원아이디</th>
                         <th scope="col">쿠폰명</th>
                         <th scope="col">할인</th>
                         <th scope="col">생성일</th>
-                        <th scope="col">유효기간</th>
                         <th scope="col">발급일</th>
+                        <th scope="col">만료일</th>
                         <th scope="col">상태</th>
 
                      </tr>
@@ -119,6 +120,7 @@
                      <tr class="listAreaTr">
                         <th scope="row">${varStatus.count }</th>
                         <td>${cList.issueNo}</td>
+                        <td>${cList.memberId}</td>
                         <td>${cList.couponName }</td>
                         <c:if test="${cList.couponCateg ==0}">								
 						<td>${cList.couponRdiscount *100}%</td>
@@ -127,8 +129,8 @@
 						<td>${cList.couponPdiscount }원</td>
 						</c:if>
 						<td>${cList.couponCdate }</td>
-						<td>${cList.couponEdate }</td>
                         <td>${cList.issueCdate }</td>
+						<td>${cList.couponEdate }</td>
                         <td>${cList.issueStatus }</td>
                      </tr>
                    </c:forEach>  

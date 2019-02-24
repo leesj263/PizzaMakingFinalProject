@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.pmfp.admin.model.exception.AdminCountException;
 import com.kh.pmfp.admin.model.exception.AdminSelectException;
@@ -20,8 +22,10 @@ import com.kh.pmfp.admin.model.vo.AdminCoupon;
 import com.kh.pmfp.admin.model.vo.AdminCoupon2;
 import com.kh.pmfp.admin.model.vo.AdminCouponIssue;
 import com.kh.pmfp.admin.model.vo.AdminCouponIssue2;
+import com.kh.pmfp.common.model.vo.Member;
 import com.kh.pmfp.common.model.vo.PageInfo;
 import com.kh.pmfp.common.model.vo.Pagination;
+
 
 @Controller
 public class AdminCouponController {
@@ -245,7 +249,16 @@ public class AdminCouponController {
 	
 	//쿠폰 발급하기
 	@RequestMapping("issuingCoupon.co")
-	public String issuingCoupon(HttpServletRequest request, HttpServletResponse response) {
+	public String  issuingCoupon(AdminCouponIssue2 coupon2,HttpServletRequest request, HttpServletResponse response,String[] memberNameArr,String AllMemberRadios,String selectSm) {
+		System.out.println(AllMemberRadios);
+		System.out.println(selectSm);
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yy/MM/dd");
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.MONDAY, Integer.parseInt(coupon2.getIssueEdate()));		
+		Date date = new Date(cal.getTimeInMillis());
+		
+		AdminCouponIssue coupon = new AdminCouponIssue();
 		
 		//모든회원이냐
 			//회원 정보 모두 받아와서-서비스에서 insert
@@ -255,10 +268,59 @@ public class AdminCouponController {
 		//특정회원이냐
 			//회원이름 클릭후 회원아이디 조회 -ox
 			//쿠폰 목록 모두 받아오고
+			/*for(String memberNameArrAll:memberNameArr) {
+				System.out.println(memberNameArrAll);
+			}*/
 			//회원 목록은 
+		int result=0;
+		
+		if(AllMemberRadios.equals("option1")) {
+
+			
+			//모든회원 검색
+			ArrayList<Member> list = cs.selectAllMember();
+			System.out.println(list);
+			
+			
+			for(int i=0; i<list.size();i++) {
+				coupon.setCouponNo(Integer.parseInt(selectSm));
+				coupon.setMemberNo(list.get(i).getMemberNo());
+				coupon.setIssueEdate(date);
+				 result = cs.insertCouponIssuing(coupon);
+				
+			}
+			
+		}else if(AllMemberRadios.equals("option2")) {
+			//특정회원
+			for(int i=0; i<memberNameArr.length; i++) {
+				System.out.println(memberNameArr[i]);
+			}
+		}
+		
+		if(result>0) {
+			return "redirect:lssuingCouponManageMent.co";
+		}else {
+			return "common/errorPage";
+		}
+		
+	//	return null;
+	}
+	
+	//쿠폰 발급하기-회원 아이디 조회
+	@RequestMapping("memberIdSearch.co")
+	public @ResponseBody Member memberIdSearch(@RequestParam String memberId) {
+		//System.out.println(memberId);
+		
+		Member m = new Member();
+		//m.setMemberId(memberId);
+		//System.out.println(m);
+		
+		m = cs.memberIdSearch(memberId);
+		System.out.println(m);
 		
 		
-		return null;
+		
+		return m;
 	}
 
 	

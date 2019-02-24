@@ -39,6 +39,7 @@
 		<result property="couponEdate" column="COUPON_EDATE"/>
 		<result property="couponRdiscount" column="COUPON_RDISCOUNT"/>
 		<result property="couponPdiscount" column="COUPON_PDISCOUNT"/>
+		<result property="memberId" column="MEMBER_ID"/>
 	</resultMap>
 	<resultMap type="com.kh.pmfp.common.model.vo.Member" id="memberResultSet">
 		<id property="memberNo" column="MEMBER_NO"/>
@@ -51,6 +52,7 @@
 		<result property="memberEnroll" column="MEMBER_ENROLL"/>
 		<result property="memberStatus" column="MEMBER_STATUS"/>
 		<result property="comNo" column="COM_NO"/>
+		
 	</resultMap>
 	
 	<select id="selectListCount" resultType="_int">
@@ -106,7 +108,10 @@
 		SELECT *
 		FROM COUPON_ISSUE CS 
         JOIN COUPON C ON (CS.COUPON_NO=C.COUPON_NO)
+        JOIN MEMBER M ON (CS.MEMBER_NO=M.MEMBER_NO)
+        WHERE M.MEMBER_CATEG=0
 		ORDER BY ISSUE_NO DESC
+		
 	</select>
 	
 	<!-- 발급쿠폰 검색-쿠폰코드 -->
@@ -114,7 +119,9 @@
 		SELECT *
 		FROM COUPON_ISSUE CS 
         JOIN COUPON C ON (CS.COUPON_NO=C.COUPON_NO)
-		WHERE C.COUPON_NO LIKE '%'||#{couponNo}||'%'
+        JOIN MEMBER M ON (CS.MEMBER_NO=M.MEMBER_NO)
+        WHERE M.MEMBER_CATEG=0
+		AND CS.ISSUE_NO LIKE '%'||#{couponNo}||'%'
 	
 	</select>
 	
@@ -123,7 +130,9 @@
 		SELECT COUNT(*)
 		FROM COUPON_ISSUE CS 
         JOIN COUPON C ON (CS.COUPON_NO=C.COUPON_NO)
-		WHERE C.COUPON_NO LIKE '%'||#{couponNo}||'%'
+		 JOIN MEMBER M ON (CS.MEMBER_NO=M.MEMBER_NO)
+        WHERE M.MEMBER_CATEG=0
+		AND  CS.ISSUE_NO LIKE '%'||#{couponNo}||'%'
 	
 	</select>
 	
@@ -132,7 +141,9 @@
 		SELECT *
 		FROM COUPON_ISSUE CS 
         JOIN COUPON C ON (CS.COUPON_NO=C.COUPON_NO)
-		WHERE C.COUPON_NAME LIKE '%'||#{couponName}||'%'
+		 JOIN MEMBER M ON (CS.MEMBER_NO=M.MEMBER_NO)
+        WHERE M.MEMBER_CATEG=0
+		AND C.COUPON_NAME LIKE '%'||#{couponName}||'%'
 	</select>
 	
 	<!-- 발급쿠폰 검색 -이름  Count-->
@@ -140,7 +151,9 @@
 		SELECT COUNT(*)
 		FROM COUPON_ISSUE CS 
         JOIN COUPON C ON (CS.COUPON_NO=C.COUPON_NO)
-		WHERE C.COUPON_NAME LIKE '%'||#{couponName}||'%'
+		 JOIN MEMBER M ON (CS.MEMBER_NO=M.MEMBER_NO)
+        WHERE M.MEMBER_CATEG=0
+		AND C.COUPON_NAME LIKE '%'||#{couponName}||'%'
 	</select>
 	
 	
@@ -150,5 +163,26 @@
 		FROM COUPON
 	</select>
 	
+	<!-- 쿠폰 발급하기-회원 아이디 조회 -->
+	<select id="memberIdSearch" parameterType="java.lang.String" resultMap="memberResultSet">
+		SELECT MEMBER_NAME
+		FROM MEMBER
+		WHERE MEMBER_ID=#{memberId}
+	</select>
+	
+	<!-- 모든 회원 검색 -->
+	<select id="SelectAllMember" resultMap="memberResultSet">
+		SELECT *
+		FROM MEMBER
+		WHERE MEMBER_STATUS='Y' AND MEMBER_CATEG=0
+	</select>
+	
+	<!-- 모든 회원에게 쿠폰 발급 -->
+	<insert id="insertCouponIssuing" parameterType="AdminCouponIssue">
+		INSERT INTO COUPON_ISSUE 
+		VALUES  (SEQ_CINO.NEXTVAL,#{couponNo},#{memberNo},SYSDATE,#{issueEdate},'Y',null)
+		
+		
+	</insert>
 	
  </mapper>

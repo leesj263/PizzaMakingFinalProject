@@ -16,15 +16,16 @@ public class AdminCouponIssue2 implements Serializable{
 	private int issueNo;		//발급쿠폰 번호
 	private int memberNo;		//회원번호
 	private Date issueCdate;	//발급일
-	private Date issueEdate;	//만료일
+	private String issueEdate;	//만료일
 	private String issueStatus;	//사용여부
 	private int orderNo;		//주문번호
+	private String memberId;
 	
 	public AdminCouponIssue2() {}
 
 	public AdminCouponIssue2(int couponNo, String couponName, int couponCateg, int couponCondition, Date couponCdate,
 			Date couponEdate, double couponRdiscount, int couponPdiscount, int issueNo, int memberNo, Date issueCdate,
-			Date issueEdate, String issueStatus, int orderNo) {
+			String issueEdate, String issueStatus, int orderNo, String memberId) {
 		super();
 		this.couponNo = couponNo;
 		this.couponName = couponName;
@@ -40,6 +41,7 @@ public class AdminCouponIssue2 implements Serializable{
 		this.issueEdate = issueEdate;
 		this.issueStatus = issueStatus;
 		this.orderNo = orderNo;
+		this.memberId = memberId;
 	}
 
 	public int getCouponNo() {
@@ -130,11 +132,11 @@ public class AdminCouponIssue2 implements Serializable{
 		this.issueCdate = issueCdate;
 	}
 
-	public Date getIssueEdate() {
+	public String getIssueEdate() {
 		return issueEdate;
 	}
 
-	public void setIssueEdate(Date issueEdate) {
+	public void setIssueEdate(String issueEdate) {
 		this.issueEdate = issueEdate;
 	}
 
@@ -154,17 +156,23 @@ public class AdminCouponIssue2 implements Serializable{
 		this.orderNo = orderNo;
 	}
 
+	public String getMemberId() {
+		return memberId;
+	}
+
+	public void setMemberId(String memberId) {
+		this.memberId = memberId;
+	}
+
 	@Override
 	public String toString() {
 		return "AdminCouponIssue2 [couponNo=" + couponNo + ", couponName=" + couponName + ", couponCateg=" + couponCateg
 				+ ", couponCondition=" + couponCondition + ", couponCdate=" + couponCdate + ", couponEdate="
 				+ couponEdate + ", couponRdiscount=" + couponRdiscount + ", couponPdiscount=" + couponPdiscount
 				+ ", issueNo=" + issueNo + ", memberNo=" + memberNo + ", issueCdate=" + issueCdate + ", issueEdate="
-				+ issueEdate + ", issueStatus=" + issueStatus + ", orderNo=" + orderNo + "]";
+				+ issueEdate + ", issueStatus=" + issueStatus + ", orderNo=" + orderNo + ", memberId=" + memberId + "]";
 	}
 
-	
-	
 	
 	
 }

@@ -12,6 +12,7 @@ import com.kh.pmfp.admin.model.vo.AdminCoupon;
 import com.kh.pmfp.admin.model.vo.AdminCoupon2;
 import com.kh.pmfp.admin.model.vo.AdminCouponIssue;
 import com.kh.pmfp.admin.model.vo.AdminCouponIssue2;
+import com.kh.pmfp.common.model.vo.Member;
 import com.kh.pmfp.common.model.vo.PageInfo;
 
 @Repository
@@ -128,4 +129,26 @@ public class AdminCouponDaoImpl implements AdminCouponDao{
 		return (ArrayList)sqlSession.selectList("Coupon.selectAllCouponList");
 	}
 
+	//쿠폰 발급하기-회원 아이디 조회
+	@Override
+	public Member memberIdSearch(SqlSessionTemplate sqlSession,String memberId) {
+		
+		return sqlSession.selectOne("Coupon.memberIdSearch",memberId);
+	}
+
+	//모든 회원 검색
+	@Override
+	public ArrayList<Member> selectAllMember(SqlSessionTemplate sqlSession) {
+		
+		return (ArrayList)sqlSession.selectList("Coupon.SelectAllMember");
+	}
+
+	//모든 회원에게 쿠폰 등록
+	@Override
+	public int insertCouponIssuing(SqlSessionTemplate sqlSession,AdminCouponIssue coupon) {
+	
+		return sqlSession.insert("Coupon.insertCouponIssuing",coupon);
+	}
+
+	
 }

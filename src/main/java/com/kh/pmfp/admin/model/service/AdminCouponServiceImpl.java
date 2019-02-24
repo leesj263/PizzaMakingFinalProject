@@ -14,6 +14,7 @@ import com.kh.pmfp.admin.model.vo.AdminCoupon;
 import com.kh.pmfp.admin.model.vo.AdminCoupon2;
 import com.kh.pmfp.admin.model.vo.AdminCouponIssue;
 import com.kh.pmfp.admin.model.vo.AdminCouponIssue2;
+import com.kh.pmfp.common.model.vo.Member;
 import com.kh.pmfp.common.model.vo.PageInfo;
 
 @Service
@@ -139,6 +140,29 @@ public class AdminCouponServiceImpl implements AdminCouponService{
 		ArrayList<AdminCoupon> list = cd.selectAllCouponList(sqlSession);
 		
 		return list;
+	}
+
+	//쿠폰 발급하기-회원 아이디 조회
+	@Override
+	public Member memberIdSearch(String memberId) {
+		
+		Member m = cd.memberIdSearch(sqlSession,memberId);
+		
+		return m;
+	}
+
+	//모든 회원 검색
+	@Override
+	public ArrayList<Member> selectAllMember() {
+		
+		return cd.selectAllMember(sqlSession);
+	}
+
+	//모든 회원에게 쿠폰 등록
+	@Override
+	public int insertCouponIssuing(AdminCouponIssue coupon) {
+		
+		return cd.insertCouponIssuing(sqlSession,coupon);
 	}
 	
 	
