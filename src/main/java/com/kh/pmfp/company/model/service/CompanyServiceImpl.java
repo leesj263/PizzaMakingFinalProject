@@ -1,14 +1,36 @@
 package com.kh.pmfp.company.model.service;
 
+import java.io.InputStream;
+import java.sql.Connection;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Properties;
 
+import javax.annotation.Resource;
+import javax.sql.DataSource;
+
+import org.apache.ibatis.io.Resources;
+import org.apache.ibatis.mapping.Environment;
+import org.apache.ibatis.session.Configuration;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.ibatis.session.SqlSessionFactoryBuilder;
+import org.apache.ibatis.transaction.TransactionFactory;
+import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
+import org.apache.log4j.chainsaw.Main;
+import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Bean;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.stereotype.Component;
 
+import com.kh.pmfp.company.controller.WebSocketChat;
 import com.kh.pmfp.company.model.dao.CompanyDao;
+import com.kh.pmfp.company.model.dao.CompanyDaoImpl;
 import com.kh.pmfp.company.model.exception.FailChangeCalendarDate;
 import com.kh.pmfp.company.model.exception.FailInsertEmployeeInfo;
 import com.kh.pmfp.company.model.exception.FailInsertOrderStock;
@@ -34,12 +56,23 @@ import com.kh.pmfp.company.model.vo.CompanyRemainMaterial;
 import com.kh.pmfp.company.model.vo.CompanySales;
 import com.kh.pmfp.company.model.vo.CompanySalesList;
 
+
+
 @Component
 public class CompanyServiceImpl implements CompanyService{
-
+	
+	public static  SqlSessionTemplate temp;
+	
 	
 	@Autowired
 	private SqlSessionTemplate sqlSession;
+	
+
+	
+	
+	
+	
+	
 	
 	@Autowired
 	private CompanyDao cd;
@@ -50,7 +83,7 @@ public class CompanyServiceImpl implements CompanyService{
 		HashMap<String, ArrayList> hmap = new HashMap<String, ArrayList>();
 		hmap = cd.selectAdminMessage(sqlSession, memberNo);
 		
-		
+		temp = sqlSession;
 		return hmap;
 	}
 
@@ -58,7 +91,7 @@ public class CompanyServiceImpl implements CompanyService{
 	public CompanyBoard detailAdminMessage(int boardNo) throws FaileDetailMessage {
 		// TODO Auto-generated method stub
 		CompanyBoard detailMessage = cd.detailAdminMessage(sqlSession,boardNo);
-		
+		temp = sqlSession;
 		return detailMessage;
 	}
 
@@ -68,7 +101,7 @@ public class CompanyServiceImpl implements CompanyService{
 		ArrayList<CompanyOrder> list = new ArrayList<CompanyOrder>();
 		list = cd.orderWaiting(sqlSession, comNo);
 
-		
+		temp = sqlSession;
 		return list;
 	}
 
@@ -77,16 +110,17 @@ public class CompanyServiceImpl implements CompanyService{
 		ArrayList<CompanyOrder> list = new ArrayList<CompanyOrder>();
 		list = cd.orderMaking(sqlSession, comNo);
 
-		
+		temp = sqlSession;
 		return list;
 	}
 
 	@Override
 	public ArrayList<CompanyOrder> orderDelivering(int comNo) throws FailSelectOrder {
 		ArrayList<CompanyOrder> list = new ArrayList<CompanyOrder>();
+		System.out.println("사이트에서  orderDelivering 조회시 sqlSession : " + sqlSession);
 		list = cd.orderDelivering(sqlSession, comNo);
-
 		
+		temp = sqlSession;
 		return list;
 	}
 
@@ -95,7 +129,7 @@ public class CompanyServiceImpl implements CompanyService{
 		ArrayList<CompanyOrder> list = new ArrayList<CompanyOrder>();
 		list = cd.orderComplete(sqlSession, comNo);
 
-		
+		temp = sqlSession;
 		return list;
 	}
 	
@@ -104,7 +138,7 @@ public class CompanyServiceImpl implements CompanyService{
 		ArrayList<CompanyOrder> list = new ArrayList<CompanyOrder>();
 		list = cd.orderRefuseList(sqlSession, comNo);
 
-		
+		temp = sqlSession;
 		return list;
 	}
 	
@@ -115,7 +149,7 @@ public class CompanyServiceImpl implements CompanyService{
 	public int acceptOrder(CompanySales comsales) throws FailUpdateOrderStatus {
 		// TODO Auto-generated method stub
 		int result = cd.acceptOrder(sqlSession, comsales);
-		
+		temp = sqlSession;
 		return result;
 	}
 
@@ -123,7 +157,7 @@ public class CompanyServiceImpl implements CompanyService{
 	public int refuseOrder(int orderNoInt) throws FailUpdateOrderStatus {
 		// TODO Auto-generated method stub
 		int result = cd.refuseOrder(sqlSession, orderNoInt);
-		
+		temp = sqlSession;
 		return result;
 	}
 
@@ -133,7 +167,7 @@ public class CompanyServiceImpl implements CompanyService{
 		ArrayList<CompanyEmployee> list = new ArrayList<CompanyEmployee>();
 		list = cd.remainDeliveryMan(sqlSession, comNo);
 		
-		
+		temp = sqlSession;
 		return list;
 	}
 
@@ -141,6 +175,7 @@ public class CompanyServiceImpl implements CompanyService{
 	public int deliveryManUpdateM(int orderNoInt, int empNoInt) throws FailUpdateDelivery {
 		// TODO Auto-generated method stub
 		int deliveryManUpdate = cd.deliveryManUpdateM(sqlSession, orderNoInt, empNoInt);
+		temp = sqlSession;
 		return deliveryManUpdate;
 	}
 
@@ -148,6 +183,7 @@ public class CompanyServiceImpl implements CompanyService{
 	public int orderUpdateM(int orderNoInt) throws FailUpdateOrderStatus {
 		// TODO Auto-generated method stub
 		int orderUpdate = cd.orderUpdateM(sqlSession, orderNoInt);
+		temp = sqlSession;
 		return orderUpdate;
 	}
 
@@ -155,6 +191,7 @@ public class CompanyServiceImpl implements CompanyService{
 	public int orderUpdateToComplete(int orderNoInt) throws FailUpdateOrderStatus {
 		// TODO Auto-generated method stub
 		int result = cd.orderUpdateToComplete(sqlSession, orderNoInt);
+		temp = sqlSession;
 		return result;
 	}
 
@@ -162,6 +199,7 @@ public class CompanyServiceImpl implements CompanyService{
 	public int orderUpdateToDelete(int orderNoInt) throws FailUpdateOrderStatus {
 		// TODO Auto-generated method stub
 		int result = cd.orderUpdateToDelete(sqlSession, orderNoInt);
+		temp = sqlSession;
 		return result;
 	}
 
@@ -169,6 +207,7 @@ public class CompanyServiceImpl implements CompanyService{
 	public int refuseListDelete(int orderNoInt) throws FailUpdateOrderStatus {
 		// TODO Auto-generated method stub
 		int result = cd.refuseListDelete(sqlSession, orderNoInt);
+		temp = sqlSession;
 		return result;
 	}
 
@@ -177,6 +216,7 @@ public class CompanyServiceImpl implements CompanyService{
 		// TODO Auto-generated method stub
 		ArrayList<CompanyEmployee> list = new ArrayList<CompanyEmployee>();
 		list = cd.selectEmployeeList(sqlSession, comNo);
+		temp = sqlSession;
 		return list;
 	}
 
@@ -184,7 +224,7 @@ public class CompanyServiceImpl implements CompanyService{
 	public int inputEmployeeInfo(CompanyEmployee ce) throws FailInsertEmployeeInfo {
 		// TODO Auto-generated method stub
 		int result = cd.inputEmployeeInfo(sqlSession, ce);
-		
+		temp = sqlSession;
 		return result;
 	}
 
@@ -192,7 +232,7 @@ public class CompanyServiceImpl implements CompanyService{
 	public int deleteEmployeeInfo(ArrayList<Integer> list) throws FailUpdateEmployeeInfo {
 		// TODO Auto-generated method stub
 		int result = cd.deleteEmployeeInfo(sqlSession, list);
-		
+		temp = sqlSession;
 		return result;
 	}
 
@@ -201,7 +241,7 @@ public class CompanyServiceImpl implements CompanyService{
 		// TODO Auto-generated method stub
 		ArrayList<CompanyBoard> list = new ArrayList<CompanyBoard>();
 		list = cd.selectCompanyReview(sqlSession, comNo);
-		
+		temp = sqlSession;
 		return list;
 	}
 
@@ -210,7 +250,7 @@ public class CompanyServiceImpl implements CompanyService{
 		// TODO Auto-generated method stub
 		ArrayList<CompanyMaterial> list = new ArrayList<CompanyMaterial>();
 		list = cd.orderStrok(sqlSession);
-		
+		temp = sqlSession;
 		return list;
 	}
 
@@ -218,6 +258,7 @@ public class CompanyServiceImpl implements CompanyService{
 	public int applyStock(ArrayList<CompanyOrderStock> list) throws FailInsertOrderStock {
 		// TODO Auto-generated method stub
 		int result = cd.applyStock(sqlSession, list);
+		temp = sqlSession;
 		return result;
 	}
 
@@ -226,7 +267,7 @@ public class CompanyServiceImpl implements CompanyService{
 		// TODO Auto-generated method stub
 		ArrayList<CompanyOrderStock> list = new ArrayList<CompanyOrderStock>();
 		list = cd.selectOrderStockList(sqlSession, comNo);
-		
+		temp = sqlSession;
 		return list;
 	}
 
@@ -234,6 +275,7 @@ public class CompanyServiceImpl implements CompanyService{
 	public int receiptConfirm(ArrayList<Integer> orderMno) throws FailInsertOrderStock {
 		// TODO Auto-generated method stub
 		int result = cd.receiptConfirm(sqlSession, orderMno);
+		temp = sqlSession;
 		return result;
 	}
 
@@ -242,7 +284,7 @@ public class CompanyServiceImpl implements CompanyService{
 		// TODO Auto-generated method stub
 		ArrayList<CompanyOrderStock> list = new ArrayList<CompanyOrderStock>();
 		list = cd.selectReceiptList(sqlSession, comNo);
-		
+		temp = sqlSession;
 		return list;
 	}
 
@@ -251,7 +293,7 @@ public class CompanyServiceImpl implements CompanyService{
 		// TODO Auto-generated method stub
 		ArrayList<CompanyRemainMaterial> list = new ArrayList<CompanyRemainMaterial>();
 		list = cd.selectAllMaterialList(sqlSession, comNo);
-		
+		temp = sqlSession;
 		return list;
 	}
 
@@ -260,7 +302,7 @@ public class CompanyServiceImpl implements CompanyService{
 		// TODO Auto-generated method stub
 		ArrayList<CompanySales> list = new ArrayList<CompanySales>();
 		list = cd.selectAllCompanySales(sqlSession, comNo);
-		
+		temp = sqlSession;
 		return list;
 	}
 	
@@ -269,7 +311,7 @@ public class CompanyServiceImpl implements CompanyService{
 		// TODO Auto-generated method stub
 		HashMap<String, ArrayList<CompanySalesList>> hmap = new HashMap<String, ArrayList<CompanySalesList>>();
 		hmap = cd.selectCompanySalesList(sqlSession, comNo);
-		
+		temp = sqlSession;
 		return hmap;
 	}
 
@@ -278,6 +320,7 @@ public class CompanyServiceImpl implements CompanyService{
 		// TODO Auto-generated method stub
 		ArrayList<CompanyCalendar> list = new ArrayList<CompanyCalendar>();
 		list = cd.calendarDetail(sqlSession, cc);
+		temp = sqlSession;
 		return list;
 	}
 
@@ -285,7 +328,7 @@ public class CompanyServiceImpl implements CompanyService{
 	public int insertCalendarData(CompanyCalendar cc) throws FailChangeCalendarDate {
 		// TODO Auto-generated method stub
 		int result = cd.insertCalendarData(sqlSession, cc);
-
+		temp = sqlSession;
 		return result;
 	}
 
@@ -293,7 +336,7 @@ public class CompanyServiceImpl implements CompanyService{
 	public int deleteCalendarData(CompanyCalendar cc) throws FailChangeCalendarDate {
 		// TODO Auto-generated method stub
 		int result = cd.deleteCalendarData(sqlSession, cc);
-		
+		temp = sqlSession;
 		return result;
 	}
 
@@ -301,8 +344,50 @@ public class CompanyServiceImpl implements CompanyService{
 	public int reflectModify(CompanyCalendar cc) throws FailChangeCalendarDate {
 		// TODO Auto-generated method stub
 		int result = cd.reflectModify(sqlSession, cc);
-		
+		temp = sqlSession;
 		return result;
+	}
+	
+	
+
+	
+	
+	@Override
+	public ArrayList<CompanyOrder> orderDeliveringSocket(int comNo) throws Exception {
+		System.out.println("service에서의 comNo : " + comNo);
+		System.out.println("service에서의 sqlSession2 : " + sqlSession);
+		ArrayList<CompanyOrder> list = new ArrayList<CompanyOrder>();
+		CompanyDao cd = new CompanyDaoImpl();
+		
+		/*String resource = "/mybatis-config.xml";
+		Properties props = new Properties();
+
+		props.put("driverClassName", "oracle.jdbc.driver.OracleDriver");
+		props.put("url", "jdbc:oracle:thin:@localhost:1521:xe");
+		props.put("username", "pizza");
+		props.put("password", "pizza");
+		props.put("defaultAutoCommit", false);
+
+		InputStream inputStream = Resources.getResourceAsStream(resource);
+		SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream,props);
+		SqlSessionTemplate sst = new SqlSessionTemplate(sqlSessionFactory);
+		CompanyDao cd = new CompanyDaoImpl();
+		System.out.println("sst : " + sst);*/
+		
+		
+		/*String resource = "/mybatis-config.xml";
+		InputStream inputStream = Resources.getResourceAsStream(resource);
+		SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+		System.out.println("sqlSessionFactory : " + sqlSessionFactory);
+		SqlSession sqlSessionEx = sqlSessionFactory.openSession();
+		
+		System.out.println("sqlSessionEx : " + sqlSessionEx);
+		*/
+		System.out.println("temp : " + temp);
+		list = cd.orderDelivering(temp, comNo);
+		
+		
+		return list;
 	}
 
 /*	@Override
@@ -313,6 +398,59 @@ public class CompanyServiceImpl implements CompanyService{
 		
 		return list;
 	}*/
+	
+	
+/*	
+ * String resource = "/mybatis-config.xml";
+ * String resource = getClass().getResource("/root-context.xml").toString();
+	String resource = "com/kh/pmfp/company/mybatis-config.xml";
+	
+	SqlSession sqlSessionEx;
+	Properties props = new Properties();
+
+	props.put("driverClassName", "oracle.jdbc.driver.OracleDriver");
+	props.put("url", "jdbc:oracle:thin:@localhost:1521:xe");
+	props.put("username", "pizza");
+	props.put("password", "pizza");
+	props.put("defaultAutoCommit", false);
+
+	InputStream inputStream = Resources.getResourceAsStream(resource);
+	SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream,props);
+	//System.out.println("webSocket에서 sqlSession : " + sqlSessionEx);
+	sqlSessionEx = sqlSessionFactory.openSession(false);
+	
+	
+	
+	
+	
+	//////////////////////////////////////////////
+
+	  String resource = "com/kh/pmfp/company/mybatis-config.xml";
+		InputStream inputStream = Resources.getResourceAsStream(resource);
+		SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+		SqlSession sqlSessionEx = sqlSessionFactory.openSession();
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	*/
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 }
