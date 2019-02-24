@@ -351,8 +351,11 @@ public class AdminCouponController {
 			coupon.setCouponRdiscount(0);
 		}else if(coupon2.getCouponPdiscountStr()==null) {
 			//할인 율
-			coupon.setCouponRdiscount(Double.parseDouble((coupon2.getCouponRdiscountStr())));
+			coupon.setCouponRdiscount((double)Integer.parseInt(coupon2.getCouponRdiscountStr())/100.0);
 			coupon.setCouponPdiscount(0);
+			
+			
+
 		}
 		
 		coupon.setCouponName(coupon2.getCouponName());
