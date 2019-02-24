@@ -117,7 +117,7 @@ public class BoardDaoImpl implements BoardDao {
 	public Board updateqna2(SqlSessionTemplate sqlSession, int boardNo) throws BoardException {
 		return sqlSession.selectOne("Board.updateqna2", boardNo);
 	}
-
+//	qna 수정등록
 	@Override
 	public int qnaUpdateC(SqlSessionTemplate sqlSession, Board qna) throws BoardException {
 		int result=0;
@@ -153,10 +153,55 @@ public class BoardDaoImpl implements BoardDao {
 		}
 		return result;
 	}
+//review삭제
+	@Override
+	public int deleteReview(SqlSessionTemplate sqlSession, int boardNo) throws BoardException {
+		int result = 0;
+		result = sqlSession.update("Board.deleteReview", boardNo);
+
+		if (result <= 0) {
+			throw new BoardException("후기 삭제실패");
+		}
+		return result;
+	}
+	//review수정
+	@Override
+	public Board updateReview(SqlSessionTemplate sqlSession, int boardNo) throws BoardException{
+		return sqlSession.selectOne("Board.updateReview", boardNo);
+		
+	}
+	//review 수정등록
 
 	@Override
-	public int deleteReview(SqlSessionTemplate sqlSession, int boardNo) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int reviewUpdateC(SqlSessionTemplate sqlSession, Board review) throws BoardException {
+		int result=0;
+		 result= sqlSession.update("Board.reviewUpdateC",review);
+		
+		if(result<=0) {
+			throw new BoardException("수정실패");
+		}
+		return result;
+	}
+//review상세조회
+	@Override
+	public Board selectReview(SqlSessionTemplate sqlSession, int num) throws BoardException {
+		Board review = new Board();
+		review = sqlSession.selectOne("Board.selectReview", num);
+
+		if (review == null) {
+			throw new BoardException("review 상세조회 실패");
+		}
+
+		return review;
+	}
+//v파일등록
+	@Override
+	public int insertFile(SqlSessionTemplate sqlSession, Board review) throws BoardException {
+		int result=0;
+		 result = sqlSession.insert("Board.insertreview",review);
+		if(result<=0) {
+			throw new BoardException("review작성실패");
+		}
+		return result;
 	}
 }
