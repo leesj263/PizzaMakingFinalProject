@@ -61,8 +61,15 @@ public interface AdminCouponService {
 	//모든 회원 검색
 	ArrayList<Member> selectAllMember();
 
-	//모든 회원에게 쿠폰 등록
+	// 회원에게 쿠폰 등록
 	int insertCouponIssuing(AdminCouponIssue coupon);
+
+	//쿠폰 내역 불러오기
+	AdminCoupon selectCouponContent(String couponNo);
+
+	//쿠폰 수정하깅
+	int updateCoupon(AdminCoupon coupon);
+
 
 	
 	

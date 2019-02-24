@@ -165,7 +165,7 @@
 	
 	<!-- 쿠폰 발급하기-회원 아이디 조회 -->
 	<select id="memberIdSearch" parameterType="java.lang.String" resultMap="memberResultSet">
-		SELECT MEMBER_NAME
+		SELECT MEMBER_NAME,MEMBER_NO
 		FROM MEMBER
 		WHERE MEMBER_ID=#{memberId}
 	</select>
@@ -181,8 +181,22 @@
 	<insert id="insertCouponIssuing" parameterType="AdminCouponIssue">
 		INSERT INTO COUPON_ISSUE 
 		VALUES  (SEQ_CINO.NEXTVAL,#{couponNo},#{memberNo},SYSDATE,#{issueEdate},'Y',null)
-		
-		
 	</insert>
+	
+	<!-- 쿠폰 내역 불러오기 -->
+	<select id="selectCouponContent" parameterType="java.lang.String" resultMap="adminCouponResultSet">
+		SELECT *
+		FROM COUPON
+		WHERE COUPON_NO=#{couponNo}
+	</select>
+	
+	<!-- 쿠폰 수정하기 -->
+	<update id="updateCoupon" parameterType="AdminCoupon">
+		UPDATE COUPON
+		SET COUPON_NAME=#{couponName},COUPON_CONDITION=#{couponCondition},
+		COUPON_RDISCOUNT=#{couponRdiscount},COUPON_PDISCOUNT=#{couponPdiscount},COUPON_EDATE=#{couponEdate}
+		WHERE COUPON_NO=#{couponNo}
+	
+	</update>
 	
  </mapper>

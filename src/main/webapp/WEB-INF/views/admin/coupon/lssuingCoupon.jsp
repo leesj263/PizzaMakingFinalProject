@@ -68,21 +68,21 @@
 								</select>
 							</div>
 						</div>
-						<tr>
+						
 						<div class="row form-group">
-							<td>
-								<label for="select" class=" form-control-label"><strong>유효기간</strong></label>
-							</td>
-							<td>
+							<div class="col col-md-2">
+								<label for="select" class=" form-control-label">유효기간</label>
+							</div>
+							<div class="col-12 col-md-9">
 								<select name="issueEdate" id="select" class="form-control">
 									<option value="1">30일</option>
 									<option value="2">60일</option>
 									<option value="3">90일</option>
 									<option value="4">120일</option>
 								</select>
-							</td>
+							</div>
 						</div>
-					</tr>
+					
 
 
 
@@ -179,7 +179,7 @@
 					swal("아이디가 없듬");
 				}else{
 				swal("아이디가 있습니다!");
-				memberListStart.append('<option value="'+data.memberName+'" selected>'+data.memberName+'</option>');
+				memberListStart.append('<option value="'+data.memberNo+'" selected>'+data.memberName+'</option>');
 				}
 			},error:function(data){
 				console.log("데이터 통신 실팽");

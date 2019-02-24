@@ -36,7 +36,7 @@ public class AdminCouponController {
 	//쿠폰 생성하기
 	@RequestMapping("newCouponCreate.co")
 	public String newCouponCreate(AdminCoupon2 coupon,HttpServletRequest request, HttpServletResponse response) {
-		//System.out.println(coupon);
+		//System.out.println("null이아니겠지?"+coupon);
 		AdminCoupon couponCreate = new AdminCoupon();
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("yy/MM/dd");
@@ -227,7 +227,7 @@ public class AdminCouponController {
 		request.setAttribute("list", list);
 		
 		
-		return "admin/coupon/lssuingCoupon";
+		return "redirect:issuingCouponEnter.co";
 	}
 	
 	//사이드바에서 쿠폰 발급하기 클릭
@@ -259,41 +259,28 @@ public class AdminCouponController {
 		Date date = new Date(cal.getTimeInMillis());
 		
 		AdminCouponIssue coupon = new AdminCouponIssue();
-		
-		//모든회원이냐
-			//회원 정보 모두 받아와서-서비스에서 insert
-			
-			//쿠폰 목록 모두 받아오고
-			//쿠폰 발급
-		//특정회원이냐
-			//회원이름 클릭후 회원아이디 조회 -ox
-			//쿠폰 목록 모두 받아오고
-			/*for(String memberNameArrAll:memberNameArr) {
-				System.out.println(memberNameArrAll);
-			}*/
-			//회원 목록은 
+
 		int result=0;
 		
 		if(AllMemberRadios.equals("option1")) {
-
-			
 			//모든회원 검색
 			ArrayList<Member> list = cs.selectAllMember();
-			System.out.println(list);
-			
+			//System.out.println(list);
 			
 			for(int i=0; i<list.size();i++) {
 				coupon.setCouponNo(Integer.parseInt(selectSm));
 				coupon.setMemberNo(list.get(i).getMemberNo());
 				coupon.setIssueEdate(date);
 				 result = cs.insertCouponIssuing(coupon);
-				
 			}
-			
 		}else if(AllMemberRadios.equals("option2")) {
 			//특정회원
 			for(int i=0; i<memberNameArr.length; i++) {
-				System.out.println(memberNameArr[i]);
+				System.out.println("가져오닝?"+memberNameArr[i]);
+				coupon.setCouponNo(Integer.parseInt(selectSm));
+				coupon.setMemberNo(Integer.parseInt(memberNameArr[i]));
+				coupon.setIssueEdate(date);
+				result = cs.insertCouponIssuing(coupon);
 			}
 		}
 		
@@ -303,7 +290,7 @@ public class AdminCouponController {
 			return "common/errorPage";
 		}
 		
-	//	return null;
+	
 	}
 	
 	//쿠폰 발급하기-회원 아이디 조회
@@ -321,6 +308,69 @@ public class AdminCouponController {
 		
 		
 		return m;
+	}
+	
+	//쿠폰 조회에서 수정하기 클릭 버튼 눌렀을때
+	@RequestMapping("couponUpdate.co")
+	public String couponUpdate(HttpServletRequest request,String couponNo) {
+		//해당 쿠폰의 번호로 조회해오깅
+		System.out.println(couponNo);
+		
+		AdminCoupon coupon = new AdminCoupon();
+		//coupon.setCouponNo(Integer.parseInt(couponNo));
+		
+		coupon = cs.selectCouponContent(couponNo);
+		System.out.println(coupon);
+		request.setAttribute("coupon", coupon);
+		
+		if(coupon!=null) {
+			return "admin/coupon/couponUpdate";			
+		}else {
+			return "common/errorPage";
+		}
+		
+		
+	}
+	
+	//쿠폰 진짜 수정하기
+	@RequestMapping("couponUpdateBtn.co")
+	public String couponUpdateBtn(AdminCoupon2 coupon2) {
+		
+		//System.out.println("쿠폰 2 : "+coupon2);
+		
+		AdminCoupon coupon = new AdminCoupon();
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yy/MM/dd");
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.MONDAY, Integer.parseInt(coupon2.getCouponEdateStr()));		
+		Date date = new Date(cal.getTimeInMillis());
+		
+		if(coupon2.getCouponRdiscountStr()==null) {
+			//할인 금액
+			coupon.setCouponPdiscount(Integer.parseInt(coupon2.getCouponPdiscountStr()));
+			coupon.setCouponRdiscount(0);
+		}else if(coupon2.getCouponPdiscountStr()==null) {
+			//할인 율
+			coupon.setCouponRdiscount((double)Integer.parseInt(coupon2.getCouponRdiscountStr())/100.0);
+			coupon.setCouponPdiscount(0);
+			
+			
+
+		}
+		
+		coupon.setCouponName(coupon2.getCouponName());
+		coupon.setCouponCondition(Integer.parseInt(coupon2.getCouponConditionStr()));
+		coupon.setCouponEdate(date);
+		coupon.setCouponNo(coupon2.getCouponNo());
+		
+		int result = cs.updateCoupon(coupon);
+		//System.out.println("수정한 coupon은?"+coupon);
+		if(result>0) {
+			return "redirect:searchCoupon.co";			
+		}else {
+			return "common/errorPage";
+		}
+		
 	}
 
 	

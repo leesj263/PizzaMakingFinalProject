@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <jsp:include page="../common/header.jsp" />
 
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 <style>
 #main {
@@ -12,6 +13,7 @@
 .tableBtnDiv {
 	align: right;
 	margin-left: 600px;
+	
 }
 </style>
 <section>
@@ -42,7 +44,7 @@
 
 							<div class="row form-group">
 								<div class="col-12 col-md-10">
-									<input type="text" id="text-input" name="searchContent"
+									<input type="number" id="searchContentId" name="searchContent"
 										placeholder="내용을 입력하세요" class="form-control">
 								</div>
 							</div>
@@ -52,7 +54,7 @@
 			</table>
 
 			<div class="row justify-content-md-center">
-				<button type="submit" class="btn btn-outline-secondary btn-lg">
+				<button class="btn btn-outline-secondary btn-lg" onclick="return searchBtn()">
 					<i class="fa fa-search"></i>&nbsp;검색
 				</button>
 			</div>
@@ -117,7 +119,7 @@
 								<td>${cList.couponNo }</td>
 								<td>${cList.couponName }</td>
 								<c:if test="${cList.couponCateg ==0}">								
-								<td>${cList.couponRdiscount *100}%</td>
+								<td>${Math.round(cList.couponRdiscount *100)}%</td>
 								</c:if>
 								<c:if test="${cList.couponCateg ==1}">								
 								<td>${cList.couponPdiscount }원</td>
@@ -195,7 +197,7 @@
 							<i class="fa fa-lightbulb-o"></i>&nbsp; 발급
 						</button>
 						&nbsp;&nbsp;
-						<button type="button" class="btn btn-outline-secondary btn-sm"  onclick="location.href='admin.ad?admin=coupon/couponUpdate'">
+						<button type="button" class="btn btn-outline-secondary btn-sm"  id="couponUpdateBtn">
 							<i class="fa fa-magic"></i>&nbsp; 수정
 						</button>
 					</div>
@@ -217,14 +219,47 @@
 			$(this).children().css({"color" : "#212529"});
 		}).click(function(){
 			couponNo=$(this).children().eq(1).text();
+		    for (var i = 0; i < $(".listAreaTr").length; i++) {
+	            $(".listAreaTr").eq(i).children().css({"background":"none"});   
+	         }
+			$(this).children().css({"background" : "lightgray"});
 		});
 		
 		$("#couponLissuingBtn").click(function(){
 			console.log(couponNo);
 			location.href='checkedCouponIssuing.co?couponNo='+couponNo;
 		});
-
-
+		$("#couponUpdateBtn").click(function(){
+			location.href='couponUpdate.co?couponNo='+couponNo;
+		})
+		
+		function searchBtn(){
+			var searchContentId =$("#searchContentId").val();
+			console.log(searchContentId);
+			if(searchContentId==""){
+				//alert("b");
+				swal("내용을 써주세요");
+				return false;
+			}
+		//return true;
+		}
+		$("#select").click(function () {
+			$("#select").attr("option","selected");
+			
+			if($("#select option:selected").val()==0){
+				//swal("숫자만 입력하세요");
+				$("#searchContentId").attr("type","number");
+				$("#").keydown(function(e){
+			        if(e.keyCode == 69 || e.keyCode == 190 || e.keyCode == 109){
+			            return false;              
+			        } 
+			    });
+			}else{
+				$("#searchContentId").attr("type","text");
+			}
+			
+		});
+		
 </script>
 <jsp:include page="../common/footer.jsp" />
 

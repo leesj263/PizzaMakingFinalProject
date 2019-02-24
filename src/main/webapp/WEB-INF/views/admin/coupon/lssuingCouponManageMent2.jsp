@@ -3,6 +3,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <jsp:include page="../common/header.jsp" />
 
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
 
 <style>
 #main {
@@ -42,7 +44,7 @@
 
                      <div class="row form-group">
                         <div class="col-12 col-md-10">
-                           <input type="text" id="text-input" name="searchContent"
+                           <input type="number" id="searchContentId" name="searchContent"
                               placeholder="내용을 입력하세요" class="form-control">
                         </div>
                      </div>
@@ -52,7 +54,7 @@
          </table>
 
          <div class="row justify-content-md-center">
-            <button type="submit" class="btn btn-outline-secondary btn-lg">
+             <button type="submit" class="btn btn-outline-secondary btn-lg" onclick="return searchBtn()">
                <i class="fa fa-search"></i>&nbsp;검색
             </button>
          </div>
@@ -123,7 +125,7 @@
                          <td>${cList.memberId }</td>
                         <td>${cList.couponName }</td>
                         <c:if test="${cList.couponCateg ==0}">								
-						<td>${cList.couponRdiscount *100}%</td>
+						<td>${Math.round(cList.couponRdiscount *100)}%</td>
 						</c:if>
 						<c:if test="${cList.couponCateg ==1}">								
 						<td>${cList.couponPdiscount }원</td>
@@ -241,6 +243,30 @@ $(".listAreaTr").mouseenter(function(){
 
 $("#deleteCouponBtn").click(function(){
 	console.log(couponNo);
+});
+
+
+
+function searchBtn(){
+	var searchContentId =$("#searchContentId").val();
+	console.log(searchContentId);
+	if(searchContentId==""){
+		//alert("b");
+		swal("내용을 써주세요");
+		return false;
+	}
+}
+
+$("#select").click(function () {
+	$("#select").attr("option","selected");
+	
+	if($("#select option:selected").val()==0){
+		//swal("숫자만 입력하세요");
+		$("#searchContentId").attr("type","number");
+	}else{
+		$("#searchContentId").attr("type","text");
+	}
+	
 });
 
 

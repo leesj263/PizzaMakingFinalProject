@@ -164,6 +164,21 @@ public class AdminCouponServiceImpl implements AdminCouponService{
 		
 		return cd.insertCouponIssuing(sqlSession,coupon);
 	}
+
+	//쿠폰 내역 불러오기
+	@Override
+	public AdminCoupon selectCouponContent(String couponNo) {
+		
+		return cd.selectCouponContent(sqlSession,couponNo);
+	}
+
+	//쿠폰 수정하기
+	@Override
+	public int updateCoupon(AdminCoupon coupon) {
 	
+		return cd.updateCoupon(sqlSession,coupon);
+	}
+
+
 	
 }
