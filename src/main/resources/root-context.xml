@@ -3,40 +3,66 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:tx="http://www.springframework.org/schema/tx"
 	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:websocket="http://www.springframework.org/schema/websocket"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans 
 	http://www.springframework.org/schema/beans/spring-beans.xsd
 	http://www.springframework.org/schema/tx
 	http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
 	http://www.springframework.org/schema/aop
-	http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
-	
-	
+	http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+	http://www.springframework.org/schema/websocket 
+	http://www.springframework.org/schema/websocket/spring-websocket.xsd">
+
+
+	<bean id="WebSocketChat" class="com.kh.pmfp.company.controller.WebSocketChat">
+	</bean>
+
+
+	<bean id="echoHandler"
+		class="com.kh.pmfp.company.controller.WebSocketChat" />
+
+	<websocket:handlers>
+
+		<websocket:mapping handler="echoHandler"
+			path="/echo" />
+
+		<websocket:sockjs />
+
+	</websocket:handlers>
+
 	<!-- Root Context: defines shared resources visible to all other web components -->
-	
+
 	<!-- sqlSessionTemplate 등록 -->
-	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
-		<constructor-arg ref="sqlSession"/>
+	<bean id="sqlSessionTemplate"
+		class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg ref="sqlSession" />
 	</bean>
-	
+
 	<!-- SqlSessionTemplate sqlSessionTemplate = new SqlSessionTemplate(sqlSession); -->
-	
+
 	<!-- sqlSession도 bean으로 등록한다. -->
-	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionFactoryBean">
-		<property name="configLocation" value="classpath:mybatis-config.xml"/>
-		<property name="dataSource" ref="dataSource"/>
+	<bean id="sqlSession"
+		class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="configLocation"
+			value="classpath:mybatis-config.xml" />
+		<property name="dataSource" ref="dataSource" />
 	</bean>
-	
+
 	<!-- dataSource 객체 bean 등록 -->
-	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
-		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
-		<property name="url" value="jdbc:oracle:thin:@localhost:1521:xe"/>
-		<property name="username" value="pizza"/>
-		<property name="password" value="pizza"/>
-		<property name="defaultAutoCommit" value="false"/>
+	<bean id="dataSource"
+		class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName"
+			value="oracle.jdbc.driver.OracleDriver" />
+		<property name="url"
+			value="jdbc:oracle:thin:@localhost:1521:xe" />
+		<property name="username" value="pizza" />
+		<property name="password" value="pizza" />
+		<property name="defaultAutoCommit" value="false" />
 	</bean>
-	
+
 	<!-- email 인증 : gmail -->
-	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+	<bean id="mailSender"
+		class="org.springframework.mail.javamail.JavaMailSenderImpl">
 		<property name="host" value="smtp.gmail.com" />
 		<property name="port" value="587" />
 		<property name="username" value="yesols9003@gmail.com" />
@@ -51,43 +77,44 @@
 			</props>
 		</property>
 	</bean>
-	
-		<!-- 트랜젝션 매니저 bean 등록 -->
-	<bean id="transactionManager" 
+
+	<!-- 트랜젝션 매니저 bean 등록 -->
+	<bean id="transactionManager"
 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-		<property name="dataSource" ref="dataSource"/>
+		<property name="dataSource" ref="dataSource" />
 	</bean>
-	
+
 	<!-- 어노테이션으로 트랜젝션 설정하기 위해 추가해야 하는 설정 -->
-	<tx:annotation-driven transaction-manager="transactionManager" />
-	
+	<tx:annotation-driven
+		transaction-manager="transactionManager" />
+
 	<!-- 트랜젝션 매니저를 이용해 tx advice를 정의, aop 설정으로 위빙될 객체를 설정하는 것이다. -->
-	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+	<tx:advice id="txAdvice"
+		transaction-manager="transactionManager">
 		<tx:attributes>
-			<tx:method name="select*" read-only="true" rollback-for="Exception"/>
-			<tx:method name="insert*" rollback-for="Exception" propagation="REQUIRED" isolation="SERIALIZABLE"/>
-			<tx:method name="update*" rollback-for="Exception" propagation="REQUIRED" isolation="SERIALIZABLE"/>
-			<tx:method name="delete*" rollback-for="Exception" propagation="REQUIRED" isolation="SERIALIZABLE"/>
+			<tx:method name="select*" read-only="true"
+				rollback-for="Exception" />
+			<tx:method name="insert*" rollback-for="Exception"
+				propagation="REQUIRED" isolation="SERIALIZABLE" />
+			<tx:method name="update*" rollback-for="Exception"
+				propagation="REQUIRED" isolation="SERIALIZABLE" />
+			<tx:method name="delete*" rollback-for="Exception"
+				propagation="REQUIRED" isolation="SERIALIZABLE" />
 		</tx:attributes>
 	</tx:advice>
-	
+
 	<!-- AOP를 이용하여 위의 txAdvice를 적용시키기 위해 pointcut 등록 -->
 	<!-- pointcut : advice가 weaving될 위치 -->
 	<aop:config proxy-target-class="true">
-		<aop:pointcut expression="execution(* com.kh.pmfp..*ServiceImpl.*(..))" 
-						id="serviceMethod"/>
-		<aop:advisor advice-ref="txAdvice" pointcut-ref="serviceMethod"
-					id="transactionAdvisor"/>
+		<aop:pointcut
+			expression="execution(* com.kh.pmfp..*ServiceImpl.*(..))"
+			id="serviceMethod" />
+		<aop:advisor advice-ref="txAdvice"
+			pointcut-ref="serviceMethod" id="transactionAdvisor" />
 	</aop:config>
-<!-- 	
-	<bean class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping">
-        <property name="interceptor">
-            <list>
-                <ref bean="interceptorTest"/>
-            </list>
-        </property>
-    </bean>
-    <bean name="/" class="com.kh.pmfp.common.interceptor.Interceptor"/>
-    <bean name="interceptor" class="com.mungchung.sample.HandlerInterceptorTest"/> -->
-	
+	<!-- <bean class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping"> 
+		<property name="interceptor"> <list> <ref bean="interceptorTest"/> </list> 
+		</property> </bean> <bean name="/" class="com.kh.pmfp.common.interceptor.Interceptor"/> 
+		<bean name="interceptor" class="com.mungchung.sample.HandlerInterceptorTest"/> -->
+
 </beans>

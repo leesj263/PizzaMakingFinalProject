@@ -1,18 +1,19 @@
 package com.kh.pmfp.company.controller;
 
-import java.sql.Date;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.socket.WebSocketSession;
 
 import com.kh.pmfp.company.model.exception.FailChangeCalendarDate;
 import com.kh.pmfp.company.model.exception.FailInsertEmployeeInfo;
@@ -30,6 +31,7 @@ import com.kh.pmfp.company.model.exception.FailUpdateEmployeeInfo;
 import com.kh.pmfp.company.model.exception.FailUpdateOrderStatus;
 import com.kh.pmfp.company.model.exception.FaileDetailMessage;
 import com.kh.pmfp.company.model.service.CompanyService;
+import com.kh.pmfp.company.model.service.CompanyServiceImpl;
 import com.kh.pmfp.company.model.vo.CompanyBoard;
 import com.kh.pmfp.company.model.vo.CompanyCalendar;
 import com.kh.pmfp.company.model.vo.CompanyEmployee;
@@ -40,12 +42,13 @@ import com.kh.pmfp.company.model.vo.CompanyRemainMaterial;
 import com.kh.pmfp.company.model.vo.CompanySales;
 import com.kh.pmfp.company.model.vo.CompanySalesList;
 
-import net.sf.json.JSONObject;
-
 @Controller
-public class CompanyController {
+public class CompanyController{
 	@Autowired
 	private CompanyService cs;
+	private static final Logger logger = LoggerFactory.getLogger(CompanyController.class);
+	private static List<WebSocketSession> sessionList = new ArrayList<WebSocketSession>();
+
 
 	/*
 	 * @RequestMapping("/login.me") public String loginCheck(HttpServletRequest
@@ -91,38 +94,34 @@ public class CompanyController {
 	 * 
 	 * return "main/main"; }
 	 */
-	//페이지 이동
+	// 페이지 이동
 	@RequestMapping(value = "movePage.com", method = RequestMethod.GET)
 	public String moveCompanyPage(String movePage) {
 		return "company/" + movePage;
 	}
-	
-	//고객페이지로 이동
+
+	// 고객페이지로 이동
 	@RequestMapping(value = "movePageToCustomerReview.com", method = RequestMethod.GET)
 	public String moveCompanyPage2(String movePage) {
 		return "customer/review/" + movePage;
 	}
 
-	
-/*	
-	@RequestMapping(value = "goMain.com", method = RequestMethod.GET)
-	public String goCompanyMain(HttpServletRequest request, HttpServletResponse response) {
-		ArrayList<CompanyBoard> adminMessage = new ArrayList<CompanyBoard>();
-		HashMap<String, ArrayList> hmap = new HashMap<String, ArrayList>();
-		try {
-			adminMessage = cs.selectAdminMessage();
-			// System.out.println("adminMessage : " + adminMessage);
-			request.setAttribute("adminMessage", adminMessage);
-			return "company/companyMain";
-			// return "redirect:RedirectGoMain.com";
-		} catch (FailSelectAdminMessage e) {
-			request.setAttribute("msg", e.getMessage());
-			return "common/errorPage";
-		}
+	/*
+	 * @RequestMapping(value = "goMain.com", method = RequestMethod.GET) public
+	 * String goCompanyMain(HttpServletRequest request, HttpServletResponse
+	 * response) { ArrayList<CompanyBoard> adminMessage = new
+	 * ArrayList<CompanyBoard>(); HashMap<String, ArrayList> hmap = new
+	 * HashMap<String, ArrayList>(); try { adminMessage = cs.selectAdminMessage();
+	 * // System.out.println("adminMessage : " + adminMessage);
+	 * request.setAttribute("adminMessage", adminMessage); return
+	 * "company/companyMain"; // return "redirect:RedirectGoMain.com"; } catch
+	 * (FailSelectAdminMessage e) { request.setAttribute("msg", e.getMessage());
+	 * return "common/errorPage"; }
+	 * 
+	 * }
+	 */
 
-	}*/
-	
-	//업체 메인페이지로 이동(관리자 메세지보기, 달력보기)
+	// 업체 메인페이지로 이동(관리자 메세지보기, 달력보기)
 	@RequestMapping(value = "goMain.com", method = RequestMethod.GET)
 	public String goCompanyMain(HttpServletRequest request, HttpServletResponse response, String memberNo) {
 		HashMap<String, ArrayList> hmap = new HashMap<String, ArrayList>();
@@ -142,36 +141,29 @@ public class CompanyController {
 			request.setAttribute("msg", e.getMessage());
 			return "common/errorPage";
 		}
-		
+
 	}
-	
-	
-	/*//여기 부분 goMain.com부분과 합치는것으로 테스트해보기
-		@RequestMapping("selectMemberCalendar.com")
-		public String selectMemberCalendar(String memberNo, HttpServletRequest request, HttpServletResponse response) {
-			ArrayList<CompanyCalendar> calendarList = new ArrayList<CompanyCalendar>();
-			//임의로 회원번호 삽입
-			int selectMemberNo = Integer.parseInt(memberNo);
-			try {
-				calendarList = cs.selectMemberCalendar(selectMemberNo);
-				System.out.println("calendarList : " + calendarList);
-				request.setAttribute("calendarList", calendarList);
-				
-				return "redirect:goMain.com";
-			} catch (FailSelectCalendar e) {
-				// TODO Auto-generated catch block
-				request.setAttribute("msg", e.getMessage());
-				return "common/errorPage";
-			}
-			
-			
-		}*/
-	
-	
-	
-	
-	
-	//관리자 메세지 상세보기
+
+	/*
+	 * //여기 부분 goMain.com부분과 합치는것으로 테스트해보기
+	 * 
+	 * @RequestMapping("selectMemberCalendar.com") public String
+	 * selectMemberCalendar(String memberNo, HttpServletRequest request,
+	 * HttpServletResponse response) { ArrayList<CompanyCalendar> calendarList = new
+	 * ArrayList<CompanyCalendar>(); //임의로 회원번호 삽입 int selectMemberNo =
+	 * Integer.parseInt(memberNo); try { calendarList =
+	 * cs.selectMemberCalendar(selectMemberNo); System.out.println("calendarList : "
+	 * + calendarList); request.setAttribute("calendarList", calendarList);
+	 * 
+	 * return "redirect:goMain.com"; } catch (FailSelectCalendar e) { // TODO
+	 * Auto-generated catch block request.setAttribute("msg", e.getMessage());
+	 * return "common/errorPage"; }
+	 * 
+	 * 
+	 * }
+	 */
+
+	// 관리자 메세지 상세보기
 	@RequestMapping("detailAdminMessage.com")
 	public String detailAdminMessage(int boardNo, HttpServletRequest request, HttpServletResponse response) {
 		System.out.println("클릭한 게시글 번호 : " + boardNo);
@@ -193,7 +185,7 @@ public class CompanyController {
 		return "company/companyMain";
 	}
 
-	//주문대기
+	// 주문대기
 	@RequestMapping("orderWaiting.com")
 	public String orderWaiting(HttpServletRequest request, HttpServletResponse response, String comNo) {
 		int IntComNo = Integer.parseInt(comNo);
@@ -211,8 +203,8 @@ public class CompanyController {
 		}
 
 	}
-	
-	//주문 제조중
+
+	// 주문 제조중
 	@RequestMapping("orderMaking.com")
 	public String orderMaking(HttpServletRequest request, HttpServletResponse response, String comNo) {
 		int IntComNo = Integer.parseInt(comNo);
@@ -235,7 +227,7 @@ public class CompanyController {
 		}
 	}
 
-	//주문 배달중
+	// 주문 배달중
 	@RequestMapping("orderDelivering.com")
 	public String orderDelivering(HttpServletRequest request, HttpServletResponse response, String comNo) {
 		int IntComNo = Integer.parseInt(comNo);
@@ -253,7 +245,7 @@ public class CompanyController {
 		}
 	}
 
-	//배달완료
+	// 배달완료
 	@RequestMapping("orderComplete.com")
 	public String orderComplete(HttpServletRequest request, HttpServletResponse response, String comNo) {
 		int IntComNo = Integer.parseInt(comNo);
@@ -271,7 +263,7 @@ public class CompanyController {
 		}
 	}
 
-	//배달 거절목록
+	// 배달 거절목록
 	@RequestMapping("orderRefuseList.com")
 	public String orderRefuseList(HttpServletRequest request, HttpServletResponse response, String comNo) {
 		int IntComNo = Integer.parseInt(comNo);
@@ -294,12 +286,11 @@ public class CompanyController {
 	public String acceptOrder(String orderNo, String comNo) {
 		int orderNoInt = Integer.parseInt(orderNo);
 		int IntComNo = Integer.parseInt(comNo);
-		
-		
+
 		CompanySales comsales = new CompanySales();
 		comsales.setOrderNo(orderNoInt);
 		comsales.setComNo(IntComNo);
-		
+
 		try {
 			int result = cs.acceptOrder(comsales);
 			System.out.println("acceptresult : " + result);
@@ -309,7 +300,7 @@ public class CompanyController {
 			e.printStackTrace();
 		}
 
-		return "redirect:orderWaiting.com?comNo="+comNo;
+		return "redirect:orderWaiting.com?comNo=" + comNo;
 	}
 
 	// 주문을 거절
@@ -325,7 +316,7 @@ public class CompanyController {
 			e.printStackTrace();
 		}
 
-		return "redirect:orderWaiting.com?comNo="+comNo;
+		return "redirect:orderWaiting.com?comNo=" + comNo;
 	}
 
 	/*
@@ -344,7 +335,7 @@ public class CompanyController {
 	 * }
 	 */
 
-	//배달원 배정
+	// 배달원 배정
 	@RequestMapping("assignDeliveryMan.com")
 	public String assignDeliveryMan(String orderNo, String empNo, HttpServletRequest request,
 			HttpServletResponse response, String comNo) {
@@ -360,21 +351,22 @@ public class CompanyController {
 			System.out.println("deliveryManUpdate : " + deliveryManUpdate);
 			System.out.println("orderUpdate : " + orderUpdate);
 
-			return "redirect:orderMaking.com?comNo="+comNo;
+			return "redirect:orderMaking.com?comNo=" + comNo;
 		} catch (FailUpdateDelivery | FailUpdateOrderStatus e) {
 			request.setAttribute("msg", e.getMessage());
 			return "common/errorPage";
 		}
 	}
 
-	//배달완료로 상태변경
+	// 배달완료로 상태변경
 	@RequestMapping("deliveryComplete.com")
-	public String deliveryComplete(String orderNo, HttpServletRequest request, HttpServletResponse response, String comNo) {
+	public String deliveryComplete(String orderNo, HttpServletRequest request, HttpServletResponse response,
+			String comNo) {
 		int orderNoInt = Integer.parseInt(orderNo);
 
 		try {
 			int result = cs.orderUpdateToComplete(orderNoInt);
-			return "redirect:orderDelivering.com?comNo="+comNo;
+			return "redirect:orderDelivering.com?comNo=" + comNo;
 
 		} catch (FailUpdateOrderStatus e) {
 			request.setAttribute("msg", e.getMessage());
@@ -383,16 +375,17 @@ public class CompanyController {
 
 	}
 
-	//배달상태 삭제로 변경
+	// 배달상태 삭제로 변경
 	@RequestMapping("orderUpdateToDelete.com")
-	public String orderUpdateToDelete(String orderNo, HttpServletRequest request, HttpServletResponse response, String comNo) {
+	public String orderUpdateToDelete(String orderNo, HttpServletRequest request, HttpServletResponse response,
+			String comNo) {
 
 		int orderNoInt = Integer.parseInt(orderNo);
 
 		try {
 			int result = cs.orderUpdateToDelete(orderNoInt);
 
-			return "redirect:orderComplete.com?comNo="+comNo;
+			return "redirect:orderComplete.com?comNo=" + comNo;
 
 		} catch (FailUpdateOrderStatus e) {
 			request.setAttribute("msg", e.getMessage());
@@ -400,23 +393,24 @@ public class CompanyController {
 		}
 	}
 
-	//거절목록 삭제
+	// 거절목록 삭제
 	@RequestMapping("refuseListDelete.com")
-	public String refuseListDelete(String orderNo, HttpServletRequest request, HttpServletResponse response, String comNo) {
+	public String refuseListDelete(String orderNo, HttpServletRequest request, HttpServletResponse response,
+			String comNo) {
 
 		int orderNoInt = Integer.parseInt(orderNo);
 
 		try {
 			int result = cs.refuseListDelete(orderNoInt);
 
-			return "redirect:orderRefuseList.com?comNo="+comNo;
+			return "redirect:orderRefuseList.com?comNo=" + comNo;
 		} catch (FailUpdateOrderStatus e) {
 			request.setAttribute("msg", e.getMessage());
 			return "common/errorPage";
 		}
 	}
 
-	//직원목록 가져오기
+	// 직원목록 가져오기
 	@RequestMapping("selectEmployeeList.com")
 	public String selectEmployeeList(HttpServletRequest request, HttpServletResponse response, String comNo) {
 		int IntComNo = Integer.parseInt(comNo);
@@ -432,7 +426,7 @@ public class CompanyController {
 		}
 	}
 
-	//새로운 직원 넣기
+	// 새로운 직원 넣기
 	@RequestMapping("inputEmployeeInfo.com")
 	public void inputEmployeeInfo(HttpServletRequest request, HttpServletResponse response, String comNo) {
 		int IntComNo = Integer.parseInt(comNo);
@@ -458,7 +452,7 @@ public class CompanyController {
 			ce.setEmployeeAddress(inputAddress);
 			ce.setEmployeeDate(date);
 			ce.setCompanyNo(IntComNo);
-			
+
 			int result = cs.inputEmployeeInfo(ce);
 
 		} catch (FailInsertEmployeeInfo e) {
@@ -468,7 +462,7 @@ public class CompanyController {
 
 	}
 
-	//직원 목록 삭제
+	// 직원 목록 삭제
 	@RequestMapping("deleteEmployeeInfo.com")
 	public void deleteEmployeeInfo(HttpServletRequest request, HttpServletResponse response) {
 		String[] empNoList = request.getParameterValues("arr");
@@ -491,8 +485,7 @@ public class CompanyController {
 
 	}
 
-	
-	//업체 리뷰목록 가져오기
+	// 업체 리뷰목록 가져오기
 	@RequestMapping("selectCompanyReview.com")
 	public String selectCompanyReview(HttpServletRequest request, HttpServletResponse response, String comNo) {
 		int IntComNo = Integer.parseInt(comNo);
@@ -509,7 +502,7 @@ public class CompanyController {
 
 	}
 
-	//재고 주문페이지로 이동(재고들 목록 가져옴(가격, 종류등 정보))
+	// 재고 주문페이지로 이동(재고들 목록 가져옴(가격, 종류등 정보))
 	@RequestMapping("orderStrok.com")
 	public String orderStrok(HttpServletRequest request, HttpServletResponse response) {
 		ArrayList<CompanyMaterial> list = new ArrayList<CompanyMaterial>();
@@ -524,7 +517,7 @@ public class CompanyController {
 
 	}
 
-	//재고 주문하기(주문할 재고들 선택된 상태)
+	// 재고 주문하기(주문할 재고들 선택된 상태)
 	@RequestMapping("applyStock.com")
 	public void applyStock(HttpServletRequest request, HttpServletResponse response) {
 
@@ -557,7 +550,7 @@ public class CompanyController {
 
 	}
 
-	//주문목록 리스트 가져옴
+	// 주문목록 리스트 가져옴
 	@RequestMapping("selectOrderStockList.com")
 	public String selectOrderStockList(HttpServletRequest request, HttpServletResponse response, String comNo) {
 		int IntComNo = Integer.parseInt(comNo);
@@ -574,7 +567,7 @@ public class CompanyController {
 
 	}
 
-	//배달 수령으로 상태변경 
+	// 배달 수령으로 상태변경
 	@RequestMapping("receiptConfirm.com")
 	public void receiptConfirm(HttpServletRequest request, HttpServletResponse response) {
 		String[] arr = request.getParameterValues("arr");
@@ -595,7 +588,7 @@ public class CompanyController {
 		}
 	}
 
-	//결제목록 리스트 가져오기
+	// 결제목록 리스트 가져오기
 	@RequestMapping("selectReceiptList.com")
 	public String selectReceiptList(HttpServletRequest request, HttpServletResponse response, String comNo) {
 		int IntComNo = Integer.parseInt(comNo);
@@ -610,7 +603,7 @@ public class CompanyController {
 		}
 	}
 
-	//모든 재고 리스트 가져오기
+	// 모든 재고 리스트 가져오기
 	@RequestMapping("selectAllMaterialList.com")
 	public String selectAllMaterialList(HttpServletRequest request, HttpServletResponse response, String comNo) {
 		int IntConNo = Integer.parseInt(comNo);
@@ -627,113 +620,102 @@ public class CompanyController {
 		}
 	}
 
-	/*@RequestMapping("sendExampleMsg.com")
-	public String sendExampleMsg() {
-		String api_key = "NCSA1PQVNBG12DPQ";
-		String api_secret = "QMHDIEK4KXNCWF1IFOGFKFTT6OW62YPT";
-		Message coolsms = new Message(api_key, api_secret);
+	/*
+	 * @RequestMapping("sendExampleMsg.com") public String sendExampleMsg() { String
+	 * api_key = "NCSA1PQVNBG12DPQ"; String api_secret =
+	 * "QMHDIEK4KXNCWF1IFOGFKFTT6OW62YPT"; Message coolsms = new Message(api_key,
+	 * api_secret);
+	 * 
+	 * // 4 params(to, from, type, text) are mandatory. must be filled
+	 * HashMap<String, String> params = new HashMap<String, String>();
+	 * params.put("to", "01095902959"); params.put("from", "01095902959");
+	 * params.put("type", "SMS"); params.put("text", "Coolsms Testing Message!");
+	 * params.put("app_version", "test app 1.2"); // application name and version
+	 * 
+	 * try { JSONObject obj = (JSONObject) coolsms.send(params);
+	 * System.out.println(obj.toString()); return "redirect:selectReceiptList.com";
+	 * } catch (CoolsmsException e) { System.out.println(e.getMessage());
+	 * System.out.println(e.getCode()); return "common/errorPage"; } }
+	 */
 
-		// 4 params(to, from, type, text) are mandatory. must be filled
-		HashMap<String, String> params = new HashMap<String, String>();
-		params.put("to", "01095902959");
-		params.put("from", "01095902959");
-		params.put("type", "SMS");
-		params.put("text", "Coolsms Testing Message!");
-		params.put("app_version", "test app 1.2"); // application name and version
-
-		try {
-			JSONObject obj = (JSONObject) coolsms.send(params);
-			System.out.println(obj.toString());
-			return "redirect:selectReceiptList.com";
-		} catch (CoolsmsException e) {
-			System.out.println(e.getMessage());
-			System.out.println(e.getCode());
-			return "common/errorPage";
-		}
-	}*/
-	
-	//영수증 메세지 보내기
+	// 영수증 메세지 보내기
 	@RequestMapping("sendExampleMsg.com")
-	  public String sendSms(HttpServletRequest request) throws Exception {
+	public String sendSms(HttpServletRequest request) throws Exception {
 		String comNo = request.getParameter("comNo");
-	    String api_key = "NCSA40TFBGX94XV0";
-	    String api_secret = "98M3RJGXL6EKXF2I1SCV1ZJJD9AT546V";
-	    Coolsms coolsms = new Coolsms(api_key, api_secret);
+		String api_key = "NCSA40TFBGX94XV0";
+		String api_secret = "98M3RJGXL6EKXF2I1SCV1ZJJD9AT546V";
+		Coolsms coolsms = new Coolsms(api_key, api_secret);
 
-	    HashMap<String, String> set = new HashMap<String, String>();
-	    set.put("from", "01095902959"); // 수신번호
+		HashMap<String, String> set = new HashMap<String, String>();
+		set.put("from", "01095902959"); // 수신번호
 
-	    set.put("to", (String)request.getParameter("from")); // 발신번호
-	    set.put("text", (String)request.getParameter("text")); // 문자내용
-	    set.put("subject", "피자학교"); // 문자내용
-	    set.put("type", "lms"); // 문자 타입
+		set.put("to", (String) request.getParameter("from")); // 발신번호
+		set.put("text", (String) request.getParameter("text")); // 문자내용
+		set.put("subject", "피자학교"); // 문자내용
+		set.put("type", "lms"); // 문자 타입
 
-	    System.out.println(set);
+		System.out.println(set);
 
-	    org.json.simple.JSONObject result = coolsms.send(set); // 보내기&전송결과받기
+		org.json.simple.JSONObject result = coolsms.send(set); // 보내기&전송결과받기
 
-	    if ((boolean)result.get("status") == true) {
-	      // 메시지 보내기 성공 및 전송결과 출력
-	      System.out.println("성공");
-	      System.out.println(result.get("group_id")); // 그룹아이디
-	      System.out.println(result.get("result_code")); // 결과코드
-	      System.out.println(result.get("result_message")); // 결과 메시지
-	      System.out.println(result.get("success_count")); // 메시지아이디
-	      System.out.println(result.get("error_count")); // 여러개 보낼시 오류난 메시지 수
-	    } else {
-	      // 메시지 보내기 실패
-	      System.out.println("실패");
-	      System.out.println(result.get("code")); // REST API 에러코드
-	      System.out.println(result.get("message")); // 에러메시지
-	    }
+		if ((boolean) result.get("status") == true) {
+			// 메시지 보내기 성공 및 전송결과 출력
+			System.out.println("성공");
+			System.out.println(result.get("group_id")); // 그룹아이디
+			System.out.println(result.get("result_code")); // 결과코드
+			System.out.println(result.get("result_message")); // 결과 메시지
+			System.out.println(result.get("success_count")); // 메시지아이디
+			System.out.println(result.get("error_count")); // 여러개 보낼시 오류난 메시지 수
+		} else {
+			// 메시지 보내기 실패
+			System.out.println("실패");
+			System.out.println(result.get("code")); // REST API 에러코드
+			System.out.println(result.get("message")); // 에러메시지
+		}
 
-	    return "redirect:selectReceiptList.com?comNo="+comNo;
-	  }
-	
-	
-	
+		return "redirect:selectReceiptList.com?comNo=" + comNo;
+	}
+
 	@RequestMapping("sendCustomerDeliveryMsg.com")
-	  public String sendCustomerDeliveryMsg(HttpServletRequest request) throws Exception {
+	public String sendCustomerDeliveryMsg(HttpServletRequest request) throws Exception {
 		String comNo = request.getParameter("comNo");
 		String expectTime = request.getParameter("expectTime");
 		String phoneNumber = request.getParameter("phoneNumber");
-		String text = "[피자학교]주문하신 음식의 예상 소요시간은  " + expectTime +"분 입니다!";
-		
-	    String api_key = "NCSA40TFBGX94XV0";
-	    String api_secret = "98M3RJGXL6EKXF2I1SCV1ZJJD9AT546V";
-	    Coolsms coolsms = new Coolsms(api_key, api_secret);
+		String text = "[피자학교]주문하신 음식의 예상 소요시간은  " + expectTime + "분 입니다!";
 
-	    HashMap<String, String> set = new HashMap<String, String>();
-	    set.put("from", "01095902959"); // 수신번호
-	    set.put("to", phoneNumber); // 발신번호
-	    set.put("text", text); // 문자내용
-	    set.put("type", "sms"); // 문자 타입
+		String api_key = "NCSA40TFBGX94XV0";
+		String api_secret = "98M3RJGXL6EKXF2I1SCV1ZJJD9AT546V";
+		Coolsms coolsms = new Coolsms(api_key, api_secret);
 
-	    System.out.println(set);
+		HashMap<String, String> set = new HashMap<String, String>();
+		set.put("from", "01095902959"); // 수신번호
+		set.put("to", phoneNumber); // 발신번호
+		set.put("text", text); // 문자내용
+		set.put("type", "sms"); // 문자 타입
 
-	    org.json.simple.JSONObject result = coolsms.send(set); // 보내기&전송결과받기
+		System.out.println(set);
 
-	    if ((boolean)result.get("status") == true) {
-	      // 메시지 보내기 성공 및 전송결과 출력
-	      System.out.println("성공");
-	      System.out.println(result.get("group_id")); // 그룹아이디
-	      System.out.println(result.get("result_code")); // 결과코드
-	      System.out.println(result.get("result_message")); // 결과 메시지
-	      System.out.println(result.get("success_count")); // 메시지아이디
-	      System.out.println(result.get("error_count")); // 여러개 보낼시 오류난 메시지 수
-	    } else {
-	      // 메시지 보내기 실패
-	      System.out.println("실패");
-	      System.out.println(result.get("code")); // REST API 에러코드
-	      System.out.println(result.get("message")); // 에러메시지
-	    }
+		org.json.simple.JSONObject result = coolsms.send(set); // 보내기&전송결과받기
 
-	    return "redirect:orderWaiting.com?comNo="+comNo;
-	  }
+		if ((boolean) result.get("status") == true) {
+			// 메시지 보내기 성공 및 전송결과 출력
+			System.out.println("성공");
+			System.out.println(result.get("group_id")); // 그룹아이디
+			System.out.println(result.get("result_code")); // 결과코드
+			System.out.println(result.get("result_message")); // 결과 메시지
+			System.out.println(result.get("success_count")); // 메시지아이디
+			System.out.println(result.get("error_count")); // 여러개 보낼시 오류난 메시지 수
+		} else {
+			// 메시지 보내기 실패
+			System.out.println("실패");
+			System.out.println(result.get("code")); // REST API 에러코드
+			System.out.println(result.get("message")); // 에러메시지
+		}
 
-	
-	
-	//업체의 모든 매출목록 가져오기
+		return "redirect:orderWaiting.com?comNo=" + comNo;
+	}
+
+	// 업체의 모든 매출목록 가져오기
 	@RequestMapping("selectAllCompanySales.com")
 	public String selectAllCompanySales(HttpServletRequest request, HttpServletResponse response, String comNo) {
 		int IntComNo = Integer.parseInt(comNo);
@@ -743,16 +725,15 @@ public class CompanyController {
 			request.setAttribute("list", list);
 			System.out.println("매출 리스트 : " + list);
 			return "company/companySales";
-			
-			
+
 		} catch (FailSelectCompanySales e) {
 			request.setAttribute("msg", e.getMessage());
 			return "common/errorPage";
 		}
 
 	}
-	
-	//매출목록 리스트 가져오기(텍스트)
+
+	// 매출목록 리스트 가져오기(텍스트)
 	@RequestMapping("selectCompanySalesList.com")
 	public String selectCompanySalesList(HttpServletRequest request, HttpServletResponse response, String comNo) {
 		int IntComNo = Integer.parseInt(comNo);
@@ -766,54 +747,52 @@ public class CompanyController {
 			System.out.println("inComeList : " + inComeList);
 			System.out.println("outComeList : " + outComeList);
 			return "company/companySalesList";
-			
+
 		} catch (FailSelectCompanySales e) {
 			request.setAttribute("msg", e.getMessage());
 			return "common/errorPage";
 		}
-		
-		
-		
+
 	}
-	
-	//달력 상세보기
+
+	// 달력 상세보기
 	@RequestMapping("calendarDetail.com")
 	public String calendarDetail(HttpServletRequest request, HttpServletResponse response, String id, String memberNo) {
 		ArrayList<CompanyCalendar> list = new ArrayList<CompanyCalendar>();
-		
+
 		int IntMemberNo = Integer.parseInt(memberNo);
-		
+
 		System.out.println("id : " + id);
 		java.sql.Date date = java.sql.Date.valueOf(id);
 		System.out.println("date : " + date);
-		
+
 		CompanyCalendar cc = new CompanyCalendar();
 		cc.setMemberNo(IntMemberNo);
 		cc.setCalendarDate(date);
 		try {
 			list = cs.calendarDetail(cc);
-			
+
 			request.setAttribute("list", list);
 			request.setAttribute("date", date);
 			return "company/calendarDetail";
-			
-			
+
 		} catch (FailSelectCalendar e) {
 			request.setAttribute("msg", e.getMessage());
 			return "common/errorPage";
 		}
-		
+
 	}
-	
-	//달력에 일정 삽입하기
+
+	// 달력에 일정 삽입하기
 	@RequestMapping("insertCalendarData.com")
 	public String insertCalendarData(String date, String memberNo, String listSize, String text) {
-		/*System.out.println("date : " + date);
-		System.out.println("memberNo : " + memberNo);
-		System.out.println("listSize : " + listSize);
-		System.out.println("text : " + text);*/
-		
-		//DB에 값 집어넣기
+		/*
+		 * System.out.println("date : " + date); System.out.println("memberNo : " +
+		 * memberNo); System.out.println("listSize : " + listSize);
+		 * System.out.println("text : " + text);
+		 */
+
+		// DB에 값 집어넣기
 		CompanyCalendar cc = new CompanyCalendar();
 		cc.setCalendarCateg(Integer.parseInt(listSize));
 		cc.setCalendarContent(text);
@@ -822,56 +801,63 @@ public class CompanyController {
 		try {
 			int result = cs.insertCalendarData(cc);
 			System.out.println("달력 데이터 삽입 결과 개수 : " + result);
-			return "redirect:calendarDetail.com?id="+date + "&memberNo=" + memberNo;
+			return "redirect:calendarDetail.com?id=" + date + "&memberNo=" + memberNo;
 		} catch (FailChangeCalendarDate e) {
 			return "common/errorPage";
 		}
-		
+
 	}
-	
-	//일정 지우기
+
+	// 일정 지우기
 	@RequestMapping("deleteCalendarData.com")
 	public String deleteCalendarData(String date, String listSize, String calendarNo, String memberNo) {
-		
+
 		CompanyCalendar cc = new CompanyCalendar();
 		cc.setCalendarCateg(Integer.parseInt(listSize));
 		cc.setCalendarDate(java.sql.Date.valueOf(date));
 		cc.setCalendarNo(Integer.parseInt(calendarNo));
 		try {
 			int result = cs.deleteCalendarData(cc);
-			
-			return "redirect:calendarDetail.com?id="+date + "&memberNo=" + memberNo;
+
+			return "redirect:calendarDetail.com?id=" + date + "&memberNo=" + memberNo;
 		} catch (FailChangeCalendarDate e) {
 			return "common/errorPage";
 		}
-		
-		
+
 	}
-	
-	//일정 수정하기
+
+	// 일정 수정하기
 	@RequestMapping("reflectModify.com")
-	public void reflectModify(HttpServletRequest request, HttpServletResponse response, String date, String calendarNo, String content) {
+	public void reflectModify(HttpServletRequest request, HttpServletResponse response, String date, String calendarNo,
+			String content) {
 		System.out.println("date : " + date);
 		System.out.println("calendarNo : " + calendarNo);
 		System.out.println("content : " + content);
-		
-		
+
 		CompanyCalendar cc = new CompanyCalendar();
 		cc.setCalendarNo(Integer.parseInt(calendarNo));
 		cc.setCalendarContent(content);
 		cc.setCalendarDate(java.sql.Date.valueOf(date));
 
-		
 		try {
 			int result = cs.reflectModify(cc);
 		} catch (FailChangeCalendarDate e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 	}
 	
-	
-	
-	
+	@RequestMapping("TestMapping.com")
+	public ArrayList<CompanyOrder> TestMapping(int comNo) {
+		ArrayList<CompanyOrder> list = new ArrayList<CompanyOrder>();
+		try {
+			CompanyService cs = new CompanyServiceImpl();
+			list = cs.orderDelivering(comNo);
+		} catch (FailSelectOrder e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+
 }

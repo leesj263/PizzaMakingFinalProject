@@ -1,9 +1,11 @@
 package com.kh.pmfp.company.model.dao;
 
+import java.sql.Connection;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.apache.ibatis.session.SqlSession;
 import org.mybatis.spring.SqlSessionTemplate;
 
 import com.kh.pmfp.company.model.exception.FailChangeCalendarDate;
@@ -95,6 +97,10 @@ public interface CompanyDao {
 	int deleteCalendarData(SqlSessionTemplate sqlSession, CompanyCalendar cc) throws FailChangeCalendarDate;
 
 	int reflectModify(SqlSessionTemplate sqlSession, CompanyCalendar cc) throws FailChangeCalendarDate;
+
+	ArrayList<CompanyOrder> orderDelivering(SqlSession sqlSessionEx, int comNo) throws FailSelectOrder;
+
+	//ArrayList<CompanyOrder> orderDeliveringSocket(Connection con, int comNo);
 
 	//ArrayList<CompanyCalendar> selectMemberCalendar(SqlSessionTemplate sqlSession, int memberNo) throws FailSelectCalendar;
 

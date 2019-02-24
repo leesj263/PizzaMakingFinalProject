@@ -93,6 +93,8 @@ public interface CompanyService {
 
 	int reflectModify(CompanyCalendar cc) throws FailChangeCalendarDate;
 
+	ArrayList<CompanyOrder> orderDeliveringSocket(int comNo) throws Exception;
+
 	//ArrayList<CompanyCalendar> selectMemberCalendar(int memberNo) throws FailSelectCalendar;
 
 
