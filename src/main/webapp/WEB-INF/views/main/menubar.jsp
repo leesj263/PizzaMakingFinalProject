@@ -25,6 +25,9 @@
 <!-- 다음 주소 api -->
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 
+<!-- 카카오 로그인 -->
+<script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
+
 <script>
 	//변수만 선언
 	//아이디 중복확인 체크 (마지막에 계정만들기 눌렀을떄 아이디가 중복체크)
@@ -443,8 +446,42 @@ h1 {
 					</tr>
 					<tr>
 						<td colspan="2">
-							<button type="button" class="ui yellow button"
-								style="width: 100%">카카오 로그인</button>
+							<!-- <button type="button" class="ui yellow button"
+								style="width: 100%">카카오 로그인</button> -->
+								<a id="kakao-login-btn"></a> <a
+							href="http://developers.kakao.com/logout"></a> <script
+								type='text/javascript'>
+								//<![CDATA[
+								// 사용할 앱의 JavaScript 키를 설정해 주세요.
+								Kakao.init('193ce7b860db2d5f477856840d1b7fb4');
+								// 카카오 로그인 버튼을 생성합니다.
+								Kakao.Auth.createLoginButton({
+									container : '#kakao-login-btn',
+												success : function(authObj) {
+													Kakao.API.request({
+																url : '/v1/user/me',
+																success : function(res) {
+																	alert(JSON.stringify(res)); //<---- kakao.api.request 에서 불러온 결과값 json형태로 출력
+																	alert(JSON.stringify(authObj)); //<----Kakao.Auth.createLoginButton에서 불러온 결과값 json형태로 출력
+																	console.log(res.id);//<---- 콘솔 로그에 id 정보 출력(id는 res안에 있기 때문에  res.id 로 불러온다)
+																	console.log(res.kaccount_email);//<---- 콘솔 로그에 email 정보 출력 (어딨는지 알겠죠?)
+																	console.log(res.properties['nickname']);//<---- 콘솔 로그에 닉네임 출력(properties에 있는 nickname 접근 
+																	// res.properties.nickname으로도 접근 가능 )
+																	console.log(authObj.access_token);//<---- 콘솔 로그에 토큰값 출력
+																	
+																	//에이작스로 컨트롤러 데이터 보내고
+																	//세션에 담깅
+																}
+															})
+												},
+
+												fail : function(error) {
+													alert(JSON.stringify(error));
+												}
+											});
+
+									//]]>
+								</script>
 						</td>
 					</tr>
 					<tr>
