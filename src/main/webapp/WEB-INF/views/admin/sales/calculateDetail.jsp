@@ -41,7 +41,7 @@
 							<li class="member-li"><span>정산 월</span>
 								<p>${calOne.orderExpMonth.toString().substring(0,4)}년 ${calOne.orderExpMonth.toString().substring(5,7)}월</p>
 							</li>
-							<li class="member-li"><span>정산 금액</span><p>${total }</p></li>
+							<li class="member-li"><span>잔여 정산 금액</span><p>${total }</p></li>
 							<li class="member-li"><span></span></li>
 							<li class="member-li"><span>주문 내역</span></li>
 						</ul> 
@@ -88,12 +88,12 @@
 									<c:when test="${cal.orderMStatus ==2}"><td>배송 완료</td></c:when>
 									<c:otherwise><td>수령 완료</td></c:otherwise>
 								</c:choose>
-								<td>${cal.price }</td>
+								<td id="price${cal.rn }">${cal.price }</td>
 							</tr>
 						</c:forEach>
 						<tr>
 							<th colspan="3">총 액</th>
-							<th colspan="2">${total}</th>
+							<th colspan="2" id="totalPrice"></th>
 						</tr>
 					</tbody>
 				</table>
@@ -108,6 +108,12 @@
 
 		<script>
 		$(function(){
+			var totalPrice=0;
+			for(var i=1;i<=${calList.size()};i++){				
+				totalPrice+=Number($("#price"+i).text());
+			}
+			$("#totalPrice").text(totalPrice);
+			console.log(totalPrice);
 			$("#calList").find("td").mouseenter(function(){
 				$(this).parent().css({"color":"#9d9d9d","cursor":"pointer"});
 			}).mouseout(function(){

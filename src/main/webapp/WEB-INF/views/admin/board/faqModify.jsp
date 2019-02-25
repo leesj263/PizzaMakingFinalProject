@@ -12,8 +12,6 @@
 </style>
 <section>
 	<div class="right-panel">
-	
-		<p>faqModify.jsp</p>
 		<div class="card">
 			<div class="card-header col-md-12">
 				<h3 class="menu-title">FAQ 수정</h3>

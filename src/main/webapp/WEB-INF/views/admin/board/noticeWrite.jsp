@@ -14,8 +14,6 @@
 </style>
 <section>
 	<div class="right-panel">
-
-		<p>noticeWrite.jsp</p>
 		<div class="card">
 			<div class="card-header col-md-12">
 				<h3 class="menu-title">공지사항 작성</h3>

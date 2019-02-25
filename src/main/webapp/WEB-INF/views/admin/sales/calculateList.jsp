@@ -140,8 +140,8 @@
 			}).mouseout(function(){
 				$(this).parent().css({"color":"#212529"});
 			}).click(function(){
-				var orderExpNo=$(this).parent().children().children().eq(1).val();
-				var comNo=$(this).parent().children().children().eq(2).val();
+				var orderExpNo=$(this).parent().children().children().eq(0).val();
+				var comNo=$(this).parent().children().children().eq(1).val();
 				var times=$(this).parent().children().eq(4).text();
 				console.log("orderExpNo="+orderExpNo+"&comNo="+comNo+"&times="+times);
 				location.href="calculateDetail.ad?orderExpNo="+orderExpNo+"&comNo="+comNo;

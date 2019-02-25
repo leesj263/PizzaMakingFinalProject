@@ -12,7 +12,6 @@
 </style>
 <section>
 	<div class="right-panel">
-		<p>menuList.jsp</p>
 		<div class="card">
 			<div class="card-header col-md-12">
 				<h3 class="menu-title">토핑 목록</h3>
@@ -29,7 +28,7 @@
 							<th scope="col">이름</th>
 							<th scope="col">도매가</th>
 							<th scope="col">판매가</th>
-							<th></th>
+							<!-- <th></th> -->
 						</tr>
 					</thead>
 					<tbody>
@@ -39,9 +38,9 @@
 								<td>${menu.bMenu} ${menu.bSize }</td>
 								<td>${menu.bBuyPrice }</td>
 								<td>${menu.bSellPrice }</td>
-								<th>
+								<!-- <th>
 									<button class="btn btn-sm btn-outline-warning" onclick="modMenu()">수정</button>
-								</th>
+								</th> -->
 							</tr>
 						</c:forEach>
 					</tbody>

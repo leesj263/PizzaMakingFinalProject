@@ -3,6 +3,7 @@ package com.kh.pmfp.admin.controller;
 import java.sql.Date;
 import java.util.ArrayList;
 
+import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -54,7 +55,19 @@ public class AdminController {
 	//메인 이동용
 	@RequestMapping("adminMain.ad")
 	public String adminMain(HttpServletRequest request) {
-		return "admin/adminMain";
+		ArrayList<AdminSales> salesList=new ArrayList<AdminSales>();
+		ArrayList<AdminSales> expenseList=new ArrayList<AdminSales>();
+		AdminSales sales=new AdminSales(1);
+		
+		try {
+			salesList=as.selectTodayStat(sales);
+			request.setAttribute("salesList", salesList);
+			System.out.println("주문 목록 : "+salesList);
+			return "admin/adminMain";
+		} catch (AdminSelectException e) {
+			request.setAttribute("msg", e.getMessage());
+			return "common/errorPage";
+		}
 	}
 	
 	//로그아웃용
@@ -926,6 +939,7 @@ public class AdminController {
 		}
 	}
 	
+	//전체 매출 조회용
 	@RequestMapping("statistics.ad")
 	public String statistics(HttpServletRequest request) {
 		ArrayList<AdminSales> salesList=new ArrayList<AdminSales>();
@@ -947,6 +961,7 @@ public class AdminController {
 		}
 	}
 	
+	//업체 매출 조회용
 	@RequestMapping(value="statisitcsCom.ad", method=RequestMethod.GET)
 	public String statisitcsCom(@RequestParam(value="comNo", required=false, defaultValue="1")int comNo, HttpServletRequest request) {
 		ArrayList<AdminSeller> sellerList=new ArrayList<AdminSeller>();
@@ -976,6 +991,7 @@ public class AdminController {
 		}
 	}
 	
+	//재료별 매출 조회용
 	@RequestMapping(value="statisticsMat.ad", method=RequestMethod.GET)
 	public String statisitcsMat(@RequestParam(value="mCate", required=false, defaultValue="1")int materialCate, HttpServletRequest request) {
 		ArrayList<AdminMaterial> matList=new ArrayList<AdminMaterial>();
@@ -993,4 +1009,5 @@ public class AdminController {
 		}
 		
 	}
+	
 }

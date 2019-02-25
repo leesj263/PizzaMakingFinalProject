@@ -12,7 +12,6 @@
 </style>
 <section>
 	<div class="right-panel">
-		<p>sellerDetail.jsp</p>
 		<div class="card">
 			<div class="card-header col-md-12">
 				<h3 class="menu-title">업체 정보</h3>
@@ -36,7 +35,7 @@
 								</p>
 							</li>
 							<li class="member-li"><span></span></li>
-							<c:if test="${seller.comConfirm=='Y'}"><li class="member-li"><span>매출</span></li></c:if>
+							<%-- <c:if test="${seller.comConfirm=='Y'}"><li class="member-li"><span>매출</span></li></c:if> --%>
 						</ul> 
 					</div>
 					<div class="col-md-4">
@@ -56,9 +55,9 @@
 			<c:if test="${seller.comConfirm=='Y'}">
 				
 				<!-- 승인 상태일 때 불러오는 것 -->
-				<div class="row">
+				<!-- <div class="row">
 					<div class="col-md-2"></div>
-					<!-- 매출 영역 -->
+					매출 영역
 					<table class="table table-striped col-md-8" id="sellerSalesList">
 						<thead>
 							<tr>
@@ -106,7 +105,7 @@
 					</div>
 					<div class="col-md-4"></div>
 				</div>
-				
+				 -->
 				
 				<div class="row">
 					<div class="col-md-2"></div>
@@ -178,7 +177,7 @@
 									<c:param name="currentPage" value="${pi.currentPage-1}"/>
 								</c:url>
 								<li class="paginate_button page-item previous" id="bootstrap-data-table_previous">
-									<a href="${btnList }" aria-controls="bootstrap-data-table" data-dt-idx="0" tabindex="0" class="page-link"><i class="ti-angle-left"></i></a>
+									<a href="${btnList }&num=${seller.comNo}" aria-controls="bootstrap-data-table" data-dt-idx="0" tabindex="0" class="page-link"><i class="ti-angle-left"></i></a>
 								</li>
 							</c:if>
 							<c:if test="${pi.currentPage==1 }">
@@ -198,7 +197,7 @@
 									<c:param name="currentPage" value="${ p }"/>
 								</c:url>
 								<li class="paginate_button page-item">
-									<a href="${btnList }" aria-controls="bootstrap-data-table" data-dt-idx="${p }" tabindex="0" class="page-link">${p }</a>
+									<a href="${btnList }&num=${seller.comNo}" aria-controls="bootstrap-data-table" data-dt-idx="${p }" tabindex="0" class="page-link">${p }</a>
 								</li>
 							</c:if>
 						</c:forEach>
@@ -207,7 +206,7 @@
 									<c:param name="currentPage" value="${pi.currentPage+1}"/>
 								</c:url>
 								<li class="paginate_button page-item next" id="bootstrap-data-table_next">
-									<a href="${btnList }" aria-controls="bootstrap-data-table" data-dt-idx="7" tabindex="0" class="page-link"><i class="ti-angle-right"></i></a>
+									<a href="${btnList }&num=${seller.comNo}" aria-controls="bootstrap-data-table" data-dt-idx="7" tabindex="0" class="page-link"><i class="ti-angle-right"></i></a>
 								</li>
 							</c:if>
 							<c:if test="${pi.currentPage>=pi.maxPage }">

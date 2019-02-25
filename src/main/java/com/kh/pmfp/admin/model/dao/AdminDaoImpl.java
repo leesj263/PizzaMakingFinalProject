@@ -896,6 +896,16 @@ public class AdminDaoImpl implements AdminDao {
 		return salesList;
 	}
 
+	//메인 통계 출력용
+	@Override
+	public ArrayList<AdminSales> selectTodayStat(SqlSessionTemplate sqlSession, AdminSales sales)
+			throws AdminSelectException {
+		ArrayList<AdminSales> salesList=new ArrayList<AdminSales>();
+		salesList=(ArrayList)sqlSession.selectList("Admin.selectTodayStat", sales);
+		
+		return salesList;
+	}
+
 
 	
 	

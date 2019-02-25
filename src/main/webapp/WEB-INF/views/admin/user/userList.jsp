@@ -37,7 +37,6 @@ h3.menu-title{
 </script>
 <section class="container">
 	<div class="right-panel">
-		<p>userList.jsp</p>
 		<div class="col-md-12">
 			<div class="card">
 				<div class="card-header">

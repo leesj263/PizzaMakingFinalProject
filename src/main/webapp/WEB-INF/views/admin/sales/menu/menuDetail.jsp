@@ -9,8 +9,6 @@
 </style>
 <section>
 	<div class="right-panel">
-	
-		<p>menuDetail.jsp</p>
 		<div class="card">
 			<div class="card-header col-md-12">
 				<h3 class="menu-title">메뉴 상세보기</h3>
@@ -93,13 +91,13 @@
 						</table>
 					</div>
 					<div class="col-md-2"></div>
-				</div> -->
+				</div>
 				<div>
 					<div class="col-md-2"></div>
 					<div class="col-md-5"></div>	
 					<div class="col-md-5">
 						<button class="btn btn-outline-secondary" onclick="location.href='menuList.ad'">목록으로</button>
-						<button class="btn btn-outline-warning" onclick="location.href='menuModifyView.ad?basicNo=${menu.bNo}'">수정</button>
+						<%-- <button class="btn btn-outline-warning" onclick="location.href='menuModifyView.ad?basicNo=${menu.bNo}'">수정</button> --%>
 						<%-- <c:if test="${topping.mStatus=='Y' }">
 							<button class="btn btn-outline-danger" data-toggle="modal" data-target="#staticModal">판매 중지</button>
 						</c:if>
