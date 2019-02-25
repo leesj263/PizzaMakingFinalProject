@@ -66,12 +66,7 @@ public class CompanyServiceImpl implements CompanyService{
 	
 	@Autowired
 	private SqlSessionTemplate sqlSession;
-	
 
-	
-	
-	
-	
 	
 	
 	@Autowired
@@ -355,40 +350,32 @@ public class CompanyServiceImpl implements CompanyService{
 	@Override
 	public ArrayList<CompanyOrder> orderDeliveringSocket(int comNo) throws Exception {
 		System.out.println("service에서의 comNo : " + comNo);
-		System.out.println("service에서의 sqlSession2 : " + sqlSession);
+		System.out.println("service에서의 sqlSession2 : " + temp);
 		ArrayList<CompanyOrder> list = new ArrayList<CompanyOrder>();
 		CompanyDao cd = new CompanyDaoImpl();
-		
-		/*String resource = "/mybatis-config.xml";
-		Properties props = new Properties();
-
-		props.put("driverClassName", "oracle.jdbc.driver.OracleDriver");
-		props.put("url", "jdbc:oracle:thin:@localhost:1521:xe");
-		props.put("username", "pizza");
-		props.put("password", "pizza");
-		props.put("defaultAutoCommit", false);
-
-		InputStream inputStream = Resources.getResourceAsStream(resource);
-		SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream,props);
-		SqlSessionTemplate sst = new SqlSessionTemplate(sqlSessionFactory);
-		CompanyDao cd = new CompanyDaoImpl();
-		System.out.println("sst : " + sst);*/
-		
-		
-		/*String resource = "/mybatis-config.xml";
-		InputStream inputStream = Resources.getResourceAsStream(resource);
-		SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
-		System.out.println("sqlSessionFactory : " + sqlSessionFactory);
-		SqlSession sqlSessionEx = sqlSessionFactory.openSession();
-		
-		System.out.println("sqlSessionEx : " + sqlSessionEx);
-		*/
 		System.out.println("temp : " + temp);
 		list = cd.orderDelivering(temp, comNo);
 		
-		
+		System.out.println("temp : " + temp);
 		return list;
 	}
+	
+	
+	@Override
+	public int orderUpdateToCompleteSocket(int orderNoInt) throws FailUpdateOrderStatus {
+		// TODO Auto-generated method stub
+		CompanyDao cd = new CompanyDaoImpl();
+		System.out.println("temp : " + temp);
+		int result = cd.orderUpdateToComplete(temp, orderNoInt);
+
+		System.out.println("temp : " + temp);
+		return result;
+	}
+	
+	
+	
+	
+	
 
 /*	@Override
 	public ArrayList<CompanyCalendar> selectMemberCalendar(int memberNo) throws FailSelectCalendar {
