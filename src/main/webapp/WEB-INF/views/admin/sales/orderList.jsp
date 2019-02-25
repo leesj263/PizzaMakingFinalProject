@@ -9,8 +9,6 @@
 </style>
 <section>
 	<div class="right-panel">
-	
-		<p>orderList.jsp</p>
 			<div class="card">
 			<div class="card-header col-md-12">
 				<h3 class="menu-title">주문 목록</h3>

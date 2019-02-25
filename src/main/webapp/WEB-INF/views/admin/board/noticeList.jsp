@@ -12,57 +12,54 @@
 </style>
 <section>
 	<div class="right-panel">
-	
-		<p>noticeList.jsp</p>
-			<div class="card">
+		<div class="card">
 			<div class="card-header col-md-12">
 				<h3 class="menu-title">공지사항</h3>
 			</div>
 			<div class="card-body">
-			<div class="row">
-				<div class="col-md-2"></div>
-				<table class="table table-striped col-md-8" id="noticeList">
-					<thead>
-						<tr>
-							<th></th>
-							<th scope="col">글번호</th>
-							<th scope="col">분류</th>
-							<th scope="col">제목</th>
-							<th scope="col">작성일</th>
-							<th scope="col">조회수</th>
-						</tr>
-					</thead>
-					<tbody>
-						<c:forEach items="${noticeList }" var="notice">
+				<div class="row">
+					<div class="col-md-2"></div>
+					<table class="table table-striped col-md-8" id="noticeList">
+						<thead>
 							<tr>
-								<td><input type="hidden" name="boardNo" value="${notice.boardNo }"></td>
-								<th scope="row">${notice.rn }</th>
-								<c:choose>
-									<c:when test="${notice.boardCate==1 }">
-										<td>[안내]</td>
-									</c:when>
-									<c:when test="${notice.boardCate==2 }">
-										<td>[공지]</td>
-									</c:when>
-									<c:when test="${notice.boardCate==3 }">
-										<td>[경고]</td>
-									</c:when>
-									<c:otherwise>
-										<td>[이벤트]</td>
-									</c:otherwise>
-								</c:choose>
-								<td>${notice.boardTitle }</td>
-								<td>${notice.boardDate }</td>
-								<td>${notice.boardCount }</td>
+								<th></th>
+								<th scope="col">글번호</th>
+								<th scope="col">분류</th>
+								<th scope="col">제목</th>
+								<th scope="col">작성일</th>
+								<th scope="col">조회수</th>
 							</tr>
-						</c:forEach>
-						
-					</tbody>
-				</table>
-				<div class="col-md-2"></div>
+						</thead>
+						<tbody>
+							<c:forEach items="${noticeList }" var="notice">
+								<tr>
+									<td><input type="hidden" name="boardNo" value="${notice.boardNo }"></td>
+									<th scope="row">${notice.rn }</th>
+									<c:choose>
+										<c:when test="${notice.boardCate==1 }">
+											<td>[안내]</td>
+										</c:when>
+										<c:when test="${notice.boardCate==2 }">
+											<td>[공지]</td>
+										</c:when>
+										<c:when test="${notice.boardCate==3 }">
+											<td>[경고]</td>
+										</c:when>
+										<c:otherwise>
+											<td>[이벤트]</td>
+										</c:otherwise>
+									</c:choose>
+									<td>${notice.boardTitle }</td>
+									<td>${notice.boardDate }</td>
+									<td>${notice.boardCount }</td>
+								</tr>
+							</c:forEach>	
+						</tbody>
+					</table>
+					<div class="col-md-2"></div>
+				</div>
 			</div>
 		</div>
-	</div>
 	</div>
 	<div class="col-md-2"></div>
 	<div class="col-md-1"><button class="btn btn-outline-warning" onclick="location.href='noticeWriteView.ad'">작성</button></div>

@@ -240,6 +240,8 @@ public interface AdminDao {
 	//통계 출력용 -- 토핑
 	ArrayList<AdminMSales> selectOrderMStat(SqlSessionTemplate sqlSession, int materialCate) throws AdminSelectException;
 
+	//메인 통계 출력용
+	ArrayList<AdminSales> selectTodayStat(SqlSessionTemplate sqlSession, AdminSales sales) throws AdminSelectException;
 
 	
 

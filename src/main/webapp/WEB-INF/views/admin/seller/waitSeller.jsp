@@ -13,7 +13,6 @@
 </style>
 <section>
 	<div class="right-panel">
-		<p>waitSeller.jsp</p>
 		<div class="card">
 			<div class="card-header col-md-12">
 				<h3 class="menu-title">승인 대기 업체</h3>

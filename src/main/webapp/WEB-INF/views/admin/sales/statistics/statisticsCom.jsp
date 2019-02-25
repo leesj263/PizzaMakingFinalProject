@@ -139,6 +139,7 @@ div.modal-body{
 		console.log(comNo);
 		location.href='statisitcsCom.ad?comNo='+comNo;
 	}
+	
 	(function($) {
 		
 		if(${selectComNo==0}){
@@ -174,13 +175,27 @@ div.modal-body{
 				var expenseDateArr=[];
 				var expenseComArr=[];
 				
+				var comNameArr=[];
+				var sellerList="${sellerList}";
 				salesList = salesList.substring(1, salesList.lastIndexOf("]"));
 				var salesArr = salesList.split('AdminSales');
 				salesArr.splice(0, 1);
 				expenseList = expenseList.substring(1, expenseList.lastIndexOf("]"));
 				var expenseArr = expenseList.split('AdminSales');
 				expenseArr.splice(0, 1);
-		
+				sellerList=sellerList.substring(1, sellerList.lastIndexOf("]"));
+				var sellerArr=sellerList.split('AdminSeller');
+				sellerArr.splice(0,1);
+			
+				var sellerArrList=new Array(sellerListsize);
+				var sellerArrList1=new Array(sellerListsize);
+				for (var i = 0; i < sellerListsize; i++) {
+					sellerArr[i]=sellerArr[i].split(']');
+					sellerArrList1[i]=sellerArr[i][0].split(' [')[1];
+					sellerArrList[i]=sellerArrList1[i].toString().split(', ');
+					comNameArr[i]=sellerArrList[i][10].split('=')[1];
+				}
+				
 				//console.log(salesArr);
 				//console.log(expenseArr);
 				
@@ -263,24 +278,10 @@ div.modal-body{
 				
 				//console.log(basicDate);
 				//console.log(basicDate2);
+			
+				//console.log(lastDate);
+				//console.log(firstDate);
 				
-				/*
-				if (FirstSortDate > FirstSortDate2) {
-					firstDate = FirstSortDate2;
-				} else {
-					firstDate = FirstSortDate;
-				}
-		
-				if (LastSortDate > LastSortDate2) {
-					lastDate = LastSortDate;
-				} else {
-					lastDate = LastSortDate2;
-				}
-		
-				console.log(lastDate);
-				console.log(firstDate);
-				*/
-		
 				//x축 List 구하기
 				var dayList = [];
 				var monthList=[];
@@ -320,13 +321,13 @@ div.modal-body{
 				var expenseYear2=new Array(sellerListsize);
 				var salesYear2=new Array(sellerListsize);
 				
-				console.log(salesDateArr);
-				console.log(salesComArr);
-				console.log(salesPriceArr);
+				//console.log(salesDateArr);
+				//console.log(salesComArr);
+				//console.log(salesPriceArr);
+				//console.log("ㅡㅐㅜ소")
 				
 				for(var j=0;j<sellerListsize;j++){
 					
-					//expenseList[j]=new Array();
 					salesList[j]=new Array();
 					startDate = new Date(FirstSortDate);
 					endDate = new Date(LastSortDate);
@@ -334,14 +335,9 @@ div.modal-body{
 					times=0;
 					
 					while(format(lineDate)!=format(endDate)){
-						//expenseList[j][times]=0;
 						salesList[j][times]=0;
 						dayList[times]=format(lineDate);
-						/* for(var i=0;i<expenseDateArr.length;i++){	
-							if(expenseDateArr[i]==format(lineDate)){
-								expenseList[times]+=Number(expensePriceArr[i]);
-							}
-						} */
+						
 						for(var i=0;i<salesDateArr.length;i++){	
 							if(salesDateArr[i]==format(lineDate)){
 								if(salesComArr[i]-1==(j)){
@@ -357,15 +353,8 @@ div.modal-body{
 				
 				for(var j=0;j<sellerListsize;j++){
 					dayList[times]=format(endDate);
-					//expenseList[j][times]=0;
 					salesList[j][times]=0;
-					/*for(var i=0;i<expenseDateArr.length;i++){	
-						if(expenseDateArr[i]==format(lineDate)){
-							if(salesComArr[i]==(sellerListsize-1)){
-								expenseList[j][times]+=Number(expensePriceArr[i]);
-							}
-						}
-					}*/
+					
 					for(var i=0;i<salesDateArr.length;i++){	
 						if(salesDateArr[i]==format(lineDate)){
 							if(salesComArr[i]-1==(j)){
@@ -374,15 +363,15 @@ div.modal-body{
 						}
 					}
 				}
-				console.log(dayList);
-				console.log(salesList);
+				
+				//console.log(dayList);
+				//console.log(salesList);
 				//여기까지 판매 데이터 
 				
 				
 				for(var j=0;j<sellerListsize;j++){
 					
 					expenseList2[j]=new Array();
-					//salesList2[j]=new Array();
 					startDate2 = new Date(FirstSortDate2);
 					endDate2 = new Date(LastSortDate2);
 					lineDate2=new Date(FirstSortDate2);
@@ -390,8 +379,8 @@ div.modal-body{
 					
 					while(format(lineDate2)!=format(endDate2)){
 						dayList2[times2]=format(lineDate2);
-						expenseList2[times2]=0;
-						salesList2[times2]=0;
+						expenseList2[j][times2]=0;
+						
 						for(var i=0;i<expenseDateArr.length;i++){	
 							if(expenseDateArr[i]==format(lineDate2)){
 								if(expenseComArr[i]-1==(j)){
@@ -400,22 +389,16 @@ div.modal-body{
 							}
 							
 						}
-						/*
-						for(var i=0;i<salesDateArr.length;i++){	
-							if(salesDateArr[i]==format(lineDate2)){
-								salesList2[j][times]+=Number(salesPriceArr[i]);
-							}
-						}
-						*/
+						
 						times2++;
 						lineDate2.setDate((lineDate2.getDate()+1));
 					}
 				}
+				
 				for(var j=0;j<sellerListsize;j++){
 					
 					dayList2[times2]=format(endDate2);
 					expenseList2[j][times2]=0;
-					//salesList2[j][times2]=0;
 					
 					for(var i=0;i<expenseDateArr.length;i++){	
 						if(expenseDateArr[i]==format(lineDate2)){
@@ -424,24 +407,19 @@ div.modal-body{
 							}
 						}
 					}
-					/* for(var i=0;i<salesDateArr.length;i++){	
-						if(salesDateArr[i]==format(lineDate2)){
-							salesList2[times2]+=Number(salesPriceArr[i]);
-						}
-					} */
 				}
-				console.log(dayList2);
-				console.log(expenseList2);
+				
+				//console.log(dayList2);
+				//console.log(expenseList2);
 				//console.log(salesList2);
 				
-				console.log(sellerListsize);
+				//console.log(sellerListsize);
+				
 				var colorList=[];
-				var comName=[];
+				
 				for(var i=0;i<<%=comSize%>;i++){
 					colorList[i]=getRandomColor();
 				}
-				
-			
 				
 				var ctx = $("#sales-chart");
 				ctx.height=150;
@@ -454,7 +432,7 @@ div.modal-body{
 						datasets : [ 
 					<%for(int i=0;i<comSize;i++){%>		
 							{
-							label : comName[<%=i%>],
+							label : comNameArr[<%=i%>]+'점',
 							data : salesList[<%=i%>],
 							backgroundColor : 'transparent',
 							borderColor : colorList[<%=i%>],
@@ -529,15 +507,15 @@ div.modal-body{
 						datasets : [ 
 					<%for(int i=0;i<6;i++){%>		
 							{
-							label :  "${sellerList[i].comName}점",
-							data : expenseList[<%=i%>],
+							label :  comNameArr[<%=i%>]+'점',
+							data : expenseList2[<%=i%>],
 							backgroundColor : 'transparent',
-							borderColor : getRandomColor(),
-							borderWidth : 3,
+							borderColor : colorList[<%=i%>],
+							borderWidth : 2,
 							pointStyle : 'circle',
-							pointRadius : 5,
+							pointRadius : 3,
 							pointBorderColor : 'transparent',
-							pointBackgroundColor : getRandomColor(),
+							pointBackgroundColor : colorList[<%=i%>],
 						}, 
 					<%}%>
 					]
@@ -591,6 +569,402 @@ div.modal-body{
 							text : 'Normal Legend'
 						}
 					}
+				}); 
+				
+				$("#timeSelect").change(function(){
+					$("#sales-chart").remove();
+					$("#line-chart").remove();
+					$("#chartBefore").after("<canvas id='sales-chart'></canvas>");
+					$("#chartExpense").after("<canvas id='line-chart'></canvas>");
+					
+					var selectVal =  $(this).val();
+					console.log("selectVal : " + selectVal);
+					
+					var k = 0;
+					var changeDay = [];
+					var changeDay2=[];
+					var changeExpensePrice2 = [];
+					var changeSalesPrice = [];
+					    
+					if(selectVal=="daily"){
+						changeDay=dayList;
+						changeDay2=dayList2;
+						changeExpensePrice2=expenseList2;
+						changeSalesPrice=salesList;
+						console.log(dayList2);
+						console.log(expenseList2);
+					}
+					
+				    if(selectVal=="monthly"){
+				    	
+				    	times=0;
+				    	times2=0;
+				    	startDate = new Date(FirstSortDate);
+						endDate = new Date(LastSortDate);
+						lineDate=new Date(FirstSortDate);
+						startDate2 = new Date(FirstSortDate2);
+						endDate2 = new Date(LastSortDate2);
+						lineDate2=new Date(FirstSortDate2);
+						
+						var monthList=[];
+						var monthList2=[];
+						
+						//console.log(salesDateArr);
+						//console.log(salesComArr);
+						//console.log(salesPriceArr);
+						
+						for(var j=0;j<sellerListsize;j++){
+							
+							times=0;
+							startDate = new Date(FirstSortDate);
+							endDate = new Date(LastSortDate);
+							lineDate=new Date(FirstSortDate);
+							salesMonth[j]=new Array();
+							
+							while(formatM(lineDate)!=formatM(endDate)){
+								
+								salesMonth[j][times]=0;
+								monthList[times]=formatM(lineDate);
+								
+								for(var i=0;i<salesDateArr.length;i++){	
+									if(salesDateArr[i].substring(0, 7)==formatM(lineDate)){
+										if(salesComArr[i]-1==(j)){
+											salesMonth[j][times]+=Number(salesPriceArr[i]);
+										}
+									}
+								}
+								
+								times++;
+								lineDate.setMonth((lineDate.getMonth()+1));
+							}
+						}
+						
+						for(var j=0;j<sellerListsize;j++){
+							
+							monthList[times]=formatM(endDate);
+							salesMonth[j][times]=0;
+							
+							for(var i=0;i<salesDateArr.length;i++){	
+								if(salesDateArr[i].substring(0, 7)==formatM(lineDate)){
+									if(salesComArr[i]-1==(j)){
+										salesMonth[j][times]+=Number(salesPriceArr[i]);
+									}
+								}
+							}
+						}
+						
+						//console.log(monthList);
+						//console.log(salesMonth);
+						//여기까지 판매 데이터 
+						
+						for(var j=0;j<sellerListsize;j++){
+							times2=0;
+							startDate2=new Date(FirstSortDate2);
+							endDate2=new Date(LastSortDate2);
+							lineDate2=new Date(FirstSortDate2);
+							expenseMonth2[j]=new Array();
+							
+							while(formatM(lineDate2)!=formatM(endDate2)){
+								monthList2[times2]=formatM(lineDate2);
+								expenseMonth2[times2]=0;
+								console.log(monthList2);
+								for(var i=0;i<expenseDateArr.length;i++){	
+									if(expenseDateArr[i].substring(0, 7)==formatM(lineDate)){
+										if(expenseComArr[i]-1==(j)){
+											expenseMonth2[j][times]+=Number(expensePriceArr[i]);
+										}
+									}
+									
+								}
+								
+								times2++;
+								lineDate2.setMonth((lineDate.getMonth()+1));
+							}
+							
+						}
+						
+						for(var j=0;j<sellerListsize;j++){
+							
+							monthList2[times2]=formatM(endDate2);
+							expenseMonth2[j][times2]=0;
+							
+							for(var i=0;i<expenseDateArr.length;i++){	
+								if(expenseDateArr[i]==format(lineDate2)){
+									if(expenseComArr[i]-1==(j)){
+										expenseMonth2[j][times2]+=Number(expensePriceArr[i]);
+									}
+								}
+							}
+						}
+						
+						console.log(monthList);
+						console.log(salesMonth);
+						
+						console.log(monthList2);
+						console.log(expenseMonth2);
+						
+				    	changeDay=monthList;
+				    	changeDay2=monthList2;
+				    	changeExpensePrice2=expenseMonth2;
+				    	changeSalesPrice=salesMonth;
+				    	
+				    }
+				    
+				    if(selectVal == "yearly"){
+				    	
+				    	times=0;
+						times2=0;
+				    	startDate = new Date(FirstSortDate);
+						endDate = new Date(LastSortDate);
+						lineDate=new Date(FirstSortDate);
+				    	startDate2 = new Date(FirstSortDate2);
+						endDate2 = new Date(LastSortDate2);
+						lineDate2=new Date(FirstSortDate2);
+						
+						
+						for(var j=0;j<sellerListsize;j++){
+							
+							times=0;
+							startDate = new Date(FirstSortDate);
+							endDate = new Date(LastSortDate);
+							lineDate=new Date(FirstSortDate);
+							
+							salesYear[j]=new Array();
+							
+							while(formatY(lineDate2)!=formatY(endDate2)){
+						
+								yearList[times]=formatY(lineDate);
+								salesYear[j][times]=0;
+								
+								for(var i=0;i<salesDateArr.length;i++){	
+									if(salesDateArr[i].substring(0, 4)==formatY(lineDate)){
+										if(salesComArr[i]-1==(j)){
+											salesYear[j][times]+=Number(salesPriceArr[i]);
+										}
+									}
+								}
+								console.log(salesYear[j]);
+								times++;
+								lineDate.setYear((lineDate.getFullYear()+1));
+							}
+						}
+						
+						for(var j=0;j<sellerListsize;j++){
+							yearList[times]=formatY(endDate);
+							salesYear[j][times]=0;
+							
+							for(var i=0;i<salesDateArr.length;i++){	
+								if(salesDateArr[i].substring(0, 4)==formatY(lineDate)){
+									if(salesComArr[i]-1==(j)){
+										salesYear[j][times]+=Number(salesPriceArr[i]);
+									}
+								}
+							}
+						}		
+					
+						//여기까지 판매 
+						
+						for(var j=0;j<sellerListsize;j++){
+							times2=0;
+							startDate2=new Date(FirstSortDate2);
+							endDate2=new Date(LastSortDate2);
+							lineDate2=new Date(FirstSortDate2);
+							expenseYear2[j]=new Array();
+							
+							while(formatY(lineDate2)!=formatY(endDate2)){
+								yearList2[times2]=formatY(lineDate2);
+								expenseYear2[times2]=0;
+								
+								for(var i=0;i<expenseDateArr.length;i++){	
+									if(expenseDateArr[i].substring(0, 7)==formatM(lineDate)){
+										if(expenseComArr[i]-1==(j)){
+											expenseYear2[j][times]+=Number(expensePriceArr[i]);
+										}
+									}
+								}
+								
+								times2++;
+								lineDate2.setYear((lineDate2.getFullYear()+1));
+							}
+						}
+						
+						for(var j=0;j<sellerListsize;j++){
+							
+							yearList2[times2]=formatY(endDate2);
+							expenseYear2[j][times2]=0;
+							
+							for(var i=0;i<expenseDateArr.length;i++){	
+								if(expenseDateArr[i]==format(lineDate2)){
+									if(expenseComArr[i]-1==(j)){
+										expenseYear2[j][times2]+=Number(expensePriceArr[i]);
+									}
+								}
+							}
+						}
+						
+						console.log(yearList);
+						console.log(salesYear);
+				    	
+						console.log(yearList2);
+						console.log(expenseYear2);
+						
+				    	changeDay=yearList;
+				    	changeDay2=yearList2;
+				    	changeSalesPrice=salesYear;
+				    	changeExpensePrice2=expenseYear2;
+				    	
+					}
+				 
+					
+				    var ctx = $("#sales-chart");
+					ctx.height = 150;
+					var myChart=new Chart(ctx, {
+						type : 'line',
+						data : {
+							labels : changeDay,
+							type : 'line',
+							defaultFontFamily : 'Montserrat',
+							datasets :[
+						<%for(int i=0;i<comSize;i++){%>		
+								{
+								label :  comNameArr[<%=i%>]+'점',
+								data : changeSalesPrice[<%=i%>],
+								backgroundColor : 'transparent',
+								borderColor : colorList[<%=i%>],
+								borderWidth : 3,
+								pointStyle : 'circle',
+								pointRadius : 5,
+								pointBorderColor : 'transparent',
+								pointBackgroundColor : colorList[<%=i%>],
+							}, 
+						<%}%>
+							]
+						},
+						options : {
+							responsive : true,
+							tooltips : {
+								mode : 'index',
+								titleFontSize : 12,
+								titleFontColor : '#000',
+								bodyFontColor : '#000',
+								backgroundColor : '#fff',
+								titleFontFamily : 'Montserrat',
+								bodyFontFamily : 'Montserrat',
+								cornerRadius : 3,
+								intersect : false,
+							},
+							legend : {
+								display : false,
+								labels : {
+									usePointStyle : true,
+									fontFamily : 'Montserrat',
+								},
+							},
+							scales : {
+								xAxes : [ {
+									display : true,
+									gridLines : {
+										display : true,
+										drawBorder : true
+									},
+									scaleLabel : {
+										display : true,
+										labelString : 'Date'
+									}
+								} ],
+								yAxes : [ {
+									display : true,
+									gridLines : {
+										display : true,
+										drawBorder : true
+									},
+									scaleLabel : {
+										display : true,
+										labelString : 'price'
+									}
+								} ]
+							},
+							title : {
+								display : false,
+								text : 'Normal Legend'
+							}
+						}
+					});
+					
+					var ctx = $("#line-chart");
+					ctx.height=150;
+					var myChart2=new Chart(ctx, {
+						type : 'line',
+						data : {
+							labels : changeDay2,
+							type : 'line',
+							defaultFontFamily : 'Montserrat',
+							datasets : [ 
+						<%for(int i=0;i<6;i++){%>		
+								{
+								label :  comNameArr[<%=i%>]+'점',
+								data : changeExpensePrice2[<%=i%>],
+								backgroundColor : 'transparent',
+								borderColor : colorList[<%=i%>],
+								borderWidth : 2,
+								pointStyle : 'circle',
+								pointRadius : 3,
+								pointBorderColor : 'transparent',
+								pointBackgroundColor : colorList[<%=i%>],
+							}, 
+						<%}%>
+						]
+						},
+						options : {
+							responsive : true,
+							tooltips : {
+								mode : 'index',
+								titleFontSize : 12,
+								titleFontColor : '#000',
+								bodyFontColor : '#000',
+								backgroundColor : '#fff',
+								titleFontFamily : 'Montserrat',
+								bodyFontFamily : 'Montserrat',
+								cornerRadius : 3,
+								intersect : false,
+							},
+							legend : {
+								display : false,
+								labels : {
+									usePointStyle : true,
+									fontFamily : 'Montserrat',
+								},
+							},
+							scales : {
+								xAxes : [ {
+									display : true,
+									gridLines : {
+										display : true,
+										drawBorder : true
+									},
+									scaleLabel : {
+										display : true,
+										labelString : 'Date'
+									}
+								} ],
+								yAxes : [ {
+									display : true,
+									gridLines : {
+										display : true,
+										drawBorder : true
+									},
+									scaleLabel : {
+										display : true,
+										labelString : 'price'
+									}
+								} ]
+							},
+							title : {
+								display : false,
+								text : 'Normal Legend'
+							}
+						}
+					}); 
 				});
 			}
 		}else{
@@ -667,8 +1041,8 @@ div.modal-body{
 					}
 				}
 		
-				console.log(salesDateArr);
-				console.log(salesPriceArr);
+				//console.log(salesDateArr);
+				//console.log(salesPriceArr);
 		
 				for (var i = 0; i < expenseList.length; i++) {
 					if(expenseList[i][3]==null){
@@ -714,8 +1088,8 @@ div.modal-body{
 					lastDate = LastSortDate2;
 				}
 		
-				console.log(lastDate);
-				console.log(firstDate);
+				//console.log(lastDate);
+				//console.log(firstDate);
 		
 				//x축 List 구하기
 				var dayList = [];
@@ -768,7 +1142,7 @@ div.modal-body{
 					}
 				}
 				
-				console.log(dayList);
+				//console.log(dayList);
 				
 				console.log(expenseList);
 				console.log(salesList);
@@ -858,6 +1232,7 @@ div.modal-body{
 			}
 			
 			$("#timeSelect").change(function(){
+				
 				$("#sales-chart").remove();
 				$("#chartBefore").after("<canvas id='sales-chart'></canvas>");
 				
@@ -1061,7 +1436,6 @@ div.modal-body{
 					}
 				});
 			    
-			
 			});
 		}
 		

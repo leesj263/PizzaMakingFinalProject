@@ -10,7 +10,6 @@
 </style>
 <section>
 	<div class="right-panel">
-		<p>sellerOrderDetail.jsp</p>
 		<div class="card">
 			<div class="card-header col-md-12">
 				<h3 class="menu-title">재료 주문 정보</h3>
@@ -46,6 +45,14 @@
 									</c:choose>
 								</p>
 							</li>
+							
+							<li class="member-li"><span></span></li>
+							<li class="member-li"><span>주문 내역</span></li>
+						</ul> 
+					</div>
+					<div class="col-md-4">
+						<ul class="member-ul">
+							<li class="member-li"><span>주문 일자</span><p>${orderOne.orderMDate }</p></li>
 							<li class="member-li"><span>정산 상태</span>
 								<p>
 									<c:choose>
@@ -54,22 +61,7 @@
 									</c:choose>
 								</p>	
 							</li>
-							<li class="member-li"><span></span></li>
-							<li class="member-li"><span>주문 내역</span></li>
-						</ul> 
-					</div>
-					<div class="col-md-4">
-						<ul class="member-ul">
-							<li class="member-li"><span>주문 일자</span><p>${orderOne.orderMDate }</p></li>
-							<li class="member-li"><span>수령 일자</span><p>컬럼추가할것</p></li>
-							<li class="member-li"><span>정산 일자</span>
-								<p>
-									<c:choose>
-										<c:when test="${orderOne.orderCal=='Y' }">expense에서 가져오기</c:when>
-										<c:otherwise>미정산</c:otherwise>
-									</c:choose>
-								</p>
-							</li>
+							
 							<li class="member-li"><span></span></li>
 						</ul>
 					</div>

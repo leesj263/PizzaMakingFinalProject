@@ -12,7 +12,6 @@
 </style>
 <section>
 	<div class="right-panel">
-		<p>toppingList.jsp</p>
 		<div class="card">
 			<div class="card-header col-md-12">
 				<h3 class="menu-title">토핑 목록</h3>
@@ -46,40 +45,6 @@
 								</th>
 							</tr>
 						</c:forEach>
-						<!-- <tr>
-							<th scope="row">3</th>
-							<td>피망</td>
-							<td>000</td>
-							<td>000</td>
-							<td>000</td>
-							<td>판매중</td>
-							<th>
-								<button class="btn btn-sm btn-outline-warning" onclick="modTopping'">수정</button>
-							</th>
-						</tr>
-						<tr>
-							<th scope="row">2</th>
-							<td>페퍼로니</td>
-							<td>000</td>
-							<td>000</td>
-							<td>000</td>
-							<td>판매중</td>
-							<th>
-								<button class="btn btn-sm btn-outline-warning" onclick="modTopping()">수정</button>
-							</th>						
-						</tr>
-						<tr>
-							<th scope="row">1</th>
-							<td>피망</td>
-							<td>000</td>
-							<td>000</td>
-							<td>000</td>
-							<td>판매중</td>
-							<th>
-								<button class="btn btn-sm btn-outline-warning" onclick="modTopping()">수정</button>
-								
-							</th>						
-						</tr> -->
 					</tbody>
 				</table>
 				<div class="col-md-2"></div>
@@ -135,7 +100,7 @@
 		</ul>
 	</div>
 	<div class="col-md-4">
-		<button class="btn btn-outline-warning" onclick="location.href='admin.ad?admin=sales/menu/addTopping'">토핑 추가</button>
+		<!-- <button class="btn btn-outline-warning" onclick="location.href='admin.ad?admin=sales/menu/addTopping'">토핑 추가</button> -->
 	</div>
 	<div class="modal fade" id="staticModal" tabindex="-1" role="dialog" aria-labelledby="staticModalLabel" aria-hidden="true"data-backdrop="static">
 		<div class="modal-dialog modal-sm" role="document">
@@ -150,27 +115,6 @@
 			</div>
 		</div>
 	</div>
-		<div class="modal fade" id="mediumModal" tabindex="-1" role="dialog"
-			aria-labelledby="mediumModalLabel" aria-hidden="true">
-			<div class="modal-dialog modal-lg" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title" id="mediumModalLabel">토핑 상세보기</h5>
-						<button type="button" class="close" data-dismiss="modal"
-							aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-					<div class="modal-body">
-						<p>토핑 상세 보기</p>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-						<button type="button" class="btn btn-primary">Confirm</button>
-					</div>
-				</div>
-			</div>
-		</div>
 		<script>
 		$(function(){
 			$("#toppingList").find("td").mouseenter(function(){

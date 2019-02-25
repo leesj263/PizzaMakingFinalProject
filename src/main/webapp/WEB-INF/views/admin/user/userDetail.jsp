@@ -11,7 +11,6 @@
 </style>
 <section class="container">
 	<div class="right-panel">
-		<p>userDetail.jsp</p>
 		<div class="card">
 			<div class="card-header col-md-12">
 				<h3 class="menu-title">회원 정보</h3>

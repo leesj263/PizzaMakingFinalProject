@@ -201,6 +201,10 @@ public interface AdminService {
 	//통계 출력용 -- 토핑
 	ArrayList<AdminMSales> selectOrderMStat(int materialCate) throws AdminSelectException;
 
+	//메인 통계 출력용
+	ArrayList<AdminSales> selectTodayStat(AdminSales sales) throws AdminSelectException;
+
+
 
 
 	

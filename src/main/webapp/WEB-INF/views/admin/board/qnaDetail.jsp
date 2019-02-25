@@ -5,13 +5,10 @@
 
 <section>
 	<div class="right-panel">
-	
-		
 		<div class="card">
 			<div class="card-header col-md-12">
 				<h3 class="menu-title">Q&A</h3>
 			</div>
-			
 			<div class="card-body">
 				<div class="row">
 					<div class="col-md-2"></div>

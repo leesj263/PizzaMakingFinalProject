@@ -162,7 +162,7 @@ div.modal-body {
 				var salesList="${salesList}".toString();
 			}else{
 				var salesListsize=1;
-				var salesList="[AdminSales [salesNo=0, comNo=0, comName=null, salesInputDate=2019-02-21, salesDate=2019-02-21, salesCate=1, expenseNo=0, orderNo=0, salesPrice=0]]";
+				var salesList="[AdminSales [salesNo=0, comNo=0, comName=null, salesInputDate=2019-02-28, salesDate=2019-02-28, salesCate=1, expenseNo=0, orderNo=0, salesPrice=0]]";
 			}
 			
 			var sellerListsize="${fn:length(sellerList)}";
@@ -255,7 +255,7 @@ div.modal-body {
 			var lineDate=new Date(FirstSortDate);
 			
 			//console.log(startDate);
-			//console.log(endDate);
+			console.log(endDate);
 			
 			//y축 구하기
 			var salesList=new Array(matListsize);
@@ -290,10 +290,11 @@ div.modal-body {
 				
 					times++;
 					lineDate.setDate((lineDate.getDate()+1));
+					
 				}
 			}
 		
-			for(var j=0;j<sellerListsize;j++){
+			for(var j=0;j<matListsize;j++){
 				dayList[times]=format(endDate);
 				salesList[j][times]=0;
 				
@@ -306,7 +307,7 @@ div.modal-body {
 				}
 			}
 			
-			//console.log(dayList);
+			console.log(dayList);
 			//console.log(salesList);
 			//여기까지 판매 데이터 
 			
@@ -409,36 +410,50 @@ div.modal-body {
 			}
 			
 		    if(selectVal=="monthly"){
-		    	times=0;
-		    	startDate = new Date(FirstSortDate);
-				endDate = new Date(LastSortDate);
-				lineDate=new Date(FirstSortDate);
-				
-				while(formatM(lineDate)!=formatM(endDate)){
-					monthList[times]=formatM(lineDate);
-					salesMonth[times]=0;
+		    	
+		    	for(var j=0;j<matListsize;j++){
 					
-					for(var i=0;i<salesDateArr.length;i++){	
-						if(salesDateArr[i].substring(0, 7)==formatM(lineDate)){
-							salesMonth[times]+=Number(salesPriceArr[i]);
+		    		salesMonth[j]=new Array();
+					
+					startDate = new Date(FirstSortDate);
+					endDate = new Date(LastSortDate);
+					lineDate=new Date(FirstSortDate);
+					times=0;
+					
+					console.log(endDate);
+					console.log(lineDate);
+					
+					while(formatM(lineDate)!=formatM(endDate)){
+						salesMonth[j][times]=0;
+						monthList[times]=formatM(lineDate);
+						
+						for(var i=0;i<salesDateArr.length;i++){	
+							if(salesDateArr[i].substring(0, 7)==formatM(lineDate)){
+								if(salesMatArr[i]==matName[j]){
+									salesMonth[j][times]+=Number(salesPriceArr[i]);
+								}
+							}
 						}
-					}
 					
-					times++;
-					lineDate.setMonth((lineDate.getMonth()+1));
-				}
-				
-				monthList[times]=formatM(endDate);
-				salesMonth[times]=0;
-				
-				for(var i=0;i<salesDateArr.length;i++){	
-					if(salesDateArr[i].substring(0, 7)==formatM(lineDate)){
-						salesMonth[times]+=Number(salesPriceArr[i]);
+						times++;
+						lineDate.setMonth((lineDate.getMonth()+1));
 					}
 				}
 			
-				console.log(monthList);
-				console.log(salesMonth);
+				for(var j=0;j<matListsize;j++){
+					monthList[times]=formatM(endDate);
+					salesMonth[j][times]=0;
+					console.log(endDate);
+					console.log(lineDate);
+					for(var i=0;i<salesDateArr.length;i++){	
+						if(salesDateArr[i].substring(0, 7)==formatM(lineDate)){
+							if(salesMatArr[i]==matName[j]){
+								salesMonth[j][times]+=Number(salesPriceArr[i]);
+								console.log(j +"/"+i);
+							}
+						}
+					}
+				}
 				
 		    	changeDay=monthList;
 		    	changeSalesPrice=salesMonth;
@@ -450,48 +465,65 @@ div.modal-body {
 		    }
 		    
 		    if(selectVal == "yearly"){
-		    	
-		    	times=0;
-		    	startDate = new Date(FirstSortDate);
-				endDate = new Date(LastSortDate);
-				lineDate=new Date(FirstSortDate);
 				
-				console.log(formatY(endDate));
-				
-				while(formatY(lineDate)!=formatY(endDate)){
-					yearList[times]=formatY(lineDate);
-					salesYear[times]=0;
+		    	for(var j=0;j<matListsize;j++){
 					
-					for(var i=0;i<salesDateArr.length;i++){	
-						if(salesDateArr[i].substring(0, 4)==formatY(lineDate)){
-							salesYear[times]+=Number(salesPriceArr[i]);
+		    		salesYear[j]=new Array();
+					
+					startDate = new Date(FirstSortDate);
+					endDate = new Date(LastSortDate);
+					lineDate=new Date(FirstSortDate);
+					times=0;
+					
+					console.log(endDate);
+					console.log(lineDate);
+					
+					while(formatY(lineDate)!=formatY(endDate)){
+						salesYear[j][times]=0;
+						yearList[times]=formatY(lineDate);
+						
+						for(var i=0;i<salesDateArr.length;i++){	
+							if(salesDateArr[i].substring(0, 4)==formatY(lineDate)){
+								if(salesMatArr[i]==matName[j]){
+									salesYear[j][times]+=Number(salesPriceArr[i]);
+								}
+							}
 						}
-					}
 					
-					times++;
-					lineDate.setYear((lineDate.getFullYear()+1));
-				}
-				
-				yearList[times]=formatY(endDate);
-				salesYear[times]=0;
-				
-				for(var i=0;i<salesDateArr.length;i++){	
-					if(salesDateArr[i].substring(0, 4)==formatY(lineDate)){
-						salesYear[times]+=Number(salesPriceArr[i]);
+						times++;
+						lineDate.setYear((lineDate.getFullYear()+1));
 					}
 				}
 			
-				console.log(yearList);
-				console.log(salesYear);
-		    	
+				for(var j=0;j<matListsize;j++){
+					yearList[times]=formatY(endDate);
+					salesYear[j][times]=0;
+					console.log(endDate);
+					console.log(lineDate);
+					for(var i=0;i<salesDateArr.length;i++){	
+						if(salesDateArr[i].substring(0, 4)==formatY(lineDate)){
+							if(salesMatArr[i]==matName[j]){
+								salesYear[j][times]+=Number(salesPriceArr[i]);
+								console.log(j +"/"+i);
+							}
+						}
+					}
+				}
+				
 		    	changeDay=yearList;
 		    	changeSalesPrice=salesYear;
 		    	
+		    	console.log(changeDay);
+				console.log(changeSalesPrice);
+				console.log(colorList);
+				console.log(matName);
+			
 		    }
 		    
 		    
 		    var ctx = $("#sales-chart");
 			ctx.height = 150;
+			console.log("asdfa");
 			var myChart = new Chart(ctx, {
 				type : 'line',
 				data : {
@@ -565,10 +597,9 @@ div.modal-body {
 				}
 			});
 		    
-		
 		});
 		
-	}
+		}
 	})(jQuery);
 </script>
 <jsp:include page="../../common/footer.jsp" />

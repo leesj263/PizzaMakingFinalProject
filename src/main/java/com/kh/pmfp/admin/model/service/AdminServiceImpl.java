@@ -576,9 +576,15 @@ public class AdminServiceImpl implements AdminService {
 	public ArrayList<AdminMSales> selectOrderMStat(int materialCate) throws AdminSelectException {
 		return ad.selectOrderMStat(sqlSession, materialCate);
 	}
-
 	
-
+	//메인 통계 출력용
+	@Override
+	public ArrayList<AdminSales> selectTodayStat(AdminSales sales)  throws AdminSelectException {
+		return ad.selectTodayStat(sqlSession, sales);
+	}
+	
+	
+	
 	
 	
 
