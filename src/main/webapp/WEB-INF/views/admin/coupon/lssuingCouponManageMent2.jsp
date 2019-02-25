@@ -146,6 +146,8 @@
 								<c:if test="${pi.currentPage >1}">
 									<c:url var="btnList" value="${ addr }">
 										<c:param name="currentPage" value="${pi.currentPage-1}" />
+										<c:param name="searchContent" value="${searchContent }"/>
+										<c:param name="searchType" value="${searchType }"/>
 									</c:url>
 									<li class="paginate_button page-item previous"
 										id="bootstrap-data-table_previous"><a href="${btnList }"
@@ -172,6 +174,8 @@
 									<c:if test="${ p ne pi.currentPage }">
 										<c:url var="btnList" value="${ addr }">
 											<c:param name="currentPage" value="${ p }" />
+											<c:param name="searchContent" value="${searchContent }"/>
+											<c:param name="searchType" value="${searchType }"/>
 										</c:url>
 										<li class="paginate_button page-item"><a
 											href="${btnList }" aria-controls="bootstrap-data-table"
@@ -182,6 +186,8 @@
 								<c:if test="${pi.currentPage <pi.maxPage}">
 									<c:url var="btnList" value="${ addr }">
 										<c:param name="currentPage" value="${pi.currentPage+1}" />
+										<c:param name="searchContent" value="${searchContent }"/>
+										<c:param name="searchType" value="${searchType }"/>
 									</c:url>
 									<li class="paginate_button page-item next"
 										id="bootstrap-data-table_next"><a href="${btnList }"

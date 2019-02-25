@@ -62,10 +62,36 @@
 							<div class="col-12 col-md-9">
 								<select name="selectSm" id="SelectLm"
 									class="form-control-sm form-control">
-									<c:forEach var="cList" items="${list }">
-									<option value="${cList.couponNo }">${cList.couponName }</option>
+									
+									
+									 <c:forEach var="cList" items="${list }">
+										<c:if test="${param.couponNo == cList.couponNo }">
+												<option value="${cList.couponNo }" selected>${cList.couponName }</option>
+												
+										</c:if>
+										
+										<c:if test="${param.couponNo != cList.couponNo}">
+											<option value="${cList.couponNo }">${cList.couponName }</option>			
+															
+										
+										</c:if>
+									
+									
 									</c:forEach>
+									
+								<%-- 	<c:forEach var="cList" items="${list }">
+										
+											<option value="${cList.couponNo }">${cList.couponName }</option>								
+										
+									
+									
+									
+									</c:forEach> --%>
+									
+								
+									
 								</select>
+								
 							</div>
 						</div>
 						

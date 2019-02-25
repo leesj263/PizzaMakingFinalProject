@@ -55,17 +55,17 @@ public class AdminCouponServiceImpl implements AdminCouponService{
 	
 	//쿠폰 이름 검색
 	@Override
-	public ArrayList<AdminCoupon> selectListCouponName(AdminCoupon coupon) {
+	public ArrayList<AdminCoupon> selectListCouponName(AdminCoupon coupon,PageInfo pi) {
 		
-		ArrayList<AdminCoupon> searchCouponNameList = cd.selectListCouponName(sqlSession,coupon);
+		ArrayList<AdminCoupon> searchCouponNameList = cd.selectListCouponName(sqlSession,coupon,pi);
 		return searchCouponNameList;
 	}
 
 	//쿠폰 번호 검색
 	@Override
-	public ArrayList<AdminCoupon> selectListCouponCode(AdminCoupon coupon) {
+	public ArrayList<AdminCoupon> selectListCouponCode(AdminCoupon coupon,PageInfo pi) {
 		
-		ArrayList<AdminCoupon> searchCouponCodeList = cd.selectListCouponCode(sqlSession,coupon);
+		ArrayList<AdminCoupon> searchCouponCodeList = cd.selectListCouponCode(sqlSession,coupon,pi);
 		
 		return searchCouponCodeList;
 	}
@@ -95,18 +95,18 @@ public class AdminCouponServiceImpl implements AdminCouponService{
 
 	//발급된 쿠폰 전체 목록 조회
 	@Override
-	public ArrayList<AdminCouponIssue> selectIssuingCouponAllList() {
+	public ArrayList<AdminCouponIssue> selectIssuingCouponAllList(PageInfo pi) {
 		
-		ArrayList<AdminCouponIssue> issuingCouponAllList = cd.selectIssuingCouponAllList(sqlSession);
+		ArrayList<AdminCouponIssue> issuingCouponAllList = cd.selectIssuingCouponAllList(sqlSession,pi);
 		
 		return issuingCouponAllList;
 	}
 
 	//발급쿠폰 검색-번호
 	@Override
-	public ArrayList<AdminCouponIssue2> selectIssuingCouponCode(AdminCouponIssue2 coupon) {
+	public ArrayList<AdminCouponIssue2> selectIssuingCouponCode(AdminCouponIssue2 coupon,PageInfo pi) {
 		
-		ArrayList<AdminCouponIssue2> list = cd.selectIssuingCouponCode(sqlSession,coupon);
+		ArrayList<AdminCouponIssue2> list = cd.selectIssuingCouponCode(sqlSession,coupon,pi);
 		
 		return list;
 	}
@@ -120,9 +120,9 @@ public class AdminCouponServiceImpl implements AdminCouponService{
 	
 	//발급쿠폰 검색 -이름
 	@Override
-	public ArrayList<AdminCouponIssue2> selectIssuingCouponName(AdminCouponIssue2 coupon) {
+	public ArrayList<AdminCouponIssue2> selectIssuingCouponName(AdminCouponIssue2 coupon,PageInfo pi) {
 		
-		ArrayList<AdminCouponIssue2> list = cd.selectIssuingCouponName(sqlSession,coupon);
+		ArrayList<AdminCouponIssue2> list = cd.selectIssuingCouponName(sqlSession,coupon,pi);
 		return list;
 	}
 

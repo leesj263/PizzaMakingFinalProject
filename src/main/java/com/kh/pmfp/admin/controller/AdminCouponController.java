@@ -112,7 +112,7 @@ public class AdminCouponController {
 			System.out.println(issuingCouponCount);
 			System.out.println(pi);
 			
-			issuingCouponAllList=cs.selectIssuingCouponAllList();
+			issuingCouponAllList=cs.selectIssuingCouponAllList(pi);
 			request.setAttribute("issuingCouponAllList", issuingCouponAllList);
 			request.setAttribute("pi", pi);
 			System.out.println(issuingCouponAllList);
@@ -123,20 +123,26 @@ public class AdminCouponController {
 	@RequestMapping("searchTwoCoupon.co")
 	public String searchTwoCoupon(@RequestParam(value="currentPage",required=false,defaultValue="1")int currentPage,HttpServletRequest request,
 						 HttpServletResponse response,@RequestParam String searchType,@RequestParam String searchContent) {
-		//System.out.println(searchType);
-		//System.out.println(searchContent);
+		System.out.println(searchType);
+		System.out.println(searchContent);
+		System.out.println(currentPage);
+		//System.out.println();
 		
 		//searchType,searchContent 를 담아서 arrayList에 담아오기
 		if(searchType.equals("1")) {	//1일때 쿠폰 내용 검색
 			//System.out.println("1 여기루 오닝");
-			ArrayList<AdminCoupon> searchCouponNameList = new ArrayList<>();
 			AdminCoupon coupon = new AdminCoupon();
 			coupon.setCouponName(searchContent);
-			searchCouponNameList = cs.selectListCouponName(coupon);
-			
 			//페이징 숫자 받아오기
 			int couponNameCount = cs.selectcouponNameCount(coupon);
+
 			PageInfo pi = Pagination.getPageInfo(currentPage, couponNameCount);
+			
+			ArrayList<AdminCoupon> searchCouponNameList = new ArrayList<>();
+		
+			searchCouponNameList = cs.selectListCouponName(coupon,pi);
+			
+			
 			
 			//System.out.println(searchCouponNameList);
 			//System.out.println(pi);
@@ -154,10 +160,15 @@ public class AdminCouponController {
 			ArrayList<AdminCoupon> searchCouponCodeList = new ArrayList<>();
 			AdminCoupon coupon = new AdminCoupon();
 			coupon.setCouponNo(Integer.parseInt(searchContent));
-			searchCouponCodeList = cs.selectListCouponCode(coupon);
 			
 			int couponCodeCount = cs.selectCouponCodeCount(coupon);
 			PageInfo pi = Pagination.getPageInfo(currentPage, couponCodeCount);
+			
+			
+			
+			searchCouponCodeList = cs.selectListCouponCode(coupon,pi);
+			
+			
 			
 			request.setAttribute("searchCouponListAll", searchCouponCodeList);
 			request.setAttribute("pi", pi);
@@ -173,7 +184,7 @@ public class AdminCouponController {
 		return "common/errorPage";
 	}
 	
-	//발급쿠폰 검색
+	//발급쿠폰 검색(이름,내용)
 	@RequestMapping("lssuingCouponSearch.co")
 	public String lssuingCouponSearch(@RequestParam(value="currentPage",required=false,defaultValue="1")int currentPage,HttpServletRequest request,
 			 HttpServletResponse response,@RequestParam String searchType,@RequestParam String searchContent) {
@@ -182,10 +193,13 @@ public class AdminCouponController {
 			ArrayList<AdminCouponIssue2> list = new ArrayList<>();
 			AdminCouponIssue2 coupon = new AdminCouponIssue2();
 			coupon.setCouponNo(Integer.parseInt(searchContent));
-			list=cs.selectIssuingCouponCode(coupon);
 			
 			int count = cs.selectlssuingCouponCodeCount(coupon);
 			PageInfo pi = Pagination.getPageInfo(currentPage, count);
+			
+			
+			list=cs.selectIssuingCouponCode(coupon,pi);
+			
 			
 			request.setAttribute("list", list);
 			request.setAttribute("pi", pi);
@@ -199,10 +213,13 @@ public class AdminCouponController {
 			AdminCouponIssue2 coupon = new AdminCouponIssue2();
 			coupon.setCouponName(searchContent);
 			System.out.println(coupon);
-			list=cs.selectIssuingCouponName(coupon);
 			
 			int count = cs.selectlssuingCouponCodeName(coupon);
 			PageInfo pi = Pagination.getPageInfo(currentPage, count);
+			
+			list=cs.selectIssuingCouponName(coupon,pi);
+			
+			
 			
 			request.setAttribute("list", list);
 			request.setAttribute("pi", pi);
@@ -217,17 +234,21 @@ public class AdminCouponController {
 	
 	//쿠폰선택 후 발급버튼
 	@RequestMapping("checkedCouponIssuing.co")
-	public String checkedCouponIssuing(HttpServletRequest request, HttpServletResponse response) {
+	public String checkedCouponIssuing(HttpServletRequest request, HttpServletResponse response,@RequestParam(required=false) String couponNo) {
 		//모든 쿠폰 목록 불러오깅
+		
+		System.out.println(couponNo+"couponNo");
+		
 		ArrayList<AdminCoupon> list = new ArrayList<>();
 		AdminCoupon coupon = new AdminCoupon();
 		
 		list = cs.selectAllCouponList();
 		System.out.println(list);
 		request.setAttribute("list", list);
+		//request.setAttribute("couponNo", couponNo);
 		
 		
-		return "redirect:issuingCouponEnter.co";
+		return "admin/coupon/lssuingCoupon";
 	}
 	
 	//사이드바에서 쿠폰 발급하기 클릭

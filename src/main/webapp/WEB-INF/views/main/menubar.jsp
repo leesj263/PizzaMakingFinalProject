@@ -717,7 +717,12 @@ h1 {
 			nonMemberloginDiv.style="hide";
 			$('#menu').removeClass('visible'); //메뉴바들어가기
 			$("#allClose").hide();				//배경 어두워지는거 풀기
+			
+		
+			
+			
 			return false;
+			
 		} 
 
 		

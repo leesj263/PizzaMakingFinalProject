@@ -25,10 +25,10 @@ public interface AdminCouponDao {
 	int insertCreateCoupon(SqlSessionTemplate sqlSession, AdminCoupon couponCreate);
 
 	//쿠폰 이름 검색하기
-	ArrayList<AdminCoupon> selectListCouponName(SqlSessionTemplate sqlSession, AdminCoupon coupon);
+	ArrayList<AdminCoupon> selectListCouponName(SqlSessionTemplate sqlSession, AdminCoupon coupon,PageInfo pi);
 
 	//쿠폰 번호 검색하기
-	ArrayList<AdminCoupon> selectListCouponCode(SqlSessionTemplate sqlSession, AdminCoupon coupon);
+	ArrayList<AdminCoupon> selectListCouponCode(SqlSessionTemplate sqlSession, AdminCoupon coupon,PageInfo pi);
 
 	//쿠폰 이름 검색 Count
 	int selectcouponNameCount(SqlSessionTemplate sqlSession, AdminCoupon coupon);
@@ -40,16 +40,16 @@ public interface AdminCouponDao {
 	int selectIssuingCouponCount(SqlSessionTemplate sqlSession);
 
 	//발급된 쿠폰 전체 목록 조회
-	ArrayList<AdminCouponIssue> selectIssuingCouponAllList(SqlSessionTemplate sqlSession);
+	ArrayList<AdminCouponIssue> selectIssuingCouponAllList(SqlSessionTemplate sqlSession,PageInfo pi);
 
 	//발급 쿠폰 검색-번호
-	ArrayList<AdminCouponIssue2> selectIssuingCouponCode(SqlSessionTemplate sqlSession, AdminCouponIssue2 coupon);
+	ArrayList<AdminCouponIssue2> selectIssuingCouponCode(SqlSessionTemplate sqlSession, AdminCouponIssue2 coupon,PageInfo pi);
 
 	//발급쿠폰 검색-Count
 	int selectlssuingCouponCodeCount(SqlSessionTemplate sqlSession, AdminCouponIssue2 coupon);
 
 	//발급쿠폰 검색 -이름 
-	ArrayList<AdminCouponIssue2> selectIssuingCouponName(SqlSessionTemplate sqlSession, AdminCouponIssue2 coupon);
+	ArrayList<AdminCouponIssue2> selectIssuingCouponName(SqlSessionTemplate sqlSession, AdminCouponIssue2 coupon,PageInfo pi);
 
 	//발급쿠폰 검색 -이름 Count
 	int selectlssuingCouponCodeName(SqlSessionTemplate sqlSession, AdminCouponIssue2 coupon);
