@@ -95,6 +95,8 @@ public interface CompanyService {
 
 	ArrayList<CompanyOrder> orderDeliveringSocket(int comNo) throws Exception;
 
+	int orderUpdateToCompleteSocket(int comNo) throws FailUpdateOrderStatus;
+
 	//ArrayList<CompanyCalendar> selectMemberCalendar(int memberNo) throws FailSelectCalendar;
 
 

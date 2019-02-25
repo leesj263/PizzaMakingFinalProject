@@ -66,7 +66,7 @@ public class WebSocketChat extends TextWebSocketHandler{
            for(Session session : WebSocketChat.sessionList) {
                if(!self.getId().equals(session.getId())) {
                    session.getBasicRemote().sendText("Message category : "+message.split(",")[0]  + 
-                		   ",Id : "+message.split(",")[1] + ", PW :  "+message.split(",")[2]);
+                		   ",Id : "+message.split(",")[1]);
                }
            }
        }catch (Exception e) {
@@ -78,38 +78,67 @@ public class WebSocketChat extends TextWebSocketHandler{
    public void onMessage(String message,Session session) {
 	   System.out.println("onMessage동작!");
 	   System.out.println("message : " + message);
-	   
+	   ArrayList<CompanyOrder> list = new ArrayList<CompanyOrder>();
+	  
+	   int result=0;
 	   //로그인시 동작할 조건문
-	   if(message.split(",")[0].equals("login")) {
+	   if(message.split(",")[0].equals("find")) {
 		   logger.info("Message category : "+message.split(",")[0]  + 
-	    		   ",Id : "+message.split(",")[1] + ", PW :  "+message.split(",")[2]);
+	    		   ",Id : "+message.split(",")[1]);
 		   //배달목록 리스트 가져오기
-		   ArrayList<CompanyOrder> list = new ArrayList<CompanyOrder>();
+		   
+		   int comNo = Integer.parseInt(message.split(",")[1]);
 			//여기서 못넘어감
 			//CompanyService cs = new CompanyServiceImpl();
-		   	CompanyController cc = new CompanyController();
+		   	//CompanyController cc = new CompanyController();
 			try {
 				//ArrayList<CompanyOrder> list = cc.TestMapping(3);
 				//System.out.println("TestMapping동작 : " + list);
 				CompanyService cs = new CompanyServiceImpl();
-				list = cs.orderDeliveringSocket(3);
+				list = cs.orderDeliveringSocket(comNo);
 				System.out.println("웹소켓으로 조회해온 list : " + list);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			
+			try {
+		    	   //보낸 당사자에게만 반환
+		           final Basic basic=session.getBasicRemote();
+		           basic.sendText("to : "+ list);
+		       }catch (Exception e) {
+		           // TODO: handle exception
+		           System.out.println(e.getMessage());
+		       }
 			
-			
-	   }
+	   }//login If문 종료
       
-       try {
-           final Basic basic=session.getBasicRemote();
-           basic.sendText("to : "+message);
-       }catch (Exception e) {
-           // TODO: handle exception
-           System.out.println(e.getMessage());
-       }
+	   if(message.split(",")[0].equals("change")) {
+		   logger.info("Message category : "+message.split(",")[0]  + 
+	    		   ",Id : "+message.split(",")[1]);
+		   
+		   int orderNo = Integer.parseInt(message.split(",")[1]);
+			try {
+		   CompanyService cs = new CompanyServiceImpl();
+		   result = cs.orderUpdateToCompleteSocket(orderNo);
+			System.out.println("웹소켓으로 갱신된 행 갯수 result : " + result);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		try {
+	    	   //보낸 당사자에게만 반환
+	           final Basic basic=session.getBasicRemote();
+	           basic.sendText("to : "+ result);
+	       }catch (Exception e) {
+	           // TODO: handle exception
+	           System.out.println(e.getMessage());
+	       }
+	   }
+	   
+       
+       //모든 사용자에게 반환
        sendAllSessionToMessage(session, message);
    }
    @OnError
