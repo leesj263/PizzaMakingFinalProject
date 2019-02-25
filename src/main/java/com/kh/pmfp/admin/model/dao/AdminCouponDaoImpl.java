@@ -53,16 +53,22 @@ public class AdminCouponDaoImpl implements AdminCouponDao{
 
 	//쿠폰 이름 검색하기
 	@Override
-	public ArrayList<AdminCoupon> selectListCouponName(SqlSessionTemplate sqlSession, AdminCoupon coupon) {
-	
-		return (ArrayList)sqlSession.selectList("Coupon.selectListCouponName",coupon);
+	public ArrayList<AdminCoupon> selectListCouponName(SqlSessionTemplate sqlSession, AdminCoupon coupon,PageInfo pi) {
+		ArrayList<AdminCoupon> selectListCouponName = null;
+		int offset = (pi.getCurrentPage()-1)*pi.getLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getLimit());
+		selectListCouponName =(ArrayList)sqlSession.selectList("Coupon.selectListCouponName", coupon, rowBounds);
+		return selectListCouponName;
 	}
 
 	//쿠폰 번호 검색하기
 	@Override
-	public ArrayList<AdminCoupon> selectListCouponCode(SqlSessionTemplate sqlSession, AdminCoupon coupon) {
-		
-		return (ArrayList)sqlSession.selectList("Coupon.selectListCouponCode",coupon);
+	public ArrayList<AdminCoupon> selectListCouponCode(SqlSessionTemplate sqlSession, AdminCoupon coupon,PageInfo pi) {
+		ArrayList<AdminCoupon> selectListCouponCode = null;
+		int offset = (pi.getCurrentPage()-1)*pi.getLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getLimit());
+		selectListCouponCode = (ArrayList)sqlSession.selectList("Coupon.selectListCouponCode",coupon,rowBounds);
+		return selectListCouponCode;
 	}
 
 	//쿠폰 이름 검색 Count
@@ -88,16 +94,20 @@ public class AdminCouponDaoImpl implements AdminCouponDao{
 
 	//발급된 쿠폰 전체 목록 조회
 	@Override
-	public ArrayList<AdminCouponIssue> selectIssuingCouponAllList(SqlSessionTemplate sqlSession) {
-		
-		return (ArrayList)sqlSession.selectList("Coupon.selectIssuingCouponAllList");
+	public ArrayList<AdminCouponIssue> selectIssuingCouponAllList(SqlSessionTemplate sqlSession,PageInfo pi) {
+		ArrayList<AdminCouponIssue> selectIssuingCouponAllList = null;
+		int offset = (pi.getCurrentPage()-1)*pi.getLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getLimit());
+		selectIssuingCouponAllList = (ArrayList)sqlSession.selectList("Coupon.selectIssuingCouponAllList",null,rowBounds);
+		return selectIssuingCouponAllList;
 	}
 
 	//발급 쿠폰 번호 검색
 	@Override
-	public ArrayList<AdminCouponIssue2> selectIssuingCouponCode(SqlSessionTemplate sqlSession, AdminCouponIssue2 coupon) {
-
-		return (ArrayList)sqlSession.selectList("Coupon.selectIssuingCouponCode",coupon);
+	public ArrayList<AdminCouponIssue2> selectIssuingCouponCode(SqlSessionTemplate sqlSession, AdminCouponIssue2 coupon,PageInfo pi) {
+		int offset = (pi.getCurrentPage()-1)*pi.getLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getLimit());
+		return (ArrayList)sqlSession.selectList("Coupon.selectIssuingCouponCode",coupon,rowBounds);
 	}
 
 	//발급 쿠폰 번호 Count
@@ -109,10 +119,10 @@ public class AdminCouponDaoImpl implements AdminCouponDao{
 
 	//발급쿠폰 검색 -이름 
 	@Override
-	public ArrayList<AdminCouponIssue2> selectIssuingCouponName(SqlSessionTemplate sqlSession,
-			AdminCouponIssue2 coupon) {
-		
-		return (ArrayList)sqlSession.selectList("Coupon.selectIssuingCouponName",coupon);
+	public ArrayList<AdminCouponIssue2> selectIssuingCouponName(SqlSessionTemplate sqlSession,AdminCouponIssue2 coupon,PageInfo pi) {
+		int offset = (pi.getCurrentPage()-1)*pi.getLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getLimit());
+		return (ArrayList)sqlSession.selectList("Coupon.selectIssuingCouponName",coupon,rowBounds);
 	}
 
 	//발급쿠폰 검색 -이름 Count

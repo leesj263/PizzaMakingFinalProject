@@ -23,10 +23,10 @@ public interface AdminCouponService {
 	int insertCreateCoupon(AdminCoupon couponCreate);
 
 	//쿠폰 이름으로 검색하고 가져오기
-	ArrayList<AdminCoupon> selectListCouponName(AdminCoupon coupon);
+	ArrayList<AdminCoupon> selectListCouponName(AdminCoupon coupon,PageInfo pi);
 
 	//쿠폰 번호로 검색하고 가져오기
-	ArrayList<AdminCoupon> selectListCouponCode(AdminCoupon coupon);
+	ArrayList<AdminCoupon> selectListCouponCode(AdminCoupon coupon,PageInfo pi);
 
 	//쿠폰 이름 검색 Count
 	int selectcouponNameCount(AdminCoupon coupon);
@@ -38,16 +38,16 @@ public interface AdminCouponService {
 	int selectIssuingCouponCount();
 
 	//발급된 쿠폰 전체 목록 조회
-	ArrayList<AdminCouponIssue> selectIssuingCouponAllList();
+	ArrayList<AdminCouponIssue> selectIssuingCouponAllList(PageInfo pi);
 
 	//발급쿠폰 번호 검색
-	ArrayList<AdminCouponIssue2> selectIssuingCouponCode(AdminCouponIssue2 coupon);
+	ArrayList<AdminCouponIssue2> selectIssuingCouponCode(AdminCouponIssue2 coupon,PageInfo pi);
 
 	//발급쿠폰 검색-번호 Count
 	int selectlssuingCouponCodeCount(AdminCouponIssue2 coupon);
 
 	//발급쿠폰 검색-이름 
-	ArrayList<AdminCouponIssue2> selectIssuingCouponName(AdminCouponIssue2 coupon);
+	ArrayList<AdminCouponIssue2> selectIssuingCouponName(AdminCouponIssue2 coupon,PageInfo pi);
 	
 	//발급쿠폰 검색-이름 Count
 	int selectlssuingCouponCodeName(AdminCouponIssue2 coupon);

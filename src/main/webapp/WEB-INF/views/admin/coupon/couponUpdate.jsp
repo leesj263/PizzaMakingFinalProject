@@ -38,7 +38,7 @@
 										할인 금액</strong></label>
 							</div>
 							&nbsp;&nbsp;&nbsp;
-								<input type="text" id="text-input" name="couponPdiscountStr" style="width:425px"
+								<input type="number" id="text-input" name="couponPdiscountStr" style="width:425px"
 									placeholder="" value="${coupon.couponPdiscount }" class="form-control">&nbsp;&nbsp;
 							
 						</div>
@@ -52,7 +52,7 @@
 										할인율</strong></label>
 							</div>
 							&nbsp;&nbsp;&nbsp;
-								<input type="text" id="text-input" name="couponRdiscountStr" style="width:425px"
+								<input type="number" id="text-input" name="couponRdiscountStr" style="width:425px"
 									placeholder="" value="${Math.round(coupon.couponRdiscount *100)}" class="form-control">&nbsp;&nbsp;
 							
 						</div>
@@ -64,7 +64,7 @@
 										결제 금액</strong></label>
 							</div>
 							<div class="col-12 col-md-7">
-								<input type="text" id="text-input" name="couponConditionStr"
+								<input type="number" id="text-input" name="couponConditionStr"
 									placeholder="" class="form-control" value="${coupon.couponCondition }"><small
 									class="form-text text-muted" >원 이상 주문시 사용 가능</small>
 							</div>

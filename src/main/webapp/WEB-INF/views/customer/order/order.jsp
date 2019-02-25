@@ -639,7 +639,7 @@ div.radio label:hover {
 							var $td1 = $("<td>").text(data[i].couponName);
 							var $td2;
 							if(data[i].couponCateg == 0){
-								$td2 = $("<td>").text(data[i].couponRdiscount*100 + " %");
+								$td2 = $("<td>").text(Math.round(data[i].couponRdiscount*100) + " %");
 							} else {
 								$td2 = $("<td>").text(data[i].couponPdiscount + "원 ");
 							}
