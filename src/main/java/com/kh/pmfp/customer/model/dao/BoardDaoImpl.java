@@ -12,6 +12,7 @@ import com.kh.pmfp.admin.model.vo.AdminBoard;
 import com.kh.pmfp.common.model.vo.PageInfo;
 import com.kh.pmfp.customer.model.exception.BoardException;
 import com.kh.pmfp.customer.model.vo.Board;
+import com.kh.pmfp.customer.model.vo.Image;
 
 @Repository
 public class BoardDaoImpl implements BoardDao {
@@ -196,11 +197,12 @@ public class BoardDaoImpl implements BoardDao {
 	}
 //v파일등록
 	@Override
-	public int insertFile(SqlSessionTemplate sqlSession, Board review) throws BoardException {
+	public int insertFile(SqlSessionTemplate sqlSession, Image image) throws BoardException {
 		int result=0;
-		 result = sqlSession.insert("Board.insertreview",review);
+		
+		 result = sqlSession.insert("Board.insertFile",image);
 		if(result<=0) {
-			throw new BoardException("review작성실패");
+			throw new BoardException("review첨부파일 작성실패");
 		}
 		return result;
 	}

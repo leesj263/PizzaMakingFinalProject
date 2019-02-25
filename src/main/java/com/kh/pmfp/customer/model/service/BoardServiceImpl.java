@@ -11,6 +11,7 @@ import com.kh.pmfp.common.model.vo.PageInfo;
 import com.kh.pmfp.customer.model.dao.BoardDao;
 import com.kh.pmfp.customer.model.exception.BoardException;
 import com.kh.pmfp.customer.model.vo.Board;
+import com.kh.pmfp.customer.model.vo.Image;
 
 @Service
 public class BoardServiceImpl implements BoardService {
@@ -71,14 +72,18 @@ public class BoardServiceImpl implements BoardService {
 
 	// review작성
 	@Override
-	public int insertReview(Board review) throws BoardException {
+	public int insertReview(Board review,Image image) throws BoardException {
 		int result = -1;
 		int result1 = bd.insertReview(sqlSession, review);
 		int result2 = -1;
 		if (result1 > 0) {
-			result2 = bd.insertFile(sqlSession, review);
-
+			result2 = bd.insertFile(sqlSession, image);
+				
 		}
+		if(result1>0&&result2>0) {
+			result=1;
+		}
+			
 		return result;
 	}
 
@@ -152,11 +157,15 @@ public class BoardServiceImpl implements BoardService {
 		int result = bd.reviewUpdateC(sqlSession, review);
 		return result;
 	}
-
+//리뷰삭제
 	@Override
 	public int deleteReview(int boardNo) throws BoardException {
 		int result = bd.deleteReview(sqlSession, boardNo);
 		return result;
 	}
+
+	
+
+
 
 }

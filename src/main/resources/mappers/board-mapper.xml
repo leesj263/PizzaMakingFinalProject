@@ -42,12 +42,12 @@
 		INSERT INTO BOARD VALUES (SEQ_BONO.NEXTVAL, 3, #{boardCateg}, #{boardTitle},
 		#{boardContent}, DEFAULT, #{memberNo}, SYSDATE, 1, NULL, DEFAULT, 'N', NULL) 
 	</insert>
-		<!-- qna 수정 -->
+		<!-- qna 수정등록 -->
 	 <update id="qnaUpdateC" parameterType="Board">
-		 UPDATE BOARD SET BOARD_CATEG=#{boardCateg}BOARD_TITLE=#{boardContent},BOARD_CONTENT=#{boardContent}
+		 UPDATE BOARD SET BOARD_CATEG=#{boardCateg},BOARD_TITLE=#{boardContent},BOARD_CONTENT=#{boardContent}
 		WHERE BOARD_NO=#{boardNo}
 	</update>  
-	
+	<!-- qna수정 -->
 	<select id="updateqna2" resultMap="boardResultSet" parameterType="Board">
 		SELECT B.*, M.MEMBER_NAME, M.MEMBER_NICKNAME, ROWNUM  
 		FROM BOARD B 
@@ -112,8 +112,45 @@
 	</select>
 	<!-- review작성 -->
 	<insert id="insertreview" parameterType="Board">
-		INSERT INTO BOARD VALUES (SEQ_BONO.NEXTVAL,1,NULL, #{boardTitle},#{boardContent},DEFAULT,#{memberNo},SYSDATE,1,NULL,DEFAULT,DEFAULT,NULL)
+		INSERT INTO BOARD VALUES (SEQ_BONO.NEXTVAL,1,NULL, #{boardTitle},#{boardContent},DEFAULT,#{memberNo},SYSDATE,1
+		,NULL,DEFAULT,DEFAULT,NULL)
 	</insert>
+	<!--  리뷰파일-->
+	<insert id="insertFile" parameterType="Image">
+	INSERT INTO IMAGE VALUES (SEQ_IMGNO.NEXTVAL, 1,#{imgOriginname},#{imgChangename},#{imgFilepath},SYSDATE,DEFUALT,SEQ_BONO.CURRVAL,NULL,NULL,NULL,NULL)
+	
+	
+	</insert>
+	
+	
+	
+	<!-- review 수정등록 -->
+	 <update id="reviewUpdateC" parameterType="Board">
+		 UPDATE BOARD SET BOARD_TITLE=#{boardContent},BOARD_CONTENT=#{boardContent},
+		 
+		WHERE BOARD_NO=#{boardNo}
+	</update>  
+	<!-- review수정 -->
+	<select id="updateReview" resultMap="boardResultSet" parameterType="Board">
+		SELECT B.*, M.MEMBER_NAME, M.MEMBER_NICKNAME, ROWNUM  
+		FROM BOARD B 
+		JOIN MEMBER M ON (B.MEMBER_NO=M.MEMBER_NO) 
+		WHERE B.BOARD_NO=#{boardNo} AND B.BOARD_STATUS='Y'
+	</select>
+	<!-- review삭제 -->
+	 <update id="deleteReview"  parameterType="_int">
+	UPDATE BOARD SET BOARD_STATUS='N' WHERE BOARD_NO=#{boardNo}
+	</update>  
+	
+	<!-- review상세보기 -->
+	<select id="selectReview" resultMap="boardResultSet" parameterType="_int">
+		SELECT B.*, M.MEMBER_NAME, M.MEMBER_NICKNAME, ROWNUM  
+		FROM BOARD B 
+		JOIN MEMBER M ON (B.MEMBER_NO=M.MEMBER_NO) 
+		WHERE B.BOARD_NO=#{boardNo} AND B.BOARD_STATUS='Y'
+	</select>
+	
+	
 	
 
 </mapper>

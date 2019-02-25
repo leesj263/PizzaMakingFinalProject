@@ -50,7 +50,7 @@
 					<tr>
 						<td><b>내용</b></td>
 						<td>
-							<textarea name="qnaContent" id="qnaContents" cols="100" rows="25" style="resize:none;">${notice.boardContent}</textarea>
+							<textarea name="qnaContent" id="qnaContents" cols="100" rows="25" style="resize:none;">${qna.boardContent}</textarea>
 						</td>
 					</tr>
 					<!-- <tr>

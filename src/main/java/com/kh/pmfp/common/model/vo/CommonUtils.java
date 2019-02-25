@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 public class CommonUtils {
 	 public static List sortByValue(final Map map){
@@ -24,5 +25,8 @@ public class CommonUtils {
 	       // Collections.reverse(list); // 주석시 오름차순
 	        return list;
 	    }
+	 public static String getRandomString() {
+		 return UUID.randomUUID().toString().replaceAll("-", "");
+	 }
 
 }
