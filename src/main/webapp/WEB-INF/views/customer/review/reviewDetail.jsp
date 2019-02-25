@@ -50,15 +50,29 @@
              
             
    	<hr>
-     <div class="form-group">
+   	<!-- 댓글 란 -->
+     <div class="form-group" id="replySelectTable">
 			  
 			
-			<!-- 댓글 란 -->
+			
+			  <table id="replySelectTable" width="100%" border="0" cellpadding="0" cellspacing="0">
+         <c:forEach var="r" items="${ reply }">
+         
+         <tbody>
+         <tr>
+             <td  width="25%">${ r.memberNickname }</td>
+            <td   colspan="2">${ r.boardContent }　　　　　　　　　</td>
+           
+         </tr>
+         </c:forEach>
+         </table>
+         </div>
+        
 			  
             	  
 			
-				<form id="reviewAnswerWrite" action="reviewAnswerWrite.bo" method="post" style="border:solid 1px red;" >
-					
+				<!-- <form id="reviewAnswerWrite" action="reviewAnswerWrite.bo" method="post" style="border:solid 1px red;" > -->
+					<div id="">
 					<input type="hidden" name="boardRefNo" value="${review.boardNo }">
 					<input type="hidden" name="boardRefNo" value="${review.boardNo }">
 					<input type="hidden" name="boardRefNo" value="${review.boardNo }">
@@ -69,13 +83,13 @@
 			<div class="row">
 				
 					
-						<button class="ui yellow button" type="submit" onclick="reviewAnswerWrite();">등록</button>
+						<button class="ui yellow button"  onclick="return reviewAnswerWrite();">등록</button>
 					
 				<div class="col-md-2"></div>
 			</div>
 			
-			</form>
-			
+		<!-- 	</form> -->
+			</div>
 		
 		
 	
@@ -93,20 +107,42 @@
 	<br>
 	<script>
 		
-		function reviewUpdate() {
-			var num=$("input[name='boardNo']").val();
-			console.log(num);
-			location.href="reviewUpdate.bo?num="+num;
-		}
-		function reviewDelete(){
-			var num=$("input[name='boardNo']").val();
-			console.log(num);
-			location.href="reviewDelete.bo?num="+num;
-		} 
-		function reviewAnswerWrite(){
-			
-		}
-		</script>
+	function reviewAnswerWrite(){
+	      
+	      var writer = ${ loginUser.memberNo }
+	      var content = $("#reviewAnswerWrite").val();
+	      var boardNo =${ review.boardNo };
+	      
+	      console.log(writer);
+	      console.log(content); 
+	      console.log(boardNo);
+	      
+	      $.ajax({
+	          url:"bringreviewAnswer.bo",
+	          data:{ writer:writer, content:content, boardNo:boardNo},
+	          type:"post",
+	          success:function(data){
+	             console.log(data);
+	             
+	             var $replySelectTable = $("#replySelectTable");
+	             $replySelectTable.html('');
+	             
+	             
+	                
+	                $("#reviewAnswerWrite").val("");
+	                window.location.reload();
+
+	              
+	             
+	          },
+	          error:function(){
+	             console.log("실패");
+	          }
+	       });
+
+	      
+	   }
+</script>
 </body>
 </html>
 

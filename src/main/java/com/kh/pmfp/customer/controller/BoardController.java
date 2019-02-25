@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonIOException;
 import com.kh.pmfp.admin.model.exception.AdminInsertException;
 import com.kh.pmfp.admin.model.vo.AdminBoard;
 import com.kh.pmfp.common.model.vo.CommonUtils;
@@ -80,6 +82,36 @@ public class BoardController {
 		}
 	}
 	//review작성
+	@RequestMapping(value="bringreviewAnswer.bo", method=RequestMethod.POST)
+	public void reviewAnswerWrite(/*@ModelAttribute*/  HttpServletRequest request, HttpServletResponse response
+			)throws JsonIOException, IOException {
+		int writer =Integer.parseInt(request.getParameter("writer")); 
+		int boardNo = Integer.parseInt(request.getParameter("boardNo"));
+		String content = request.getParameter("content");
+		
+				System.out.println("컨트롤러"+writer);
+				System.out.println("컨트롤러bno"+boardNo);
+				System.out.println("댓글내용"+content);
+				
+				Board review = new Board();
+				review.setMemberNo(writer);
+				review.setBoardRefNo(boardNo);
+				review.setBoardContent(content);
+				
+				
+				ArrayList<Board> replyList;
+				try {
+					replyList = bs.insertReply(review);
+					response.setContentType("application/json");
+					new Gson().toJson(replyList,response.getWriter());
+					
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				
+				
+				
+	}
 	@RequestMapping("reviewWrite.bo")
 	public String reviewWrite(@ModelAttribute Board review, HttpServletRequest request, HttpServletResponse response, 
 			@RequestParam (value="boardFile", required=false) MultipartFile boardFile) {
@@ -126,7 +158,10 @@ public class BoardController {
 		} 
 		
 		
+		
 	}
+	//댓글 작성
+	
 	/*//이미지 파일 생성
 		@RequestMapping(value="/reviewImgUpload.bo")
 		public @ResponseBody String reviewImgUpload(HttpServletRequest request,
@@ -325,11 +360,15 @@ public class BoardController {
 
 			try {
 				review = bs.selectReview(num);
-				answer = bs.selectAnswer(num);
+				
+				//댓글 목록 불러오기
+				ArrayList<Board> reply = bs.selectReviewReply(num);
+				
 
 				request.setAttribute("review", review);
-				request.setAttribute("answer", answer);
+				request.setAttribute("reply", reply);
 				return "customer/review/reviewDetail";
+				
 			} catch (BoardException e) {
 				request.setAttribute("msg", e.getMessage());
 				return "common/errorPage";
@@ -357,6 +396,8 @@ public class BoardController {
 
 			return "redirect:reviewList.bo";
 		}
+		//댓글 작성
+		
 		
 	
 

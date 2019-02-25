@@ -206,4 +206,25 @@ public class BoardDaoImpl implements BoardDao {
 		}
 		return result;
 	}
+
+	@Override
+	public int insertReply(SqlSessionTemplate sqlSession, Board review) throws BoardException {
+		int result=0;
+		 result = sqlSession.insert("Board.insertReply",review);
+		if(result<=0) {
+			throw new BoardException("review작성실패");
+		}
+		return result;
+	}
+		@Override
+		public ArrayList<Board> selectReviewAnswerList(SqlSessionTemplate sqlSession, int boardNo){
+			
+			return (ArrayList)sqlSession.selectList("Board.selectReviewAnswerList",boardNo);
+		}
+		//댓글 목록
+		@Override
+		public ArrayList<Board> selectReviewReply(SqlSessionTemplate sqlSession, int num) {
+
+			return (ArrayList)sqlSession.selectList("Board.selectReviewReplyList", num);
+		}
 }
