@@ -164,6 +164,22 @@ public class BoardServiceImpl implements BoardService {
 		return result;
 	}
 
+	@Override
+	public ArrayList<Board> insertReply(Board review) throws BoardException {
+		ArrayList<Board> replyList=null;
+		int result= bd.insertReply(sqlSession,review);
+			if(result>0) {
+				replyList = bd.selectReviewAnswerList(sqlSession, review.getBoardNo());
+			}
+		return replyList;
+	}
+	//댓글 목록 불러오기
+	@Override
+	public ArrayList<Board> selectReviewReply(int num) {
+
+		return bd.selectReviewReply(sqlSession, num);
+	}
+
 	
 
 

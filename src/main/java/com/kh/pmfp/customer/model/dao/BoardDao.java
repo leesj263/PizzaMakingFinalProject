@@ -70,5 +70,15 @@ public interface BoardDao {
 	int insertFile(SqlSessionTemplate sqlSession, Image image) throws BoardException;
 
 	
+	//리플등록
+	int insertReply(SqlSessionTemplate sqlSession, Board review) throws BoardException;
+
+	
+//리플목록조회
+	ArrayList<Board> selectReviewAnswerList(SqlSessionTemplate sqlSession, int boardNo);
+	//댓글 목록
+	ArrayList<Board> selectReviewReply(SqlSessionTemplate sqlSession, int num);
+
+	
 
 }

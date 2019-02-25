@@ -57,6 +57,10 @@ public interface BoardService {
 	// review 삭제
 	int deleteReview(int boardNo) throws BoardException;
 
+	ArrayList<Board> insertReply(Board review) throws BoardException;
+	//댓글 불러오기
+	ArrayList<Board> selectReviewReply(int num);
+
 	
 
 }

@@ -152,6 +152,24 @@
 	
 	
 	
+	<!-- 후기댓글 작성-->
+	<insert id="insertReply" parameterType="Board">
+		INSERT INTO BOARD VALUES(SEQ_BONO.NEXTVAL,1,NULL, ' ',#{boardContent},DEFAULT,#{memberNo},SYSDATE,2
+		,#{boardRefNo},DEFAULT,DEFAULT,NULL)
+	</insert> 
+	<select id="selectReviewAnswerList" resultMap="boardResultSet" parameterType="_int">
+	SELECT * FROM BOARD B
+	INNER JOIN MEMBER M ON(B.MEMBER_NO=M.MEMBER_NO)
+	WHERE B.BOARD_REFNO= #{boardRefNo} AND B.BOARD_TYPE=1
+	</select>
+	
+	<!-- 댓글 목록 조회 -->
+	<select id="selectReviewReplyList" resultMap="boardResultSet" parameterType="_int">
+		SELECT B.*, M.MEMBER_NAME, M.MEMBER_NICKNAME FROM BOARD B
+		JOIN MEMBER M ON(B.MEMBER_NO=M.MEMBER_NO)
+		WHERE B.BOARD_REFNO= #{boardRefNo} AND B.BOARD_TYPE=1
+		
+	</select>
 
 </mapper>
 
