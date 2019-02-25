@@ -52,14 +52,20 @@
 				<br>
 				<div align="center">
 					
-					<button class="ui yellow button">등록하기</button>
-					<button class="ui grey button">취소하기</button>
+					<button class="ui yellow button"type="submit">등록하기</button>
+					<button class="ui grey button" type="button" onclick="location.href='reviewList.bo'">취소하기</button>
 				</div>
 			</form>
 		</div>
 		
 	</div>
-	
-
+	<script>
+		
+		
+		function reviewWrite(){
+			
+		}
+		
+	</script>
 </body>
 </html>

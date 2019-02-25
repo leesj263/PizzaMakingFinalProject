@@ -7,6 +7,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import com.kh.pmfp.common.model.vo.PageInfo;
 import com.kh.pmfp.customer.model.exception.BoardException;
 import com.kh.pmfp.customer.model.vo.Board;
+import com.kh.pmfp.customer.model.vo.Image;
 
 public interface BoardDao {
 	// faq불러오기
@@ -66,6 +67,8 @@ public interface BoardDao {
 	
 	
 	//file등록
-	int insertFile(SqlSessionTemplate sqlSession, Board review);
+	int insertFile(SqlSessionTemplate sqlSession, Image image) throws BoardException;
+
+	
 
 }

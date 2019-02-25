@@ -18,15 +18,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.pmfp.admin.model.exception.AdminInsertException;
 import com.kh.pmfp.admin.model.vo.AdminBoard;
+import com.kh.pmfp.common.model.vo.CommonUtils;
 import com.kh.pmfp.common.model.vo.Member;
 import com.kh.pmfp.common.model.vo.PageInfo;
 import com.kh.pmfp.common.model.vo.Pagination;
 import com.kh.pmfp.customer.model.exception.BoardException;
 import com.kh.pmfp.customer.model.service.BoardService;
 import com.kh.pmfp.customer.model.vo.Board;
+import com.kh.pmfp.customer.model.vo.Image;
 
 @Controller
 public class BoardController {
@@ -78,25 +81,53 @@ public class BoardController {
 	}
 	//review작성
 	@RequestMapping("reviewWrite.bo")
-	public String reviewWrite(@ModelAttribute Board review, HttpServletRequest request, HttpServletResponse response) {
-		System.out.println(review);
-		
-	
+	public String reviewWrite(@ModelAttribute Board review, HttpServletRequest request, HttpServletResponse response, 
+			@RequestParam (value="boardFile", required=false) MultipartFile boardFile) {
 		HttpSession session = request.getSession();
+		
 		Member loginUser = (Member) session.getAttribute("loginUser");
+		
 		review.setMemberNo(loginUser.getMemberNo());
-		try {
-			int result = bs.insertReview(review);
-			System.out.println("작성한 review 개수: " + result);
+		
 
-			return "redirect:reviewList.bo";
-		} catch (BoardException e) {
+		/*System.out.println(board);*/
+		
+		
+		String root = request.getSession().getServletContext().getRealPath("resources");
+		
+		String filePath = root + "\\customer\\images\\review";
+	
+		String originFileName= boardFile.getOriginalFilename();
+		
+		String ext = originFileName.substring(originFileName.lastIndexOf("."));
+		String changeName= CommonUtils.getRandomString();
+		
+		Image image= new Image();
+		image.setImgOriginname(originFileName);
+		image.setImgFilepath(filePath);
+		image.setImgChangename(changeName);
+		System.out.println(image);
+		
+		try {
+			boardFile.transferTo(new File(filePath+"\\"+changeName+ext));
+			int result = bs.insertReview(review, image);
+				if(result>0) {
+					return "redirect:reviewList.bo";
+				}else {
+					new File(filePath+"\\"+changeName+ext).delete();	
+					return "common/errorPage";
+				}
+			
+		} catch (Exception e) {
+			new File(filePath+"\\"+changeName+ext).delete();
 			request.setAttribute("msg", e.getMessage());
 
 			return "common/errorPage";
-		}
+		} 
+		
+		
 	}
-	//이미지 파일 생성
+	/*//이미지 파일 생성
 		@RequestMapping(value="/reviewImgUpload.bo")
 		public @ResponseBody String reviewImgUpload(HttpServletRequest request,
 				@RequestParam String img) {
@@ -131,7 +162,7 @@ public class BoardController {
 			}
 			
 			return "complete";
-		}
+		}*/
 	// qna수정
 	@RequestMapping("qnaUpdate.bo")
 	public String qnaUpdate(@ModelAttribute Board qna, HttpServletRequest request, HttpServletResponse response,
@@ -317,7 +348,7 @@ public class BoardController {
 		return "redirect:qnaList.bo";
 
 	}
-	// qna 삭제용
+	//리뷰 삭제용
 		@RequestMapping(value = "reviewDelete.bo", method = RequestMethod.GET)
 		public String reviewDelete(@RequestParam int num, HttpServletRequest request, HttpServletResponse response)
 				throws BoardException {

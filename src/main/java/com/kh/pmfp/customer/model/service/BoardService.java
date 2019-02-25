@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.kh.pmfp.common.model.vo.PageInfo;
 import com.kh.pmfp.customer.model.exception.BoardException;
 import com.kh.pmfp.customer.model.vo.Board;
+import com.kh.pmfp.customer.model.vo.Image;
 
 public interface BoardService {
 
@@ -42,7 +43,7 @@ public interface BoardService {
 	ArrayList<Board> selectReviewList(PageInfo pi) throws BoardException;
 
 	// review작성하기
-	int insertReview(Board review) throws BoardException;
+	int insertReview(Board review, Image image) throws BoardException;
 
 	// review상세보기
 	Board selectReview(int num) throws BoardException;
@@ -55,5 +56,7 @@ public interface BoardService {
 
 	// review 삭제
 	int deleteReview(int boardNo) throws BoardException;
+
+	
 
 }
