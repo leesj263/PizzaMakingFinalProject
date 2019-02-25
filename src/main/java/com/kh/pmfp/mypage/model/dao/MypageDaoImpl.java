@@ -13,6 +13,7 @@ import com.kh.pmfp.customer.model.vo.MyPizza;
 import com.kh.pmfp.mypage.model.exception.MypageCountException;
 import com.kh.pmfp.mypage.model.exception.MypageInsertException;
 import com.kh.pmfp.mypage.model.exception.MypageListException;
+import com.kh.pmfp.mypage.model.exception.MypageUpdateException;
 import com.kh.pmfp.mypage.model.vo.Coupon;
 import com.kh.pmfp.mypage.model.vo.DelList;
 import com.kh.pmfp.mypage.model.vo.Location;
@@ -196,6 +197,18 @@ public class MypageDaoImpl implements MypageDao{
 		System.out.println("hamp : " + hmap);
 		
 		return hmap;
+	}
+	
+	//내피자 삭제
+	@Override
+	public int deleteMymenu(SqlSessionTemplate sqlSession, int mypizzaNo) throws MypageUpdateException {
+		return sqlSession.update("Mypage.deleteMymenu", mypizzaNo);
+	}
+
+	//배송지 삭제
+	@Override
+	public void deleteDelDelivery(SqlSessionTemplate sqlSession, String string) throws MypageUpdateException{
+		sqlSession.update("Mypage.deleteDelivery", string);
 	}
 	
 

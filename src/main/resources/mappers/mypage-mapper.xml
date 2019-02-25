@@ -162,21 +162,21 @@
 	<select id="selectMyWritingList" resultMap="mypageMyWritingResultSet" parameterType="_int">
 		select board_no, board_title, board_answer, board_date, board_type
 		from board
-		where board_type='3' and member_no=#{memberNo}
+		where board_type='3' and member_no=#{memberNo} and board_status='Y'
 		order by board_no
 	</select>
 	
 	<select id="selectMyWritingReviewList" resultMap="mypageMyWritingResultSet" parameterType="_int">
 		select board_no, board_title, board_answer, board_date, board_type
 		from board
-		where board_type='0' and member_no=#{memberNo}
+		where board_type='0' and member_no=#{memberNo} and board_status='Y'
 		order by board_no
 	</select>
 	
 	<select id="selectMyWritingShareList" resultMap="mypageMyWritingResultSet2" parameterType="_int">
 		select board_no, board_title, board_date, board_type
 		from board
-		where board_type='1' and member_no=#{memberNo}
+		where board_type='1' and member_no=#{memberNo} and board_status='Y'
 		order by board_no
 	</select>
 	
@@ -184,7 +184,7 @@
 		select count(*) 
 		from board 
 		where member_no=#{memberNo} 
-		and board_type=#{boardType}
+		and board_type=#{boardType} and board_status='Y'
 	</select>
 	
 	<select id="selectComLoc" resultMap="mypageLocResultSet">
@@ -202,7 +202,7 @@
 		from my_pizza mp 
 		join image img 
 		on img.mypizza_no = mp.mypizza_no
-		where mp.member_no=#{memberNo} and img.img_categ=3 and img.img_status='Y'
+		where mp.member_no=#{memberNo} and img.img_categ=3 and img.img_status='Y' and mp.mypizza_status='Y'
 		order by mp.mypizza_no
 	</select>
 	
@@ -250,7 +250,7 @@
 	</select>
 	
 	<select id="selectMypizzaCount" parameterType="_int" resultType="_int">
-		select count(*) from my_pizza where member_no=#{memberNo} order by mypizza_no
+		select count(*) from my_pizza where member_no=#{memberNo} and mypizza_status='Y' order by mypizza_no
 	</select>
 	
 	<select id="selectMypizzaPopup" parameterType="_int" resultMap="mypageMypizzaPopupResultSet">
@@ -262,6 +262,12 @@
 		where m.mypizza_no=#{mypizzaNo}
 	</select>
 	
+	<update id="deleteMymenu" parameterType="_int">
+		update my_pizza set mypizza_status='N' where mypizza_no=#{mypizzaNo}
+	</update>
 	
+	<update id="deleteDelivery" parameterType="String">
+		update delivery set delivery_status='N' where delivery_no=#{string}
+	</update>
 	
 </mapper>

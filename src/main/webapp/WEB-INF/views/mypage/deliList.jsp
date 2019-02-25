@@ -15,7 +15,7 @@
 	
 	<div style="float: left; width:80%; padding:20px; margin-top: 50px;" align="center">
 		
-		<table class="ui celled table">
+		<table class="ui celled table" id="deliveryTable">
 		  <thead>
 		    <tr>
 			    <th><input type="checkbox" id="chkTop"></th>
@@ -28,8 +28,8 @@
 		    	<tr>
 		    		
 		    		<td>
-		    			<input type="hidden" value="${ d.delNo }" name="delNo">
-		    			<input type="checkbox" name="chk">
+		    			<%-- <input type="hidden" value="${ d.delNo }" name="delNo"> --%>
+		    			<input type="checkbox" name="chk" value="${d.delNo }">
 		    		</td>
 		    		<td>${ d.delName }</td>
 		    		<td>${ d.delAddr }</td>
@@ -41,7 +41,7 @@
 		
 		<button class="ui yellow button" id="pop">추가</button>
 		<!-- <button class="ui yellow basic button">수정</button> -->
-		<button class="ui yellow basic button" onclick="deleteOne()">삭제</button>
+		<button class="ui yellow basic button" onclick="deleteDel()">삭제</button>
 	</div>
 	
 	<script>
@@ -61,8 +61,14 @@
 		var posT=( screenH-popH ) / 2;   // 띄울창의 세로 포지션 
 	
 		$("#pop").click(function(){
-			 window.open('myPageDelPopup.mp','',',width='+ popW +',height='+ popH +',top='+ posT +',left='+ posL +',resizable=no,scrollbars=no');
-		
+			
+			console.log($("#deliveryTable tr").length-1);
+			
+			if($("#deliveryTable tr").length-1 < 5){
+			 window.open('myPageDelPopup.mp','',',width='+ popW +',height='+ popH +',top='+ posT +',left='+ posL +',resizable=no,scrollbars=no');				
+			}else if($("#deliveryTable tr").length-1 >= 5){
+				alert("배달지는 최대 5개까지 등록이 가능합니다.");
+			}
 		});
 		
 		
@@ -98,12 +104,15 @@
 			
 		});	
 		
-		function deleteOne(){
-			//var delNoList = $("input[name=chk]:checked").parent().children().eq(0).val();
-			var delNoList = $("input[name=chk]:checked").parents()
+		function deleteDel(){
+			var delDel="";
+			$("input[name=chk]:checked").each(function(index, item){
+				delDel += item.value + "/";
+			});
 			
-			console.log(delNoList);
+			console.log(delDel);
 			
+			location.href="delDelivery.mp?DeleteList="+delDel;		
 		}
 			
 	</script>

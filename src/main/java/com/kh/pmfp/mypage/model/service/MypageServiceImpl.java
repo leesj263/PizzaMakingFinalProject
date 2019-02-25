@@ -14,6 +14,7 @@ import com.kh.pmfp.mypage.model.dao.MypageDao;
 import com.kh.pmfp.mypage.model.exception.MypageCountException;
 import com.kh.pmfp.mypage.model.exception.MypageInsertException;
 import com.kh.pmfp.mypage.model.exception.MypageListException;
+import com.kh.pmfp.mypage.model.exception.MypageUpdateException;
 import com.kh.pmfp.mypage.model.vo.Coupon;
 import com.kh.pmfp.mypage.model.vo.DelList;
 import com.kh.pmfp.mypage.model.vo.Location;
@@ -140,6 +141,18 @@ public class MypageServiceImpl implements MypageService{
 	@Override
 	public HashMap<Integer, MypizzaPopup> selectMypizzaPopup(int mypizzaNo) throws MypageListException{
 		return md.selectMypizzaPopup(sqlSession, mypizzaNo);
+	}
+	
+	//내피자 삭제
+	@Override
+	public int deleteMymenu(int mypizzaNo) throws MypageUpdateException {
+		return md.deleteMymenu(sqlSession, mypizzaNo);
+	}
+
+	//배송지 삭제
+	@Override
+	public void deleteDelivery(String string) throws MypageUpdateException {
+		md.deleteDelDelivery(sqlSession, string);
 	}
 
 	

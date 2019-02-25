@@ -33,12 +33,13 @@
 
 	<%@ include file="/WEB-INF/views/main/mypageMenubar.jsp"%>
 
-	<div style="float: left; width:80%; padding:20px; margin-top: 50px;">
+	<div style="float: left; width:70%; padding:20px; margin-top: 50px;"  >
 	
 		<c:set var="leng" value="${fn:length(modelDetailList) -1}"/>
 	
+	<div style="float: left;">
 		<a class="ui grey tag label">주문정보</a>
-		<table class="ui celled table" style="width:500px;">
+		<table class="ui celled table" style="width:250px;">
 		<thead>
 		</thead>
 		  <tbody>
@@ -57,13 +58,54 @@
 		    </tr>
 		  </tbody>
 		</table>
+	</div>	
+		
+	<div style="float: left; padding-bottom: 40px; padding-left: 20px;">
+		<a class="ui grey tag label">배송지 정보</a>
+		<table class="ui celled table" style="width:450px;">
+		<thead>
+		</thead>
+		  <tbody>
+		    <tr>
+		      <td class="tableHead">수령인</td>
+		      <td>${ modelDetailList[leng].orderReceiver}</td>
+		    </tr>
+		    <tr>
+		      <td class="tableHead">주소</td>
+		      <td>${ modelDetailList[leng].deliveryAddr} </td>
+		    </tr>
+		    <tr>
+		      <td class="tableHead">배달매장</td>
+ 			  <td>${ modelDetailList[leng].comName}점</td>
+		    </tr>
+		  </tbody>
+		</table>
+	</div>	
+		
+	<br><br>
 		
 		
 		
 		
-		<br><br>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		<div style="float: inherit;">
+	
+		
 		<a class="ui grey tag label">주문 메뉴</a>
-		<table class="ui celled table" style="width:700px;">
+		<table class="ui celled table" style="width:720px;">
 		<thead>
 		</thead>
 		  <tbody>
@@ -130,15 +172,15 @@
 		  </tbody>
 		</table>
 		
+	</div>
 		
 		
 		
-		
-	
-		
+	</div>
 		
 		
-		<br><br>
+		
+		<%-- <br><br>
 		<a class="ui grey tag label">배송지 정보</a>
 		<table class="ui celled table" style="width:500px;">
 		<thead>
@@ -159,9 +201,9 @@
 		  </tbody>
 		</table>
 		
-		<br><br>
+		<br><br> --%>
 		
-	</div>
+	
 	
 	
 

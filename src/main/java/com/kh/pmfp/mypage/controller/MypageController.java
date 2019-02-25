@@ -27,6 +27,7 @@ import com.kh.pmfp.customer.model.vo.MyPizza;
 import com.kh.pmfp.mypage.model.exception.MypageCountException;
 import com.kh.pmfp.mypage.model.exception.MypageInsertException;
 import com.kh.pmfp.mypage.model.exception.MypageListException;
+import com.kh.pmfp.mypage.model.exception.MypageUpdateException;
 import com.kh.pmfp.mypage.model.service.MypageService;
 import com.kh.pmfp.mypage.model.vo.Coupon;
 import com.kh.pmfp.mypage.model.vo.DelList;
@@ -312,12 +313,6 @@ public class MypageController {
 		
 	}
 	
-	//배송지 삭제
-	@RequestMapping(value="deliveryDelete.mp")
-	public String deliveryDelete() {
-		
-		return null;
-	}
 	
 	
 	
@@ -525,18 +520,12 @@ public class MypageController {
 				int k = i.next();
 				MypizzaPopup v = tmap.get(k);
 				
-				System.out.println("key : " + k);
-				System.out.println("value : " + v);
-				System.out.println("길이는 과연....! : " + tmap.size());
-				
 				priceSum += v.getMaterialSellprice() * v.getMaterialCount();
 				System.out.println("재료번호&키값 " + v.getMaterialNo());
 				
 				if(v.getMaterialNo() <= 14) {
-					System.out.println("데헷 : "+v.getMaterialNameAndCount().substring(0, v.getMaterialNameAndCount().lastIndexOf("1")));
 					toppingList.add(v.getMaterialNameAndCount().substring(0, v.getMaterialNameAndCount().lastIndexOf("1")));
 				}else if(v.getMaterialNo() > 14) {
-					System.out.println("흠 : "+v.getMaterialNameAndCount());
 					toppingList.add(v.getMaterialNameAndCount());
 				}
 				
@@ -558,6 +547,68 @@ public class MypageController {
 			return "common/errorPage";
 		}
 	}
+	
+	
+	//내피자 삭제
+	@RequestMapping(value="myMenuDelete.mp")
+	public String myMenuDelete(int mypizzaNo, HttpServletRequest request) {
+		System.out.println("과연 : " + mypizzaNo);
+		
+		try {
+			mps.deleteMymenu(mypizzaNo);
+			
+			
+			
+			return "redirect:myPageMyMenu.mp";
+			
+		} catch (MypageUpdateException e) {
+			request.setAttribute("msg", "내피자 삭제 실패");
+			return "common/errorPage";
+		}
+		
+	}
+	
+	//배송지 삭제
+	@RequestMapping(value="delDelivery.mp")
+	public String deleteDelivery(String DeleteList, HttpServletRequest request) {
+		String[] arr = DeleteList.split("/");
+		
+		//int result=0;
+		for(int i=0;i<arr.length;i++) {
+			System.out.println(arr[i]);
+			try {
+				mps.deleteDelivery(arr[i]);
+			} catch (MypageUpdateException e) {
+				request.setAttribute("msg", "배송지 삭제 실패");
+				return "common/errorPage";
+			}
+		}		
+		return "redirect:myPageDelAddr.mp";
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 }

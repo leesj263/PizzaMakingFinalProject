@@ -9,6 +9,7 @@ import com.kh.pmfp.customer.model.vo.MyPizza;
 import com.kh.pmfp.mypage.model.exception.MypageCountException;
 import com.kh.pmfp.mypage.model.exception.MypageInsertException;
 import com.kh.pmfp.mypage.model.exception.MypageListException;
+import com.kh.pmfp.mypage.model.exception.MypageUpdateException;
 import com.kh.pmfp.mypage.model.vo.Coupon;
 import com.kh.pmfp.mypage.model.vo.DelList;
 import com.kh.pmfp.mypage.model.vo.Location;
@@ -66,6 +67,12 @@ public interface MypageService {
 
 	//내피자 상세보기 - 팝업
 	HashMap<Integer, MypizzaPopup> selectMypizzaPopup(int mypizzaNo) throws MypageListException;
+
+	//내피자 삭제
+	int deleteMymenu(int mypizzaNo) throws MypageUpdateException;
+
+	//배송지 삭제
+	void deleteDelivery(String string) throws MypageUpdateException;
 
 	
 	
