@@ -61,9 +61,14 @@ public class MemberController {
 			request.setAttribute("msg", e.getMessage());
 			return "common/errorPage";
 		}
-
 		//return "main/main";
+	}
+	
+	@RequestMapping(value="kakaologin.co")
+	public @ResponseBody String kakaologin() {
 		
+		
+		return null;
 	}
 	
 	@RequestMapping("goMain.co")
