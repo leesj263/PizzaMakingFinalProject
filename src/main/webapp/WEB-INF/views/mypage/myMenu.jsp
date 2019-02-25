@@ -115,7 +115,7 @@
 		
 		
 		
-		<button id="pop">상세보기 팝업</button>
+		<!-- <button id="pop">상세보기 팝업</button> -->
 		
 		<script>
 			 $(function(){

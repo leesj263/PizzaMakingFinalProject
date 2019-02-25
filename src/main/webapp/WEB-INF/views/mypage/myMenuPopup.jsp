@@ -33,7 +33,7 @@
 	<!-- <div style="float: left; width:40%; padding-top:20px; padding-left: 20px;"> -->
 	<div style="float: left; width:40%; padding-top:20px; text-align: center; padding-left: 15px">
 		<img src="resources/customer/images/myPizza/${mypizzaImgChangeName }" width="200px" height="200px" ><br>
-		<button class="ui yellow button" >삭제</button>
+		<button class="ui yellow button" onclick="deleteMymenu(${ mypizzaNo })" style="margin-left: 15px;" >삭제</button>
 	</div>
 	
 	<!-- <div style="float: left; width:60%; padding:20px;"> -->
@@ -60,6 +60,16 @@
 		</table>
 		
 	</div>
+	
+	<script>
+		function deleteMymenu(value){
+			window.close();
+			
+			
+			var addr = "myMenuDelete.mp?mypizzaNo=";
+			window.opener.top.location.href=addr + value;
+		}
+	</script>
 	
 	
 </div>

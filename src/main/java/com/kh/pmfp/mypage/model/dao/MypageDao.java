@@ -11,6 +11,7 @@ import com.kh.pmfp.customer.model.vo.MyPizza;
 import com.kh.pmfp.mypage.model.exception.MypageCountException;
 import com.kh.pmfp.mypage.model.exception.MypageInsertException;
 import com.kh.pmfp.mypage.model.exception.MypageListException;
+import com.kh.pmfp.mypage.model.exception.MypageUpdateException;
 import com.kh.pmfp.mypage.model.vo.Coupon;
 import com.kh.pmfp.mypage.model.vo.DelList;
 import com.kh.pmfp.mypage.model.vo.Location;
@@ -68,6 +69,12 @@ public interface MypageDao {
 
 	//내피자 상세보기 - 팝업
 	HashMap<Integer, MypizzaPopup> selectMypizzaPopup(SqlSessionTemplate sqlSession, int mypizzaNo) throws MypageListException;
+
+	//내피자 삭제
+	int deleteMymenu(SqlSessionTemplate sqlSession, int mypizzaNo) throws MypageUpdateException;
+
+	//배송지 삭제
+	void deleteDelDelivery(SqlSessionTemplate sqlSession, String string) throws MypageUpdateException;
 
 	
 	
