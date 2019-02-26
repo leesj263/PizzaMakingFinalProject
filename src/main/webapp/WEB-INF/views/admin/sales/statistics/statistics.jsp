@@ -83,7 +83,17 @@
 		var expenseList = "${expenseList}".toString();
 		//console.log(salesListsize+"/"+expenseListsize);
 		//console.log(salesList);
-
+		if(${salesList.size()>0}){	}
+		else{
+			salesListsize = 1;
+			salesList = "[AdminSales [salesNo=0, comNo=0, comName=null, salesInputDate=2019-02-21, salesDate=2019-02-21, salesCate=1, expenseNo=0, orderNo=0, salesPrice=0]]";
+		}
+		if(${expenseList.size()>0}){}
+		else{
+			expenseListsize = 1;
+			expenseList = "[AdminSales [salesNo=0, comNo=0, comName=null, salesInputDate=2019-02-21, salesDate=2019-02-21, salesCate=0, expenseNo=0, orderNo=0, salesPrice=0]]";
+		}
+		
 		var salesPriceArr = [];
 		var salesDateArr = [];
 		var expensePriceArr = [];

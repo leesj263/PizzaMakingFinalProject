@@ -3,31 +3,58 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <jsp:include page="common/header.jsp"/>
+<style>
+	table{
+		text-align:center;
+	}
+	thead{
+		border-top: 2px solid #dee2e6;
+	}
+</style>
+
 <section>
 	<div class="right-panel">
 		<div class="card">
 			<div class="card-body">
 				<div class="row">
+					<div class="col-md-1"></div>
+					<div class="col-md-8">
+						<table class="table">
+							<thead>
+								<tr>
+									<th>주문현황</th>
+									<th>주문횟수</th>
+									<th>주문금액</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>
+										<c:set var="date" value="<%=new java.util.Date() %>"/>
+										<fmt:formatDate value="${date}" type="date" pattern="yyyy-MM-dd hh:mm"/> 현재
+									</td>
+									<td>${fn:length(salesList)}</td>
+									<td id="totalPrice"></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="col-md-2"></div>
+				</div>
+				<div class="row">
 					<div class="col-md-4"></div>
 					<div class="col-md-8">
-						<button class="btn btn-sm btn-warning" onclick="location.href='statistics.ad'"disabled>일간 매출</button>
+						<button class="btn btn-sm btn-warning" onclick="location.href='statistics.ad'"disabled>시간별 매출</button>
+						<button class="btn btn-sm btn-info" onclick="location.href='statistics.ad'">전체 매출 보기</button>
 					</div>
 				</div>
-				<div class="col-lg-10">
-					<div class="card">
-						<div class="card-body">
-							<div class="row">
-								<div class="col-md-4">
-									<select id="timeSelect" class="form-class">
-										<option value="yearly" onclick="yearly()">연간 매출</option>
-										<option value="monthly" onclick="monthly()">월간 매출</option>
-										<option value="daily" onclick="daily()" selected>일간 매출</option>
-									</select>
-								</div>
-								<div clss="col-md-6"></div>
+				<div class="row">
+					<div class="col-lg-10">
+						<div class="card">
+							<div class="card-body">
+								<h4 class="mb-3" id="chartBefore"></h4>
+								<canvas id="sales-chart"></canvas>
 							</div>
-							<h4 class="mb-3" id="chartBefore"></h4>
-							<canvas id="sales-chart"></canvas>
 						</div>
 					</div>
 				</div>
@@ -38,23 +65,27 @@
 
 <script>
 	function format(date) {
-		var d = new Date(date), 
-		month =  (d.getMonth() + 1), 
-		day =  d.getDate(), 
-		year = d.getFullYear();
+		var d=new Date(date), 
+		month= (d.getMonth() + 1), 
+		day=d.getDate(), 
+		year=d.getFullYear(),
+		hour=d.getHours();
 		if (month<10) month="0"+month;
 		if (day<10) day='0'+day;
+		if(hour<10) hour='0'+hour;
 		
-		return year+'-'+month+'-'+day;
+		return year+'-'+month+'-'+day+' '+hour;
 	}
 	
 	(function($) {
 
 		var salesListsize = "${fn:length(salesList)}";
 		var salesList = "${salesList}".toString();
-		//console.log(salesListsize+"/"+expenseListsize);
+		//console.log(salesListsize);
 		//console.log(salesList);
-
+		if(salesListsize==0){
+			salesList="[AdminSales [salesNo=39, comNo=4, comName=왕십리, salesInputDate=2019-02-26, salesDate=2019-02-26 23:59:28, salesCate=1, expenseNo=0, orderNo=32, salesPrice=34200]]";
+		}
 		var salesPriceArr = [];
 		var salesDateArr = [];
 
@@ -62,7 +93,6 @@
 		var salesArr = salesList.split('AdminSales');
 		salesArr.splice(0, 1);
 		//console.log(salesArr);
-		//console.log(expenseArr);
 
 		var salesArrList1 = new Array(salesListsize);
 		var salesArrList = new Array(salesListsize);
@@ -74,12 +104,10 @@
 			salesArrList[i] = salesArrList1[i].toString().split(', ');
 		}
 
-
 		//console.log(salesArrList); 
-		//console.log(expenseList); 
 
 		for (var i = 0; i < salesArrList.length; i++) {
-			salesDateArr[i] = salesArrList[i][3].split('=')[1];
+			salesDateArr[i] = salesArrList[i][4].split('=')[1];
 			salesPriceArr[i] = salesArrList[i][8].split('=')[1];
 		}
 
@@ -94,8 +122,8 @@
 		var LastSortDate = salesDateArr[salesListsize - 1];
 		salesDateArr = basicDate;
 
-		var firstDate;
-		var lastDate;
+		var firstDate=new Date(FirstSortDate);
+		var lastDate=new Date(LastSortDate);
 
 		//console.log(lastDate);
 		//console.log(firstDate);
@@ -105,42 +133,54 @@
 		var monthList=[];
 		var yearList=[];
 		var times=0;
-		var startDate = new Date(firstDate);
-		var endDate = new Date(lastDate);
-		var lineDate=new Date(firstDate);
+		var startDate = new Date(FirstSortDate);
+		startDate.setHours(0);
+		var endDate = new Date(LastSortDate);
+		if(salesListsize==0){
+			startDate=new Date();
+			startDate.setHours(0);
+			endDate=new Date();
+			endDate.setHours(24);
+		}
+		endDate.setHours(23);
+		var lineDate=new Date(startDate);
 		
 		//console.log(startDate);
 		//console.log(endDate);
-			
+		//console.log(lineDate);
+		
 		var salesList=[];
-		var salesMonth=[];
-		var salesYear=[];
 		
 		while(format(lineDate)!=format(endDate)){
-			dayList[times]=format(lineDate);
+			dayList[times]=format(lineDate).substring(5)+"시";
 			salesList[times]=0;
 			
 			for(var i=0;i<salesDateArr.length;i++){	
-				if(salesDateArr[i]==format(lineDate)){
+				if(salesDateArr[i].substring(0,13)==format(lineDate)){
 					salesList[times]+=Number(salesPriceArr[i]);
 				}
 			}
 			times++;
-			lineDate.setDate((lineDate.getDate()+1));
+			lineDate.setHours((lineDate.getHours()+1));
 		}
 		
-		dayList[times]=format(endDate);
+		dayList[times]=format(endDate).substring(5)+"시";
 		salesList[times]=0;
+		
 		for(var i=0;i<salesDateArr.length;i++){	
-			if(salesDateArr[i]==format(lineDate)){
+			if(salesDateArr[i].substring(0,13)==format(lineDate)){
 				salesList[times]+=Number(salesPriceArr[i]);
 			}
 		}
 		
 		console.log(dayList);
-		
 		console.log(salesList);
+		var total=0;
+		for(var i=0;i<salesPriceArr.length;i++){
+			total+=Number(salesPriceArr[i]);
+		}
 		
+		$("#totalPrice").text(total);
 
 		var ctx = $("#sales-chart");
 		ctx.height=150;
@@ -154,12 +194,12 @@
 					label : "고객 주문",
 					data : salesList, 
 					backgroundColor : 'transparent',
-					borderColor : 'rgba(40,167,69,0.75)',
+					borderColor : '#FFBA32',
 					borderWidth : 3,
 					pointStyle : 'circle',
 					pointRadius : 5,
 					pointBorderColor : 'transparent',
-					pointBackgroundColor : 'rgba(40,167,69,0.75)',
+					pointBackgroundColor : '#FFBA32',
 				} ]
 			},
 			options : {
@@ -191,7 +231,7 @@
 						},
 						scaleLabel : {
 							display : true,
-							labelString : 'Date'
+							labelString : 'Time'
 						}
 					} ],
 					yAxes : [ {
@@ -202,7 +242,7 @@
 						},
 						scaleLabel : {
 							display : true,
-							labelString : 'price'
+							labelString : 'Price'
 						}
 					} ]
 				},
