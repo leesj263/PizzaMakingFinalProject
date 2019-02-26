@@ -9,6 +9,10 @@
 <title>Insert title here</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
+<style>
+ 
+
+</style>
 <body>
 <%@ include file="/WEB-INF/views/main/menubar.jsp"%>
 	<br>
@@ -60,8 +64,9 @@
          
          <tbody>
          <tr>
-             <td  width="25%">${ r.memberNickname }</td>
-            <td   colspan="2">${ r.boardContent }　　　　　　　　　</td>
+             <td  width="15%" color="">${ r.memberNickname }</td>
+            <td   colspan="3">${ r.boardContent }　　　　　　　　　</td>
+             <td  width="15%">${ r.boardDate }</td>
            
          </tr>
          </c:forEach>
@@ -72,28 +77,29 @@
             	  
 			
 				<!-- <form id="reviewAnswerWrite" action="reviewAnswerWrite.bo" method="post" style="border:solid 1px red;" > -->
-					<div id="">
+					<br><br>
+					<div id="but" style="border: 1px solid red;">
 					<input type="hidden" name="boardRefNo" value="${review.boardNo }">
 					<input type="hidden" name="boardRefNo" value="${review.boardNo }">
 					<input type="hidden" name="boardRefNo" value="${review.boardNo }">
-					<textarea class="form-control" cols="80" rows="2" id="reviewAnswerWrite" name="reviewAnswerWrite"></textarea>
-				
-				<div class="col-md-2"></div>
+					<textarea class="form-control" cols="80"  style="padding-top: 20px;" id="reviewAnswerWrite" name="reviewAnswerWrite" style="border: 1px solid red"></textarea>
+					<button class="ui yellow button" onclick="return reviewAnswerWrite();" style="padding-top: 20px;">등록</button>
+				<!-- <div class="col-md-2"></div> -->
 			</div>
-			<div class="row">
+			<!-- <div class="row">
 				
 					
-						<button class="ui yellow button"  onclick="return reviewAnswerWrite();">등록</button>
+						
 					
 				<div class="col-md-2"></div>
-			</div>
+			</div> -->
 			
 		<!-- 	</form> -->
 			</div>
 		
 		
 	
-		</div>
+		
 		<br>
 		<br><br>
 	<div align="center">

@@ -41,13 +41,14 @@
 
 		<div class="row" style="postion: static;">
 			<table class="table table-striped" id="reviewList" >
+				
 				<thead>
-					<th scope="col">글번호</th>
-					<th scope="col">제목</th>
-					<th scope="col">작성자</th>
-					<th scope="col">작성일</th>
-					<th scope="col">조회수</th>
-					</tr>
+					<th scope="col" width="8%">글번호</th>
+					<th scope="col" width="30%">제목</th>
+					<th scope="col" width="8%">작성자</th>
+					<th scope="col" width="8%">작성일</th>
+					<th scope="col" width="8%">조회수</th>
+					
 				</thead>
 				<tbody >
 					<c:forEach var="review" items="${ reviewList }">
@@ -61,10 +62,12 @@
 						</tr>
 					</c:forEach>
 				</tbody>
-				>
+				
 			</table>
+			
+			<div class="col-md-5"></div>
 			<!-- 페이징-->
-			<div class="dataTables_paginate paging_simple_numbers col-md-4"
+			<div class="dataTables_paginate paging_simple_numbers col-md-4" 
 				id="bootstrap-data-table_paginate">
 				<ul class="pagination">
 					<c:if test="${pi.currentPage >1}">
@@ -115,12 +118,15 @@
 					</c:if>
 				</ul>
 			</div>
-			<div class="col-md-1"></div>
+			<div class="col-md-2"></div>
+			<button class="btn btn-outline-warning" 
+						><a href="./reviewWrite.t">작성하기</a></button>
+			<div class="col-md-4"></div>
 
 
 			<!-- 검색영역 -->
-			<div class="input-group-prepend" id="searchText"
-				style="margin: 0px 0px 0px 150px">
+			<!-- <div class="input-group-prepend" id="searchText"
+				style="margin: 0px 0px 0px 100px">
 
 				<select class="form-control" name="searchNotice">
 					<option value="memberNickName">작성자</option>
@@ -131,12 +137,12 @@
 					<i class="fa fa-search"></i>
 				</button>
 
-				<div class="col-md-1">
-					<button class="btn btn-outline-warning"
-						><a href="./reviewWrite.t">글 작성</a></button>
+				<div class="col-md-2">
+					
 				</div>
 
-			</div>
+			</div> -->
+			
 		</div>
 
 	
