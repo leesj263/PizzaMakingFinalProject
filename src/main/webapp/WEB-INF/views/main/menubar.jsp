@@ -470,6 +470,18 @@ h1 {
 																	console.log(authObj.access_token);//<---- 콘솔 로그에 토큰값 출력
 																	
 																	//에이작스로 컨트롤러 데이터 보내고
+																	$.ajax({
+																		url:"kakaologin.co",
+																		type:"post",
+																		data:{"kakaoId":res.id,
+																			"kakaoEmail":res.kaccount_email,
+																			"kakaoNickname":res.properties['nickname']},
+																		success:function(data){
+																			console.log("카카오 로그인 통신 성공");
+																		},error:function(data){
+																			console.log("카카오 로그인 통신 실패");
+																		}
+																	});
 																	//세션에 담깅
 																}
 															})
