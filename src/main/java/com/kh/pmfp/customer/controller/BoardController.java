@@ -81,7 +81,7 @@ public class BoardController {
 			return "common/errorPage";
 		}
 	}
-	//review작성
+	//revie댓글작성
 	@RequestMapping(value="bringreviewAnswer.bo", method=RequestMethod.POST)
 	public void reviewAnswerWrite(/*@ModelAttribute*/  HttpServletRequest request, HttpServletResponse response
 			)throws JsonIOException, IOException {

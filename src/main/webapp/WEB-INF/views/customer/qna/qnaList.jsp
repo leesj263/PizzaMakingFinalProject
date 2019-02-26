@@ -42,13 +42,14 @@
 		<div class="row" style="postion: static;">
 			<table class="table table-striped" id="qnaList">
 				<thead>
-					<th scope="col">글번호</th>
-					<th scope="col">분류</th>
-					<th scope="col">제목</th>
-					<th scope="col">작성자</th>
-					<th scope="col">작성일</th>
-					<th scope="col">조회수</th>
-					</tr>
+					<th scope="col" width="8%">글번호</th>
+					<th scope="col" width="12%">분류</th>
+					<th scope="col" width="30%">제목</th>
+					<th scope="col" width="8%">작성자</th>
+					<th scope="col" width="8%">작성일</th>
+					<th scope="col" width="8%">조회수</th>
+					
+					
 				</thead>
 				<tbody align="center">
 					<c:forEach var="qna" items="${ qnaList }">
@@ -76,8 +77,8 @@
 						</tr>
 					</c:forEach>
 				</tbody>
-				>
 			</table>
+			<div class="col-md-5"></div>
 			<!-- 페이징-->
 			<div class="dataTables_paginate paging_simple_numbers col-md-4"
 				id="bootstrap-data-table_paginate">
@@ -130,10 +131,13 @@
 					</c:if>
 				</ul>
 			</div>
-			<div class="col-md-1"></div>
+			<div class="col-md-2"></div>
+			<button class="btn btn-outline-warning" 
+						><a href="./qnaWrite.t">작성하기</a></button>
+			<div class="col-md-4"></div>
 
 
-			<!-- 검색영역 -->
+			<!-- 검색영역 
 			<div class="input-group-prepend" id="searchText"
 				style="margin: 0px 0px 0px 150px">
 
@@ -147,10 +151,10 @@
 				</button>
 
 				<div class="col-md-1">
-					<button class="btn btn-outline-warning"><a href="./qnaWrite.t">글 작성</a></button>
+					
 				</div>
 
-			</div>
+			</div> -->
 		</div>
 
 	
