@@ -102,7 +102,7 @@ h1 {
 		</div>
 		<c:if test="${!empty sessionScope.loginUser}">
 			
-			<c:if test="${ sessionScope.loginUser.memberName == '관리자' }">
+			<c:if test="${ sessionScope.loginUser.memberCateg== 2}">
 				<button class="mini ui yellow basic button"
 				onclick="location.href='adminMain.ad'">관리자 페이지로 이동</button>
 				&nbsp;&nbsp;&nbsp;&nbsp;
