@@ -301,33 +301,16 @@
         }
         function buildCalendar(){//현재 달 달력 만들기
             var doMonth = new Date(today.getFullYear(),today.getMonth(),1);
-            //이번 달의 첫째 날,
-            //new를 쓰는 이유 : new를 쓰면 이번달의 로컬 월을 정확하게 받아온다.     
-            //new를 쓰지 않았을때 이번달을 받아오려면 +1을 해줘야한다. 
-            //왜냐면 getMonth()는 0~11을 반환하기 때문
             var lastDate = new Date(today.getFullYear(),today.getMonth()+1,0);
-            //이번 달의 마지막 날
-            //new를 써주면 정확한 월을 가져옴, getMonth()+1을 해주면 다음달로 넘어가는데
-            //day를 1부터 시작하는게 아니라 0부터 시작하기 때문에 
-            //대로 된 다음달 시작일(1일)은 못가져오고 1 전인 0, 즉 전달 마지막일 을 가져오게 된다
             var tbCalendar = document.getElementById("calendar");
-            //날짜를 찍을 테이블 변수 만듬, 일 까지 다 찍힘
             var tbCalendarYM = document.getElementById("tbCalendarYM");
-            //테이블에 정확한 날짜 찍는 변수
-            //innerHTML : js 언어를 HTML의 권장 표준 언어로 바꾼다
-            //new를 찍지 않아서 month는 +1을 더해줘야 한다. 
-             tbCalendarYM.innerHTML = today.getFullYear() + "년 " + (today.getMonth() + 1) + "월"; 
-             idDate = today.getFullYear() + "-" + (today.getMonth() + 1);
-             //각 날짜 테이블 구분용 아이디(20190205 처럼 날짜로 구분)
-             
-             
-             /*while은 이번달이 끝나면 다음달로 넘겨주는 역할*/
+            tbCalendarYM.innerHTML = today.getFullYear() + "년 " + (today.getMonth() + 1) + "월"; 
+            idDate = today.getFullYear() + "-" + (today.getMonth() + 1);
+
             while (tbCalendar.rows.length > 2) {
-            //열을 지워줌
-            //기본 열 크기는 body 부분에서 2로 고정되어 있다.
+
                   tbCalendar.deleteRow(tbCalendar.rows.length-1);
-                  //테이블의 tr 갯수 만큼의 열 묶음은 -1칸 해줘야지 
-                //30일 이후로 담을달에 순서대로 열이 계속 이어진다.
+
              }
              var row = null;
              row = tbCalendar.insertRow();
@@ -341,8 +324,7 @@
              }
             /*달력 출력*/
              for (i=1; i<=lastDate.getDate(); i++) { 
-             //1일부터 마지막 일까지 돌림
-                  cell = row.insertCell();//열 한칸한칸 계속 만들어주는 역할
+                  cell = row.insertCell();
                   cell.innerHTML =  
                   "<table width = '100%' height = '90px' onclick = 'calendarTd(this)' id = '"+ idDate + "-" + i + "'>"+
                  	 "<tr >"+
@@ -358,11 +340,10 @@
 		         		 "<td  align = 'right' id = '3'></td>"+
 		         	 "</tr>"+
                   "</table>";
-                  //cell.style.background = "lightgray";//셀을 1부터 마지막 day까지 HTML 문법에 넣어줌
-                  cnt = cnt + 1;//열의 갯수를 계속 다음으로 위치하게 해주는 역할
-              if (cnt % 7 == 1) {/*일요일 계산*/
-                  //1주일이 7일 이므로 일요일 구하기
-                  //월화수목금토일을 7로 나눴을때 나머지가 1이면 cnt가 1번째에 위치함을 의미한다
+
+                  cnt = cnt + 1;
+              if (cnt % 7 == 1) {
+
                 cell.innerHTML = 
                 "<table width = '100%' height = '90px' onclick = 'calendarTd(this)' id = '"+ idDate + "-" + i + "'>"+
 	            	 "<tr >"+

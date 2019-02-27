@@ -85,15 +85,12 @@ public class WebSocketChat extends TextWebSocketHandler{
 	   if(message.split(",")[0].equals("find")) {
 		   logger.info("Message category : "+message.split(",")[0]  + 
 	    		   ",Id : "+message.split(",")[1]);
-		   //배달목록 리스트 가져오기
+
 		   
 		   int comNo = Integer.parseInt(message.split(",")[1]);
-			//여기서 못넘어감
-			//CompanyService cs = new CompanyServiceImpl();
-		   	//CompanyController cc = new CompanyController();
+
 			try {
-				//ArrayList<CompanyOrder> list = cc.TestMapping(3);
-				//System.out.println("TestMapping동작 : " + list);
+
 				CompanyService cs = new CompanyServiceImpl();
 				list = cs.orderDeliveringSocket(comNo);
 				System.out.println("웹소켓으로 조회해온 list : " + list);
@@ -103,7 +100,6 @@ public class WebSocketChat extends TextWebSocketHandler{
 			}
 			
 			try {
-		    	   //보낸 당사자에게만 반환
 		           final Basic basic=session.getBasicRemote();
 		           basic.sendText("to : "+ list);
 		       }catch (Exception e) {
@@ -123,7 +119,6 @@ public class WebSocketChat extends TextWebSocketHandler{
 		   result = cs.orderUpdateToCompleteSocket(orderNo);
 			System.out.println("웹소켓으로 갱신된 행 갯수 result : " + result);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
