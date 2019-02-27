@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+ <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
@@ -327,7 +327,7 @@ div.modal-body{
 				//console.log("ㅡㅐㅜ소")
 				
 				for(var j=0;j<sellerListsize;j++){
-					
+					 
 					salesList[j]=new Array();
 					startDate = new Date(FirstSortDate);
 					endDate = new Date(LastSortDate);
@@ -345,7 +345,6 @@ div.modal-body{
 								}
 							}
 						}
-					
 						times++;
 						lineDate.setDate((lineDate.getDate()+1));
 					}

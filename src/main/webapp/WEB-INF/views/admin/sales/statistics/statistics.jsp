@@ -238,7 +238,7 @@
 		
 
 		var ctx = $("#sales-chart");
-		ctx.height=150;
+		ctx.height=150; 
 		var myChart=new Chart(ctx, {
 			type : 'line',
 			data : {

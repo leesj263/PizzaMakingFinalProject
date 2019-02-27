@@ -3,13 +3,12 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <jsp:include page="../common/header.jsp"/>
 <style>
-	#calculateList{
+	#calculateList{ 
 		text-align:center;
 	}
 </style>
 <section>
 	<div class="right-panel">
-		<p>calculateList.jsp</p>
 		<div class="card">
 			<div class="card-header col-md-12"><h3 class="menu-title">정산 목록</h3></div>
 			<div class="card-body">
@@ -140,8 +139,8 @@
 			}).mouseout(function(){
 				$(this).parent().css({"color":"#212529"});
 			}).click(function(){
-				var orderExpNo=$(this).parent().children().children().eq(0).val();
-				var comNo=$(this).parent().children().children().eq(1).val();
+				var orderExpNo=$(this).parent().children().eq(1).children().eq(0).val();
+				var comNo=$(this).parent().children().eq(1).children().eq(1).val();
 				var times=$(this).parent().children().eq(4).text();
 				console.log("orderExpNo="+orderExpNo+"&comNo="+comNo+"&times="+times);
 				location.href="calculateDetail.ad?orderExpNo="+orderExpNo+"&comNo="+comNo;

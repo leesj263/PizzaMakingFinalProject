@@ -9,14 +9,12 @@
 </style>
 <section>
 	<div class="right-panel">
-			<div class="card">
+		<div class="card">
 			<div class="card-header col-md-12">
 				<h3 class="menu-title">주문 목록</h3>
 			</div>
 			<div class="card-body">
-			
 			<!-- 주문 목록 영역 -->
-	
 			<div class="row">
 				<div class="col-md-2"></div>
 				<table class="table table-striped col-md-8" id="orderList">

@@ -52,8 +52,8 @@ h3.menu-title{
 								<th scope="col">회원번호</th>
 								<th scope="col">ID</th>
 								<th scope="col">이름</th>
+								<th scope="col">가입일</th>
 								<th scope="col">주문횟수</th>
-								<th scope="col">최근 주문일자</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -63,13 +63,14 @@ h3.menu-title{
 									<td scope="row">${m.rn }</td>
 									<td>${m.memberId }</td>
 									<td>${m.memberName }</td>
-									<td>${m.orderCount }</td>
-									<c:if test="${m.orderCount >0}">
+									<%-- <c:if test="${m.orderCount >0}">
 										<td>${m.orderDate }</td>
 									</c:if>
 									<c:if test="${m.orderCount ==0}">
 										<td>주문내역이 없습니다</td>
-									</c:if>
+									</c:if> --%>
+									<td>${m.memberEnroll }</td>
+									<td>${m.orderCount }</td>
 								</tr>
 
 							</c:forEach>

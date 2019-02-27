@@ -84,7 +84,7 @@
 		//console.log(salesListsize);
 		//console.log(salesList);
 		if(salesListsize==0){
-			salesList="[AdminSales [salesNo=39, comNo=4, comName=왕십리, salesInputDate=2019-02-26, salesDate=2019-02-26 23:59:28, salesCate=1, expenseNo=0, orderNo=32, salesPrice=34200]]";
+			salesList="[AdminSales [salesNo=39, comNo=4, comName=왕십리, salesInputDate=2019-02-28, salesDate=2019-02-28 23:59:28, salesCate=1, expenseNo=0, orderNo=32, salesPrice=0]]";
 		}
 		var salesPriceArr = [];
 		var salesDateArr = [];
@@ -104,11 +104,13 @@
 			salesArrList[i] = salesArrList1[i].toString().split(', ');
 		}
 
-		//console.log(salesArrList); 
+		console.log(salesArrList.length); 
 
-		for (var i = 0; i < salesArrList.length; i++) {
-			salesDateArr[i] = salesArrList[i][4].split('=')[1];
-			salesPriceArr[i] = salesArrList[i][8].split('=')[1];
+		if(salesArrList.length>0){
+			for (var i = 0; i < salesArrList.length; i++) {
+				salesDateArr[i] = salesArrList[i][4].split('=')[1];
+				salesPriceArr[i] = salesArrList[i][8].split('=')[1];
+			}
 		}
 
 		console.log(salesDateArr);

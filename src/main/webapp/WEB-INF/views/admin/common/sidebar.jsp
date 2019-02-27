@@ -29,13 +29,13 @@
 		<div id="main-menu" class="main-menu collapse navbar-collapse">
 			<ul class="nav navbar-nav">
 				<li class="active">
-					<a href="adminMain.ad"><i class="menu-icon ti-desktop"></i>Main</a>
+					<a href="adminMain.ad"><i class="menu-icon ti-desktop"></i>메인</a>
 				</li>
 
 				<h3 class="menu-title">Member</h3>
 				<!-- /.menu-title -->
 				<li class="menu-item-has-children dropdown">
-					<a href="userList.ad" ><i class="menu-icon ti-user"></i>User</a>
+					<a href="userList.ad" ><i class="menu-icon ti-user"></i>고객</a>
 					<!-- <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> 
 						<i class="menu-icon ti-user"></i>User
 					</a>
@@ -57,12 +57,12 @@
 				</li>
 				<li class="menu-item-has-children dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> 
-						<i class="menu-icon ti-flag-alt-2"></i>Seller
+						<i class="menu-icon ti-flag-alt-2"></i>업체
 					</a>
 					<ul class="sub-menu children dropdown-menu">
-						<li><i class="fa fa-table"></i><a href="sellerList.ad">Seller List</a></li>
-						<li><i class="fa fa-spinner"></i><a href="waitSeller.ad">Wait Seller List</a></li>
-						<li><i class="ti-shopping-cart-full"></i><a href="sellerOrder.ad">Seller Order</a></li>
+						<li><i class="fa fa-table"></i><a href="sellerList.ad">업체 목록</a></li>
+						<li><i class="fa fa-spinner"></i><a href="waitSeller.ad">승인 대기 업체</a></li>
+						<li><i class="ti-shopping-cart-full"></i><a href="sellerOrder.ad">업체 재료 주문</a></li>
 					</ul>
 				</li>
 				<!-- <li class="menu-item-has-children dropdown">
@@ -78,12 +78,12 @@
 
 				<li class="menu-item-has-children dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> 
-						<i class="menu-icon ti-money"></i>Sales
+						<i class="menu-icon ti-money"></i>매출
 					</a>
 					<ul class="sub-menu children dropdown-menu">
-						<li><i class="menu-icon ti-credit-card"></i><a href="orderList.ad">Order List</a></li>
-						<li><i class="menu-icon ti-receipt"></i><a href="calculateList.ad">Calculate List</a></li>
-						<li><i class="menu-icon ti-stats-up"></i><a href="statistics.ad">Sales Statistics</a></li>
+						<li><i class="menu-icon ti-credit-card"></i><a href="orderList.ad">주문 목록</a></li>
+						<li><i class="menu-icon ti-receipt"></i><a href="calculateList.ad">정산 목록</a></li>
+						<li><i class="menu-icon ti-stats-up"></i><a href="statistics.ad">매출 통계</a></li>
 					</ul>
 				</li>
 				<!-- 
@@ -100,10 +100,10 @@
 				 -->
 				<li class="menu-item-has-children dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> 
-					<i class="menu-icon ti-heart"></i>Menu</a>
+					<i class="menu-icon ti-heart"></i>메뉴</a>
 					<ul class="sub-menu children dropdown-menu">
-						<li><i class="menu-icon ti-harddrives"></i><a href="toppingList.ad">Topping List</a></li>
-						<li><i class="menu-icon ti-menu"></i><a href="menuList.ad">Menu List</a></li>
+						<li><i class="menu-icon ti-harddrives"></i><a href="toppingList.ad">토핑 목록</a></li>
+						<li><i class="menu-icon ti-menu"></i><a href="menuList.ad">메뉴 목록</a></li>
 					</ul>
 				</li>
 				
@@ -111,7 +111,7 @@
 				
 				<li class="menu-item-has-children dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> 
-					<i class="menu-icon ti-ticket"></i>Coupon</a>
+					<i class="menu-icon ti-ticket"></i>쿠폰</a>
 					<ul class="sub-menu children dropdown-menu">
 						<li><i class="menu-icon fa fa-map-o"></i><a href="searchCoupon.co">생성 쿠폰 목록</a></li>
 						<li><i class="menu-icon fa fa-street-view"></i><a href="admin.ad?admin=coupon/newCouponCreate">쿠폰 생성</a></li>
@@ -121,14 +121,14 @@
 				</li>
 				
 				
-				<h3 class="menu-title">Board</h3>
+				<h3 class="menu-title">게시판</h3>
 				<!-- /.menu-title -->
 				<li class="menu-item-has-children dropdown">
 				<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> 
-					<i class="menu-icon ti-direction-alt"></i>Notice</a>
+					<i class="menu-icon ti-direction-alt"></i>공지사항</a>
 					<ul class="sub-menu children dropdown-menu">
-						<li><i class="menu-icon ti-menu"></i><a href="noticeList.ad">Notice List</a></li>
-						<li><i class="menu-icon ti-pencil"></i><a href="noticeWriteView.ad">Write</a></li>
+						<li><i class="menu-icon ti-menu"></i><a href="noticeList.ad">공지사항</a></li>
+						<li><i class="menu-icon ti-pencil"></i><a href="noticeWriteView.ad">공지작성</a></li>
 						<!-- 
 						<li><i class="menu-icon fa fa-paper-plane"></i><a href="#">Forget	Pass</a></li>
 						 -->
@@ -136,7 +136,7 @@
 				</li>
 				<li class="menu-item-has-children dropdown">
 				<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> 
-					<i class="menu-icon ti-headphone-alt"></i>Customer Satisfaction</a>
+					<i class="menu-icon ti-headphone-alt"></i>고객문의</a>
 					<ul class="sub-menu children dropdown-menu">
 						<li><i class="menu-icon ti-info-alt"></i><a href="faqList.ad">FAQ</a></li>
 						<li><i class="menu-icon ti-help-alt"></i><a href="qnaList.ad">Q&A</a></li>
