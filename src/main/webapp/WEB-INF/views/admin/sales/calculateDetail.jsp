@@ -5,7 +5,7 @@
 
 <jsp:include page="../common/header.jsp"/>
 <style>
-	#calList{ 
+	#calList{
 		text-align:center;
 	}
 </style>

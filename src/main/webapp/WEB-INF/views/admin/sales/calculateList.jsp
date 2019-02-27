@@ -3,7 +3,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <jsp:include page="../common/header.jsp"/>
 <style>
-	#calculateList{
+	#calculateList{ 
 		text-align:center;
 	}
 </style>

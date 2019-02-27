@@ -72,7 +72,7 @@
 	<insert id="insertBusinessCompany" parameterType="Company">
 		INSERT INTO COMPANY
 		VALUES(SEQ_COMNO.NEXTVAL,#{comName},#{comAddress},#{comTel},#{comLisenseno},
-				DEFAULT,null,#{comSalestime},#{comLocation},#{comParking},'N', NULL, NULL)
+				'W',null,#{comSalestime},#{comLocation},#{comParking},'N', NULL, NULL)
 	</insert>
 	
 	<!-- 사업지 회원가입(Member테이블) -->
