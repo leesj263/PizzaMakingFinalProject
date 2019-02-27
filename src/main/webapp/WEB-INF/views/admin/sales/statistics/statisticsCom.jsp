@@ -327,7 +327,7 @@ div.modal-body{
 				//console.log("ㅡㅐㅜ소")
 				
 				for(var j=0;j<sellerListsize;j++){
-					
+					 
 					salesList[j]=new Array();
 					startDate = new Date(FirstSortDate);
 					endDate = new Date(LastSortDate);

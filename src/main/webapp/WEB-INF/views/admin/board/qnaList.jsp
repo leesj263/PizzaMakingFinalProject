@@ -37,7 +37,7 @@
 					<tbody>
 						<c:forEach items="${qnaList }" var="qna">
 							<tr onclick="location.href='qnaDetail.ad?num=${qna.boardNo}'">
-								<th scope="row">${qna.rn }</th>
+								<th scope="row">${qna.rn}</th>
 								<c:choose>
 									<c:when test="${qna.boardCate==1 }">
 										<td>[결제]</td>

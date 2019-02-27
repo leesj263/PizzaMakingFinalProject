@@ -16,7 +16,7 @@
 				<h3 class="menu-title">재료 주문 정보</h3>
 			</div>
 			<div class="card-body">
-				<!-- 업체 정보 영역 -->
+				<!-- 업체 정보 영역  -->
 				<div class="row">
 					<div class="col-md-2"></div>
 					<div class="col-md-4">
