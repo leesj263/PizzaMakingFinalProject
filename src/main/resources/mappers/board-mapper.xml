@@ -117,7 +117,7 @@
 	</insert>
 	<!--  리뷰파일-->
 	<insert id="insertFile" parameterType="Image">
-	INSERT INTO IMAGE VALUES (SEQ_IMGNO.NEXTVAL, 1,#{imgOriginname},#{imgChangename},#{imgFilepath},SYSDATE,DEFUALT,SEQ_BONO.CURRVAL,NULL,NULL,NULL,NULL)
+	INSERT INTO IMAGE VALUES (SEQ_IMGNO.NEXTVAL, 1,#{imgOriginname},#{imgChangename},#{imgFilepath},SYSDATE,DEFAULT,SEQ_BONO.CURRVAL,NULL,NULL,NULL,NULL)
 	
 	
 	</insert>

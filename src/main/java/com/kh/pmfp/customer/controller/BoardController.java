@@ -129,7 +129,8 @@ public class BoardController {
 		
 		String filePath = root + "\\customer\\images\\review";
 	
-		String originFileName= boardFile.getOriginalFilename();
+		
+		String originFileName = boardFile.getOriginalFilename();
 		
 		String ext = originFileName.substring(originFileName.lastIndexOf("."));
 		String changeName= CommonUtils.getRandomString();
