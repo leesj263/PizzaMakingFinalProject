@@ -645,7 +645,7 @@ div.radio label:hover {
 							}
 							
 							var date = new Date(data[i].issueEdate);
-							var $td3 = $("<td>").text("~ " + date.getFullYear() + "년 " + date.getMonth() + "월 " + date.getDate() + "일 까지");
+							var $td3 = $("<td>").text("~ " + date.getFullYear() + "년 " + (date.getMonth()+1) + "월 " + date.getDate() + "일 까지");
 							
 							$tr.append($td1).append($td2).append($td3);
 							$couponTable.append($tr);
