@@ -39,14 +39,17 @@
 								<strong class="card-title">주문 재료 목록</strong>
 							</div>
 							<div class="card-body">
-
+								<div style="width: 100%"><button type="button" class="btn btn-primary" name="orderMaterialListcheckHeader"
+															style="" onclick = "toggleCheckbox()">전체선택</button></div>
 								<table id="bootstrap-data-table-export"
 									class="table table-striped table-bordered"
 									style="table-layout: fixed; word-wrap: break-word;">
+									
 									<thead class="thead-dark">
+										
 										<tr>
-											<th scope="col"><input type="checkbox" name="orderMaterialListcheckHeader"
-															style="width: 20px; height: 20px" onclick = "toggleCheckbox()"></th>
+										
+											<th scope="col"></th>
 											<th scope="col">토핑</th>
 											<th scope="col">중량</th>
 											<th scope="col">가격</th>
@@ -93,11 +96,15 @@
 
 
 <script>
+	ttemp = false;
 	function toggleCheckbox(){
-		if($("input:checkbox[name = 'orderMaterialListcheckHeader']").prop("checked")){
+		
+		if(ttemp == false){
 			$("input:checkbox[name = 'orderMaterialListcheck']").prop("checked", true);
+			ttemp = true;
 		}else{
 			$("input:checkbox[name = 'orderMaterialListcheck']").prop("checked", false);
+			ttemp = false;
 		}
 		
 	}

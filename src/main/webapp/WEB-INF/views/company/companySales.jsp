@@ -81,6 +81,8 @@
 		var salesList = "${list}";
 		console.log(salesList);
 		
+		if(salesList != null){
+			
 		var splitArr = salesList.split(',');
 		console.log(splitArr);
 		//console.log(typeof splitArr)
@@ -103,6 +105,15 @@
 				minusIndex++;
 			}
 			categoryIndex += 7;
+		}
+		
+  	if(splitArrPlusDate == null){
+			splitArrPlusDate = splitArrMinusDate;
+			splitArrPlusPrice = "salesPrice=0]";
+		}
+		if(splitArrMinusDate == null){
+			splitArrMinusDate= splitArrPlusDate;
+			splitArrMinusPrice= "salesPrice=0]";
 		}
 		
 		console.log("splitArrPlusPrice : " + splitArrPlusPrice);
@@ -183,6 +194,7 @@
 		
 		var daily = [];
 		var yearDate = parseInt(firstDate.substring(0, 4));
+		var yearLastDate = parseInt(lastDate.substring(0, 4));
 		var monthDateStart = parseInt(firstDate.substring(5, 7));
 		var monthDateFinish = parseInt(lastDate.substring(5, 7));
 		var dayDateStart = parseInt(firstDate.substring(8, 10));
@@ -198,6 +210,27 @@
 		console.log("monthLastDay : " + monthLastDay);
 		
 		while(true){
+			
+ 			if(yearDate != yearLastDate){
+				while(true){
+					var monthLastDay = ( new Date( 2019, monthDateStart, 0) ).getDate();
+					daily[k] = yearDate + "-" + monthDateStart + "-" + dayDateStart;
+					dayDateStart++;
+					k++;
+					if(dayDateStart == (monthLastDay+1)){
+						dayDateStart = 1;
+						monthDateStart ++;
+						if(monthDateStart == 13){
+							yearDate++;
+							break;
+						}
+					}
+				}
+				monthDateStart =1;
+				dayDateStart = 1;
+				
+			} 
+			
 			if(monthDateStart != monthDateFinish){
 				while(true){
 					var monthLastDay = ( new Date( 2019, monthDateStart, 0) ).getDate();
@@ -459,7 +492,7 @@
 		});//select변동시 동작하는 함수
 		
 		
-		
+		}
 		
 	});//시작시 동작하는 스크립트부분
     
