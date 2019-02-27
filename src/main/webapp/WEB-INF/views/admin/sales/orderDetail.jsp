@@ -72,7 +72,7 @@
 								</c:forEach>
 								<tr>
 									<th colspan="2">총 액</th>
-									<th colspan="2">${total }</th>
+									<th colspan="2">${total}</th>
 								</tr>
 							</tbody>
 						</table>
