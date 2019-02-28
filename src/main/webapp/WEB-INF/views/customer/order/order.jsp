@@ -801,7 +801,7 @@ div.radio label:hover {
 	<script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
 	<script>
 		var IMP = window.IMP; // 생략가능
-		IMP.init('???'); // 'iamport' 대신 부여받은 "가맹점 식별코드"를 사용
+		IMP.init('imp33502650'); // 'iamport' 대신 부여받은 "가맹점 식별코드"를 사용
 	
 		//주문하기
 		function order(){

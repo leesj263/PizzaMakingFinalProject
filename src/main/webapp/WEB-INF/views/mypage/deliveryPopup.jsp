@@ -134,7 +134,7 @@
   
     //구글 지오코딩 api : 사용자가 입력한 주소 위/경도로 변환
     function latlon(value) {
-        var geocode = "https://maps.googleapis.com/maps/api/geocode/json?address="+value+"&key=키값넣기~!~@~@~!@~@~!@~!#!@##@$@#$@#$#!@#@#";
+        var geocode = "https://maps.googleapis.com/maps/api/geocode/json?address="+value+"&key=AIzaSyCbicS4cErqcGQUcYybf3OWZAZZWZRP5Lk";
         var tag = "";
         jQuery.ajax({
             url: geocode,
