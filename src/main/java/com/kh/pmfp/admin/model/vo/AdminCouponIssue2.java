@@ -20,12 +20,13 @@ public class AdminCouponIssue2 implements Serializable{
 	private String issueStatus;	//사용여부
 	private int orderNo;		//주문번호
 	private String memberId;
+	private String memberName;
 	
 	public AdminCouponIssue2() {}
 
 	public AdminCouponIssue2(int couponNo, String couponName, int couponCateg, int couponCondition, Date couponCdate,
 			Date couponEdate, double couponRdiscount, int couponPdiscount, int issueNo, int memberNo, Date issueCdate,
-			String issueEdate, String issueStatus, int orderNo, String memberId) {
+			String issueEdate, String issueStatus, int orderNo, String memberId, String memberName) {
 		super();
 		this.couponNo = couponNo;
 		this.couponName = couponName;
@@ -42,6 +43,7 @@ public class AdminCouponIssue2 implements Serializable{
 		this.issueStatus = issueStatus;
 		this.orderNo = orderNo;
 		this.memberId = memberId;
+		this.memberName = memberName;
 	}
 
 	public int getCouponNo() {
@@ -164,15 +166,23 @@ public class AdminCouponIssue2 implements Serializable{
 		this.memberId = memberId;
 	}
 
+	public String getMemberName() {
+		return memberName;
+	}
+
+	public void setMemberName(String memberName) {
+		this.memberName = memberName;
+	}
+
 	@Override
 	public String toString() {
 		return "AdminCouponIssue2 [couponNo=" + couponNo + ", couponName=" + couponName + ", couponCateg=" + couponCateg
 				+ ", couponCondition=" + couponCondition + ", couponCdate=" + couponCdate + ", couponEdate="
 				+ couponEdate + ", couponRdiscount=" + couponRdiscount + ", couponPdiscount=" + couponPdiscount
 				+ ", issueNo=" + issueNo + ", memberNo=" + memberNo + ", issueCdate=" + issueCdate + ", issueEdate="
-				+ issueEdate + ", issueStatus=" + issueStatus + ", orderNo=" + orderNo + ", memberId=" + memberId + "]";
+				+ issueEdate + ", issueStatus=" + issueStatus + ", orderNo=" + orderNo + ", memberId=" + memberId
+				+ ", memberName=" + memberName + "]";
 	}
 
-	
 	
 }

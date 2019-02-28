@@ -417,7 +417,7 @@ h1 {
 
 	<!--------------------------------------------로그인=---------------------------------------------------->
 
-	<form action="login.co" method="post">
+	<form action="login.co" method="post" id="loginFormId">
 		<div id="loginDiv" class="hiddenCss">
 			<br>
 			<h1>login</h1>
@@ -435,7 +435,9 @@ h1 {
 
 						</td>
 					</tr>
-					<tr>
+				</form>
+				<form action="kakaoJoin.co" method="post" id="kakaoForm">
+ 					<tr>
 						<td><div class="ui left icon input">
 								<input type="password" placeholder="비밀번호" name="memberPwd" id="memberPwdLogin">
 								<i class="heart outline icon"></i>
@@ -449,8 +451,11 @@ h1 {
 							<!-- <button type="button" class="ui yellow button"
 								style="width: 100%">카카오 로그인</button> -->
 								<a id="kakao-login-btn"></a> <a
-							href="http://developers.kakao.com/logout"></a> <script
-								type='text/javascript'>
+							href="http://developers.kakao.com/logout"></a> 
+							<input type="hidden" id="kakaoId" value="">
+							<input type="hidden" id="kakaoNickName" value="">
+							
+							<script type='text/javascript'>
 								//<![CDATA[
 								// 사용할 앱의 JavaScript 키를 설정해 주세요.
 								Kakao.init('193ce7b860db2d5f477856840d1b7fb4');
@@ -469,19 +474,11 @@ h1 {
 																	// res.properties.nickname으로도 접근 가능 )
 																	console.log(authObj.access_token);//<---- 콘솔 로그에 토큰값 출력
 																	
-																	//에이작스로 컨트롤러 데이터 보내고
-																	$.ajax({
-																		url:"kakaologin.co",
-																		type:"post",
-																		data:{"kakaoId":res.id,
-																			"kakaoEmail":res.kaccount_email,
-																			"kakaoNickname":res.properties['nickname']},
-																		success:function(data){
-																			console.log("카카오 로그인 통신 성공");
-																		},error:function(data){
-																			console.log("카카오 로그인 통신 실패");
-																		}
-																	});
+																	$("#kakaoId").val(res.id);
+																	$("#kakaoNickName").val(res.properties['nickname']);
+																	$("#")
+																	
+																	
 																	//세션에 담깅
 																}
 															})
@@ -523,7 +520,7 @@ h1 {
 						<td>
 							<button type="button" class="ui yellow basic button"
 								style="width: 100%" onclick="idPwdSearch();">
-								<samll>아이디/비밀번호찾기</samll>
+								<samll>아이디/비밀번호 변경</samll>
 							</button>
 						</td>
 					</tr>
@@ -532,7 +529,7 @@ h1 {
 				</table>
 			</div>
 		</div>
-	</form>
+</form>	
 	<!---------------------------------------------비회원 로그인------------------------------------------------>
 
 
@@ -656,7 +653,7 @@ h1 {
 					<td>&nbsp;</td>
 				</tr>
 				<tr>
-					<td colspan="2" align="center">*비밀번호 찾기</td>
+					<td colspan="2" align="center">*비밀번호 변경하기</td>
 				</tr>
 				<tr>
 					<td colspan="2"><div class="ui input" style="width: 100%">

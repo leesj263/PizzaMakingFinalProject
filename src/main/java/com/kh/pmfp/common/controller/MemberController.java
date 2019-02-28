@@ -66,9 +66,9 @@ public class MemberController {
 	
 	@RequestMapping(value="kakaologin.co")
 	public @ResponseBody HashMap<String, String> kakaologin(@RequestParam String kakaoId,
-			@RequestParam String kakaoEmail,@RequestParam String kakaoNickname) {
+			@RequestParam String kakaoNickname) {
 		System.out.println(kakaoId);
-		System.out.println(kakaoEmail+kakaoNickname);
+		System.out.println(kakaoNickname);
 		HashMap<String, String> hmap = new HashMap<>();
 		hmap.put("kakaoId", kakaoId);
 		/*hmap.put("kakaoEmail",kakaoEmail);

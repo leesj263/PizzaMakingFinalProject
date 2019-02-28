@@ -8,6 +8,9 @@
 	href="/pmfp/resources/main/assets/js/semantic/semantic.min.css">
 <script src="/pmfp/resources/main/assets/js/semantic/semantic.min.js"></script>
 
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+
 <style>
 #main {
 	padding: 50px;
@@ -37,7 +40,7 @@ td{
 								<strong>쿠폰 이름</strong></label>
 						</td>
 						<td>
-								<input type="text" id="text-input" name="couponName" style="width:425px"
+								<input type="text" id="couponNameId" name="couponName" style="width:425px"
 									placeholder="" class="form-control">
 						</td>
 					
@@ -120,7 +123,7 @@ td{
 										결제 금액</strong></label>
 							</td>
 							<td>
-								<input type="text" id="text-input" name="couponConditionStr"
+								<input type="text" id="couponConditionId" name="couponConditionStr"
 									placeholder="" class="form-control"><small
 									class="form-text text-muted">원 이상 주문시 사용 가능</small>
 							</td>
@@ -149,7 +152,7 @@ td{
 					<tr>
 						<td colspan="2">
 						<div class="row justify-content-md-center" align="center">
-							<button type="submit" class="btn btn-outline-secondary btn-lg" data-toggle="modal"
+							<button type="submit" class="btn btn-outline-secondary btn-lg" data-toggle="modal" onclick="return couponCreateBtn()"
 							data-target="#createModal" style="width:200px; height:60px">
 								<i class="fa fa-hand-o-right"></i>&nbsp;쿠폰 생성
 							</button>
@@ -169,7 +172,7 @@ td{
 	</div>
 	
 		<!-- -------------------------쿠폰 생성하기 버튼 클릭 시 모달 -------------------------------------------->
-	<div class="modal fade" id="createModal" tabindex="-1" role="dialog"
+<!-- 	<div class="modal fade" id="createModal" tabindex="-1" role="dialog"
 		aria-labelledby="staticModalLabel" aria-hidden="true"
 		data-backdrop="static">
 		<div class="modal-dialog modal-sm" role="document">
@@ -183,7 +186,7 @@ td{
 			</div>
 		</div>
 	</div>
-	
+	 -->
 	<script>
 	$(function(){
 		
@@ -201,6 +204,28 @@ td{
 		});
 		
 	});
+	
+	function couponCreateBtn(){
+		var couponConditionId = $("#couponConditionId").val();
+		var couponNameId = $("#couponNameId").val();
+		
+		if(couponNameId==""){
+			swal("쿠폰 이름을 입력해주세요");
+			return false;
+		}
+		
+		if(couponConditionId==""){
+			swal("쿠폰 결제 금액을 입력해주세요");
+			return false;
+		}
+		
+		return true;
+	}
+	
+
+	
+	
+	
 	
 	</script>
 	

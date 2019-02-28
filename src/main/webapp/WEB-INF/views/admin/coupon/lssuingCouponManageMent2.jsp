@@ -107,6 +107,7 @@
                         <th scope="col"></th>
                         <th scope="col">쿠폰코드</th>
                         <th scope="col">회원아이디</th>
+                        <th scope="col">회원이름</th>
                         <th scope="col">쿠폰명</th>
                         <th scope="col">할인</th>
                         <th scope="col">생성일</th>
@@ -123,6 +124,7 @@
                         <th scope="row">${varStatus.count }</th>
                         <td>${cList.issueNo}</td>
                          <td>${cList.memberId }</td>
+                          <td>${cList.memberName }</td>
                         <td>${cList.couponName }</td>
                         <c:if test="${cList.couponCateg ==0}">								
 						<td>${Math.round(cList.couponRdiscount *100)}%</td>
