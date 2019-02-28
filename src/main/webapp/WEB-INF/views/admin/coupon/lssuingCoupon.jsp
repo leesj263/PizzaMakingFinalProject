@@ -205,7 +205,7 @@
 					swal("아이디가 없듬");
 				}else{
 				swal("아이디가 있습니다!");
-				memberListStart.append('<option value="'+data.memberNo+'" selected>'+data.memberName+'</option>');
+				memberListStart.append('<option value="'+data.memberNo+'" selected>'+data.memberName+"("+data.memberId+")"+'</option>');
 				}
 			},error:function(data){
 				console.log("데이터 통신 실팽");
