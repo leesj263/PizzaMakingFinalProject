@@ -104,12 +104,12 @@ div.radio label:hover {
 			<div class="ui divider"></div>
 			<div class="ui radio checkbox" style="margin-right: 50px;">
 				<input type="radio" name="orderMethod" id="deliveryOrder" value="1"
-					onchange="orderMethodSel(1);"> <label for="deliveryOrder"
+					onchange="orderMethodSel(2);"> <label for="deliveryOrder"
 					style="font-size: 16px;">배달주문</label>
 			</div>
 			<div class="ui radio checkbox" style="margin-bottom: 20px;">
 				<input type="radio" name="orderMethod" id="visitOrder" value="2"
-					onchange="orderMethodSel(2);"> <label for="visitOrder"
+					onchange="orderMethodSel(1);"> <label for="visitOrder"
 					style="font-size: 16px;">방문포장</label>
 			</div>
 			<input type="hidden" id="orderMethod">
@@ -351,8 +351,8 @@ div.radio label:hover {
 		function orderMethodSel(val) {
 			$("#oaTopLeft").empty();
 			$("#oaTopRight").empty();
-			if (val == 1) {
-				$("#orderMethod").val(1);
+			if (val == 2) {
+				$("#orderMethod").val(2);
 				$("#oaTopLeft").append($("<h3>").text("배달주소"));
 				$("#oaTopRight").append(
 						$("<button class='ui button brown' onclick='deliPop(1);'>").text("배달주소 등록"));
@@ -388,7 +388,7 @@ div.radio label:hover {
 					}
 				});
 			} else {
-				$("#orderMethod").val(2);
+				$("#orderMethod").val(1);
 				$("#oaTopLeft").append($("<h3>").text("매장"));
 				$("#oaTopRight").append($("<button class='ui button brown' onclick='comPop();'>").text("매장 선택"));
 				$("#comTable").empty();
@@ -419,8 +419,8 @@ div.radio label:hover {
 		function orderMethodSel(val) {
 			$("#oaTopLeft").empty();
 			$("#oaTopRight").empty();
-			if (val == 1) {
-				$("#orderMethod").val(1);
+			if (val == 2) {
+				$("#orderMethod").val(2);
 				$("#oaTopLeft").append($("<h3>").text("배달주소"));
 				$("#oaTopRight").append(
 						$("<button class='ui button brown' onclick='deliPop(2);'>").text("배달주소 등록"));
@@ -431,7 +431,7 @@ div.radio label:hover {
 				$("#addressTable").show();
 				
 			} else {
-				$("#orderMethod").val(2);
+				$("#orderMethod").val(1);
 				$("#oaTopLeft").append($("<h3>").text("매장"));
 				$("#oaTopRight").append($("<button class='ui button brown' onclick='comPop();'>").text("매장 선택"));
 				$(".addrSel").removeClass("active").removeClass("black").removeClass("grey");
@@ -834,12 +834,12 @@ div.radio label:hover {
 				return;
 			}
 			
-			if(orderMethod == 1){
+			if(orderMethod == 2){
 				if(deliveryNo == ""){
 					alert("배송지를 선택해주세요.");
 					return;
 				}
-			} else if(orderMethod == 2){
+			} else if(orderMethod == 1){
 				if(comNo == ""){
 					alert("매장을 선택해주세요.");
 					return;
