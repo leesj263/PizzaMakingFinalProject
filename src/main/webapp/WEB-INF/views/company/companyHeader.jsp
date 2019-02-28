@@ -22,7 +22,7 @@
                 <div class="col-sm-5">
                     <div class="user-area dropdown float-right" align = "right">
                     <div style = "font-size : 1.1em">
-                    	<label style = "text-size : 1.2em">사당 1호</label>지점&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    	<label style = "text-size : 1.2em"></label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     	<b>점주</b>&nbsp;&nbsp;&nbsp;<label>${sessionScope.loginUser.memberName }</label>
                     </div>
                      <%-- <img class="user-avatar rounded-circle" src="${contextPath }/resources/companyCss/images/admin.jpg" alt="User Avatar"> --%>
