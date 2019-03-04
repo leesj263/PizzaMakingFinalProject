@@ -28,6 +28,9 @@
 <!-- 카카오 로그인 -->
 <script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
 
+<!-- 네이버 로그인 -->
+  <script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js" charset="utf-8"></script>
+
 <script>
 	//변수만 선언
 	//아이디 중복확인 체크 (마지막에 계정만들기 눌렀을떄 아이디가 중복체크)
@@ -432,14 +435,18 @@ h1 {
 		</div>
 	</div>
 	
-		<!-------------------------------------카카오-회원가입=------------------------------------------------------->
+		<!-------------------------------------카카오 회원가입=------------------------------------------------------->
 
 	<div id="kakaojoindiv" class="hiddenCss">
 		<br>
-		<h1>Create account</h1>
+		<h1>kakao 추가정보 입력</h1>
 
 		<div class="mar">
-			<form action="" method="post">
+			<form action="kakaoJoinDB.co" method="post">
+			<c:if test="${memberId !=null}">
+					<input type="hidden" id="kakaoJoinId" value="${memberId }" name="memberId"> 
+					<input type="hidden" id="kakaoJoinNickName" value="${memberName }" name="memberName"> 
+			</c:if>		
 				<table class="table">
 					
 					
@@ -475,12 +482,12 @@ h1 {
 								확인</button>
 						</td>
 					</tr>
-
+								
 					
 					<tr>
 						
 						<TD align="center">
-							<button class="ui yellow button" onclick="return CreateAccount()"
+							<button class="ui yellow button" onclick="return kakaoCreateAccount()"
 								style="width: 100%">계정만들기</button>
 
 						</TD>
@@ -560,8 +567,8 @@ h1 {
 															.request({
 																url : '/v1/user/me',
 																success : function(res) {
-																	alert(JSON.stringify(res)); //<---- kakao.api.request 에서 불러온 결과값 json형태로 출력
-																	alert(JSON.stringify(authObj)); //<----Kakao.Auth.createLoginButton에서 불러온 결과값 json형태로 출력
+																	//alert(JSON.stringify(res)); //<---- kakao.api.request 에서 불러온 결과값 json형태로 출력
+																	//alert(JSON.stringify(authObj)); //<----Kakao.Auth.createLoginButton에서 불러온 결과값 json형태로 출력
 																	console.log(res.id);//<---- 콘솔 로그에 id 정보 출력(id는 res안에 있기 때문에  res.id 로 불러온다)
 																	console.log(res.kaccount_email);//<---- 콘솔 로그에 email 정보 출력 (어딨는지 알겠죠?)
 																	console.log(res.properties['nickname']);//<---- 콘솔 로그에 닉네임 출력(properties에 있는 nickname 접근 
@@ -570,6 +577,8 @@ h1 {
 
 																	$("#kakaoId").val(res.id);
 																	$("#kakaoNickName").val(res.properties['nickname']);
+																	$("#kakaoJoinId").val(res.id);
+																	$("#kakaoJoinNickName").val(res.properties['nickname']);
 																	$("#kakaoForm").submit();
 
 																	//세션에 담깅
@@ -590,13 +599,28 @@ h1 {
 					<table class="table">
 						<tr>
 							<td>
-								<button type="button" class="ui green  button"
-									style="width: 100%">네이버 로그인</button>
+								<!-- <button type="button" class="ui green  button"
+									style="width: 100%">네이버 로그인</button> -->
+  								<div id="naver_id_login"></div>
 							</td>
 						</tr>
 					</table>
 				</form>
-				<table class="table">
+			<!-- 네이버아디디로로그인  Script -->
+			<script type="text/javascript">
+				var naver_id_login = new naver_id_login("hleKffrO_Usz21Fz5hyM","http://localhost:8008/pmfp/goMain.co");
+				var state = naver_id_login.getUniqState();
+				naver_id_login.setButton("white", 2, 40);
+				naver_id_login.setDomain("localhost:8008/pmfp");
+				naver_id_login.setState(state);
+				//naver_id_login.setPopup();
+				naver_id_login.init_naver_id_login();
+			</script>
+
+			
+
+
+			<table class="table">
 				<tr>
 					<td colspan="2">
 						<button type="button" class="ui black basic button"
@@ -1189,6 +1213,48 @@ h1 {
 		});
 
 		/* ---------------------- 회원가입 유효성 검사 script -------------------------------------- */
+		//카카오 계정만들기 btn
+		function kakaoCreateAccount(){
+			var memberPwd = $("#kakaomemberPwd").val(); //비밀번호 
+			var memberPwd2 = $("#kakaomemberPwd2").val(); //비밀번호 확인
+			var memberEmail = $("#kakaomemberEmail").val(); //이메일 
+			var JoinCertificationNum = $("#kakaoJoinCertificationNum").val(); //인증번호 
+			//비밀번호 검사
+			if (memberPwd == "") {
+				swal("비밀번호를 입력해주세요.");
+				return false;
+			}
+			if (memberPwd != memberPwd2) {
+				swal("비밀번호가 일치하지 않습니다.");
+				return false;
+			}
+
+			//이메일 검사
+			if (memberEmail == "") {
+				swal("이메일을 입력해주세요!");
+				return false;
+			}
+			//인증번호 확인
+			if (JoinCertificationNum == "") {
+				swal("인증번호를 입력해주세요");
+				return false;
+			}
+			
+			//인증버호 발송 체크여부(체크 했는지 안했는징)
+			if (CertificationSend == 1) {
+				swal("인증번호 발송해주세요");
+				return false;
+			}
+			//인증확인 버튼  체크여부(체크 했는지 안했는징)
+			if (Certification == 1) {
+				swal("인증확인 해주세요");
+				return false;
+			}
+			return true;
+		}
+		
+		
+		
 		//계정만들기 Btn
 		function CreateAccount() {
 			var comLisenseno = $("#comLisenseno").val(); //사업자 번호 

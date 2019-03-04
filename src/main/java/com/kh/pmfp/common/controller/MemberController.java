@@ -64,6 +64,7 @@ public class MemberController {
 		//return "main/main";
 	}
 	
+	//카카오 로그인
 	@RequestMapping(value="kakaoJoin.co",method=RequestMethod.POST)
 	public String kakaologin(@RequestParam String memberId,@RequestParam String memberName,HttpServletRequest request,HttpServletResponse response) {
 		System.out.println("연결되닝?");
@@ -79,11 +80,30 @@ public class MemberController {
 			request.getSession().setAttribute("loginUser", loginUser);
 			 
 		}else {
-			request.setAttribute("check", check);	
+			request.setAttribute("check", check);
+			request.setAttribute("memberId", memberId);
+			request.setAttribute("memberName", memberName);
 		}
 		
 		return "main/main";
 	}
+	
+	//카카오 회원가입
+	@RequestMapping("kakaoJoinDB.co")
+	public String kakaoJoinDB(Member m) {
+		System.out.println(m);
+		m.setMemberNickName(m.getMemberName());
+		String encPassword = passwordEncoder.encode(m.getMemberPwd());
+		m.setMemberPwd(encPassword);
+		
+		int result = ms.insertNormalMember(m);
+		if(result>0) {
+			return "redirect:goMain.co";
+		}else {
+			return "common/errorPage";
+		}
+	}
+	
 	
 	@RequestMapping("goMain.co")
 	public String goMain() {
