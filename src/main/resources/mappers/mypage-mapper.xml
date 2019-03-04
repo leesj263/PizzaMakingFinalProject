@@ -10,6 +10,7 @@
 		<result property="orderMethod" column="ORDER_METHOD"/>
 		<result property="comName" column="COM_NAME"/>
 		<result property="payPrice" column="ORDER_PAYPRICE"/>
+		<result property="orderStatus" column="ORDER_STATUS"/>
 	</resultMap>
 	
 	<resultMap type="com.kh.pmfp.mypage.model.vo.OrderDetail" id="mypageOrderDetailResultSet">
@@ -40,8 +41,8 @@
 		
 		<result property="discount" column="DISCOUNT"/>	
 		<result property="couponCateg" column="COUPON_CATEG"/>	
-		<result property="couponName" column="COUPON_NAME"/>
 		
+		<result property="couponName" column="COUPON_NAME"/>
 		<result property="rDiscount" column="COUPON_RDISCOUNT"/>
 		<result property="pDiscount" column="COUPON_PDISCOUNT"/>
 	</resultMap>
@@ -119,14 +120,14 @@
 	<select id="selectOrderList" resultMap="mypageOrderResultSet" parameterType="_int">
 		SELECT om.order_no,
       			 LISTAGG(cast(m.material_name || ot.order_tcount as VARCHAR(100)),' / ') within group(order by m.material_no) ORDER_MATERIAL,
-      			 om.order_method, com.com_name, om.order_payprice
+      			 om.order_method, com.com_name, om.order_payprice, om.order_status
 		FROM order_main OM 
-			JOIN company COM ON om.com_no=com.com_no 
+			RIGHT OUTER JOIN company COM ON om.com_no=com.com_no 
 			JOIN order_item OI ON om.order_no=oi.order_no
 			JOIN order_topping OT ON oi.order_ino=ot.order_ino
 			JOIN material m ON ot.material_no=m.material_no
 		WHERE om.MEMBER_NO=#{memberNo}
-		group by om.order_no, om.order_method, com.com_name, om.order_payprice
+		group by om.order_no, om.order_method, com.com_name, om.order_payprice, om.order_status
 	</select>
 	
 	
@@ -209,22 +210,25 @@
 	
 	<select id="selectUseCouponList" resultType="_int" parameterType="OrderDetail">
 		select count(*)
-		from order_main om join coupon_issue ci on om.order_no = ci.order_no
-		where om.member_no = #{memberNo} and om.order_no=#{orderNo}
+		from order_main om 
+		join coupon_issue ci on om.order_no = ci.order_no
+		where om.member_no = #{memberNo} and om.order_no=#{orderNo} and ci.issue_status='N'
 	</select>
 	
 	<select id="selectOrderDetailList" resultMap="mypageOrderDetailResultSet" parameterType="_int">
 		select om.order_date, om.order_receiver, om.order_rtel, 
               ma.material_categ, ma.material_name, ma.material_sellprice,ot.order_tcount, oi.order_tcount order_tcount2,
               om.order_payprice, d.delivery_name, d.delivery_address, c.com_name, oi.order_isize
+            
 		from order_main OM
+		left outer join delivery d on d.delivery_no=om.delivery_no
 		join order_item OI on om.order_no = oi.order_no 
-		join order_topping OT on ot.order_ino = oi.order_ino 
-		join material MA on ot.material_no = ma.material_no
-		join delivery d on d.delivery_no=om.delivery_no
-		join company c on c.com_no = om.com_no
-		where om.order_no=#{orderNo}
-        order by ma.material_no 
+        join order_topping OT on ot.order_ino = oi.order_ino 
+        join material MA on ot.material_no = ma.material_no
+        join company c on c.com_no = om.com_no
+		where om.order_no= #{orderNo}
+		
+        order by ma.material_no
 	</select>
 	
 	<select id="selectOrderDetailList2" resultMap="mypageOrderDetailResultSet" parameterType="_int">	
@@ -232,14 +236,14 @@
      	ma.material_categ, ma.material_name, ma.material_sellprice,ot.order_tcount, oi.order_tcount order_tcount2,
      	om.order_payprice, d.delivery_name, d.delivery_address, c.com_name, oi.order_isize,
       
-    	c.com_name, cp.coupon_categ, cp.coupon_name,
+    	cp.coupon_categ, cp.coupon_name,
      	cp.coupon_rdiscount, cp.coupon_pdiscount
               
 		from order_main OM
+		left outer join delivery d on d.delivery_no=om.delivery_no
 		join order_item OI on om.order_no = oi.order_no 
 		join order_topping OT on ot.order_ino = oi.order_ino 
 		join material MA on ot.material_no = ma.material_no
-		join delivery d on d.delivery_no=om.delivery_no
 		join company c on c.com_no = om.com_no
         
         join coupon_issue ci on ci.order_no = om.order_no

@@ -31,7 +31,7 @@ public class OrderDetail implements java.io.Serializable{
 	private int couponCateg;
 	private String couponName;
 	
-	private int rDiscount;
+	private double rDiscount;
 	private int pDiscount;
 	
 	public OrderDetail() {}
@@ -261,11 +261,11 @@ public class OrderDetail implements java.io.Serializable{
 		this.couponName = couponName;
 	}
 
-	public int getrDiscount() {
+	public double getrDiscount() {
 		return rDiscount;
 	}
 
-	public void setrDiscount(int rDiscount) {
+	public void setrDiscount(double rDiscount) {
 		this.rDiscount = rDiscount;
 	}
 

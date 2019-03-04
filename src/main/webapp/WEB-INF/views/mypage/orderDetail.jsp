@@ -56,50 +56,52 @@
 		      <td class="tableHead">휴대폰번호</td>
  			  <td>${ modelDetailList[leng].orderRtel }</td>
 		    </tr>
+		    
+		    <c:if test="${ empty modelDetailList[leng].deliveryAddr }">
+			    <tr>
+			    	<td class="tableHead">수령매장</td>
+			 		<td>${ modelDetailList[leng].comName}점</td>
+			 	</tr>
+		    </c:if>
+		    
 		  </tbody>
 		</table>
 	</div>	
+	
+	
+	
 		
-	<div style="float: left; padding-bottom: 40px; padding-left: 20px;">
-		<a class="ui grey tag label">배송지 정보</a>
-		<table class="ui celled table" style="width:450px;">
-		<thead>
-		</thead>
-		  <tbody>
-		    <tr>
-		      <td class="tableHead">수령인</td>
-		      <td>${ modelDetailList[leng].orderReceiver}</td>
-		    </tr>
-		    <tr>
-		      <td class="tableHead">주소</td>
-		      <td>${ modelDetailList[leng].deliveryAddr} </td>
-		    </tr>
-		    <tr>
-		      <td class="tableHead">배달매장</td>
- 			  <td>${ modelDetailList[leng].comName}점</td>
-		    </tr>
-		  </tbody>
-		</table>
-	</div>	
-		
-	<br><br>
-		
-		
-		
-		
-		
-		
+		<c:if test="${ !empty modelDetailList[leng].deliveryAddr }">
+			<div style="float: left; padding-bottom: 40px; padding-left: 20px;">
+				<a class="ui grey tag label">배송 정보</a>
+				<table class="ui celled table" style="width:450px;">
+				<thead>
+				</thead>
+				  <tbody>
+				    <tr>
+				      <td class="tableHead">수령인</td>
+				      <td>${ modelDetailList[leng].orderReceiver}</td>
+				    </tr>
+				    <tr>
+				      <td class="tableHead">주소</td>
+				      <td>${ modelDetailList[leng].deliveryAddr} </td>
+				    </tr>
+				    <tr>
+				      <td class="tableHead">배달매장</td>
+		 			  <td>${ modelDetailList[leng].comName}점</td>
+				    </tr>
+				  </tbody>
+				</table>
+			</div>	
+		</c:if>
+			
 		
 		
+		<br><br><br><br><br><br><br><br><br><br><br><br>
 		
-		
-		
-		
-		
-		
-		
-		
-		
+
+
+
 		
 		<div style="float: inherit;">
 	
