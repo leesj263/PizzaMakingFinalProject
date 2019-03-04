@@ -56,6 +56,7 @@
 			    <th>주문명</th>
 			    <th>배달방식</th>
 			    <th>주문매장</th>
+			    <th>진행상황</th>
 			    <th>주문금액</th>
 		 	</tr></thead>
 		  <tbody>
@@ -76,6 +77,24 @@
 		    			<td>배달</td>
 		    		</c:if>
 		    		
+		    		
+		    		<c:if test="${ o.orderStatus == 1 }">
+		    			<td>대기중</td>
+		    		</c:if>
+		    		<c:if test="${ o.orderStatus == 2 }">
+		    			<td>제조중</td>
+		    		</c:if>
+		    		<c:if test="${ o.orderStatus == 3 }">
+		    			<td>배달중</td>
+		    		</c:if>
+		    		<c:if test="${ o.orderStatus == 4 }">
+		    			<td>배달완료</td>
+		    		</c:if>
+		    		<c:if test="${ o.orderStatus == 5 }">
+		    			<td>주문거절</td>
+		    		</c:if>
+
+	    		
 		    		<td>${ o.comName }점</td>
 		    		<td><fmt:formatNumber value="${ o.payPrice }"/>원</td>
 		    	</tr>

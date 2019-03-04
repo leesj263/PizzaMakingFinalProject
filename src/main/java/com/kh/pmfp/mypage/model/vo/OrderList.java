@@ -6,17 +6,36 @@ public class OrderList implements java.io.Serializable{
 	private String orderMethod;
 	private String comName;
 	private int payPrice;
+	private int orderStatus;
 	
 	public OrderList() {}
 
-	public OrderList(int orderNo, String orderMaterial, String orderMethod, String comName, int payPrice) {
+	
+
+	public OrderList(int orderNo, String orderMaterial, String orderMethod, String comName, int payPrice,
+			int orderStatus) {
 		super();
 		this.orderNo = orderNo;
 		this.orderMaterial = orderMaterial;
 		this.orderMethod = orderMethod;
 		this.comName = comName;
 		this.payPrice = payPrice;
+		this.orderStatus = orderStatus;
 	}
+
+
+
+	public int getOrderStatus() {
+		return orderStatus;
+	}
+
+
+
+	public void setOrderStatus(int orderStatus) {
+		this.orderStatus = orderStatus;
+	}
+
+
 
 	public int getOrderNo() {
 		return orderNo;
@@ -58,11 +77,14 @@ public class OrderList implements java.io.Serializable{
 		this.payPrice = payPrice;
 	}
 
+
+
 	@Override
 	public String toString() {
 		return "OrderList [orderNo=" + orderNo + ", orderMaterial=" + orderMaterial + ", orderMethod=" + orderMethod
-				+ ", comName=" + comName + ", payPrice=" + payPrice + "]";
+				+ ", comName=" + comName + ", payPrice=" + payPrice + ", orderStatus=" + orderStatus + "]";
 	}
+
 	
 	
 }
