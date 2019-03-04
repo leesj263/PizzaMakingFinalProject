@@ -64,17 +64,25 @@ public class MemberController {
 		//return "main/main";
 	}
 	
-	@RequestMapping(value="kakaologin.co")
-	public @ResponseBody HashMap<String, String> kakaologin(@RequestParam String kakaoId,
-			@RequestParam String kakaoNickname) {
-		System.out.println(kakaoId);
-		System.out.println(kakaoNickname);
-		HashMap<String, String> hmap = new HashMap<>();
-		hmap.put("kakaoId", kakaoId);
-		/*hmap.put("kakaoEmail",kakaoEmail);
-		hmap.put("kakaoNickname", kakaoNickname);*/
+	@RequestMapping(value="kakaoJoin.co",method=RequestMethod.POST)
+	public String kakaologin(@RequestParam String memberId,@RequestParam String memberName,HttpServletRequest request,HttpServletResponse response) {
+		System.out.println("연결되닝?");
+		System.out.println(memberId);
+		System.out.println(memberName);
+		String check = "check";
+	
 		
-		return hmap;
+		//회원가입이 되어있는지 확인하기
+		int result = ms.duplicationCheck(memberId);
+		if(result>0) {
+			Member loginUser = ms.kakaoLoginMember(memberId);
+			request.getSession().setAttribute("loginUser", loginUser);
+			 
+		}else {
+			request.setAttribute("check", check);	
+		}
+		
+		return "main/main";
 	}
 	
 	@RequestMapping("goMain.co")
@@ -176,7 +184,7 @@ public class MemberController {
 	
 	//회원가입-이메일 인증
 	@RequestMapping("joinSendMail.co")
-	public @ResponseBody HashMap<String,Object> joinSendMail(@RequestParam String memberId,@RequestParam String memberEmail,@RequestParam String randomCode) throws MessagingException, UnsupportedEncodingException {
+	public @ResponseBody HashMap<String,Object> joinSendMail(@RequestParam String memberEmail,@RequestParam String randomCode) throws MessagingException, UnsupportedEncodingException {
 		//System.out.println(memberId+memberEmail+randomCode);
 		
 		

@@ -57,6 +57,15 @@ public class MemberServiceImpl implements MemberService{
 		
 		return loginUser;
 	}
+	
+	//카카오 로그인
+		@Override
+		public Member kakaoLoginMember(String memberId) {
+			
+			Member loginUser = md.kakaoLoginMember(sqlSession,memberId);
+			return loginUser;
+		}
+
 
 	//아이디 중복확인 체크
 	@Override
@@ -131,6 +140,7 @@ public class MemberServiceImpl implements MemberService{
 		return result;
 	}
 
+	
 
 	
 
