@@ -120,6 +120,13 @@
 		WHERE MEMBER_ID=#{deleteId}
 	</update>
 	
+	<!-- 카카오 로그인  -->
+	<select id="selectMemberKakao" parameterType="Member" resultMap="memberResultSet">
+		SELECT *
+		FROM MEMBER
+		WHERE MEMBER_ID=#{memberId}
+		AND MEMBER_STATUS ='Y'
+	</select>
 	
 </mapper>
 

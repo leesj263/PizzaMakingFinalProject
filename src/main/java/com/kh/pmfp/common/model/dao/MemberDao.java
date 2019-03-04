@@ -44,4 +44,7 @@ public interface MemberDao {
 	//마이페이지-회원 탈퇴
 	int deleteMember(SqlSessionTemplate sqlSession, String deleteId);
 
+	//카카오 로그인
+	Member kakaoLoginMember(SqlSessionTemplate sqlSession, String memberId);
+
 }

@@ -33,6 +33,11 @@ public interface MemberService {
 	//마이페이지-회원탈퇴
 	int deleteMember(String deleteId);
 
+	//카카오 로그인 
+	Member kakaoLoginMember(String memberId);
+
+	
+
 
 
 	

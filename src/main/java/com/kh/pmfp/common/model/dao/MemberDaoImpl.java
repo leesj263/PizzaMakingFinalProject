@@ -97,6 +97,13 @@ public class MemberDaoImpl implements MemberDao{
 		
 		return sqlSession.update("Member.deleteMember",deleteId);
 	}
+
+	//카카오 로그인
+	@Override
+	public Member kakaoLoginMember(SqlSessionTemplate sqlSession, String memberId) {
+		
+		return sqlSession.selectOne("Member.selectMemberKakao", memberId);
+	}
 	
 	
 
