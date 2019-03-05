@@ -144,9 +144,10 @@
 	
 	<!-- review상세보기 -->
 	<select id="selectReview" resultMap="boardResultSet" parameterType="_int">
-		SELECT B.*, M.MEMBER_NAME, M.MEMBER_NICKNAME, ROWNUM  
+		SELECT B.*, M.MEMBER_NAME, M.MEMBER_NICKNAME, ROWNUM  , I.IMG_CHANGENAME AS IMG_CHANGENAME, I.IMG_FILEPATH AS IMG_FILEPATH
 		FROM BOARD B 
 		JOIN MEMBER M ON (B.MEMBER_NO=M.MEMBER_NO) 
+        JOIN IMAGE I ON (B.BOARD_NO = I.BOARD_NO)
 		WHERE B.BOARD_NO=#{boardNo} AND B.BOARD_STATUS='Y'
 	</select>
 	

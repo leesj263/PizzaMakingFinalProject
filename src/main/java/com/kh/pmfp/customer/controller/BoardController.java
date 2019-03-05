@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -81,7 +82,7 @@ public class BoardController {
 			return "common/errorPage";
 		}
 	}
-	//revie댓글작성
+	//review댓글작성
 	@RequestMapping(value="bringreviewAnswer.bo", method=RequestMethod.POST)
 	public void reviewAnswerWrite(/*@ModelAttribute*/  HttpServletRequest request, HttpServletResponse response
 			)throws JsonIOException, IOException {
@@ -114,7 +115,7 @@ public class BoardController {
 	}
 	@RequestMapping("reviewWrite.bo")
 	public String reviewWrite(@ModelAttribute Board review, HttpServletRequest request, HttpServletResponse response, 
-			@RequestParam (value="boardFile", required=false) MultipartFile boardFile) {
+			@RequestParam (value="boardFile", required=false) MultipartFile boardFile, Model model) {
 		HttpSession session = request.getSession();
 		
 		Member loginUser = (Member) session.getAttribute("loginUser");
@@ -134,6 +135,7 @@ public class BoardController {
 		
 		String ext = originFileName.substring(originFileName.lastIndexOf("."));
 		String changeName= CommonUtils.getRandomString();
+		System.out.println("changeName : " + changeName);
 		
 		Image image= new Image();
 		image.setImgOriginname(originFileName);
@@ -145,6 +147,8 @@ public class BoardController {
 			boardFile.transferTo(new File(filePath+"\\"+changeName+ext));
 			int result = bs.insertReview(review, image);
 				if(result>0) {
+					//request.setAttribute("image", image);
+					model.addAttribute("image", image);
 					return "redirect:reviewList.bo";
 				}else {
 					new File(filePath+"\\"+changeName+ext).delete();	
@@ -361,6 +365,8 @@ public class BoardController {
 
 			try {
 				review = bs.selectReview(num);
+				System.out.println("상세보기 : "+review);
+				
 				
 				//댓글 목록 불러오기
 				ArrayList<Board> reply = bs.selectReviewReply(num);
