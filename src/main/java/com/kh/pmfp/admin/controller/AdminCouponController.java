@@ -127,61 +127,29 @@ public class AdminCouponController {
 		System.out.println(searchContent);
 		System.out.println(currentPage);
 		//System.out.println();
+		AdminCoupon coupon = new AdminCoupon();
+		ArrayList<AdminCoupon> searchCouponList = new ArrayList<>();
+		PageInfo pi =null;
 		
-		//searchType,searchContent 를 담아서 arrayList에 담아오기
-		if(searchType.equals("1")) {	//1일때 쿠폰 내용 검색
-			//System.out.println("1 여기루 오닝");
-			AdminCoupon coupon = new AdminCoupon();
+		//1일때 쿠폰 내용 검색
+		if(searchType.equals("1")) {	
 			coupon.setCouponName(searchContent);
-			//페이징 숫자 받아오기
-			int couponNameCount = cs.selectcouponNameCount(coupon);
-
-			PageInfo pi = Pagination.getPageInfo(currentPage, couponNameCount);
-			
-			ArrayList<AdminCoupon> searchCouponNameList = new ArrayList<>();
-		
-			searchCouponNameList = cs.selectListCouponName(coupon,pi);
-			
-			
-			
-			//System.out.println(searchCouponNameList);
-			//System.out.println(pi);
-			
-			request.setAttribute("searchCouponListAll", searchCouponNameList);
-			request.setAttribute("pi", pi);
-			request.setAttribute("searchContent", searchContent);
-			request.setAttribute("searchType", searchType);
-			return "admin/coupon/searchCoupon2";
-			
-			
-			
-		}else if(searchType.equals("0")) {	//0일때 쿠폰 번호 검색
-			//System.out.println("2 여기루 오닝");
-			ArrayList<AdminCoupon> searchCouponCodeList = new ArrayList<>();
-			AdminCoupon coupon = new AdminCoupon();
+			int couponNameCount = cs.selectcouponNameCount(coupon);//페이징 숫자 받아오기
+			pi = Pagination.getPageInfo(currentPage, couponNameCount);
+			searchCouponList = cs.selectListCouponName(coupon,pi);
+		//0일때 쿠폰 번호 검색
+		}else if(searchType.equals("0")) {	
 			coupon.setCouponNo(Integer.parseInt(searchContent));
-			
 			int couponCodeCount = cs.selectCouponCodeCount(coupon);
-			PageInfo pi = Pagination.getPageInfo(currentPage, couponCodeCount);
-			
-			
-			
-			searchCouponCodeList = cs.selectListCouponCode(coupon,pi);
-			
-			
-			
-			request.setAttribute("searchCouponListAll", searchCouponCodeList);
-			request.setAttribute("pi", pi);
-			request.setAttribute("searchContent", searchContent);
-			request.setAttribute("searchType", searchType);
-			
-			System.out.println(searchCouponCodeList);
-			return "admin/coupon/searchCoupon2";
-			
-			
+			pi = Pagination.getPageInfo(currentPage, couponCodeCount);
+			searchCouponList = cs.selectListCouponCode(coupon,pi);
 		}
 		
-		return "common/errorPage";
+		request.setAttribute("searchCouponListAll", searchCouponList);
+		request.setAttribute("pi", pi);
+		request.setAttribute("searchContent", searchContent);
+		request.setAttribute("searchType", searchType);
+		return "admin/coupon/searchCoupon2";
 	}
 	
 	//발급쿠폰 검색(이름,내용)

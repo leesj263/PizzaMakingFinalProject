@@ -91,9 +91,11 @@ public class MemberController {
 	//카카오 회원가입
 	@RequestMapping("kakaoJoinDB.co")
 	public String kakaoJoinDB(Member m) {
+		String randomCode = (Math.floor(Math.random() * 1000000) + 100000)+"";
+		
 		System.out.println(m);
 		m.setMemberNickName(m.getMemberName());
-		String encPassword = passwordEncoder.encode(m.getMemberPwd());
+		String encPassword = passwordEncoder.encode(randomCode);
 		m.setMemberPwd(encPassword);
 		
 		int result = ms.insertNormalMember(m);
@@ -322,20 +324,19 @@ public class MemberController {
 		System.out.println(noMemberName);
 		System.out.println(noMemberPhone);
 		
-	  String api_key = "NCS8WZGWKUNMTSN6";
+			String api_key = "NCS8WZGWKUNMTSN6";
 	        String api_secret = "JDRDBTDRLNT2US8TOUELTOVBCZWMMHHE";
+	        
 	        Coolsms coolsms = new Coolsms(api_key, api_secret);// 메시지보내기 객체 생성
-	         
+
 	        HashMap<String, String> set = new HashMap<String, String>();
 	        set.put("to", noMemberPhone); // 수신번호
-	        
-	      
 	        set.put("from", "01099539405"); // 발신번호 
 	        set.put("text", "피자 제작소 인증번호 : "+randomCode); // 문자내용
 	        set.put("type", "sms"); // 문자 타입
 
-	        
 	        JSONObject result = coolsms.send(set); // 보내기&전송결과받기
+	       
 	        if ((boolean)result.get("status") == true) {
 	            // 메시지 보내기 성공 및 전송결과 출력
 	            System.out.println("성공");            
