@@ -19,7 +19,7 @@
 	<br>
 	<br>
 
-	<div class="container" style="width: 50%; margin-left: 30%">
+	<div class="container" style="width: 45%; margin-left: 30%">
 		<p text-align="center">
 		<h2>후기상세보기</h2>
 		</p>
@@ -31,29 +31,31 @@
 		</caption>
 		<table>
 			<tr>
-				<td rowspan="2"><b>작성자</b></td>
+				<td align="center" width="76"><b>작성자</b></td>
 				<td width="100"><p>${review.memberNickname }</p></td>
 
-				<td align="center" width="76">작성일 :</td>
+				<td align="center" width="76">작성일 </td>
 				<td width="150"><p>${review.boardDate }</p></td>
 
-				<td align="center" width="76">조회수 :</td>
+				<td align="center" width="76">조회수 </td>
 				<td width="150"><p>${review.boardCount }</p></td>
 			</tr>
 		</table>
 		<hr>
 		<table class="table">
-			
-				<div class="image" style="padding-left:18%">
-						<img src="resources/customer/images/review/${image.imgChangeName }"
-							style="height: 300px; width:500px">
-					</div>
-				<tr><div id="boardContent" style="padding-left:19%">
+
+			<div class="image" style="padding-left: 8%">
+				<img src="/pmfp/resources/customer/images/review/${review.imgChangeName}.jpg"
+					style="height: 300px; width: 500px">
+			</div>
+			<div></div>
+			<div></div>
+			<tr>
+				<div id="boardContent" style="padding-left: 8%">
 					<% pageContext.setAttribute("newLineChar", "\n"); %>
 					${fn:replace(review.boardContent, newLineChar, "<br/>")}
-				</div><tr>
-
-			
+				</div>
+			<tr>
 		</table>
 
 
@@ -77,26 +79,31 @@
 						</tr>
 				</c:forEach>
 			</table>
+			<br><br>
+			<input type="hidden" name="boardRefNo" value="${review.boardNo }">
+			<input type="hidden" name="boardRefNo" value="${review.boardNo }">
+			<input type="hidden" name="boardRefNo" value="${review.boardNo }">
+
+			<div style="height: 50px; width: 100%" align="center">
+				<textarea class="form-control" cols="80"
+					style="height: 90%; width: 80%;"
+					id="reviewAnswerWrite" name="reviewAnswerWrite"></textarea>
+					<button class="ui yellow button" 
+					onclick="return reviewAnswerWrite();" style="margin-top: auto; margin-bottom: 40px; text-align: center; vertical-align: middle;">등록</button>
+			</div>
 		</div>
 
 
 
 
 		<!-- <form id="reviewAnswerWrite" action="reviewAnswerWrite.bo" method="post" style="border:solid 1px red;" > -->
-		<br>
-		<br>
+		<!-- <br> <br> -->
 		<!-- <div id="but"> -->
-		<tr>
-			<input type="hidden" name="boardRefNo" value="${review.boardNo }">
-			<input type="hidden" name="boardRefNo" value="${review.boardNo }">
-			<input type="hidden" name="boardRefNo" value="${review.boardNo }">
-			<td><div style="padding-left:10%"><textarea class="form-control" cols="80" style="padding-top: 20px;"
-				id="reviewAnswerWrite" name="reviewAnswerWrite"
-				></textarea></div></td>
-			<td><button class="ui yellow button"
-				onclick="return reviewAnswerWrite();" style="padding-top: 20px;">등록</button></td>
-				</tr>
-			<!-- <div class="col-md-2"></div> -->
+
+
+
+
+		<!-- <div class="col-md-2"></div> -->
 		<!-- </div> -->
 		<!-- <div class="row">
 				

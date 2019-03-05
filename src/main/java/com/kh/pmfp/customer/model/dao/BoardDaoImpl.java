@@ -207,6 +207,7 @@ public class BoardDaoImpl implements BoardDao {
 		return result;
 	}
 
+	//리뷰댓글
 	@Override
 	public int insertReply(SqlSessionTemplate sqlSession, Board review) throws BoardException {
 		int result=0;
@@ -216,7 +217,8 @@ public class BoardDaoImpl implements BoardDao {
 		}
 		return result;
 	}
-		@Override
+	//	
+	@Override
 		public ArrayList<Board> selectReviewAnswerList(SqlSessionTemplate sqlSession, int boardNo){
 			
 			return (ArrayList)sqlSession.selectList("Board.selectReviewAnswerList",boardNo);
