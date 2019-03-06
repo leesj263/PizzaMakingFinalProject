@@ -49,7 +49,7 @@
 	background-color: white;
 	border: 1px solid white;
 	width: 450px;
-	height: 500px;
+	height: 530px;
 	opacity: 1;
 	visibility: hidden;
 	border-radius: 5px; /*둥글겡*/
@@ -79,6 +79,14 @@ h1 {
 .mar2 {
 	margin: 30px 50px 10px;
 }
+/* 
+#kakao-login-btn{
+	/* width:320px;
+	height:60px; */
+	align:center;
+} */
+
+
 </style>
 
 </head>
@@ -439,7 +447,7 @@ h1 {
 
 	<div id="kakaojoindiv" class="hiddenCss">
 		<br>
-		<h1>kakao 추가정보 입력</h1>
+		<h1>KAKAO 추가정보 입력</h1>
 
 		<div class="mar">
 			<form action="kakaoJoinDB.co" method="post">
@@ -450,7 +458,7 @@ h1 {
 				<table class="table">
 					
 					
-					<tr>
+				<!-- 	<tr>
 						<td colspan="2"><div class="ui input" style="width: 100%">
 								<input type="password" placeholder="비밀번호" id="kakaomemberPwd"
 									name="memberPwd">
@@ -460,7 +468,7 @@ h1 {
 						<td colspan="2"><div class="ui input" style="width: 100%">
 								<input type="password" placeholder="비밀번호 확인" id="kakaomemberPwd2">
 							</div></td>
-					</tr>
+					</tr> -->
 					<tr>
 						<td><div class="ui input" style="width: 100%">
 								<input type="text" placeholder="이메일" id="kakaomemberEmail"
@@ -512,9 +520,9 @@ h1 {
 			<div class="mar">
 	<form action="login.co" method="post" id="loginFormId">
 			<br>
-			<h1>login</h1>
+			<h1>LOGIN</h1>
 
-				<table class="table" width="330px">
+				<table class="table" width="320px">
 					<tr>
 						<td><div class="ui left icon input">
 								<input type="text" placeholder="아이디" id="memberIdLogin"
@@ -533,9 +541,9 @@ h1 {
 										id="memberPwdLogin"> <i class="heart outline icon"></i>
 								</div></td>
 						</tr>
-						<tr style="width: 50px">
+						<!-- <tr style="width: 30px">
 							<td>&nbsp;</td>
-						</tr>
+						</tr> -->
 				</table>
 			</form>
 				<form action="kakaoJoin.co" method="post" id="kakaoForm">
@@ -544,7 +552,10 @@ h1 {
 							<td colspan="2">
 								<!-- <button type="button" class="ui yellow button"
 								style="width: 100%">카카오 로그인</button> --> 
-								<a id="kakao-login-btn"></a>
+							<div style="width: 320px; background: rgb(255,235,0); border-radius: 7px; align:center;">
+								 <a id="kakao-login-btn" style="margin-left: 45px;"></a>
+                     
+							</div>
 								<!-- <a href="http://developers.kakao.com/logout"></a>  -->
 								<input type="hidden" id="kakaoId" value="" name="memberId"> 
 								<input type="hidden" id="kakaoNickName" value="" name="memberName"> 
@@ -601,7 +612,9 @@ h1 {
 							<td>
 								<!-- <button type="button" class="ui green  button"
 									style="width: 100%">네이버 로그인</button> -->
-  								<div id="naver_id_login"></div>
+								<div align="center">
+  								 <div id="naver_id_login" style="width: 320px; background: rgb(30,200,0); border-radius: 7px; align:center;"></div> 
+  								</div>
 							</td>
 						</tr>
 					</table>
@@ -610,7 +623,7 @@ h1 {
 			<script type="text/javascript">
 				var naver_id_login = new naver_id_login("hleKffrO_Usz21Fz5hyM","http://localhost:8008/pmfp/goMain.co");
 				var state = naver_id_login.getUniqState();
-				naver_id_login.setButton("white", 2, 40);
+				naver_id_login.setButton("green", 6, 50);
 				naver_id_login.setDomain("localhost:8008/pmfp");
 				naver_id_login.setState(state);
 				//naver_id_login.setPopup();
@@ -624,7 +637,7 @@ h1 {
 				<tr>
 					<td colspan="2">
 						<button type="button" class="ui black basic button"
-							style="width: 100%" onclick="nonMember();">비회원 로그인</button>
+							style="width: 320px; height:40px" onclick="nonMember();">비회원 로그인</button>
 					</td>
 				</tr>
 				<tr style="width: 50px">
@@ -634,14 +647,14 @@ h1 {
 					<td><small>*아직 피자학원 회원이 아니세요?ㅠㅠ  </small></td>
 					<td>
 						<button type="button" class="ui yellow basic button"
-							style="width: 100%" onclick="join();">회원가입하기</button>
+							style="width: 130px" onclick="join();">회원가입하기</button>
 					</td>
 				</tr>
 				<tr>
 					<td><small>*아이디와 비밀번호를 잊으셨나요? </small></td>
 					<td>
 						<button type="button" class="ui yellow basic button"
-							style="width: 100%" onclick="idPwdSearch();">
+							style="width: 130px" onclick="idPwdSearch();">
 							<samll>아이디/비밀번호 변경</samll>
 						</button>
 					</td>
