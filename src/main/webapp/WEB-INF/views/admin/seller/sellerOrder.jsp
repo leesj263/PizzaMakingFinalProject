@@ -156,11 +156,11 @@
 					console.log(data);
 					if(data==1){
 						console.log(data);
-						alert("정산 처리가 완료되었습니다.");
+						alert("배송완료 처리가 완료되었습니다.");
 						location.href='sellerOrder.ad';
 					}else{
 						console.log(data);
-						alert("정산 처리가 실패했습니다. 다시 시도해주세요.");
+						alert("배송완료 처리가 실패했습니다. 다시 시도해주세요.");
 					}
 				},
 				error:function(data){
