@@ -155,13 +155,13 @@ h1 {
 		<ul class="links">
 			<li><a href="main.t">홈</a></li>
 			<li><a href="pizzaMaking.cor">주문하기</a></li>
-			<li><a href="#">이벤트</a></li>
+			<!-- <li><a href="#">이벤트</a></li> -->
 
 			<li id="menuList1"><a>게시판</a>
 
 				<ul id="down1" style="display: none">
-					<li><a href="shareList.t">토핑공유</a></li>
-					<br>
+					<!-- <li><a href="shareList.t">토핑공유</a></li>
+					<br> -->
 					<li><a href="reviewList.bo">제작후기</a></li>
 				</ul></li>
 

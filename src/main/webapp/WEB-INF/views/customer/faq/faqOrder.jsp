@@ -15,7 +15,7 @@
 <script language="javascript">
 	function clickblock(num) {
 		/* console.log($("<tr>")); */
-		for (i = 1; i < 20; i++) { //10이라는 수는 줄수보다 1 더한값을 적어주세요//
+		for (i = 1; i < 30; i++) { //10이라는 수는 줄수보다 1 더한값을 적어주세요//
 			var left_menu = eval("block" + i + ".style");
 			if (num == i) {
 				if (left_menu.display == "") {
