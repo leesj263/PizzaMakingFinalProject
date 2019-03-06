@@ -119,7 +119,13 @@
                                             </c:if>
                                             <%-- <td>${value.boardCateG}</td> --%>
                                             <td>${value.boardTitle}</td>
-                                            <td style = "overflow:hidden; text-overflow: ellipsis;">${value.boardContent}</td>
+                                            <td style = "overflow:hidden; text-overflow: ellipsis;">
+                                            
+                                            <c:set var="contentLength" value="${value.boardContent}" />
+                                          
+                                            ${ fn:substring( contentLength, 0, 30)}...
+                                           
+                                            </td>
                                             <td>${value.boardDate}</td>
                                         </tr>
                                     	</c:forEach>

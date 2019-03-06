@@ -47,6 +47,7 @@ import com.kh.pmfp.company.model.vo.CompanySalesList;
 @Repository
 public class CompanyDaoImpl implements CompanyDao {
 
+	ArrayList<CompanyOrderStock> sampleList = new ArrayList<CompanyOrderStock>();
 	/*private Properties prop = new Properties();
 
 	public CompanyDaoImpl() {
@@ -338,27 +339,27 @@ public class CompanyDaoImpl implements CompanyDao {
 			throws FailInsertOrderStock {
 		// TODO Auto-generated method stub
 		int result = 0;
-		int resultupdate = 0;
+		//int resultupdate = 0;
 
 		for (int i = 0; i < list.size(); i++) {
 			result += sqlSession.insert("Company.applyStock", list.get(i));
 			System.out.println(i + "번째 applyStock : " + result);
 			result += sqlSession.insert("Company.applyStockAndAddExpense", list.get(i));
 			System.out.println(i + "번째 applyStockAndAddExpense : " + result);
-			resultupdate = sqlSession.update("Company.applyStockAndUpdateStockList", list.get(i));
-			result += resultupdate;
+			/*resultupdate = sqlSession.update("Company.applyStockAndUpdateStockList", list.get(i));
+			result += resultupdate;*/
 			System.out.println(i + "번째 applyStockAndUpdateStockList : " + result);
 			result += sqlSession.insert("Company.applyStockAndInsertSales", list.get(i));
 			System.out.println(i + "번째 applyStockAndInsertSales : " + result);
 
-			if (resultupdate == 0) {
+			/*if (resultupdate == 0) {
 				resultupdate = sqlSession.insert("Company.applyStockIfDontHaveStock", list.get(i));
 				System.out.println("중간resultupdate : " + resultupdate);
 			}
-			resultupdate = 0;
+			resultupdate = 0;*/
 		}
 		System.out.println("result : " + result);
-		System.out.println("resultupdate : " + resultupdate);
+		//System.out.println("resultupdate : " + resultupdate);
 
 		if (result <= 0) {
 			throw new FailInsertOrderStock("재고 정보 삽입 실패!");
@@ -384,7 +385,22 @@ public class CompanyDaoImpl implements CompanyDao {
 	public int receiptConfirm(SqlSessionTemplate sqlSession, ArrayList<Integer> orderMno) throws FailInsertOrderStock {
 		// TODO Auto-generated method stub
 		int result = sqlSession.update("Company.receiptConfirm", orderMno);
-
+		int result2 = 0;
+		
+		for (int i = 0; i < orderMno.size(); i++) {
+			int orderMno2 = orderMno.get(i);
+			result2 = sqlSession.update("Company.applyStockAndUpdateStockList2", orderMno2);
+			
+			if (result2 == 0) {
+				
+				result2 = sqlSession.insert("Company.applyStockIfDontHaveStock2", orderMno2);
+				System.out.println("중간resultupdate : " + result2);
+			}
+			result2 = 0;
+			
+		}
+		
+		System.out.println("result2 : "+ result2);
 		if (result <= 0) {
 			throw new FailInsertOrderStock("재고 정보 삽입 실패!");
 		}
